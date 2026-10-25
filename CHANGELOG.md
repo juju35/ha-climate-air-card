@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2
+
+### Changes
+- Overview: a group no longer starts a new row of its own. Each group takes as many columns as it has devices, so groups of one device sit side by side instead of leaving half a row empty, with each group under its own heading.
+- Overview: a tile's filter alert sits under its state, beside the illustration, instead of on a row of its own across the tile.
+
 ## 1.3.1
 
 ### Fixes

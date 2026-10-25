@@ -147,6 +147,13 @@ test("overview: exclude, include and group by area", () => {
   assert.deepEqual([...body.matchAll(/class="group">([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
 });
 
+test("overview: each group spans as many columns as it has devices, up to the column count", () => {
+  const spans = (body) => [...body.matchAll(/class="grp" style="--span:(\d+)"/g)].map((m) => Number(m[1]));
+  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 2, 2]);
+  assert.deepEqual(spans(overview({ zoom: false, group_by: "none" }).body), [2]);
+  assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [5]);
+});
+
 test("overview: tapping the icon turns the device off, tapping the tile unfolds its card", () => {
   const h = makeHass();
   const { el } = overview({}, h);

@@ -207,11 +207,21 @@ class ClimateAirOverviewCard extends CaElement {
       `${alertChip}<div class="pill">${caEsc(on.length ? this._t("running_n", { n: on.length }) : this._t("all_off"))}</div>${zoom}`;
 
     const body = card.querySelector(".body");
-    body.style.setProperty("--cols", c.columns || 2);
+    const cols = c.columns || 2;
+    body.style.setProperty("--cols", cols);
     body.classList.toggle("fixed", !!c.columns);
+    body.classList.toggle("packed", !!shown.length);
     if (!all.length) body.innerHTML = `<div class="empty">${caEsc(this._t("no_devices"))}</div>`;
     else if (!shown.length) body.innerHTML = `<div class="empty">${caEsc(this._t("nothing_on"))}</div>`;
-    else body.innerHTML = this._groups(shown).map(([title, items]) => `${title ? `<div class="group">${caEsc(title)}</div>` : ""}<div class="grid">${items.map((x) => this._tile(x, `${x.kind}-${all.indexOf(x)}`)).join("")}</div>`).join("");
+    // Each group takes as many columns as it has devices, so small groups sit side by side instead of leaving half a row empty.
+    else
+      body.innerHTML = this._groups(shown)
+        .map(
+          ([title, items]) =>
+            `<div class="grp" style="--span:${Math.min(items.length, cols)}">${title ? `<div class="group">${caEsc(title)}</div>` : ""}` +
+            `<div class="grid">${items.map((x) => this._tile(x, `${x.kind}-${all.indexOf(x)}`)).join("")}</div></div>`,
+        )
+        .join("");
 
     this._fillPanel(all.find((x) => x.id === this._open));
   }
@@ -327,32 +337,36 @@ const CA_OVERVIEW_STYLES = `
   .zoom:hover { background: color-mix(in srgb, var(--ca-idle) 16%, transparent); color: var(--primary-text-color); }
   .zoom:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 1px; }
 
-  .group { margin: 10px 0 0; font-size: 11px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: .04em; }
-  .grid { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); gap: 6px; margin-top: 6px; }
-  .body > .grid:first-child { margin-top: 8px; }
-  @container (max-width: 340px) { .body:not(.fixed) .grid { grid-template-columns: minmax(0, 1fr); } }
+  .body.packed { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); grid-auto-flow: row dense; gap: 2px 6px; margin-top: 4px; }
+  .grp { grid-column: span var(--span, 1); min-width: 0; }
+  .group { margin: 6px 0 0; font-size: 11px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: .04em;
+           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .grid { display: grid; grid-template-columns: repeat(var(--span, 1), minmax(0, 1fr)); gap: 6px; margin-top: 4px; }
+  @container (max-width: 340px) { .body.packed:not(.fixed) { grid-template-columns: minmax(0, 1fr); }
+    .body:not(.fixed) .grp { grid-column: auto; } .body:not(.fixed) .grid { grid-template-columns: minmax(0, 1fr); } }
   .empty { padding: 12px; margin-top: 8px; text-align: center; font-size: 13px; color: var(--secondary-text-color);
            border-radius: 10px; background: var(--secondary-background-color, transparent); }
 
   .dev { --t: var(--ca-idle); box-sizing: border-box; cursor: pointer; min-width: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr);
-         grid-template-areas: "ic name" "ic state" "chips chips"; column-gap: 7px; align-items: center; align-content: start;
+         grid-template-areas: "ic name" "ic state"; column-gap: 7px; align-items: center; align-content: center;
          padding: 6px 7px; border-radius: 10px; background: var(--secondary-background-color, transparent); border: 1px solid transparent;
          transition: background .2s, border-color .2s; outline: none; }
   .dev.on { background: color-mix(in srgb, var(--t) 9%, var(--secondary-background-color, transparent)); border-color: color-mix(in srgb, var(--t) 24%, transparent); }
+  .dev:has(.chips) { grid-template-areas: "ic name" "ic state" "ic chips"; }
   .dev.alert { border-color: color-mix(in srgb, var(--ca-warn) 45%, transparent); }
   .dev.na { opacity: .6; }
   .dev:hover { background: color-mix(in srgb, var(--t) 14%, var(--secondary-background-color, transparent)); }
   .dev:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 2px; }
   .dev.sel { border-color: color-mix(in srgb, var(--primary-color) 60%, transparent); }
-  .ic { all: unset; grid-area: ic; align-self: start; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+  .ic { all: unset; grid-area: ic; align-self: center; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
         color: var(--primary-text-color); background: color-mix(in srgb, var(--ca-idle) 14%, transparent); transition: background .2s, color .2s; }
   .dev.on .ic { color: var(--t); background: color-mix(in srgb, var(--t) 18%, transparent); }
   .ic:hover { box-shadow: 0 0 0 2px color-mix(in srgb, var(--t) 35%, transparent); }
   .ic:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 1px; }
   .ic:disabled { cursor: default; }
   .ic ha-icon { --mdc-icon-size: 16px; display: flex; }
-  .dev:has(.ic.pic) { grid-template-columns: 40px minmax(0, 1fr); row-gap: 1px; padding: 5px 7px 5px 5px; }
-  .ic.pic { width: 40px; height: 46px; border-radius: 8px; background: none; grid-row: span 2; overflow: visible; }
+  .dev:has(.ic.pic) { grid-template-columns: 40px minmax(0, 1fr); padding: 5px 7px 5px 5px; }
+  .ic.pic { width: 40px; height: 46px; border-radius: 8px; background: none; grid-row: 1 / -1; overflow: visible; }
   .dev.on .ic.pic, .ic.pic:hover { background: none; box-shadow: none; }
   .ic.pic:hover .picture { transform: scale(1.06); }
   .ic.pic .picture { width: 40px; height: 46px; transition: transform .2s; }
@@ -365,9 +379,10 @@ const CA_OVERVIEW_STYLES = `
   .ic.breathe ha-icon { animation: ca-breathe 2.4s ease-in-out infinite; }
   .ic.pulse { animation: ca-ring 2.2s ease-out infinite; }
   .name { grid-area: name; font-size: 13px; font-weight: 500; line-height: 1.2; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .state { grid-area: state; font-size: 11px; line-height: 1.25; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .state { grid-area: state; margin-top: 1px; font-size: 11px; line-height: 1.25; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dev.on .state { color: var(--t); }
-  .chips { grid-area: chips; display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .chips { grid-area: chips; display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; min-width: 0; }
+  .chips .chip { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
 
   .panel { margin-top: 8px; border-radius: 12px; overflow: hidden; background: var(--secondary-background-color, transparent);
            --ha-card-background: transparent; --card-background-color: transparent; --ha-card-box-shadow: none; --ha-card-border-width: 0; }
