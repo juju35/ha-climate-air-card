@@ -261,7 +261,7 @@ class ClimateAirAirconCard extends CaCard {
       stepper =
         '<div class="stepper">' +
         `<button class="round" data-action="temp" data-value="-1" title="${caEsc(this._t("temp_down"))}" aria-label="${caEsc(this._t("temp_down"))}"><ha-icon icon="mdi:minus"></ha-icon></button>` +
-        `<div class="tv"><span class="tval">${caEsc(this._temp(m.target))}</span><span class="tl">${caEsc(this._t("target"))}</span></div>` +
+        `<div class="tv"><span class="tval">${caFmtNum(this._lang(), m.target)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(this._t("target"))}</span></div>` +
         `<button class="round" data-action="temp" data-value="1" title="${caEsc(this._t("temp_up"))}" aria-label="${caEsc(this._t("temp_up"))}"><ha-icon icon="mdi:plus"></ha-icon></button></div>`;
     }
     const selects = m.running
@@ -277,7 +277,7 @@ class ClimateAirAirconCard extends CaCard {
         return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
       }),
     );
-    return this._section("", segs + stepper + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._section(this._t("options"), toggles);
+    return this._section("", segs + stepper + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._section(this._t("options"), toggles, "mdi:tune-variant");
   }
 
   _action(action, value) {
@@ -334,9 +334,11 @@ class ClimateAirAirconCard extends CaCard {
   static styles = `
     .stepper { display: flex; align-items: center; justify-content: center; gap: 18px; }
     .tv { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
-    .tval { font-size: 26px; line-height: 1.1; color: var(--primary-text-color); font-variant-numeric: tabular-nums; }
+    .tval { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .tval small { font-size: 14px; color: var(--secondary-text-color); }
     .tl { font-size: 11px; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: .04em; }
-    .stepper .round { width: 44px; height: 44px; background: color-mix(in srgb, var(--ca-color) 14%, transparent); color: var(--ca-color); }
+    .stepper .round { width: 44px; height: 44px; background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
+    .stepper .round:hover:not(:disabled) { background: color-mix(in srgb, var(--ca-color) 24%, transparent); }
     ha-card.mini .round[data-action=temp] { width: 36px; height: 36px; }
   `;
 }

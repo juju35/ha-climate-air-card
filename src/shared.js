@@ -735,8 +735,9 @@ class CaCard extends CaElement {
   }
 
   // ── Controls ──
-  _section(title, body) {
-    return body ? `<div class="section">${title ? `<div class="section-title">${caEsc(title)}</div>` : ""}${body}</div>` : "";
+  _section(title, body, icon = "") {
+    const head = title ? `<div class="section-title">${icon ? `<ha-icon icon="${icon}"></ha-icon>` : ""}${caEsc(title)}</div>` : "";
+    return body ? `<div class="section">${head}${body}</div>` : "";
   }
 
   // Segmented buttons, one per option; `action` gets the option in data-value.
@@ -1007,7 +1008,9 @@ const CA_STYLES = `${CA_ART_STYLES}
   :host { display: block; height: 100%; }
   ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
   .empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }
-  .header { display: flex; align-items: center; gap: 10px; }
+  /* The body starts 8px under the header, like the other ha-* cards (the card's gap is 10px, 8px on the mini cards). */
+  .header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }
+  ha-card.mini .header { margin-bottom: 0; }
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); transition: background .4s, color .4s; }
   .badge ha-icon { --mdc-icon-size: 24px; }
@@ -1022,7 +1025,8 @@ const CA_STYLES = `${CA_ART_STYLES}
   button:disabled { cursor: default; opacity: .5; }
   .power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
            background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--secondary-text-color); }
-  .power.on { background: color-mix(in srgb, var(--ca-color) 18%, transparent); color: var(--ca-color); }
+  .power.on { background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
+  .power.on:hover, .round.on:hover:not(:disabled) { background: color-mix(in srgb, var(--ca-color) 24%, transparent); }
   .zoom { all: unset; flex-shrink: 0; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom ha-icon { --mdc-icon-size: 16px; }
@@ -1038,7 +1042,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   .info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
   .big { display: flex; align-items: baseline; gap: 8px; min-width: 0; flex-wrap: wrap; }
   .big .val { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); white-space: nowrap; }
-  .big .val small { font-size: 15px; color: var(--secondary-text-color); }
+  .big .val small { font-size: 14px; color: var(--secondary-text-color); }
   .big .lbl { font-size: 13px; font-weight: 500; color: var(--ca-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .big .arrow { font-size: 14px; color: var(--secondary-text-color); white-space: nowrap; }
   .state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--ca-color); }
@@ -1053,7 +1057,9 @@ const CA_STYLES = `${CA_ART_STYLES}
   .fill { height: 100%; border-radius: 3px; background: var(--ca-color); transition: width .6s ease; }
 
   .section { display: flex; flex-direction: column; gap: 6px; }
-  .section-title { font-size: 12px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: .04em; }
+  .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; text-transform: uppercase;
+                   letter-spacing: .04em; color: var(--secondary-text-color); }
+  .section-title ha-icon { --mdc-icon-size: 16px; flex-shrink: 0; }
   .segments { display: flex; gap: 4px; padding: 3px; border-radius: 12px; background: var(--secondary-background-color, rgba(128,128,128,.1)); }
   .seg { flex: 1; min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 4px; border-radius: 9px;
          font-size: 12px; font-weight: 500; background: none; color: var(--secondary-text-color); transition: background .2s, color .2s; }
@@ -1091,7 +1097,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   .round { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
            background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--primary-text-color); }
   .round ha-icon { --mdc-icon-size: 20px; }
-  .round.on { background: color-mix(in srgb, var(--ca-color) 18%, transparent); color: var(--ca-color); }
+  .round.on { background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
 
   ha-card.mini { gap: 8px; }
   ha-card.mini .badge { width: 32px; height: 32px; }

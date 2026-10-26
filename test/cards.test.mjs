@@ -84,7 +84,7 @@ test("air conditioner: target steps add up and are sent once the taps stop", asy
   const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
   el._action("temp", "1");
   el._action("temp", "1");
-  assert.match(html(el), /<span class="tval">23 °C/);
+  assert.match(html(el), /<span class="tval">23<small> °C<\/small>/);
   assert.equal(h.calls.length, 0);
   t.mock.timers.tick(1000);
   await Promise.resolve();
@@ -130,7 +130,7 @@ test("overview: only the devices on or needing attention, grouped by type", () =
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
-  assert.deepEqual([...body.matchAll(/class="group">([^<]+)</g)].map((m) => m[1]), ["Air conditioners", "Air purifiers", "Fans"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Air conditioners", "Air purifiers", "Fans"]);
 });
 
 test("overview: the detail button shows every device; zoom: false always does", () => {
@@ -144,7 +144,7 @@ test("overview: exclude, include and group by area", () => {
   const { body } = overview({ zoom: false, exclude: ["fan.office_fan_fan"], include: ["climate.bathroom_thermostat"], group_by: "area" });
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /climate\.bathroom_thermostat/);
-  assert.deepEqual([...body.matchAll(/class="group">([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
 });
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {

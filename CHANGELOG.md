@@ -5,6 +5,10 @@
 ### Changes
 - Header icon sized like the other ha-* cards: the overview's round badge grows from 36px to 40px, and the icon in every badge is 24px (20px in the mini cards' 32px badge).
 - Mini cards: the title is 16px like the full cards' (it was 14px); a long name still ends with an ellipsis.
+- Section headings get the shared look of the ha-* cards: a 16px icon in front (*Options*: tune icon; overview groups: the kind of device, or an area), 12px uppercase. The overview group headings were 11px with no icon.
+- Air conditioner: the target temperature of the stepper is 30px (it was 26px) with its unit in 14px, like the main value; the main values' unit is 14px (it was 15px).
+- Round buttons that are on (power, temperature steps, oscillation, preset) use the shared 16% tint, 24% on hover.
+- The body starts 8px under the header (it was 10px on the full cards and 4px above the overview groups), like the other ha-* cards.
 
 ## 1.3.2
 

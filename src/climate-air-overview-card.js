@@ -218,12 +218,17 @@ class ClimateAirOverviewCard extends CaElement {
       body.innerHTML = this._groups(shown)
         .map(
           ([title, items]) =>
-            `<div class="grp" style="--span:${Math.min(items.length, cols)}">${title ? `<div class="group">${caEsc(title)}</div>` : ""}` +
+            `<div class="grp" style="--span:${Math.min(items.length, cols)}">${title ? `<div class="group"><ha-icon icon="${this._groupIcon(items[0])}"></ha-icon><span>${caEsc(title)}</span></div>` : ""}` +
             `<div class="grid">${items.map((x) => this._tile(x, `${x.kind}-${all.indexOf(x)}`)).join("")}</div></div>`,
         )
         .join("");
 
     this._fillPanel(all.find((x) => x.id === this._open));
+  }
+
+  // The icon in front of a group heading: the kind of device, or an area.
+  _groupIcon(x) {
+    return this._config.group_by === "area" ? (x.area ? "mdi:texture-box" : "mdi:help-circle-outline") : CA_KIND_ICONS[x.kind];
   }
 
   _groups(items) {
@@ -337,10 +342,12 @@ const CA_OVERVIEW_STYLES = `
   .zoom:hover { background: color-mix(in srgb, var(--ca-idle) 16%, transparent); color: var(--primary-text-color); }
   .zoom:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 1px; }
 
-  .body.packed { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); grid-auto-flow: row dense; gap: 2px 6px; margin-top: 4px; }
+  .body.packed { display: grid; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); grid-auto-flow: row dense; gap: 2px 6px; margin-top: 2px; }
   .grp { grid-column: span var(--span, 1); min-width: 0; }
-  .group { margin: 6px 0 0; font-size: 11px; font-weight: 500; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: .04em;
-           white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .group { display: flex; align-items: center; gap: 6px; margin: 6px 0 0; font-size: 12px; font-weight: 500; text-transform: uppercase;
+           letter-spacing: .04em; color: var(--secondary-text-color); min-width: 0; }
+  .group ha-icon { --mdc-icon-size: 16px; flex-shrink: 0; }
+  .group span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .grid { display: grid; grid-template-columns: repeat(var(--span, 1), minmax(0, 1fr)); gap: 6px; margin-top: 4px; }
   @container (max-width: 340px) { .body.packed:not(.fixed) { grid-template-columns: minmax(0, 1fr); }
     .body:not(.fixed) .grp { grid-column: auto; } .body:not(.fixed) .grid { grid-template-columns: minmax(0, 1fr); } }
