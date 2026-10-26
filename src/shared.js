@@ -1096,7 +1096,6 @@ const CA_STYLES = `${CA_ART_STYLES}
   ha-card.mini { gap: 8px; }
   ha-card.mini .badge { width: 32px; height: 32px; }
   ha-card.mini .badge ha-icon { --mdc-icon-size: 20px; }
-  ha-card.mini .name { font-size: 14px; }
   .content { display: flex; align-items: center; gap: 12px; }
   ha-card.mini .picture { width: 56px; height: 66px; }
   .mbar { display: flex; align-items: center; gap: 8px; font-size: 13px; }
