@@ -138,7 +138,7 @@ class ClimateAirFanCard extends CaCard {
       .map(([role, icon]) => `<button class="round" data-press="${caEsc(ent[role])}" title="${caEsc(this._t(role))}" aria-label="${caEsc(this._t(role))}"><ha-icon icon="${icon}"></ha-icon></button>`)
       .join("");
     const fieldsHtml = fields.length || rotate ? `<div class="row fields">${fields.join("")}${rotate ? `<div class="rot">${rotate}</div>` : ""}</div>` : "";
-    return this._section("", speed + presets) + this._section(this._t("options"), toggles + fieldsHtml, "mdi:tune-variant");
+    return this._section("", speed + presets) + this._options(toggles + fieldsHtml);
   }
 
   _action(action, value) {

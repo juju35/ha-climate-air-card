@@ -204,7 +204,7 @@ class ClimateAirPurifierCard extends CaCard {
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(r.ent.light, this._t("light"), "mdi:lightbulb-outline"),
     ]);
-    return this._section("", modes + speed) + this._section(this._t("options"), favorite + toggles, "mdi:tune-variant");
+    return this._section("", modes + speed) + this._options(favorite + toggles);
   }
 
   _action(action, value) {

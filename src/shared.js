@@ -740,6 +740,10 @@ class CaCard extends CaElement {
     return body ? `<div class="section">${head}${body}</div>` : "";
   }
 
+  _options(body) {
+    return this._section(this._t("options"), body, "mdi:tune-variant");
+  }
+
   // Segmented buttons, one per option; `action` gets the option in data-value.
   _segments(action, options, current, label, icon) {
     if (!options || options.length < 2) return "";

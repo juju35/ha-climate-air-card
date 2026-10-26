@@ -277,7 +277,7 @@ class ClimateAirAirconCard extends CaCard {
         return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
       }),
     );
-    return this._section("", segs + stepper + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._section(this._t("options"), toggles, "mdi:tune-variant");
+    return this._section("", segs + stepper + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles);
   }
 
   _action(action, value) {
