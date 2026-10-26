@@ -230,6 +230,10 @@ entities:
 
 ## Screenshots
 
+While devices are on, the overview animates: the purifier draws air in, fan blades spin and sway, the air-conditioner louvres flap, and each tile's status ring breathes. It settles to a still card when everything is off (and honours `prefers-reduced-motion`).
+
+![overview animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif)
+
 | | Light | Dark |
 |---|---|---|
 | Overview, devices on | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active-dark.png) |
@@ -247,7 +251,7 @@ npm install
 npm run build        # bundles src/*.js into dist/ha-climate-air-card.js and stamps the version of package.json
 npm run check        # builds and checks the bundle (run in CI)
 npm test             # unit tests, no browser
-npm run screenshots  # renders every card with mock data into screenshots/
+npm run screenshots  # renders every card (and overview.gif, needs ffmpeg) with mock data into screenshots/
 ```
 
 Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single HACS file. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.

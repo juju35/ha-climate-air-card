@@ -8,7 +8,7 @@
     "build": "node scripts/build.mjs",
     "check": "node scripts/build.mjs && node --check dist/ha-climate-air-card.js",
     "test": "node --test test/*.test.mjs",
-    "screenshots": "node scripts/screenshots/purifier.mjs && node scripts/screenshots/fan.mjs && node scripts/screenshots/aircon.mjs && node scripts/screenshots/overview.mjs"
+    "screenshots": "node scripts/screenshots/purifier.mjs && node scripts/screenshots/fan.mjs && node scripts/screenshots/aircon.mjs && node scripts/screenshots/overview.mjs && node scripts/screenshots/animation.mjs"
   },
   "license": "MIT",
   "devDependencies": {
