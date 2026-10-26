@@ -95,8 +95,8 @@ Click the button below to add the repository directly:
 
 Or manually:
 
-1. Open HACS → **Frontend** → **⋮** → **Custom repositories**
-2. Add `https://github.com/juju35/ha-climate-air-card` — Category: **Dashboard** (Lovelace)
+1. Open HACS → **⋮** (top right) → **Custom repositories**
+2. Add `https://github.com/juju35/ha-climate-air-card` — Category: **Dashboard**
 3. Search for **Climate Air Cards** and install it
 4. Clear your browser cache and refresh
 
