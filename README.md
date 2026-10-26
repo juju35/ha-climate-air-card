@@ -230,7 +230,21 @@ entities:
 
 ## Screenshots
 
-While devices are on, the overview animates: the purifier draws air in, fan blades spin and sway, the air-conditioner louvres flap, and each tile's status ring breathes. It settles to a still card when everything is off (and honours `prefers-reduced-motion`).
+Every card comes alive while its device is on, and settles to a still card once it is off. All of this honours `prefers-reduced-motion`: animations stop for anyone who asks their system to reduce motion.
+
+The air purifier draws air in: the side inlets pull it through, the base glows and a stream of clean air rises out of the top.
+
+![air purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier.gif)
+
+The fan spins its blades, the head slowly oscillates from side to side, and gusts of air stream out in front of it.
+
+![fan animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan.gif)
+
+The air conditioner swings its louvres while the cooled air falls out of the vent.
+
+![air conditioner animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon.gif)
+
+The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
 
 ![overview animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif)
 
@@ -251,7 +265,7 @@ npm install
 npm run build        # bundles src/*.js into dist/ha-climate-air-card.js and stamps the version of package.json
 npm run check        # builds and checks the bundle (run in CI)
 npm test             # unit tests, no browser
-npm run screenshots  # renders every card (and overview.gif, needs ffmpeg) with mock data into screenshots/
+npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon/overview, needs ffmpeg) with mock data into screenshots/
 ```
 
 Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single HACS file. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
