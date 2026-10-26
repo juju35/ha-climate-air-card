@@ -30,9 +30,19 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: sudo apt-get update && sudo apt-get install -y ffmpeg fonts-roboto
+      # ffmpeg ships on ubuntu-latest; this only adds Roboto for faithful text, so it must not stall the job.
+      - name: Install Roboto font (best effort)
+        continue-on-error: true
+        timeout-minutes: 3
+        run: sudo apt-get update && sudo apt-get install -y fonts-roboto
       - run: npm run build
-      - run: npm run screenshots
+      - name: Render screenshots
+        run: |
+          set -o pipefail
+          npm run screenshots 2>&1 | tee /tmp/screenshots.log || {
+            echo "::error::screenshots failed: $(tail -c 1200 /tmp/screenshots.log | tr -d '\r' | tr '\n' ' ')"
+            exit 1
+          }
       - name: Commit refreshed screenshots
         run: |
           if [ -z "$(git status --porcelain screenshots)" ]; then
