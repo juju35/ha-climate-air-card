@@ -230,7 +230,7 @@ entities:
 
 ## Screenshots
 
-| | Light | Dark (French) |
+| | Light | Dark |
 |---|---|---|
 | Overview, devices on | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active-dark.png) |
 | Overview, a device unfolded | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details-dark.png) |

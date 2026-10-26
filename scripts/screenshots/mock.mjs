@@ -1,5 +1,6 @@
 // Mock home for the screenshots (and the unit tests): two air purifiers, two fans and an air conditioner, with the
-// entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French.
+// entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French (the screenshots
+// use English, the unit tests both).
 // mockHass(lang, changes) — changes: { entity_id: { state?, ...attributes } } applied on top.
 const AREAS = { living_room: { en: "Living room", fr: "Séjour" }, bedroom: { en: "Bedroom", fr: "Chambre" }, office: { en: "Office", fr: "Bureau" } };
 
