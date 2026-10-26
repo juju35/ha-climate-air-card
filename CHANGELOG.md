@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 — 2026-10-26
+
+### Documentation
+- README — HACS install step updated: the **Frontend** tab was removed in HACS 2.0, so *Custom repositories* now opens from the three-dots menu at the top right. The wording matches `ha-freebox-card`, and the redundant `(Lovelace)` after the **Dashboard** category is dropped. No code, behaviour or API change.
+
 ## 1.4.0
 ### Changes
 - Header icon sized like the other ha-* cards: the overview's round badge grows from 36px to 40px, and the icon in every badge is 24px (20px in the mini cards' 32px badge).
