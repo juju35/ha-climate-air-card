@@ -63,6 +63,9 @@ test("Dyson purifier: HEPA filter life, VOC and NO₂ readings", () => {
   assert.doesNotMatch(out, /94 %/);
   assert.match(out, /VOC 4/);
   assert.match(out, /NO₂ 1/);
+  // The bladeless loop illustration is picked from the model.
+  assert.equal(lib.caVariant(h, "purifier", "fan.dyson_pure_cool"), "dyson");
+  assert.match(out, /width="22\.8"/);
 });
 
 test("fan: speed, oscillation, natural wind and options", () => {

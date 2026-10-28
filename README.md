@@ -46,7 +46,7 @@ All the cards share the same look (header with a status pill and a power button,
 `custom:climate-air-purifier-card` — An air purifier (`fan` entity) and the sensors of its device.
 
 - The PM2.5 density (or the air quality index) in large, with its level: *Good air*, *Moderate air*, *Poor air*, *Very poor air*; the card takes the colour of the air quality
-- Animated illustration while it runs: the fan turns (faster with the speed), clean air rises and dust is drawn into the intake; the display ring and the floor light take the air quality colour. Three shapes: a tower (a tall box whose display shows the PM2.5), a round purifier and a square box, picked from the device model or set with `illustration`
+- Animated illustration while it runs: the fan turns (faster with the speed), clean air rises and dust is drawn into the intake; the display ring and the floor light take the air quality colour. Four shapes: a tower (a tall box whose display shows the PM2.5), a round purifier, a square box and a Dyson-style bladeless loop, picked from the device model or set with `illustration`
 - Filter life bar (with its hours of use on hover) and a *Replace the filter* alert at 10 % or less
 - Presets as segmented buttons (Auto, Sleep, Favorite…), or the device's mode select when it has no presets (HomeKit purifiers); speed slider; favorite level in the Favorite preset
 - Temperature, humidity, PM10 and, when the device reports them, VOC and NO₂ chips (Dyson); child lock, sound and indicator light toggles
@@ -122,7 +122,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `entity` | ❌ | First found | The `fan` or `climate` entity of the device; without it, the card takes the first device of its kind |
 | `name` | ❌ | Device name | Card title |
 | `icon` | ❌ | Illustration | Replaces the illustration with an icon |
-| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder` or `box`; air conditioner: `split`, `portable` or `window`. `auto` picks one from the device model and name |
+| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable` or `window`. `auto` picks one from the device model and name |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
 | `show_alerts` | ❌ | `true` | Show the filter alerts |
@@ -166,7 +166,7 @@ devices:
 |---|---|---|---|
 | `title` | ❌ | Climate & air | Card title |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
-| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder` or `box`; air conditioner `split`, `portable` or `window`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
+| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
 | `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`aircon`, `purifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
 | `group_by` | ❌ | `type` | `type` (air conditioners, air purifiers, fans), `area` or `none` |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |

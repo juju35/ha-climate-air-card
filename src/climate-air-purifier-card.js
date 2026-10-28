@@ -59,6 +59,17 @@ const CA_PURIFIER_ARTS = {
         }
       }
     })}</g>`,
+  // A Dyson-style bladeless unit: a cylindrical base with the display and air-quality ring, topped by a tall hollow
+  // loop amplifier. Clean air rises through the loop opening; there are no blades to turn.
+  dyson: (display) =>
+    '<rect x="30.5" y="52" width="19" height="36" rx="7.5" fill="url(#ca-pc)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<ellipse cx="40" cy="52" rx="9.5" ry="2.4" fill="#eef1f4" stroke="#c3cad2" stroke-width=".8"/>' +
+    '<rect x="28.6" y="6" width="22.8" height="52" rx="11.4" fill="none" stroke="url(#ca-pb)" stroke-width="8"/>' +
+    '<rect x="24.4" y="1.8" width="31.2" height="60.4" rx="15.6" fill="none" stroke="#c3cad2" stroke-width="1"/>' +
+    '<rect x="32.8" y="10.2" width="14.4" height="43.6" rx="7.2" fill="none" stroke="#aab3bd" stroke-width=".8"/>' +
+    '<circle cx="40" cy="70" r="6.4" fill="#1d2632" stroke="#c3cad2" stroke-width=".7"/>' +
+    `<text class="pmv" x="40" y="69.4" text-anchor="middle">${caEsc(display)}</text>` +
+    '<circle class="ring" cx="40" cy="74.4" r="1.2"/>',
   // A square box: air out of the slatted top, in through the vertical slots of the lower front, a display ring above.
   box: () =>
     '<rect x="12" y="17" width="56" height="71" rx="7" fill="url(#ca-pb)" stroke="#c3cad2" stroke-width="1.2"/>' +
@@ -72,17 +83,19 @@ const CA_PURIFIER_ARTS = {
 const caPurifierArt = (variant, display = "") =>
   `<svg viewBox="0 0 80 94" aria-hidden="true">${CA_PURIFIER_COMMON}${(CA_PURIFIER_ARTS[variant] || CA_PURIFIER_ARTS.tower)(display)}</svg>`;
 
-// The shape that looks most like the device: square for a Smartmi box (P1, P2…), round for a cylinder (Xiaomi 4,
-// 4 Lite / Compact / Pro, Elite, Smartmi E1…), a tower otherwise.
+// The shape that looks most like the device: the bladeless loop for a Dyson (Pure Cool, Hot+Cool, Humidify+Cool…),
+// square for a Smartmi box (P1, P2…), round for a cylinder (Xiaomi 4, 4 Lite / Compact / Pro, Elite, Smartmi E1…),
+// a tower otherwise.
 const caPurifierVariant = (text) => {
   const s = String(text).toLowerCase();
+  if (/dyson|pure (cool|hot)|hot\s*\+?\s*cool|cool me|humidify|big\s*\+?\s*quiet|\b(tp|hp|ph|bp)\d|\bam(0[67]|11)\b/.test(s)) return "dyson";
   if (/smartmi.*\bp\d\b|\bp[12]\b|airp\.(mp|p\d)/.test(s)) return "box";
   if (/\b4\b|4 lite|4 compact|4 pro|elite|compact|\be1\b|cylind|round/.test(s)) return "cylinder";
   return "tower";
 };
 
 CA_ART.purifier = {
-  variants: ["tower", "cylinder", "box"],
+  variants: ["tower", "cylinder", "box", "dyson"],
   guess: caPurifierVariant,
   render: (variant, s) => ({ svg: caPurifierArt(variant, s.running ? s.display : ""), style: `--ca-spin:${caSpin(s.pct)}s;--ca-aq:${s.aqColor || CA_FAN_COLOR}` }),
   styles: `

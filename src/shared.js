@@ -92,6 +92,7 @@ const CA_I18N = {
     ill_tower: "Tower",
     ill_cylinder: "Round",
     ill_box: "Square box",
+    ill_dyson: "Bladeless loop",
     ill_split: "Wall split unit",
     ill_portable: "Portable unit",
     ill_window: "Window split",
@@ -208,6 +209,7 @@ const CA_I18N = {
     ill_tower: "Tour",
     ill_cylinder: "Ronde",
     ill_box: "Boîte carrée",
+    ill_dyson: "Anneau bladeless",
     ill_split: "Split mural",
     ill_portable: "Climatiseur mobile",
     ill_window: "Split de fenêtre",
@@ -1253,7 +1255,7 @@ class CaCardEditor extends HTMLElement {
 }
 
 // Illustration variants of each kind of device (the first is the fallback).
-const CA_ILLUSTRATIONS = { purifier: ["tower", "cylinder", "box"], aircon: ["split", "portable", "window"] };
+const CA_ILLUSTRATIONS = { purifier: ["tower", "cylinder", "box", "dyson"], aircon: ["split", "portable", "window"] };
 
 // The folded Advanced section: the language, and the other `names` edited as YAML.
 const caAdvanced = (lang, ...names) => [

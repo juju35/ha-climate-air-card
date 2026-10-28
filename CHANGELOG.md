@@ -6,6 +6,7 @@
 - Dyson air treatment devices (Pure Cool, Pure Hot+Cool, Humidify+Cool… via the `dyson_local` integration) are supported out of the box. They are detected as air purifiers from their PM2.5 sensor, and the card reads their split filters correctly: the **HEPA** life (or the combined one on older units) is shown, never the carbon figure or a life expressed in hours.
 - New `voc` and `no2` entity roles: Dyson's *Volatile organic compounds* and *Nitrogen dioxide* indices show as chips next to temperature, humidity and PM10. They can be overridden under `entities` like the other sensors.
 - Entity detection gained a general *prefer / avoid* tie‑break, so a device exposing several sensors for one role (a HEPA **and** a carbon filter, a life in **%** **and** in **hours**) resolves to the right one regardless of registry order. No change for devices with a single sensor per role.
+- New `dyson` purifier illustration: a bladeless loop amplifier on a base, with the PM2.5 display and the air‑quality ring, air rising through the loop. It is picked automatically for Dyson models (Pure Cool, Hot+Cool, Humidify+Cool, Cool Me, Big+Quiet…) and can be set explicitly with `illustration: dyson`.
 
 ## 1.5.0 — 2026-10-26
 

@@ -67,7 +67,7 @@ export const load = () => {
   const tags = [...CARDS, "climate-air-purifier-mini-card", "climate-air-fan-mini-card", "climate-air-aircon-mini-card"];
   return vm.runInContext(
     `${code}
-    ({ caKindOf, caFindEntities, caFindRole, caDeviceEntities, caAirQuality, caSpin, caName, caCleanConfig, CA_PRESET_ICON,
+    ({ caKindOf, caFindEntities, caFindRole, caDeviceEntities, caAirQuality, caSpin, caName, caCleanConfig, caVariant, CA_PRESET_ICON,
        customElements, window, cards: Object.fromEntries(${JSON.stringify(tags)}.map((t) => [t, customElements.get(t)])) })`,
     ctx,
   );
