@@ -188,8 +188,8 @@ test("overview: exclude, include and group by area", () => {
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
   const names = [...body.matchAll(/class="name">([^<]+)</g)].map((m) => m[1]);
   assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
-  const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Léa" }] }).body;
-  assert.match(grouped, /class="name">Léa</);
+  const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Bedroom air" }] }).body;
+  assert.match(grouped, /class="name">Bedroom air</);
 });
 
 test("overview: an area icon with markup in it stays inert in the group heading", () => {
