@@ -220,7 +220,7 @@ class ClimateAirOverviewCard extends CaElement {
       body.innerHTML = this._groups(shown)
         .map(
           ([title, items]) =>
-            `<div class="grp" style="--span:${Math.min(items.length, cols)}">${title ? `<div class="group"><ha-icon icon="${this._groupIcon(items[0])}"></ha-icon><span>${caEsc(title)}</span></div>` : ""}` +
+            `<div class="grp" style="--span:${Math.min(items.length, cols)}">${title ? `<div class="group"><ha-icon icon="${caEsc(this._groupIcon(items[0]))}"></ha-icon><span>${caEsc(title)}</span></div>` : ""}` +
             `<div class="grid">${items.map((x) => this._tile(x, `${x.kind}-${all.indexOf(x)}`)).join("")}</div></div>`,
         )
         .join("");
