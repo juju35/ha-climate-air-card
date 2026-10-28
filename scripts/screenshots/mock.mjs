@@ -2,7 +2,12 @@
 // entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French (the screenshots
 // use English, the unit tests both).
 // mockHass(lang, changes) — changes: { entity_id: { state?, ...attributes } } applied on top.
-const AREAS = { living_room: { en: "Living room", fr: "Séjour" }, bedroom: { en: "Bedroom", fr: "Chambre" }, office: { en: "Office", fr: "Bureau" } };
+// `office` has no icon on purpose: the overview grouped by area falls back to mdi:texture-box.
+const AREAS = {
+  living_room: { en: "Living room", fr: "Séjour", icon: "mdi:sofa" },
+  bedroom: { en: "Bedroom", fr: "Chambre", icon: "mdi:bed" },
+  office: { en: "Office", fr: "Bureau" },
+};
 
 // [device, area, names, entities: [entity_id, names, state, attributes]]
 const DEVICES = [
@@ -98,7 +103,7 @@ export const mockHass = (lang = "en", changes = {}) => {
   const states = {};
   const entities = {};
   const devices = {};
-  const areas = Object.fromEntries(Object.entries(AREAS).map(([area_id, n]) => [area_id, { area_id, name: n[lang] }]));
+  const areas = Object.fromEntries(Object.entries(AREAS).map(([area_id, n]) => [area_id, { area_id, name: n[lang], icon: n.icon || null }]));
   for (const [dev, area_id, names, items] of DEVICES) {
     devices[dev] = { id: dev, name: names[lang], name_by_user: null, area_id };
     for (const [entity_id, n, state, attributes] of items) {

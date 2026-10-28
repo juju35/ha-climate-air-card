@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.1 — 2026-10-28
+
+### Changes
+- Overview grouped by area: the group heading shows the area's own icon from Home Assistant's area registry, falling back to the generic `mdi:texture-box` when the area has none.
+
 ## 1.7.0 — 2026-10-28
 
 ### Changes

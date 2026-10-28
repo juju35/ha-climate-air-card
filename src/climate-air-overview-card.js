@@ -102,6 +102,7 @@ class ClimateAirOverviewCard extends CaElement {
       name: o.name || caName(h, id),
       named: !!o.name,
       area: caAreaName(h, id),
+      areaIcon: caAreaIcon(h, id),
       icon: o.icon || icons[id] || icons[kind] || CA_KIND_ICONS[kind],
       iconSet: !!(o.icon || icons[id] || icons[kind]),
       variant: caVariant(h, kind, id, o.illustration || illustrations[id] || illustrations[kind]),
@@ -227,9 +228,9 @@ class ClimateAirOverviewCard extends CaElement {
     this._fillPanel(all.find((x) => x.id === this._open));
   }
 
-  // The icon in front of a group heading: the kind of device, or an area.
+  // The icon in front of a group heading: the kind of device, or the area's own icon from the registry.
   _groupIcon(x) {
-    return this._config.group_by === "area" ? (x.area ? "mdi:texture-box" : "mdi:help-circle-outline") : CA_KIND_ICONS[x.kind];
+    return this._config.group_by === "area" ? (x.area ? x.areaIcon || "mdi:texture-box" : "mdi:help-circle-outline") : CA_KIND_ICONS[x.kind];
   }
 
   _groups(items) {

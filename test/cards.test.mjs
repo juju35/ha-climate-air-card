@@ -168,6 +168,10 @@ test("overview: exclude, include and group by area", () => {
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /climate\.bathroom_thermostat/);
   assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
+  // The heading shows the area's own icon from the registry, mdi:texture-box without one, help-circle without an area.
+  assert.deepEqual([...body.matchAll(/class="group"><ha-icon icon="([^"]+)"/g)].map((m) => m[1]), ["mdi:bed", "mdi:sofa", "mdi:help-circle-outline"]);
+  const office = overview({ zoom: false, group_by: "area" }).body;
+  assert.match(office, /<ha-icon icon="mdi:texture-box"><\/ha-icon><span>Office</);
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
   const names = [...body.matchAll(/class="name">([^<]+)</g)].map((m) => m[1]);
   assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));

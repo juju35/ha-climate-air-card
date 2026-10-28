@@ -471,11 +471,14 @@ function caFindRole(hass, list, role) {
 
 const caDeviceOf = (hass, id) => hass?.entities?.[id]?.device_id;
 
-function caAreaName(hass, id) {
+function caArea(hass, id) {
   const e = hass.entities?.[id];
   const aid = e?.area_id || (e?.device_id && hass.devices?.[e.device_id]?.area_id);
-  return aid ? hass.areas?.[aid]?.name || "" : "";
+  return (aid && hass.areas?.[aid]) || null;
 }
+
+const caAreaName = (hass, id) => caArea(hass, id)?.name || "";
+const caAreaIcon = (hass, id) => caArea(hass, id)?.icon || "";
 
 function caDeviceName(hass, id) {
   const dev = hass.devices?.[caDeviceOf(hass, id)];
