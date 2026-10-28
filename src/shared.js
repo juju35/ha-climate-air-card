@@ -825,7 +825,9 @@ class CaCard extends CaElement {
   _speedSlider(id) {
     const st = this._st(id);
     const pct = st.state === "on" ? Number(st.attributes.percentage ?? 0) : 0;
-    const step = Math.max(1, Math.round(Number(st.attributes.percentage_step) || 1));
+    // The step stays decimal: rounded, a 3-speed fan (33.333) would offer 33/66/99 and never reach full speed.
+    // The top notch (99.999) still lands in the last speed band, since fans map a percentage by rounding up.
+    const step = Math.max(1, Number(st.attributes.percentage_step) || 1);
     return (
       `<div class="slider"><ha-icon icon="mdi:speedometer"></ha-icon><span class="sl-label">${caEsc(this._t("speed"))}</span>` +
       `<input type="range" min="${step}" max="100" step="${step}" value="${Math.max(step, pct)}" data-range="percentage" aria-label="${caEsc(this._t("speed"))}" style="--p:${pct}%">` +
