@@ -10,6 +10,13 @@ await animate({
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.living_room_purifier_air_purifier" } }),
 });
 
+// A Dyson-style bladeless purifier running: clean air streams up through the hollow loop (no blades to turn).
+await animate({
+  file: "purifier-dyson",
+  tag: "climate-air-purifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.living_room_purifier_air_purifier", illustration: "dyson" } }),
+});
+
 // The fan running: blades spin, the head oscillates and gusts of air stream out.
 await animate({
   file: "fan",

@@ -69,7 +69,8 @@ const CA_PURIFIER_ARTS = {
     '<rect x="32.8" y="10.2" width="14.4" height="43.6" rx="7.2" fill="none" stroke="#aab3bd" stroke-width=".8"/>' +
     '<circle cx="40" cy="70" r="6.4" fill="#1d2632" stroke="#c3cad2" stroke-width=".7"/>' +
     `<text class="pmv" x="40" y="69.4" text-anchor="middle">${caEsc(display)}</text>` +
-    '<circle class="ring" cx="40" cy="74.4" r="1.2"/>',
+    '<circle class="ring" cx="40" cy="74.4" r="1.2"/>' +
+    '<g class="jet"><path d="M40 50V28"/><path d="M35.5 50V33"/><path d="M44.5 50V33"/></g>',
   // A square box: air out of the slatted top, in through the vertical slots of the lower front, a display ring above.
   box: () =>
     '<rect x="12" y="17" width="56" height="71" rx="7" fill="url(#ca-pb)" stroke="#c3cad2" stroke-width="1.2"/>' +
@@ -106,6 +107,12 @@ CA_ART.purifier = {
     .k-purifier .aq-stop { stop-color: var(--ca-aq); }
     .k-purifier .floor { opacity: 0; transition: opacity .6s; }
     .k-purifier .flow { fill: none; stroke: var(--ca-aq); stroke-width: 1.7; stroke-linecap: round; }
+    .k-purifier .jet { fill: none; stroke: var(--ca-aq); stroke-width: 1.7; stroke-linecap: round; }
+    .k-purifier .jet path { opacity: 0; transform-box: view-box; transform-origin: 40px 50px; }
+    .k-purifier.running .jet path { animation: ca-jet 1.9s ease-out infinite; }
+    .k-purifier.running .jet path:nth-child(2) { animation-delay: .5s; }
+    .k-purifier.running .jet path:nth-child(3) { animation-delay: 1s; }
+    @keyframes ca-jet { 0% { opacity: 0; transform: translateY(8px) scaleY(.5); } 40% { opacity: .95; } 100% { opacity: 0; transform: translateY(-16px) scaleY(1); } }
     .k-purifier .clean { fill: #8fd3ff; }
     .k-purifier .dust { fill: #a1887f; }
     .k-purifier .flow path, .k-purifier .clean circle, .k-purifier .dust circle { opacity: 0; transform-box: view-box; }

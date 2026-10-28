@@ -16,7 +16,7 @@ await shoot({
 await shoot({
   prefix: "purifier",
   tag: "climate-air-purifier-mini-card",
-  // The three illustrations: the tower (mini), a round purifier and a square box.
-  shots: [...pair("mini"), ...pair("round", { illustration: "cylinder" }), ...pair("box", { illustration: "box" })],
+  // The four illustrations: the tower (mini), a round purifier, a square box and a Dyson-style bladeless loop.
+  shots: [...pair("mini"), ...pair("round", { illustration: "cylinder" }), ...pair("box", { illustration: "box" }), ...pair("dyson", { illustration: "dyson" })],
   setup: (s, lang) => ({ hass: mockHass(lang), config: { entity, ...(s.illustration ? { illustration: s.illustration } : {}) } }),
 });
