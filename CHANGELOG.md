@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.7.2 — 2026-10-28
+
+### Fixes
+- Air conditioner: a target temperature set just before the card leaves the page (dashboard edit, overview panel folded, mini card zoomed) is now sent right away instead of being dropped.
+- Fan: a 3-speed fan can reach full speed again; the speed slider keeps the integration's decimal step (33.333 %) instead of rounding it to 33 %, which left 100 % out of reach.
+- Overview grouped by area: the area icon in the group heading is escaped like every other icon.
+
+### Changes
+- Faster updates on large installations: entity and registry lookups are cached until the registry changes, and the cards decide whether to redraw by comparing state objects instead of serializing every attribute on each update.
+
+### Documentation
+- README: GIFs of the air conditioner's heating and drying animations, and a note on the HomeKit 1–5 reading of a low `aqi` value in the entity overrides table.
+
 ## 1.7.1 — 2026-10-28
 
 ### Changes
