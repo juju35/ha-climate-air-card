@@ -29,6 +29,18 @@ const DEVICES = [
       { device_class: "enum", options: ["inactive", "idle", "purifying"] }],
     ["select.bedroom_purifier_air_purifier_mode", { en: "Air Purifier Mode", fr: "Mode" }, "automatic", { options: ["automatic", "manual"] }],
   ]],
+  ["dev_dyson", "living_room", { en: "Dyson Pure Cool", fr: "Dyson Pure Cool" }, [
+    ["fan.dyson_pure_cool", null, "on", { preset_modes: ["Auto", "Manual"], preset_mode: "Auto", percentage: 30, percentage_step: 10, oscillating: true, supported_features: 57 }],
+    ["sensor.dyson_pure_cool_pm_2_5", { en: "PM 2.5", fr: "PM 2.5" }, 5, { device_class: "pm25", unit_of_measurement: "µg/m³" }],
+    ["sensor.dyson_pure_cool_pm_10", { en: "PM 10", fr: "PM 10" }, 9, { device_class: "pm10", unit_of_measurement: "µg/m³" }],
+    ["sensor.dyson_pure_cool_volatile_organic_compounds", { en: "Volatile organic compounds", fr: "Composés organiques volatils" }, 4, {}],
+    ["sensor.dyson_pure_cool_nitrogen_dioxide", { en: "Nitrogen dioxide", fr: "Dioxyde d'azote" }, 1, {}],
+    ["sensor.dyson_pure_cool_temperature", { en: "Temperature", fr: "Température" }, 22, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.dyson_pure_cool_humidity", { en: "Humidity", fr: "Humidité" }, 50, { device_class: "humidity", unit_of_measurement: "%" }],
+    ["sensor.dyson_pure_cool_carbon_filter_life", { en: "Carbon filter life", fr: "Durée du filtre charbon" }, 94, { unit_of_measurement: "%" }],
+    ["sensor.dyson_pure_cool_hepa_filter_life", { en: "HEPA filter life", fr: "Durée du filtre HEPA" }, 76, { unit_of_measurement: "%" }],
+    ["switch.dyson_pure_cool_night_mode", { en: "Night mode", fr: "Mode nuit" }, "off", {}],
+  ]],
   ["dev_f1", "bedroom", { en: "Bedroom fan", fr: "Ventilateur chambre" }, [
     ["fan.bedroom_fan_fan", { en: "Fan", fr: "Fan" }, "on",
       { preset_modes: ["Natural wind", "Straight wind"], preset_mode: "Natural wind", oscillating: true, percentage: 45, percentage_step: 1, supported_features: 59 }],

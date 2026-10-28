@@ -25,7 +25,7 @@ test("a heat-only thermostat is not an air conditioner", () => {
 
 test("every device of a kind is found, sorted by name", () => {
   const h = makeHass();
-  assert.deepEqual(json(lib.caFindEntities(h, "purifier")), ["fan.bedroom_purifier", "fan.living_room_purifier_air_purifier"]);
+  assert.deepEqual(json(lib.caFindEntities(h, "purifier")), ["fan.bedroom_purifier", "fan.dyson_pure_cool", "fan.living_room_purifier_air_purifier"]);
   assert.deepEqual(json(lib.caFindEntities(h, "fan")), ["fan.bedroom_fan_fan", "fan.office_fan_fan"]);
 });
 

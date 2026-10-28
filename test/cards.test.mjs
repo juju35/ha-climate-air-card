@@ -149,7 +149,7 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /4 on/);
+  assert.match(head, /5 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
@@ -179,7 +179,7 @@ test("overview: each group spans as many columns as it has devices, up to the co
   const spans = (body) => [...body.matchAll(/class="grp" style="--span:(\d+)"/g)].map((m) => Number(m[1]));
   assert.deepEqual(spans(overview({ zoom: false }).body), [1, 2, 2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none" }).body), [2]);
-  assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [5]);
+  assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [6]);
 });
 
 test("overview: tapping the icon turns the device off, tapping the tile unfolds its card", () => {
@@ -247,11 +247,12 @@ test("overview editor: device types and devices as sections, written back as ill
   const devs = schema.find((s) => s.name === "devs");
   assert.deepEqual(json(devs.schema.map((d) => [d.name, d.title])), [
     ["climate.air_conditioner", "Climatiseur"],
+    ["fan.dyson_pure_cool", "Dyson Pure Cool"],
     ["fan.bedroom_purifier", "Purificateur chambre"],
     ["fan.living_room_purifier_air_purifier", "Purificateur séjour"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
   ]);
-  assert.deepEqual(json(devs.schema[3].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[4].schema.map((f) => f.name)), ["name", "type", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;
