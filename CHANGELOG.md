@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0 — 2026-10-28
+
+### Changes
+- Overview grouped by area: the group heading already names the room, so each tile is now labelled by its kind of device (*Air purifier*, *Air conditioner*, *Fan*) instead of repeating the room name. A `name` set under `devices` still wins, and the tooltip keeps the device's real name. Within a room, tiles follow a fixed order: air conditioners, then purifiers, then fans.
+
 ## 1.6.0 — 2026-10-28
 
 ### Changes

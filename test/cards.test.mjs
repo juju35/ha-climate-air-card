@@ -168,6 +168,11 @@ test("overview: exclude, include and group by area", () => {
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /climate\.bathroom_thermostat/);
   assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
+  // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
+  const names = [...body.matchAll(/class="name">([^<]+)</g)].map((m) => m[1]);
+  assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
+  const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Léa" }] }).body;
+  assert.match(grouped, /class="name">Léa</);
 });
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {

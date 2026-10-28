@@ -100,6 +100,7 @@ class ClimateAirOverviewCard extends CaElement {
       id,
       kind,
       name: o.name || caName(h, id),
+      named: !!o.name,
       area: caAreaName(h, id),
       icon: o.icon || icons[id] || icons[kind] || CA_KIND_ICONS[kind],
       iconSet: !!(o.icon || icons[id] || icons[kind]),
@@ -236,7 +237,8 @@ class ClimateAirOverviewCard extends CaElement {
     if (by === "type") return CA_KINDS.map((k) => [this._t(`g_${k}`), items.filter((x) => x.kind === k)]).filter(([, l]) => l.length);
     if (by === "area") {
       const areas = [...new Set(items.map((x) => x.area))].sort((a, b) => (!a ? 1 : !b ? -1 : a.localeCompare(b)));
-      return areas.map((a) => [a || this._t("no_area"), items.filter((x) => x.area === a)]);
+      // Tiles labelled by kind of device, in a fixed order within the room.
+      return areas.map((a) => [a || this._t("no_area"), items.filter((x) => x.area === a).sort((p, q) => CA_KINDS.indexOf(p.kind) - CA_KINDS.indexOf(q.kind))]);
     }
     return [["", items]];
   }
@@ -245,10 +247,13 @@ class ClimateAirOverviewCard extends CaElement {
     const cls = ["dev", x.on ? "on" : "", x.na ? "na" : "", x.alert ? "alert" : "", x.id === this._open ? "sel" : ""].filter(Boolean).join(" ");
     const style = `--t:${x.color};--ca-color:${x.color};${x.spin ? `--ca-spin:${x.spin}s;` : ""}`;
     const look = x.iconSet ? `<ha-icon icon="${caEsc(x.icon)}"></ha-icon>` : caPicture(x.kind, x.variant, x.art, String(i));
+    // Grouped by area, the heading already names the room, so the tile shows the kind of device instead of repeating
+    // it — unless a name was set for the device in `devices`.
+    const label = this._config.group_by === "area" && !x.named ? this._t(x.kind) : x.name;
     return (
       `<div class="${cls}" role="button" tabindex="0" data-id="${caEsc(x.id)}" style="${style}" title="${caEsc(`${x.name} — ${x.text}`)}">` +
       `<button class="ic ${x.iconSet ? x.anim : "pic"}" data-toggle="${caEsc(x.id)}" title="${caEsc(this._t("toggle"))}" aria-label="${caEsc(`${this._t("toggle")} ${x.name}`)}"${x.na ? " disabled" : ""}>${look}</button>` +
-      `<span class="name">${caEsc(x.name)}</span>` +
+      `<span class="name">${caEsc(label)}</span>` +
       `<span class="state">${caEsc(x.text)}</span>` +
       (x.alert ? `<span class="chips"><span class="chip warn"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>` : "") +
       "</div>"

@@ -168,7 +168,7 @@ devices:
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
 | `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
 | `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`aircon`, `purifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
-| `group_by` | ❌ | `type` | `type` (air conditioners, air purifiers, fans), `area` or `none` |
+| `group_by` | ❌ | `type` | `type` (air conditioners, air purifiers, fans), `area` or `none`. With `area`, the heading names the room, so each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating it — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |
 | `zoom` | ❌ | `true` | Only the devices on or needing attention show, and a detail button shows them all; `false`: every device, always |
 | `exclude` | ❌ | — | Devices left out |
