@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.0 — 2026-10-28
+
+### Changes
+- German and Spanish translations: every card and the visual editor follow Home Assistant in `de` and `es` (or the `language` option, which now offers *Deutsch* and *Español*), including the labels of the preset and fan mode values the integrations leave untranslated and the *Level n* values.
+
 ## 1.7.2 — 2026-10-28
 
 ### Fixes
