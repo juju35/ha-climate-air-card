@@ -49,7 +49,7 @@ All the cards share the same look (header with a status pill and a power button,
 - Animated illustration while it runs: the fan turns (faster with the speed), clean air rises and dust is drawn into the intake; the display ring and the floor light take the air quality colour. Three shapes: a tower (a tall box whose display shows the PM2.5), a round purifier and a square box, picked from the device model or set with `illustration`
 - Filter life bar (with its hours of use on hover) and a *Replace the filter* alert at 10 % or less
 - Presets as segmented buttons (Auto, Sleep, Favorite…), or the device's mode select when it has no presets (HomeKit purifiers); speed slider; favorite level in the Favorite preset
-- Temperature, humidity and PM10 chips; child lock, sound and indicator light toggles
+- Temperature, humidity, PM10 and, when the device reports them, VOC and NO₂ chips (Dyson); child lock, sound and indicator light toggles
 
 ### Fan
 
@@ -83,7 +83,7 @@ All the cards share the same look (header with a status pill and a power button,
 ## Prerequisites
 
 - Home Assistant 2024.8 or later
-- Air purifiers and fans as `fan` entities, air conditioners as `climate` entities, from any integration (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea…)
+- Air purifiers and fans as `fan` entities, air conditioners as `climate` entities, from any integration (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson…)
 
 ## Installation
 
@@ -205,8 +205,9 @@ The cards find the other entities of the device by their registry translation ke
 | Key | Domain | Card | Used for |
 |---|---|---|---|
 | `pm25` / `pm10` | `sensor` | Purifier | Particle density, air quality colour |
+| `voc` / `no2` | `sensor` | Purifier | Volatile organic compounds and nitrogen dioxide index (Dyson) |
 | `aqi` | `sensor` | Purifier | Air quality index, when there is no PM2.5 sensor |
-| `filter` / `filter_hours` | `sensor` | Purifier | Filter life (%) and hours of use |
+| `filter` / `filter_hours` | `sensor` | Purifier | Filter life (%) and hours of use. Dyson's HEPA (or combined) filter is used, not its carbon one |
 | `status` | `sensor` | Purifier | State shown while on (*Purifying*, *Idle*…) |
 | `mode` | `select` | Purifier | Mode buttons, when the fan entity has no presets |
 | `favorite` | `number` | Purifier | Favorite level |

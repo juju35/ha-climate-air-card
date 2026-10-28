@@ -45,6 +45,26 @@ test("purifier off: no animation, idle color", () => {
   assert.match(html(el), /--ca-color:var\(--disabled-text-color/);
 });
 
+test("Dyson purifier: HEPA filter life, VOC and NO₂ readings", () => {
+  const h = makeHass();
+  h.devices.dev_dyson = { id: "dev_dyson", name: "Dyson Pure Cool", name_by_user: null, area_id: "office" };
+  const add = (id, state, attributes) => {
+    h.states[id] = { entity_id: id, state: String(state), attributes };
+    h.entities[id] = { entity_id: id, device_id: "dev_dyson", area_id: null, platform: "mock" };
+  };
+  add("fan.dyson_pure_cool", "on", { preset_modes: ["Auto", "Manual"], preset_mode: "Auto", percentage: 30, percentage_step: 10, supported_features: 57, friendly_name: "Dyson Pure Cool" });
+  add("sensor.dyson_pure_cool_pm_2_5", 5, { device_class: "pm25", unit_of_measurement: "µg/m³", friendly_name: "Dyson Pure Cool PM 2.5" });
+  add("sensor.dyson_pure_cool_volatile_organic_compounds", 4, { friendly_name: "Dyson Pure Cool Volatile Organic Compounds Index" });
+  add("sensor.dyson_pure_cool_nitrogen_dioxide", 1, { friendly_name: "Dyson Pure Cool Nitrogen Dioxide Index" });
+  add("sensor.dyson_pure_cool_carbon_filter_life", 94, { unit_of_measurement: "%", friendly_name: "Dyson Pure Cool Carbon Filter Life" });
+  add("sensor.dyson_pure_cool_hepa_filter_life", 76, { unit_of_measurement: "%", friendly_name: "Dyson Pure Cool HEPA Filter Life" });
+  const out = html(mount(lib, "climate-air-purifier-card", { entity: "fan.dyson_pure_cool" }, h));
+  assert.match(out, /76 %/); // the HEPA figure, not the carbon 94 %
+  assert.doesNotMatch(out, /94 %/);
+  assert.match(out, /VOC 4/);
+  assert.match(out, /NO₂ 1/);
+});
+
 test("fan: speed, oscillation, natural wind and options", () => {
   const h = makeHass();
   const el = mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, h);

@@ -47,6 +47,8 @@ const CA_I18N = {
     sw_sleep: "Sleep",
     sw_light: "Light",
     favorite: "Favorite level",
+    voc: "VOC",
+    no2: "NO₂",
     filter: "Filter",
     filter_low: "Replace the filter",
     filter_dirty: "Clean the filter",
@@ -161,6 +163,8 @@ const CA_I18N = {
     sw_sleep: "Nuit",
     sw_light: "Voyant",
     favorite: "Niveau favori",
+    voc: "COV",
+    no2: "NO₂",
     filter: "Filtre",
     filter_low: "Filtre à changer",
     filter_dirty: "Filtre à nettoyer",
@@ -383,8 +387,18 @@ const CA_ROLES = {
   pm25: { domain: "sensor", test: caDc("pm25") },
   pm10: { domain: "sensor", test: caDc("pm10") },
   aqi: { domain: "sensor", test: caDc("aqi") },
-  filter: { domain: "sensor", keys: ["filter_life", "filter_life_level", "filter_life_remaining"], id: /filt(er|re).*(life|lifetime|level|remaining|duree|restant)/ },
+  // Filter life as a percentage. Dyson splits it into a HEPA and a carbon filter (and a combined one on older
+  // units): prefer the HEPA or combined figure, and never the carbon one or a life expressed in hours.
+  filter: {
+    domain: "sensor",
+    keys: ["filter_life", "filter_life_level", "filter_life_remaining", "hepa_filter_life", "combined_filter_life"],
+    id: /filt(er|re).*(life|lifetime|level|remaining|percent|duree|restant)/,
+    prefer: /(hepa|combined|life_?level|life_?percent|pourcent)/,
+    avoid: /(carbon|charbon|used|utilis|hours|heures)/,
+  },
   filter_hours: { domain: "sensor", keys: ["filter_hours_used", "filter_use"], id: /filt(er|re).*(used|hours|heures|utilis)/ },
+  voc: { domain: "sensor", id: /(volatile_organic|_vocs?\b|\bcov\b|composes_organiques)/ },
+  no2: { domain: "sensor", id: /(nitrogen_dioxide|_no2\b|dioxyde_d?_?azote)/ },
   status: { domain: "sensor", keys: ["air_purifier_status"], id: /(purifier_status|purificateur.*statut)/ },
   mode: { domain: "select", keys: ["air_purifier_mode"], id: /(purifier_mode|_mode)$/ },
   child_lock: { domain: "switch", keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
@@ -433,9 +447,23 @@ function caFindRole(hass, list, role) {
   const m = CA_ROLES[role];
   const domains = [].concat(m.domain);
   const inDomain = list.filter((e) => domains.includes(e.entity_id.split(".")[0]));
-  let hit = m.keys && inDomain.find((e) => m.keys.includes(e.translation_key));
-  if (!hit && m.id) hit = inDomain.find((e) => m.id.test(e.entity_id));
-  if (!hit && m.test) hit = inDomain.find((e) => m.test(hass.states[e.entity_id], e.entity_id));
+  // Among candidates of equal rank, a preferred one wins (Dyson's HEPA/combined filter over its carbon filter),
+  // and an avoided one is taken only as a last resort (its filter life in hours, not the percentage).
+  const pick = (cands) => {
+    if (!cands.length) return undefined;
+    if (m.prefer) {
+      const p = cands.find((e) => m.prefer.test(e.entity_id));
+      if (p) return p;
+    }
+    if (m.avoid) {
+      const a = cands.find((e) => !m.avoid.test(e.entity_id));
+      if (a) return a;
+    }
+    return cands[0];
+  };
+  let hit = m.keys && pick(inDomain.filter((e) => m.keys.includes(e.translation_key)));
+  if (!hit && m.id) hit = pick(inDomain.filter((e) => m.id.test(e.entity_id)));
+  if (!hit && m.test) hit = pick(inDomain.filter((e) => m.test(hass.states[e.entity_id], e.entity_id)));
   return hit?.entity_id;
 }
 
@@ -723,12 +751,13 @@ class CaCard extends CaElement {
 
   // The measurements of the device as chips (temperature, humidity, …), each one only if found.
   _sensorChips(ent, roles) {
-    const icons = { temperature: "mdi:thermometer", humidity: "mdi:water-percent", pm10: "mdi:blur", outdoor_temp: "mdi:home-thermometer-outline", power: "mdi:flash" };
+    const icons = { temperature: "mdi:thermometer", humidity: "mdi:water-percent", pm10: "mdi:blur", voc: "mdi:molecule", no2: "mdi:molecule", outdoor_temp: "mdi:home-thermometer-outline", power: "mdi:flash" };
     const out = [];
     for (const role of roles) {
       const v = this._fmtSensor(ent[role]);
       if (v == null) continue;
-      const prefix = role === "pm10" ? "PM10 " : role === "outdoor_temp" ? `${this._t("outdoor")} ` : "";
+      const prefix =
+        role === "pm10" ? "PM10 " : role === "outdoor_temp" ? `${this._t("outdoor")} ` : role === "voc" || role === "no2" ? `${this._t(role)} ` : "";
       out.push(this._chip(icons[role], `${prefix}${v}`, "", this._label(ent[role])));
     }
     return out;

@@ -122,7 +122,7 @@ class ClimateAirPurifierCard extends CaCard {
   }
 
   _roles() {
-    return ["pm25", "pm10", "aqi", "temperature", "humidity", "filter", "filter_hours", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
+    return ["pm25", "pm10", "voc", "no2", "aqi", "temperature", "humidity", "filter", "filter_hours", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
   }
 
   _model(r) {
@@ -140,7 +140,7 @@ class ClimateAirPurifierCard extends CaCard {
     const modeSub = preset ? this._fmtAttr(r.id, "preset_mode", preset) : this._avail(ent.mode) ? this._fmtState(ent.mode) : "";
     const chips = [];
     if (c.show_alerts && filter != null && filter <= 10) chips.push(this._chip("mdi:air-filter", this._t("filter_low"), "warn"));
-    if (c.show_sensors) chips.push(...this._sensorChips(ent, ["temperature", "humidity", "pm10"]));
+    if (c.show_sensors) chips.push(...this._sensorChips(ent, ["temperature", "humidity", "pm10", "voc", "no2"]));
     const aqColor = aq?.color || CA_FAN_COLOR;
     return {
       state: on ? "on" : "off",

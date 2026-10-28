@@ -84,3 +84,39 @@ test("the editor drops options left empty or at their default", () => {
   const out = lib.caCleanConfig({ entity: "fan.x", name: "", show_controls: true, zoom: false, entities: { pm25: "", filter: "sensor.f" } }, { show_controls: true, zoom: true }, "custom:t");
   assert.deepEqual(json(out), { type: "custom:t", entity: "fan.x", zoom: false, entities: { filter: "sensor.f" } });
 });
+
+// A Dyson Pure Cool, added only for these checks so the shared mock (and its screenshots) stay untouched.
+const withDyson = (lang = "en") => {
+  const h = makeHass(lang);
+  h.devices.dev_dyson = { id: "dev_dyson", name: "Dyson Pure Cool", name_by_user: null, area_id: "office" };
+  const add = (id, state, attributes) => {
+    h.states[id] = { entity_id: id, state: String(state), attributes };
+    h.entities[id] = { entity_id: id, device_id: "dev_dyson", area_id: null, platform: "mock" };
+  };
+  add("fan.dyson_pure_cool", "on",
+    { preset_modes: ["Auto", "Manual"], preset_mode: "Auto", percentage: 30, percentage_step: 10, oscillating: true, supported_features: 57, friendly_name: "Dyson Pure Cool" });
+  add("sensor.dyson_pure_cool_pm_2_5", 5, { device_class: "pm25", unit_of_measurement: "µg/m³", friendly_name: "Dyson Pure Cool PM 2.5" });
+  add("sensor.dyson_pure_cool_pm_10", 9, { device_class: "pm10", unit_of_measurement: "µg/m³", friendly_name: "Dyson Pure Cool PM 10" });
+  add("sensor.dyson_pure_cool_volatile_organic_compounds", 4, { friendly_name: "Dyson Pure Cool Volatile Organic Compounds Index" });
+  add("sensor.dyson_pure_cool_nitrogen_dioxide", 1, { friendly_name: "Dyson Pure Cool Nitrogen Dioxide Index" });
+  // The carbon filter comes first on purpose: the HEPA figure must still win, by name and not by order.
+  add("sensor.dyson_pure_cool_carbon_filter_life", 94, { unit_of_measurement: "%", friendly_name: "Dyson Pure Cool Carbon Filter Life" });
+  add("sensor.dyson_pure_cool_hepa_filter_life", 76, { unit_of_measurement: "%", friendly_name: "Dyson Pure Cool HEPA Filter Life" });
+  add("sensor.dyson_pure_cool_temperature", 22, { device_class: "temperature", unit_of_measurement: "°C" });
+  add("sensor.dyson_pure_cool_humidity", 50, { device_class: "humidity", unit_of_measurement: "%" });
+  add("switch.dyson_pure_cool_night_mode", "off", { friendly_name: "Dyson Pure Cool Night Mode" });
+  add("switch.dyson_pure_cool_continuous_monitoring", "on", { friendly_name: "Dyson Pure Cool Continuous Monitoring" });
+  return h;
+};
+
+test("Dyson: detected as a purifier, HEPA filter life wins over the carbon one", () => {
+  const h = withDyson();
+  assert.equal(lib.caKindOf(h, "fan.dyson_pure_cool"), "purifier");
+  const list = lib.caDeviceEntities(h, "dev_dyson");
+  // Not the carbon filter, not a life in hours.
+  assert.equal(lib.caFindRole(h, list, "filter"), "sensor.dyson_pure_cool_hepa_filter_life");
+  assert.equal(lib.caFindRole(h, list, "voc"), "sensor.dyson_pure_cool_volatile_organic_compounds");
+  assert.equal(lib.caFindRole(h, list, "no2"), "sensor.dyson_pure_cool_nitrogen_dioxide");
+  // The night-mode and monitoring switches are not mistaken for the purifier mode select.
+  assert.equal(lib.caFindRole(h, list, "mode"), undefined);
+});
