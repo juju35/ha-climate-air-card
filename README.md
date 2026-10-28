@@ -256,6 +256,7 @@ The overview gathers every device: each tile's icon moves to match its appliance
 | | Light | Dark |
 |---|---|---|
 | Overview, devices on | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active-dark.png) |
+| Overview grouped by area, tiles labelled by kind | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-area.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-area-dark.png) |
 | Overview, a device unfolded | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details-dark.png) |
 | Air purifier, filter to replace | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-alert.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-alert-dark.png) |
 | Air purifier, round and box | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-round.png) ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-box.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-round-dark.png) ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-box-dark.png) |
