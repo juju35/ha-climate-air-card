@@ -597,6 +597,13 @@ class CaCard extends CaElement {
 
   disconnectedCallback() {
     clearTimeout(this._tempTimer);
+    // Detached mid-debounce (dashboard edit, panel fold, zoom): send the pending target now instead of losing it.
+    if (this._pendingTemp !== undefined) {
+      const temperature = this._pendingTemp;
+      this._pendingTemp = undefined;
+      this._sig = null;
+      if (this._r?.id) this._call("climate", "set_temperature", { entity_id: this._r.id, temperature });
+    }
   }
 
   getCardSize() {
