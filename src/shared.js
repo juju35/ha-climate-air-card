@@ -445,6 +445,18 @@ function caDeviceEntities(hass, deviceId) {
   return (caByDevice(hass.entities).get(deviceId) || []).filter((e) => hass.states[e.entity_id]);
 }
 
+// Memo for lookups that scan the registry or all of `hass.states` (kind of device, roles, entity lists), keyed on
+// the `hass.entities` object like caRegistryIndex: it is only replaced when the registry changes.
+const caMemoStore = new WeakMap();
+function caMemo(hass, key, compute) {
+  const reg = hass?.entities;
+  if (!reg) return compute();
+  let memo = caMemoStore.get(reg);
+  if (!memo) caMemoStore.set(reg, (memo = new Map()));
+  if (!memo.has(key)) memo.set(key, compute());
+  return memo.get(key);
+}
+
 function caFindRole(hass, list, role) {
   const m = CA_ROLES[role];
   const domains = [].concat(m.domain);
@@ -492,31 +504,40 @@ const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
 function caKindOf(hass, id) {
   const st = hass?.states?.[id];
   if (!st) return null;
-  const domain = id.split(".")[0];
-  if (domain === "climate") {
-    const modes = st.attributes.hvac_modes || [];
-    return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
-  }
-  if (domain !== "fan") return null;
-  const dev = hass.devices?.[caDeviceOf(hass, id)];
-  const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
-  if (CA_PURIFIER_NAME.test(names)) return "purifier";
-  const list = caDeviceEntities(hass, caDeviceOf(hass, id));
-  if (caFindRole(hass, list, "pm25") || caFindRole(hass, list, "aqi") || caFindRole(hass, list, "filter")) return "purifier";
-  return "fan";
+  return caMemo(hass, `kind:${id}`, () => {
+    const domain = id.split(".")[0];
+    if (domain === "climate") {
+      const modes = st.attributes.hvac_modes || [];
+      return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
+    }
+    if (domain !== "fan") return null;
+    const dev = hass.devices?.[caDeviceOf(hass, id)];
+    const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
+    if (CA_PURIFIER_NAME.test(names)) return "purifier";
+    const list = caDeviceEntities(hass, caDeviceOf(hass, id));
+    if (caFindRole(hass, list, "pm25") || caFindRole(hass, list, "aqi") || caFindRole(hass, list, "filter")) return "purifier";
+    return "fan";
+  });
+}
+
+// A role of an entity's device, memoized per registry: the whole-device scans only run again when it changes.
+function caRoleOf(hass, id, role) {
+  return caMemo(hass, `role:${id}:${role}`, () => caFindRole(hass, caDeviceEntities(hass, caDeviceOf(hass, id)), role));
 }
 
 // Every entity of a kind, sorted by name; hidden entities and configuration entities are left out.
 function caFindEntities(hass, kind) {
   if (!hass?.states) return [];
-  const domain = kind === "aircon" ? "climate" : "fan";
-  return Object.keys(hass.states)
-    .filter((id) => id.startsWith(`${domain}.`))
-    .filter((id) => {
-      const e = hass.entities?.[id];
-      return !e?.hidden && !e?.entity_category && caKindOf(hass, id) === kind;
-    })
-    .sort((a, b) => caName(hass, a).localeCompare(caName(hass, b)));
+  return caMemo(hass, `list:${kind}`, () => {
+    const domain = kind === "aircon" ? "climate" : "fan";
+    return Object.keys(hass.states)
+      .filter((id) => id.startsWith(`${domain}.`))
+      .filter((id) => {
+        const e = hass.entities?.[id];
+        return !e?.hidden && !e?.entity_category && caKindOf(hass, id) === kind;
+      })
+      .sort((a, b) => caName(hass, a).localeCompare(caName(hass, b)));
+  });
 }
 
 // The name shown for a device: its device name, else the entity's, without the trailing " Fan" Xiaomi Home adds.
@@ -625,7 +646,8 @@ class CaCard extends CaElement {
     const list = caDeviceEntities(hass, deviceId).filter((e) => e.entity_id !== id);
     const over = this._config.entities || {};
     const ent = { main: id };
-    for (const role of this._roles()) ent[role] = over[role] || caFindRole(hass, list, role);
+    // No role takes a fan or climate entity, so the memoized whole-device lookup resolves the same as `list`.
+    for (const role of this._roles()) ent[role] = over[role] || caRoleOf(hass, id, role);
     const used = new Set(Object.values(ent));
     return { id, deviceId, list, ent, used };
   }
@@ -683,12 +705,10 @@ class CaCard extends CaElement {
     const r = this._resolve();
     const hass = this._hass;
     const ids = [r.id, ...Object.values(r.ent), ...(this._extraIds?.(r) || [])];
-    const states = ids.map((id) => {
-      const s = id && hass.states[id];
-      return s ? [id, s.state, s.attributes] : null;
-    });
-    const sig = JSON.stringify([this._lang(), this._zoomed, this._pendingTemp, states]);
-    if (sig === this._sig) return;
+    // Home Assistant replaces a `states[id]` object whenever the entity changes: comparing the ids and the state
+    // object references is enough to tell a tick apart, with nothing serialized.
+    const sig = [this._lang(), this._zoomed, this._pendingTemp, ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
+    if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
     // No rebuild while a dropdown is open or a slider is held in the card.
     const active = this.shadowRoot.activeElement;
     if (active && (active.tagName === "SELECT" || active.tagName === "INPUT")) return;

@@ -86,7 +86,7 @@ class ClimateAirOverviewCard extends CaElement {
   }
 
   _role(id, role) {
-    return caFindRole(this._hass, caDeviceEntities(this._hass, caDeviceOf(this._hass, id)), role);
+    return caRoleOf(this._hass, id, role);
   }
 
   // Each tile shows the device's illustration, animated while it runs, in the variant set in `illustrations` (by entity
@@ -96,9 +96,17 @@ class ClimateAirOverviewCard extends CaElement {
     const lang = this._lang();
     const st = h.states[id];
     const a = st.attributes;
+    // Every state object the tile reads, collected for the render signature (`sts`).
+    const used = [st];
+    const roleSt = (role) => {
+      const s = h.states[this._role(id, role)];
+      if (s) used.push(s);
+      return s;
+    };
     const item = {
       id,
       kind,
+      sts: used,
       name: o.name || caName(h, id),
       named: !!o.name,
       area: caAreaName(h, id),
@@ -134,7 +142,7 @@ class ClimateAirOverviewCard extends CaElement {
         item.icon = o.icon || icons[id] || icons[kind] || CA_MODE_ICONS[mode] || item.icon;
         item.anim = CA_AC_ICON_ANIM[mode] || "breathe";
         if (item.anim === "spin") item.spin = caSpin(50);
-        const freq = caNum(h.states[this._role(id, "compressor")]);
+        const freq = caNum(roleSt("compressor"));
         const action = a.hvac_action;
         item.art = {
           running: true,
@@ -147,14 +155,14 @@ class ClimateAirOverviewCard extends CaElement {
       } else {
         item.text = [this._t("st_off"), cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
       }
-      if (this._config.show_alerts !== false && h.states[this._role(id, "filter_alert")]?.state === "on") item.alert = this._t("filter_dirty");
+      if (this._config.show_alerts !== false && roleSt("filter_alert")?.state === "on") item.alert = this._t("filter_dirty");
     } else {
       item.on = st.state === "on";
       const pct = item.on ? Number(a.percentage ?? 0) : 0;
       const preset = item.on && a.preset_mode ? fmtAttr("preset_mode", a.preset_mode) : "";
       if (kind === "purifier") {
-        const pm25 = caNum(h.states[this._role(id, "pm25")]);
-        const aqi = caNum(h.states[this._role(id, "aqi")]);
+        const pm25 = caNum(roleSt("pm25"));
+        const aqi = caNum(roleSt("aqi"));
         const aq = caAirQuality(pm25, aqi);
         const quality = pm25 != null ? `PM2.5 ${caFmtNum(lang, pm25, 0)}` : aqi != null ? `AQI ${caFmtNum(lang, aqi, 0)}` : "";
         item.text = item.on ? [quality || this._t("st_purifying"), aq ? this._t(`aq_${aq.key}`) : ""].filter(Boolean).join(" · ") : [this._t("st_off"), quality].filter(Boolean).join(" · ");
@@ -166,7 +174,7 @@ class ClimateAirOverviewCard extends CaElement {
           aqColor: aq?.color || CA_FAN_COLOR,
           display: pm25 != null ? caFmtNum(lang, pm25, 0) : aqi != null ? caFmtNum(lang, aqi, 0) : "",
         };
-        const filter = caNum(h.states[this._role(id, "filter")]);
+        const filter = caNum(roleSt("filter"));
         if (this._config.show_alerts !== false && filter != null && filter <= 10) item.alert = this._t("filter_low");
       } else {
         item.text = item.on ? [`${Math.round(pct)} %`, preset].filter(Boolean).join(" · ") : this._t("st_off");
@@ -187,8 +195,11 @@ class ClimateAirOverviewCard extends CaElement {
     const compact = c.zoom !== false && !this._zoomed;
     const shown = compact ? all.filter((x) => x.on || x.alert || x.id === this._open) : all;
     this._items = shown;
-    const sig = JSON.stringify([this._lang(), this._open, this._zoomed, c, all]);
-    if (sig === this._sig) return;
+    // Home Assistant replaces a `states[id]` object whenever the entity changes, and the registry objects when the
+    // registry does: comparing those references covers everything the tiles show, with nothing serialized.
+    const h = this._hass;
+    const sig = [this._lang(), this._open, this._zoomed, c, h.entities, h.devices, h.areas, h.config, ...all.flatMap((x) => [x.id, ...x.sts])];
+    if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
     this._sig = sig;
 
     if (!this.shadowRoot.querySelector("ha-card")) {
