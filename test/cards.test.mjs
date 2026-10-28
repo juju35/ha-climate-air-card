@@ -114,6 +114,19 @@ test("air conditioner: target steps add up and are sent once the taps stop", asy
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["climate", "set_temperature", { entity_id: "climate.air_conditioner", temperature: 23 }]]);
 });
 
+test("air conditioner: a pending target is sent right away when the card is detached", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const h = makeHass();
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  el._action("temp", "1");
+  assert.equal(h.calls.length, 0);
+  el.disconnectedCallback();
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["climate", "set_temperature", { entity_id: "climate.air_conditioner", temperature: 22.5 }]]);
+  t.mock.timers.tick(1000);
+  await Promise.resolve();
+  assert.equal(h.calls.length, 1); // the debounce timer was cancelled, nothing is sent twice
+});
+
 test("air conditioner off: no target, dirty filter flagged", () => {
   const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" },
     makeHass("en", { "climate.air_conditioner": { state: "off" }, "binary_sensor.air_conditioner_full_dust": { state: "on" } }));
@@ -177,6 +190,14 @@ test("overview: exclude, include and group by area", () => {
   assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
   const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Léa" }] }).body;
   assert.match(grouped, /class="name">Léa</);
+});
+
+test("overview: an area icon with markup in it stays inert in the group heading", () => {
+  const h = makeHass();
+  h.areas.bedroom.icon = 'mdi:bed" onclick="alert(1)';
+  const { body } = overview({ zoom: false, group_by: "area" }, h);
+  assert.doesNotMatch(body, /onclick="alert/);
+  assert.match(body, /icon="mdi:bed&quot; onclick=&quot;alert\(1\)"/);
 });
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {
