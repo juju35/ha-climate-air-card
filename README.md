@@ -24,7 +24,7 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 |---|---|---|---|
 | ![Overview](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all.png) | ![Air purifier](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card.png) | ![Fan](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png) | ![Air conditioner](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card.png) |
 
-All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English and French labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
+All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German and Spanish labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
 
 ## Features
 
@@ -127,7 +127,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
 | `show_alerts` | ❌ | `true` | Show the filter alerts |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
-| `language` | ❌ | Auto | Force language: `fr` or `en` (auto-detects from HA settings); also on the Overview card |
+| `language` | ❌ | Auto | Force language: `en`, `fr`, `de` or `es` (auto-detects from HA settings); also on the Overview card |
 | `entities` | ❌ | Auto | Override the sensors and controls found on the device (see [Entity overrides](#entity-overrides)) |
 
 ### Overview
@@ -299,6 +299,8 @@ The cards auto-detect the language from your Home Assistant settings. Currently 
 |---|---|
 | English | `en` |
 | Français | `fr` |
+| Deutsch | `de` |
+| Español | `es` |
 
 Contributions for additional languages are welcome!
 
