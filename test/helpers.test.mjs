@@ -120,3 +120,28 @@ test("Dyson: detected as a purifier, HEPA filter life wins over the carbon one",
   // The night-mode and monitoring switches are not mistaken for the purifier mode select.
   assert.equal(lib.caFindRole(h, list, "mode"), undefined);
 });
+
+test("I18N parity: de and es have exactly the keys and placeholders of en", () => {
+  const placeholders = (s) => [...String(s).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
+  for (const table of [lib.CA_I18N, lib.CA_VALUES]) {
+    const en = table.en;
+    for (const lang of ["fr", "de", "es"]) {
+      assert.deepEqual(Object.keys(table[lang]).sort(), Object.keys(en).sort(), lang);
+      for (const k of Object.keys(en)) {
+        assert.equal(typeof table[lang][k], "string", `${lang}.${k}`);
+        assert.ok(table[lang][k].length, `${lang}.${k}`);
+        assert.deepEqual(placeholders(table[lang][k]), placeholders(en[k]), `${lang}.${k}`);
+      }
+    }
+  }
+});
+
+test("de and es are picked from Home Assistant or the card's language option", () => {
+  assert.equal(lib.caLang({}, { language: "de" }), "de");
+  assert.equal(lib.caLang({ language: "es" }, { language: "en" }), "es");
+  assert.equal(lib.caLang({}, { language: "es-419" }), "es");
+  assert.equal(lib.caLang({}, { language: "it" }), "en");
+  assert.equal(lib.caT("de", "running_n", { n: 2 }), "2 an");
+  assert.equal(lib.caValueLabel("es", "level_3"), "Nivel 3");
+  assert.equal(lib.caValueLabel("de", "Level4"), "Stufe 4");
+});
