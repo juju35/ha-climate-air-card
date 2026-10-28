@@ -31,6 +31,26 @@ await animate({
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.air_conditioner" } }),
 });
 
+// The air conditioner heating: warm air shimmers out of the vent (the swing off, so only the shimmer moves).
+await animate({
+  file: "aircon-heat",
+  tag: "climate-air-aircon-card",
+  setup: (_s, lang) => ({
+    hass: mockHass(lang, { "climate.air_conditioner": { state: "heat", current_temperature: 18.5, temperature: 21, swing_mode: "off", fan_mode: "low" } }),
+    config: { entity: "climate.air_conditioner" },
+  }),
+});
+
+// The air conditioner drying: droplets fall from the vent while the louvres flap.
+await animate({
+  file: "aircon-dry",
+  tag: "climate-air-aircon-card",
+  setup: (_s, lang) => ({
+    hass: mockHass(lang, { "climate.air_conditioner": { state: "dry", temperature: 24 } }),
+    config: { entity: "climate.air_conditioner" },
+  }),
+});
+
 // The overview with every device on: each tile's icon and status ring animate together.
 await animate({
   file: "overview",

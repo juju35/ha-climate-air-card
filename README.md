@@ -206,7 +206,7 @@ The cards find the other entities of the device by their registry translation ke
 |---|---|---|---|
 | `pm25` / `pm10` | `sensor` | Purifier | Particle density, air quality colour |
 | `voc` / `no2` | `sensor` | Purifier | Volatile organic compounds and nitrogen dioxide index (Dyson) |
-| `aqi` | `sensor` | Purifier | Air quality index, when there is no PM2.5 sensor |
+| `aqi` | `sensor` | Purifier | Air quality index, when there is no PM2.5 sensor. A value of 5 or less is read on the HomeKit 1–5 scale, above that as a US AQI |
 | `filter` / `filter_hours` | `sensor` | Purifier | Filter life (%) and hours of use. Dyson's HEPA (or combined) filter is used, not its carbon one |
 | `status` | `sensor` | Purifier | State shown while on (*Purifying*, *Idle*…) |
 | `mode` | `select` | Purifier | Mode buttons, when the fan entity has no presets |
@@ -249,6 +249,14 @@ The air conditioner swings its louvres while the cooled air falls out of the ven
 
 ![air conditioner animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon.gif)
 
+Heating, the warm air shimmers as it rises out of the vent.
+
+![air conditioner heating animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.gif)
+
+Drying, droplets fall from the vent instead.
+
+![air conditioner drying animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif)
+
 The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
 
 ![overview animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif)
@@ -272,7 +280,7 @@ npm install
 npm run build        # bundles src/*.js into dist/ha-climate-air-card.js and stamps the version of package.json
 npm run check        # builds and checks the bundle (run in CI)
 npm test             # unit tests, no browser
-npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon/overview, needs ffmpeg) with mock data into screenshots/
+npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon cool, heat and dry/overview, needs ffmpeg) with mock data into screenshots/
 ```
 
 Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single HACS file. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
