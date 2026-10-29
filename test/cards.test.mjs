@@ -299,6 +299,50 @@ test("overview editor: device types and devices as sections, written back as ill
   });
 });
 
+test("overview editor keeps the illustrations and icons of devices the form does not list", () => {
+  // The README's "Full options" example: fan.garage_fan is excluded, fan.bedroom_air and climate.bathroom_thermostat
+  // are not in hass.states (an integration still loading, say).
+  const ed = new (lib.customElements.get("climate-air-overview-card-editor"))();
+  const config = {
+    type: "custom:climate-air-overview-card",
+    title: "Climate & air",
+    columns: 2,
+    exclude: ["fan.garage_fan"],
+    include: ["climate.bathroom_thermostat"],
+    illustrations: { aircon: "window", "fan.bedroom_air": "box" },
+    icons: { "fan.garage_fan": "mdi:ceiling-fan" },
+    devices: [{ entity: "fan.bedroom_air", name: "Bedroom", type: "purifier" }],
+  };
+  ed.setConfig(config);
+  ed.hass = makeHass();
+  const json = (v) => JSON.parse(JSON.stringify(v));
+  ed._valueChanged({ stopPropagation() {}, detail: { value: { ...ed._form.data, columns: 3 } } });
+  assert.deepEqual(json(ed._config), { ...config, columns: 3 });
+  // A listed device's own entry still wins: its `illustrations` key moves into `devices`, and is not copied back.
+  ed.setConfig({ type: "custom:climate-air-overview-card", illustrations: { "fan.bedroom_purifier": "cylinder" } });
+  ed._valueChanged({ stopPropagation() {}, detail: { value: ed._form.data } });
+  assert.deepEqual(json(ed._config), { type: "custom:climate-air-overview-card", devices: [{ entity: "fan.bedroom_purifier", illustration: "cylinder" }] });
+});
+
+test("the fan editors offer no alerts toggle: the fan cards show no alert", () => {
+  const names = (tag) => {
+    const ed = new (lib.customElements.get(`${tag}-editor`))();
+    ed.setConfig({ type: `custom:${tag}` });
+    ed.hass = makeHass();
+    return ed._form.schema.flatMap((s) => (s.schema ? s.schema.map((f) => f.name) : [s.name]));
+  };
+  for (const tag of ["climate-air-fan-card", "climate-air-fan-mini-card"]) assert.ok(!names(tag).includes("show_alerts"), tag);
+  for (const tag of ["climate-air-purifier-card", "climate-air-purifier-mini-card", "climate-air-aircon-card", "climate-air-aircon-mini-card"])
+    assert.ok(names(tag).includes("show_alerts"), tag);
+  // The fan form's data carries no show_alerts either, and a round trip writes none.
+  const ed = new (lib.customElements.get("climate-air-fan-card-editor"))();
+  ed.setConfig({ type: "custom:climate-air-fan-card", entity: "fan.bedroom_fan_fan" });
+  ed.hass = makeHass();
+  assert.ok(!("show_alerts" in ed._form.data));
+  ed._valueChanged({ stopPropagation() {}, detail: { value: ed._form.data } });
+  assert.deepEqual(JSON.parse(JSON.stringify(ed._config)), { type: "custom:climate-air-fan-card", entity: "fan.bedroom_fan_fan" });
+});
+
 test("values integrations leave untranslated are translated by the cards", () => {
   const fr = (changes) => makeHass("fr", changes);
   // Xiaomi Home fan presets, and a "Level4" select option.
