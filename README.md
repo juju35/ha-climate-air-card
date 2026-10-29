@@ -125,7 +125,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable` or `window`. `auto` picks one from the device model and name |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
-| `show_alerts` | ❌ | `true` | Show the filter alerts |
+| `show_alerts` | ❌ | `true` | Purifier and air conditioner cards only: show the filter alerts (the fan cards have none) |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
 | `language` | ❌ | Auto | Force language: `en`, `fr`, `de` or `es` (auto-detects from HA settings); also on the Overview card |
 | `entities` | ❌ | Auto | Override the sensors and controls found on the device (see [Entity overrides](#entity-overrides)) |
