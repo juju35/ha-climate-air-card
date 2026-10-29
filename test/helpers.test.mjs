@@ -145,3 +145,15 @@ test("de and es are picked from Home Assistant or the card's language option", (
   assert.equal(lib.caValueLabel("es", "level_3"), "Nivel 3");
   assert.equal(lib.caValueLabel("de", "Level4"), "Stufe 4");
 });
+
+test("the device lists follow states that arrive after the registry", () => {
+  const full = makeHass();
+  const states = { ...full.states };
+  delete states["fan.bedroom_purifier"];
+  assert.deepEqual(json(lib.caFindEntities({ ...full, states }, "purifier")), ["fan.dyson_pure_cool", "fan.living_room_purifier_air_purifier"]);
+  assert.deepEqual(json(lib.caFindEntities({ ...full, states: { ...full.states } }, "purifier")), [
+    "fan.bedroom_purifier",
+    "fan.dyson_pure_cool",
+    "fan.living_room_purifier_air_purifier",
+  ]);
+});

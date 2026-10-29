@@ -352,3 +352,15 @@ test("air conditioner options get the card's labels, the integration naming them
   assert.match(out, /<\/ha-icon>Odd thing<\/button>/);
   assert.doesNotMatch(out, />(Prompt tone|Screen display|Self clean|Smart eye)</);
 });
+
+test("a state that arrives after the registry is still found (Home Assistant starting up)", () => {
+  const full = makeHass();
+  const states = { ...full.states };
+  delete states["sensor.living_room_purifier_pm2_5_density"];
+  const early = { ...full, states };
+  const el = mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" }, early);
+  assert.equal(el._r.ent.pm25, undefined);
+  // Same registry object, every state now there.
+  el.hass = { ...full, states: { ...full.states } };
+  assert.equal(el._r.ent.pm25, "sensor.living_room_purifier_pm2_5_density");
+});

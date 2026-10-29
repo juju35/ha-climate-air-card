@@ -689,16 +689,30 @@ function caDeviceEntities(hass, deviceId) {
   return (caByDevice(hass.entities).get(deviceId) || []).filter((e) => hass.states[e.entity_id]);
 }
 
+// Number of states, counted once per `hass.states` object (every card of the dashboard shares the same one).
+const caStateCounts = new WeakMap();
+function caStateCount(states) {
+  if (!states) return 0;
+  let n = caStateCounts.get(states);
+  if (n === undefined) caStateCounts.set(states, (n = Object.keys(states).length));
+  return n;
+}
+
 // Memo for lookups that scan the registry or all of `hass.states` (kind of device, roles, entity lists), keyed on
-// the `hass.entities` object like caRegistryIndex: it is only replaced when the registry changes.
+// the `hass.entities` object like caRegistryIndex. The results also depend on which states exist: the memo starts
+// over when the number of states changes (states still arriving while Home Assistant starts, after the registry),
+// and a miss (no such role, unknown kind) is never kept, so an entity that shows up later is found.
 const caMemoStore = new WeakMap();
 function caMemo(hass, key, compute) {
   const reg = hass?.entities;
   if (!reg) return compute();
+  const count = caStateCount(hass.states);
   let memo = caMemoStore.get(reg);
-  if (!memo) caMemoStore.set(reg, (memo = new Map()));
-  if (!memo.has(key)) memo.set(key, compute());
-  return memo.get(key);
+  if (!memo || memo.count !== count) caMemoStore.set(reg, (memo = { count, map: new Map() }));
+  if (memo.map.has(key)) return memo.map.get(key);
+  const value = compute();
+  if (value != null) memo.map.set(key, value);
+  return value;
 }
 
 function caFindRole(hass, list, role) {
@@ -764,7 +778,8 @@ function caKindOf(hass, id) {
   });
 }
 
-// A role of an entity's device, memoized per registry: the whole-device scans only run again when it changes.
+// A role of an entity's device, memoized (see caMemo): the whole-device scans only run again when the registry
+// or the set of states changes.
 function caRoleOf(hass, id, role) {
   return caMemo(hass, `role:${id}:${role}`, () => caFindRole(hass, caDeviceEntities(hass, caDeviceOf(hass, id)), role));
 }
