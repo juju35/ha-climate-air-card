@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.8.1 — 2026-10-29
+
+### Fixes
+- Sensors and devices that come up after the dashboard has loaded (a wall tablet reconnecting while Home Assistant starts) are picked up again: PM2.5, filter, compressor and other readings no longer stay missing, the device shows in the overview, and a card without `entity` no longer sticks on *No device found* until the registry changes.
+- German and Spanish installations: VOC and NO₂ sensors are found by their device class, and the indoor and outdoor temperatures, compressor frequency, filter alert, timer, ionizer, indicator light, brightness, angle and rotation buttons by their German or Spanish entity IDs.
+- Air conditioner: a target temperature Home Assistant refuses (out of range, unavailable entity) no longer raises an unhandled error in the browser console, and a 0.1 °C step sends a clean value (21.3, not 21.300000000000001).
+- Long slider labels (*Geschwindigkeit*, *Lieblingsstufe* in German) are shortened with an ellipsis instead of squeezing the slider on narrow cards.
+- The purifier's mini card tooltip uses the colon spacing of the card's language (*Preset: Sleep*, *Préréglage : Nuit*), and German shows the sleep preset and switch as *Schlafmodus* everywhere.
+
 ## 1.8.0 — 2026-10-28
 
 ### Changes
