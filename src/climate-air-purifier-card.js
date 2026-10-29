@@ -253,7 +253,7 @@ class ClimateAirPurifierCard extends CaCard {
   _miniButtons(m) {
     const a = this._st(this._r.id).attributes;
     if (!m.running || !((a.supported_features || 0) & CA_FAN_PRESET) || (a.preset_modes || []).length < 2) return [];
-    const label = caEsc(`${this._t("preset")} : ${m.sub}`);
+    const label = caEsc(`${this._t("preset")}${this._t("colon")}${m.sub}`);
     return [
       `<button class="round on" data-action="preset-next" title="${label}" aria-label="${label}"><ha-icon icon="${CA_PRESET_ICON(m.preset) || "mdi:tune-variant"}"></ha-icon></button>`,
     ];
