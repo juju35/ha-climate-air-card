@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.4 — 2026-10-29
+
+### Fixes
+- Overview visual editor: saving the form no longer drops the `illustrations` and `icons` set for a device it does not list (an excluded device, or one whose integration has not loaded yet); they are kept as written.
+- The fan and fan mini card editors no longer show an *Alerts* toggle that had no effect: only the purifier and air conditioner cards have filter alerts.
+
 ## 1.8.3 — 2026-10-29
 
 ### Fixes
