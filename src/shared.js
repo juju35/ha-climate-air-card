@@ -625,8 +625,8 @@ const CA_CLIMATE_SWING = 32;
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
 
 // Entities a device may have next to its fan or climate entity. Each role is looked up by its registry
-// translation_key, then by the entity_id (English and French slugs), then by its attributes, so that it works
-// with Xiaomi Home, Xiaomi Miio, HomeKit, Matter or Midea entities alike.
+// translation_key, then by the entity_id (English, French, German and Spanish slugs), then by its attributes, so
+// that it works with Xiaomi Home, Xiaomi Miio, HomeKit, Matter or Midea entities alike.
 const CA_ROLES = {
   temperature: { domain: "sensor", test: caDc("temperature") },
   humidity: { domain: "sensor", test: caDc("humidity") },
@@ -643,29 +643,36 @@ const CA_ROLES = {
     avoid: /(carbon|charbon|used|utilis|hours|heures)/,
   },
   filter_hours: { domain: "sensor", keys: ["filter_hours_used", "filter_use"], id: /filt(er|re).*(used|hours|heures|utilis)/ },
-  voc: { domain: "sensor", id: /(volatile_organic|_vocs?\b|\bcov\b|composes_organiques)/ },
-  no2: { domain: "sensor", id: /(nitrogen_dioxide|_no2\b|dioxyde_d?_?azote)/ },
+  voc: {
+    domain: "sensor",
+    id: /(volatile_organic|_vocs?\b|\bcov\b|composes_organiques|fluchtige_organische|compuestos_organicos)/,
+    test: (st) => /^volatile_organic_compounds(_parts)?$/.test(st.attributes.device_class || ""),
+  },
+  no2: { domain: "sensor", id: /(nitrogen_dioxide|_no2\b|dioxyde_d?_?azote|stickstoffdioxid|dioxido_de_nitrogeno)/, test: caDc("nitrogen_dioxide") },
   status: { domain: "sensor", keys: ["air_purifier_status"], id: /(purifier_status|purificateur.*statut)/ },
   mode: { domain: "select", keys: ["air_purifier_mode"], id: /(purifier_mode|_mode)$/ },
   child_lock: { domain: "switch", keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
   buzzer: { domain: "switch", keys: ["buzzer", "alarm"], id: /(buzzer|alarm|sound|_son_|_son$|bip)/ },
-  light: { domain: "light", id: /(indicator|_led|voyant|display)/ },
-  brightness: { domain: "select", id: /(brightness|luminosit)/ },
+  light: { domain: "light", id: /(indicator|indicador|_led|voyant|display|anzeige|pantalla)/ },
+  brightness: { domain: "select", id: /(brightness|luminosit|helligkeit|brillo)/ },
   favorite: { domain: "number", keys: ["favorite_level"], id: /favorite/ },
-  angle: { domain: ["number", "select"], id: /(angle|swing_included)/ },
-  timer: { domain: "number", id: /(countdown|delay_time|off_delay|timer|minuterie|power_off_time)/ },
-  rotate_left: { domain: "button", id: /(turn_left|rotate_left|tourner_a_gauche)/ },
-  rotate_right: { domain: "button", id: /(turn_right|rotate_right|tourner_a_droite)/ },
+  angle: { domain: ["number", "select"], id: /(angle|angulo|winkel|swing_included)/ },
+  timer: { domain: "number", id: /(countdown|delay_time|off_delay|timer|minuterie|power_off_time|temporizador|ausschaltzeit)/ },
+  rotate_left: { domain: "button", id: /(turn_left|rotate_left|tourner_a_gauche|nach_links|a_la_izquierda)/ },
+  rotate_right: { domain: "button", id: /(turn_right|rotate_right|tourner_a_droite|nach_rechts|a_la_derecha)/ },
   anion: { domain: "switch", id: /(anion|ioni)/ },
-  indoor_temp: { domain: "sensor", id: /(indoor_temperature|temperature_interieure)$/ },
-  outdoor_temp: { domain: "sensor", id: /(outdoor_temperature|temperature_exterieure)(_\d+)?$/ },
+  indoor_temp: { domain: "sensor", id: /(indoor_temperature|temperature_interieure|innentemperatur|temperatura_interior)$/ },
+  outdoor_temp: { domain: "sensor", id: /(outdoor_temperature|temperature_exterieure|aussentemperatur|temperatura_exterior)(_\d+)?$/ },
   power: {
     domain: "sensor",
     id: /(real_time_power|current_power|puissance_instantanee)/,
-    test: (st, id) => st.attributes.device_class === "power" && !/compressor|compresseur/.test(id),
+    test: (st, id) => st.attributes.device_class === "power" && !/compressor|compresseur|kompressor|compresor/.test(id),
   },
-  filter_alert: { domain: "binary_sensor", id: /(dust|filter|filtre)/ },
-  compressor: { domain: "sensor", id: /(?<!target_)(compressor_frequency|frequence_compresseur)$/ },
+  filter_alert: { domain: "binary_sensor", id: /(dust|filter|filtre|filtro|staub|polvo)/ },
+  compressor: {
+    domain: "sensor",
+    id: /(?<!target_)(compressor_frequency|frequence_compresseur|kompressorfrequenz|frecuencia_del_compresor)$/,
+  },
 };
 
 // Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
@@ -1110,7 +1117,7 @@ class CaCard extends CaElement {
       const opts = Array.from({ length: count }, (_, i) => +(min + i * step).toFixed(4));
       if (!opts.includes(v)) opts.push(v);
       opts.sort((x, y) => x - y);
-      const text = (o) => (o === 0 && /timer|countdown|delay|minuterie/.test(id) ? this._t("timer_off") : `${caFmtNum(this._lang(), o)}${unit ? ` ${unit}` : ""}`);
+      const text = (o) => (o === 0 && /timer|countdown|delay|minuterie|temporizador|ausschalt/.test(id) ? this._t("timer_off") : `${caFmtNum(this._lang(), o)}${unit ? ` ${unit}` : ""}`);
       return `<label class="field"><span>${caEsc(label)}</span><select data-number="${caEsc(id)}">${opts
         .map((o) => `<option value="${o}"${o === v ? " selected" : ""}>${caEsc(text(o))}</option>`)
         .join("")}</select></label>`;

@@ -200,7 +200,7 @@ illustration: window
 
 ### Entity overrides
 
-The cards find the other entities of the device by their registry translation key, their entity ID (English or French) or their device class. Set one under `entities` when the card picks the wrong one or misses it:
+The cards find the other entities of the device by their registry translation key, their entity ID (English, French, German or Spanish) or their device class. Set one under `entities` when the card picks the wrong one or misses it:
 
 | Key | Domain | Card | Used for |
 |---|---|---|---|

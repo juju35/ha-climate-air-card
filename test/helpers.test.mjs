@@ -157,3 +157,23 @@ test("the device lists follow states that arrive after the registry", () => {
     "fan.living_room_purifier_air_purifier",
   ]);
 });
+
+test("roles are found on a German or Spanish installation, and VOC / NO₂ by device class", () => {
+  const h = makeHass();
+  const add = (id, attributes = {}) => {
+    h.states[id] = { entity_id: id, state: "1", attributes };
+    h.entities[id] = { entity_id: id, device_id: "dev_x", platform: "mock" };
+  };
+  add("climate.klimaanlage", { hvac_modes: ["off", "cool"] });
+  add("sensor.klimaanlage_aussentemperatur", { device_class: "temperature" });
+  add("sensor.klimaanlage_kompressorfrequenz");
+  add("sensor.klimaanlage_luftqualitat_index", { device_class: "volatile_organic_compounds_parts" });
+  add("sensor.klimaanlage_no2_wert", { device_class: "nitrogen_dioxide" });
+  add("number.klimaanlage_temporizador");
+  const list = lib.caDeviceEntities(h, "dev_x");
+  assert.equal(lib.caFindRole(h, list, "outdoor_temp"), "sensor.klimaanlage_aussentemperatur");
+  assert.equal(lib.caFindRole(h, list, "compressor"), "sensor.klimaanlage_kompressorfrequenz");
+  assert.equal(lib.caFindRole(h, list, "voc"), "sensor.klimaanlage_luftqualitat_index");
+  assert.equal(lib.caFindRole(h, list, "no2"), "sensor.klimaanlage_no2_wert");
+  assert.equal(lib.caFindRole(h, list, "timer"), "number.klimaanlage_temporizador");
+});
