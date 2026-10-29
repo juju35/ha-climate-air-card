@@ -295,7 +295,7 @@ class ClimateAirOverviewCard extends CaElement {
     const st = this._hass.states[id];
     if (!st) return;
     const domain = id.split(".")[0];
-    this._hass.callService(domain, st.state === "off" ? "turn_on" : "turn_off", { entity_id: id });
+    Promise.resolve(this._hass.callService(domain, st.state === "off" ? "turn_on" : "turn_off", { entity_id: id })).catch(() => {});
   }
 
   _tap(id) {

@@ -296,7 +296,8 @@ class ClimateAirAirconCard extends CaCard {
     if (cur == null) return;
     const min = Number(a.min_temp ?? 7);
     const max = Number(a.max_temp ?? 35);
-    this._pendingTemp = Math.min(max, Math.max(min, Math.round((cur + dir * step) / step) * step));
+    // Rounded so a 0.1 step sends 21.3, not 21.300000000000001.
+    this._pendingTemp = +Math.min(max, Math.max(min, Math.round((cur + dir * step) / step) * step)).toFixed(2);
     this._update();
     clearTimeout(this._tempTimer);
     this._tempTimer = setTimeout(async () => {

@@ -1162,8 +1162,10 @@ class CaCard extends CaElement {
   }
 
   // ── Actions ──
+  // A refusal (out of range, entity unavailable) is already reported by Home Assistant's own toast: it must not
+  // also surface as an unhandled rejection.
   _call(domain, service, data) {
-    return this._hass.callService(domain, service, data);
+    return Promise.resolve(this._hass.callService(domain, service, data)).catch(() => {});
   }
 
   _onClick(ev) {
