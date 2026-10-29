@@ -874,8 +874,13 @@ class CaCard extends CaElement {
       this.shadowRoot.addEventListener("change", (ev) => this._onChange(ev));
       // A dropdown closed with Escape or a slider thumb touched without moving it fires no `change`: when the focus
       // leaves, draw the updates held back while it was there. Deferred so the focus has settled (it may only move
-      // to another control of the card, which still holds them back).
-      this.shadowRoot.addEventListener("focusout", () => setTimeout(() => this._update(), 0));
+      // to another control of the card, which still holds them back). Focus staying inside the card draws nothing:
+      // a mouse press on a button moves the focus between mousedown and mouseup, and a rebuild there would drop the
+      // click; the click itself (or the next tick) draws the held updates.
+      this.shadowRoot.addEventListener("focusout", (ev) => {
+        if (ev.relatedTarget && this.shadowRoot.contains(ev.relatedTarget)) return;
+        setTimeout(() => this._update(), 0);
+      });
     }
     this._sig = null;
     this._update();
