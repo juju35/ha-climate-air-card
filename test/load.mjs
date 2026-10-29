@@ -10,6 +10,7 @@ const read = (name) => readFileSync(new URL(`${name}.js`, root), "utf8");
 // stand-in per selector, so a test can read what the card wrote into it; an empty root has no <ha-card> yet.
 export const fakeNode = () => {
   const parts = new Map();
+  const listeners = new Map();
   return {
     innerHTML: "",
     hidden: false,
@@ -26,7 +27,14 @@ export const fakeNode = () => {
     querySelectorAll() {
       return [];
     },
-    addEventListener() {},
+    addEventListener(type, fn) {
+      if (!listeners.has(type)) listeners.set(type, []);
+      listeners.get(type).push(fn);
+    },
+    // Test helper: runs the listeners of `type` the card added, like the browser dispatching that event.
+    emit(type, ev = {}) {
+      for (const fn of listeners.get(type) || []) fn(ev);
+    },
     appendChild(el) {
       this.children.push(el);
     },

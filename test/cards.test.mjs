@@ -386,3 +386,48 @@ test("air conditioner: a 0.1 step sends a rounded target, and a refused call is 
   assert.equal(unhandled.length, 0);
   assert.equal(el._pendingTemp, undefined);
 });
+
+test("a card redraws once a dropdown or slider it held loses focus (closed with Escape, thumb touched)", async () => {
+  const id = "fan.living_room_purifier_air_purifier";
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, makeHass());
+  assert.match(html(el), /st-on running/);
+  // A select is open (or a slider held): updates wait, the card does not rebuild under the finger.
+  el.shadowRoot.activeElement = { tagName: "SELECT" };
+  el.hass = makeHass("en", { [id]: { state: "off" } });
+  assert.match(html(el), /st-on running/);
+  // Focus leaves without a `change` (Escape, same value picked): the waiting update is drawn.
+  el.shadowRoot.activeElement = null;
+  el.shadowRoot.emit("focusout");
+  await new Promise((r) => setTimeout(r, 5));
+  assert.doesNotMatch(html(el), /st-on/);
+  assert.match(html(el), /st-off/);
+});
+
+test("focus moving from one control of the card to another still holds the update back", async () => {
+  const id = "fan.living_room_purifier_air_purifier";
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, makeHass());
+  el.shadowRoot.activeElement = { tagName: "SELECT" };
+  el.hass = makeHass("en", { [id]: { state: "off" } });
+  // Tab from the select to the speed slider: the focus is still inside a control.
+  el.shadowRoot.activeElement = { tagName: "INPUT" };
+  el.shadowRoot.emit("focusout");
+  await new Promise((r) => setTimeout(r, 5));
+  assert.match(html(el), /st-on running/);
+  el.shadowRoot.activeElement = null;
+  el.shadowRoot.emit("focusout");
+  await new Promise((r) => setTimeout(r, 5));
+  assert.match(html(el), /st-off/);
+});
+
+test("focus leaving a card with no update held back does not rebuild it", async () => {
+  const el = mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" }, makeHass());
+  let renders = 0;
+  const render = el._render.bind(el);
+  el._render = (r) => {
+    renders++;
+    render(r);
+  };
+  el.shadowRoot.emit("focusout");
+  await new Promise((r) => setTimeout(r, 5));
+  assert.equal(renders, 0);
+});
