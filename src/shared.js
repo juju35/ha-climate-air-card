@@ -1411,7 +1411,7 @@ const CA_STYLES = `${CA_ART_STYLES}
            background: var(--secondary-background-color, rgba(128,128,128,.1)) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23888' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 6px center / 20px; }
   .slider { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--secondary-text-color); }
   .slider ha-icon { --mdc-icon-size: 18px; flex-shrink: 0; }
-  .slider .sl-label { flex-shrink: 0; min-width: 52px; }
+  .slider .sl-label { flex-shrink: 1; min-width: 0; max-width: 40%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .slider .v { min-width: 44px; text-align: right; font-weight: 500; color: var(--primary-text-color); font-variant-numeric: tabular-nums; }
   input[type=range] { flex: 1; min-width: 0; height: 22px; margin: 0; background: none; appearance: none; -webkit-appearance: none; cursor: pointer; }
   input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px;
