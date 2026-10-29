@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.3 — 2026-10-29
+
+### Fixes
+- The first click on a card button (target temperature +/−, power, a mode, a switch, zoom) right after leaving a dropdown or the speed slider is no longer lost when a sensor changed meanwhile: moving the focus to another control of the card no longer redraws it under the mouse.
+
 ## 1.8.2 — 2026-10-29
 
 ### Fixes
