@@ -552,8 +552,14 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
       for (const key of CA_DEVICE_FIELDS) if (set(d?.[key])) entry[key] = d[key];
       if (Object.keys(entry).length > 1) devices.push(entry);
     }
-    // Settings of devices the form does not list (excluded, or gone for now) are kept.
+    // Settings of devices the form does not list (excluded, or gone for now) are kept, under `devices`,
+    // `illustrations` and `icons` alike.
     for (const d of this._config.devices || []) if (d?.entity && !(d.entity in devs)) devices.push(d);
+    for (const [src, out] of [
+      [this._config.illustrations, illustrations],
+      [this._config.icons, icons],
+    ])
+      for (const [k, v] of Object.entries(src || {})) if (!CA_KINDS.includes(k) && !(k in devs)) out[k] = v;
     return { ...rest, illustrations, icons, devices };
   }
 
