@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.2 — 2026-10-29
+
+### Fixes
+- A card no longer freezes after a dropdown (fan mode, preset, timer) is closed with Escape or on the same value, or after the speed slider's thumb is touched without moving it: on/off state, PM2.5, temperature and status update again as soon as the focus leaves the control, in the overview's detail panel too.
+
 ## 1.8.1 — 2026-10-29
 
 ### Fixes
