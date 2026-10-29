@@ -431,3 +431,39 @@ test("focus leaving a card with no update held back does not rebuild it", async 
   await new Promise((r) => setTimeout(r, 5));
   assert.equal(renders, 0);
 });
+
+test("focus moving to a button of the card (mouse press after a dropdown) does not rebuild it before the click", async () => {
+  const id = "fan.living_room_purifier_air_purifier";
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, makeHass());
+  el.shadowRoot.activeElement = { tagName: "SELECT" };
+  el.hass = makeHass("en", { [id]: { state: "off" } });
+  let renders = 0;
+  const render = el._render.bind(el);
+  el._render = (r) => {
+    renders++;
+    render(r);
+  };
+  // mousedown on a button: the focus goes from the select to that button, between mousedown and mouseup.
+  const button = { tagName: "BUTTON" };
+  el.shadowRoot.contains = (n) => n === button;
+  el.shadowRoot.activeElement = button;
+  el.shadowRoot.emit("focusout", { relatedTarget: button });
+  await new Promise((r) => setTimeout(r, 5));
+  assert.equal(renders, 0);
+  // The held update is drawn by the next tick (or the click's own update).
+  el.hass = makeHass("en", { [id]: { state: "off" } });
+  assert.equal(renders, 1);
+  assert.match(html(el), /st-off/);
+});
+
+test("focus moving out of the card to another element of the page still draws the held update", async () => {
+  const id = "fan.living_room_purifier_air_purifier";
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, makeHass());
+  el.shadowRoot.activeElement = { tagName: "SELECT" };
+  el.hass = makeHass("en", { [id]: { state: "off" } });
+  el.shadowRoot.contains = () => false;
+  el.shadowRoot.activeElement = null;
+  el.shadowRoot.emit("focusout", { relatedTarget: { tagName: "BUTTON" } });
+  await new Promise((r) => setTimeout(r, 5));
+  assert.match(html(el), /st-off/);
+});
