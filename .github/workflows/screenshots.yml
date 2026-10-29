@@ -24,7 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          # Fork PR branches do not exist in this repository: only check out the
+          # head branch for same-repo PRs (where screenshots get pushed back).
+          # Everything else keeps the default ref — for a fork PR that is the merge
+          # ref, which github.ref_name ("N/merge") does not resolve to.
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.head_ref || '' }}
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
@@ -41,9 +45,10 @@ jobs:
             timeout 150 sudo apt-get update \
               && timeout 300 sudo apt-get install -y ffmpeg fonts-roboto \
               && timeout 300 npx playwright install-deps chromium \
-              && break
+              && ok=1 && break
             echo "apt attempt $i failed or timed out, retrying in 15s"; sleep 15
           done
+          [ -n "$ok" ] || { echo "::error::apt failed 3 times"; exit 1; }
           ffmpeg -version > /dev/null
       - run: npm run build
       - name: Render screenshots
