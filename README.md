@@ -235,31 +235,45 @@ Every card comes alive while its device is on, and settles to a still card once 
 
 The air purifier draws air in: the side inlets pull it through, the base glows and a stream of clean air rises out of the top.
 
-![air purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier.gif)
+| Light | Dark |
+|---|---|
+| ![air purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier.gif) | ![air purifier animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dark.gif) |
 
 A Dyson-style bladeless purifier has no blades to turn: clean air streams up through its hollow loop instead.
 
-![Dyson bladeless purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson.gif)
+| Light | Dark |
+|---|---|
+| ![Dyson bladeless purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson.gif) | ![Dyson bladeless purifier animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson-dark.gif) |
 
 The fan spins its blades, the head slowly oscillates from side to side, and gusts of air stream out in front of it.
 
-![fan animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan.gif)
+| Light | Dark |
+|---|---|
+| ![fan animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan.gif) | ![fan animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-dark.gif) |
 
 The air conditioner swings its louvres while the cooled air falls out of the vent.
 
-![air conditioner animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon.gif)
+| Light | Dark |
+|---|---|
+| ![air conditioner animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon.gif) | ![air conditioner animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dark.gif) |
 
 Heating, the warm air shimmers as it rises out of the vent.
 
-![air conditioner heating animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.gif)
+| Light | Dark |
+|---|---|
+| ![air conditioner heating animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.gif) | ![air conditioner heating animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat-dark.gif) |
 
 Drying, droplets fall from the vent instead.
 
-![air conditioner drying animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif)
+| Light | Dark |
+|---|---|
+| ![air conditioner drying animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif) | ![air conditioner drying animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.gif) |
 
 The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
 
-![overview animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif)
+| Light | Dark |
+|---|---|
+| ![overview animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif) | ![overview animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-dark.gif) |
 
 | | Light | Dark |
 |---|---|---|
