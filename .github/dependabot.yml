@@ -7,3 +7,20 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+  # Dev tooling only (build helpers and the Playwright used by the Screenshots workflow, which installs the
+  # browser matching the locked version through `npx playwright`): one grouped PR keeps the lock coherent.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      dev-dependencies:
+        dependency-type: development
+        patterns: ["*"]
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      pre-commit-hooks:
+        patterns: ["*"]
