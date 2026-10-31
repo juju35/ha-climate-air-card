@@ -1,7 +1,13 @@
-// Records each card running as a looping GIF under screenshots/, one per distinct animation.
+// Records each card running as a looping GIF under screenshots/, one per distinct animation and theme.
 // Usage: npm install && npm run build && node scripts/screenshots/animation.mjs  (needs ffmpeg)
-import { animate } from "./harness.mjs";
+import { animate as animateOne } from "./harness.mjs";
 import { mockHass } from "./mock.mjs";
+
+// Every animation is recorded twice with the same setup: <file>.gif in the light theme, <file>-dark.gif in the dark one.
+const animate = async (opts) => {
+  await animateOne(opts);
+  await animateOne({ ...opts, file: `${opts.file}-dark`, theme: "dark" });
+};
 
 // The air purifier drawing air in: inlets suck, the floor glows, the clean air rises.
 await animate({
