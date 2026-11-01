@@ -121,11 +121,11 @@ test("Dyson: detected as a purifier, HEPA filter life wins over the carbon one",
   assert.equal(lib.caFindRole(h, list, "mode"), undefined);
 });
 
-test("I18N parity: de and es have exactly the keys and placeholders of en", () => {
+test("I18N parity: fr, de, es, sr and sr-Latn have exactly the keys and placeholders of en", () => {
   const placeholders = (s) => [...String(s).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
   for (const table of [lib.CA_I18N, lib.CA_VALUES]) {
     const en = table.en;
-    for (const lang of ["fr", "de", "es"]) {
+    for (const lang of ["fr", "de", "es", "sr", "sr-Latn"]) {
       assert.deepEqual(Object.keys(table[lang]).sort(), Object.keys(en).sort(), lang);
       for (const k of Object.keys(en)) {
         assert.equal(typeof table[lang][k], "string", `${lang}.${k}`);
@@ -144,6 +144,26 @@ test("de and es are picked from Home Assistant or the card's language option", (
   assert.equal(lib.caT("de", "running_n", { n: 2 }), "2 an");
   assert.equal(lib.caValueLabel("es", "level_3"), "Nivel 3");
   assert.equal(lib.caValueLabel("de", "Level4"), "Stufe 4");
+});
+
+test("the language: the full code when known, else the part before the dash, else English", () => {
+  assert.equal(lib.caLang({}, { language: "fr-FR" }), "fr");
+  assert.equal(lib.caLang({}, { language: "de-CH" }), "de");
+  assert.equal(lib.caLang({}, { language: "sr-Latn" }), "sr-Latn");
+  assert.equal(lib.caLang({}, { language: "sr" }), "sr");
+  assert.equal(lib.caLang({}, { language: "pt-BR" }), "en");
+  assert.equal(lib.caLang({ language: "sr-Latn" }, { language: "fr" }), "sr-Latn");
+  assert.equal(lib.caT("sr-Latn", "running_n", { n: 2 }), "2 uključeno");
+  assert.equal(lib.caValueLabel("sr", "level_3"), "Ниво 3");
+});
+
+test("Serbian: no Latin letter in sr, no Cyrillic one in sr-Latn, but for names, units and entity IDs", () => {
+  // Brand and unit names, placeholders and entity ID examples stay in Latin script in both.
+  const strip = (s) => s.replace(/\{\w+\}|Home Assistant|VOC|NO₂|pm25|sensor\.\w+|\bh\b/g, "");
+  for (const table of [lib.CA_I18N, lib.CA_VALUES]) {
+    for (const [k, v] of Object.entries(table.sr)) assert.doesNotMatch(strip(v), /[A-Za-z]/, `sr.${k}`);
+    for (const [k, v] of Object.entries(table["sr-Latn"])) assert.doesNotMatch(v, /[Ѐ-ӿ]/, `sr-Latn.${k}`);
+  }
 });
 
 test("the device lists follow states that arrive after the registry", () => {
