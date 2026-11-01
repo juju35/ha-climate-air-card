@@ -176,7 +176,7 @@ class ClimateAirPurifierCard extends CaCard {
       preset,
       chips,
       aqColor,
-      display: pm25 != null ? caFmtNum(this._lang(), pm25, 0) : aqi != null ? caFmtNum(this._lang(), aqi, 0) : "",
+      display: pm25 != null ? caFmtNum(this._intlLang(), pm25, 0) : aqi != null ? caFmtNum(this._intlLang(), aqi, 0) : "",
     };
   }
 
@@ -187,9 +187,9 @@ class ClimateAirPurifierCard extends CaCard {
   _heroInfo(m) {
     let big;
     if (m.pm25 != null) {
-      big = `<div class="big"><span class="val">${caFmtNum(this._lang(), m.pm25, 0)}<small> µg/m³</small></span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
+      big = `<div class="big"><span class="val">${caFmtNum(this._intlLang(), m.pm25, 0)}<small> µg/m³</small></span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
     } else if (m.aqi != null) {
-      big = `<div class="big"><span class="val">${caFmtNum(this._lang(), m.aqi, 0)}<small> AQI</small></span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
+      big = `<div class="big"><span class="val">${caFmtNum(this._intlLang(), m.aqi, 0)}<small> AQI</small></span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
     } else {
       big = `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     }
@@ -197,7 +197,7 @@ class ClimateAirPurifierCard extends CaCard {
     let filter = "";
     if (m.filter != null) {
       const hours = this._num(ent.filter_hours);
-      const title = `${this._t("filter")}${hours != null ? ` · ${this._t("hours", { n: caFmtNum(this._lang(), hours, 0) })}` : ""}`;
+      const title = `${this._t("filter")}${hours != null ? ` · ${this._t("hours", { n: caFmtNum(this._intlLang(), hours, 0) })}` : ""}`;
       filter = `<div class="filter${m.filter <= 10 ? " low" : ""}" title="${caEsc(title)}">${caBar(m.filter, `${Math.round(m.filter)} %`, "mdi:air-filter")}</div>`;
     }
     return big + filter;
@@ -241,7 +241,7 @@ class ClimateAirPurifierCard extends CaCard {
   _miniInfo(m) {
     const lines = [];
     if (m.pm25 != null || m.aqi != null) {
-      const v = m.pm25 != null ? `PM2.5 ${caFmtNum(this._lang(), m.pm25, 0)} µg/m³` : `AQI ${caFmtNum(this._lang(), m.aqi, 0)}`;
+      const v = m.pm25 != null ? `PM2.5 ${caFmtNum(this._intlLang(), m.pm25, 0)} µg/m³` : `AQI ${caFmtNum(this._intlLang(), m.aqi, 0)}`;
       lines.push(`<div class="line aqline"><ha-icon icon="mdi:blur"></ha-icon><span><b>${caEsc(v)}</b>${m.aq ? ` · ${caEsc(this._aqText(m))}` : ""}</span></div>`);
     }
     if (m.running) lines.push(caBar(m.pct, `${Math.round(m.pct)} %`, "mdi:fan"));

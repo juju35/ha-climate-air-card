@@ -216,7 +216,6 @@ class ClimateAirAirconCard extends CaCard {
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["outdoor_temp", "humidity", ...(on ? ["power"] : [])]));
     const fanMode = on && a.fan_mode ? this._fmtAttr(r.id, "fan_mode", a.fan_mode) : "";
     const preset = on && a.preset_mode && a.preset_mode !== "none" ? this._fmtAttr(r.id, "preset_mode", a.preset_mode) : "";
-    const lang = this._lang();
     return {
       state: on ? mode : "off",
       mode,
@@ -229,13 +228,13 @@ class ClimateAirAirconCard extends CaCard {
       cur,
       target,
       chips,
-      display: on && target != null && mode !== "fan_only" ? `${caFmtNum(lang, target)}°` : on ? "--" : "",
+      display: on && target != null && mode !== "fan_only" ? `${caFmtNum(this._intlLang(), target)}°` : on ? "--" : "",
       swing,
     };
   }
 
   _temp(v, digits = 1) {
-    return `${caFmtNum(this._lang(), v, digits)} ${this._unit()}`;
+    return `${caFmtNum(this._intlLang(), v, digits)} ${this._unit()}`;
   }
 
   _showTarget(m) {
@@ -243,7 +242,7 @@ class ClimateAirAirconCard extends CaCard {
   }
 
   _heroInfo(m) {
-    const cur = m.cur != null ? `<span class="val">${caFmtNum(this._lang(), m.cur)}<small> ${caEsc(this._unit())}</small></span>` : "";
+    const cur = m.cur != null ? `<span class="val">${caFmtNum(this._intlLang(), m.cur)}<small> ${caEsc(this._unit())}</small></span>` : "";
     const target = this._showTarget(m) ? `<span class="arrow">→ ${caEsc(this._temp(m.target))}</span>` : "";
     if (!cur) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     return `<div class="big">${cur}${target}</div>${m.fanMode ? caLine("mdi:fan", m.fanMode) : ""}`;
@@ -261,7 +260,7 @@ class ClimateAirAirconCard extends CaCard {
       stepper =
         '<div class="stepper">' +
         `<button class="round" data-action="temp" data-value="-1" title="${caEsc(this._t("temp_down"))}" aria-label="${caEsc(this._t("temp_down"))}"><ha-icon icon="mdi:minus"></ha-icon></button>` +
-        `<div class="tv"><span class="tval">${caFmtNum(this._lang(), m.target)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(this._t("target"))}</span></div>` +
+        `<div class="tv"><span class="tval">${caFmtNum(this._intlLang(), m.target)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(this._t("target"))}</span></div>` +
         `<button class="round" data-action="temp" data-value="1" title="${caEsc(this._t("temp_up"))}" aria-label="${caEsc(this._t("temp_up"))}"><ha-icon icon="mdi:plus"></ha-icon></button></div>`;
     }
     const selects = m.running

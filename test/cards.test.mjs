@@ -343,6 +343,28 @@ test("the fan editors offer no alerts toggle: the fan cards show no alert", () =
   assert.deepEqual(JSON.parse(JSON.stringify(ed._config)), { type: "custom:climate-air-fan-card", entity: "fan.bedroom_fan_fan" });
 });
 
+test("overview editor: the alerts toggle the card reads, on by default and only written when turned off", () => {
+  const ed = new (lib.customElements.get("climate-air-overview-card-editor"))();
+  ed.setConfig({ type: "custom:climate-air-overview-card" });
+  ed.hass = makeHass();
+  const names = ed._form.schema.flatMap((s) => (s.type === "grid" ? s.schema.map((f) => f.name) : [s.name]));
+  assert.ok(names.includes("show_alerts"));
+  assert.equal(ed._form.computeLabel({ name: "show_alerts" }), "Alerts");
+  assert.equal(ed._form.data.show_alerts, true);
+  // Left on, nothing is written; turned off, the YAML keeps it.
+  ed._valueChanged({ stopPropagation() {}, detail: { value: ed._form.data } });
+  assert.ok(!("show_alerts" in ed._config));
+  ed._valueChanged({ stopPropagation() {}, detail: { value: { ...ed._form.data, show_alerts: false } } });
+  assert.equal(ed._config.show_alerts, false);
+});
+
+test("overview: show_alerts: false hides the filter alerts, the devices still showing", () => {
+  assert.match(overview().body, /Replace the filter/);
+  const { body } = overview({ show_alerts: false });
+  assert.doesNotMatch(body, /Replace the filter|Clean the filter/);
+  assert.match(body, /data-id="fan\.bedroom_purifier"/);
+});
+
 test("values integrations leave untranslated are translated by the cards", () => {
   const fr = (changes) => makeHass("fr", changes);
   // Xiaomi Home fan presets, and a "Level4" select option.

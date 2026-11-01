@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.8.7 — 2026-11-01
+
+### Changes
+- Added Italian, Dutch, European Portuguese and Polish translations: every card, the visual editor (which now offers *Italiano*, *Nederlands*, *Português* and *Polski* in its language list) and the labels of the preset and fan mode values the integrations leave untranslated. A Home Assistant set to Brazilian Portuguese (`pt-BR`) gets the European Portuguese labels. *Livello n* and *Poziom n* values are recognized like *Level n*.
+
+## 1.8.6 — 2026-11-01
+
+### Changes
+- Serbian translations, in Cyrillic (`sr`) and Latin (`sr-Latn`) script, with both offered in the editor's language list. Serbian translations by @cpmarexel2f (#20).
+
+### Fixes
+- Language detection: a full code the cards know (`sr-Latn`) is used as is, so a Home Assistant set to Serbian Latin gets the Latin labels; otherwise the part before the dash (`fr-FR` → French), else English.
+
+## 1.8.5 — 2026-10-29
+
+### Fixes
+- Overview visual editor: the *Alerts* toggle is now offered (on by default). Turning it off hides the filter alerts on the purifier and air conditioner tiles, as `show_alerts: false` already did in YAML.
+
 ## 1.8.4 — 2026-10-29
 
 ### Fixes

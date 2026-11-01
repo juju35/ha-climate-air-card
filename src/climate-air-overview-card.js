@@ -132,7 +132,7 @@ class ClimateAirOverviewCard extends CaElement {
       const mode = st.state;
       const cur = a.current_temperature != null ? Number(a.current_temperature) : null;
       const unit = h.config?.unit_system?.temperature || "°C";
-      const temp = (v) => `${caFmtNum(lang, v)} ${unit}`;
+      const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       if (item.on) {
         const label = caValueLabel(lang, mode, h.formatEntityState?.(st));
         const target = a.temperature != null && mode !== "fan_only" ? temp(Number(a.temperature)) : "";
@@ -150,7 +150,7 @@ class ClimateAirOverviewCard extends CaElement {
           mode,
           swing: a.swing_mode,
           active: freq != null ? freq > 0 : action ? !["idle", "off"].includes(action) : true,
-          display: a.temperature != null && mode !== "fan_only" ? `${caFmtNum(lang, Number(a.temperature))}°` : "--",
+          display: a.temperature != null && mode !== "fan_only" ? `${caFmtNum(this._intlLang(), Number(a.temperature))}°` : "--",
         };
       } else {
         item.text = [this._t("st_off"), cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
@@ -164,7 +164,7 @@ class ClimateAirOverviewCard extends CaElement {
         const pm25 = caNum(roleSt("pm25"));
         const aqi = caNum(roleSt("aqi"));
         const aq = caAirQuality(pm25, aqi);
-        const quality = pm25 != null ? `PM2.5 ${caFmtNum(lang, pm25, 0)}` : aqi != null ? `AQI ${caFmtNum(lang, aqi, 0)}` : "";
+        const quality = pm25 != null ? `PM2.5 ${caFmtNum(this._intlLang(), pm25, 0)}` : aqi != null ? `AQI ${caFmtNum(this._intlLang(), aqi, 0)}` : "";
         item.text = item.on ? [quality || this._t("st_purifying"), aq ? this._t(`aq_${aq.key}`) : ""].filter(Boolean).join(" · ") : [this._t("st_off"), quality].filter(Boolean).join(" · ");
         item.color = item.on ? aq?.color || CA_FAN_COLOR : CA_IDLE;
         item.anim = item.on ? "pulse" : "";
@@ -172,7 +172,7 @@ class ClimateAirOverviewCard extends CaElement {
           running: item.on,
           pct,
           aqColor: aq?.color || CA_FAN_COLOR,
-          display: pm25 != null ? caFmtNum(lang, pm25, 0) : aqi != null ? caFmtNum(lang, aqi, 0) : "",
+          display: pm25 != null ? caFmtNum(this._intlLang(), pm25, 0) : aqi != null ? caFmtNum(this._intlLang(), aqi, 0) : "",
         };
         const filter = caNum(roleSt("filter"));
         if (this._config.show_alerts !== false && filter != null && filter <= 10) item.alert = this._t("filter_low");
@@ -428,7 +428,7 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { zoom: true, group_by: "type" };
+    return { zoom: true, show_alerts: true, group_by: "type" };
   }
 
   _helpers() {
@@ -487,6 +487,7 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
         ],
       },
       { name: "zoom", selector: { boolean: {} } },
+      { name: "show_alerts", selector: { boolean: {} } },
       { name: "exclude", selector: { entity: { multiple: true, include_entities: found } } },
       { name: "include", selector: { entity: { multiple: true, domain: ["climate", "fan"] } } },
       {
