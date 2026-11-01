@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as mdi from "@mdi/js";
 import { chromium } from "playwright";
+import { seekAnimations } from "./frames.mjs";
 
 export const root = fileURLToPath(new URL("../..", import.meta.url));
 const cardJs = readFileSync(`${root}dist/ha-climate-air-card.js`, "utf8");
@@ -124,7 +125,8 @@ export const shoot = async ({ prefix, tag, shots, setup, icons = [] }) => {
 };
 
 // Records `tag` (configured by setup) as a looping GIF screenshots/<file>.gif — needs ffmpeg on PATH. Every
-// animation is paused and stepped frame by frame, so the GIF is identical whatever the machine's speed.
+// animation, in the cards' shadow roots too, is paused and stepped frame by frame (seekAnimations), so the GIF is
+// identical whatever the machine's speed.
 export const animate = async ({ file, tag, setup, theme = "light", icons = [], fps = 20, seconds = 3 }) => {
   const iconMap = iconsFor(icons);
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
@@ -135,12 +137,7 @@ export const animate = async ({ file, tag, setup, theme = "light", icons = [], f
   const dir = mkdtempSync(join(tmpdir(), "ca-frames-"));
   const frames = Math.round(fps * seconds);
   for (let i = 0; i < frames; i++) {
-    await page.evaluate((t) => {
-      for (const a of document.getAnimations()) {
-        a.pause();
-        a.currentTime = t;
-      }
-    }, (i * 1000) / fps);
+    await page.evaluate(seekAnimations, (i * 1000) / fps);
     await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
   }
   await browser.close();
