@@ -121,11 +121,20 @@ test("Dyson: detected as a purifier, HEPA filter life wins over the carbon one",
   assert.equal(lib.caFindRole(h, list, "mode"), undefined);
 });
 
-test("I18N parity: fr, de, es, sr and sr-Latn have exactly the keys and placeholders of en", () => {
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+
+test("every language has both tables", () => {
+  for (const lang of LANGS) {
+    assert.ok(lib.CA_I18N[lang], `CA_I18N.${lang}`);
+    assert.ok(lib.CA_VALUES[lang], `CA_VALUES.${lang}`);
+  }
+});
+
+test("I18N parity: every language has exactly the keys and placeholders of en", () => {
   const placeholders = (s) => [...String(s).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
   for (const table of [lib.CA_I18N, lib.CA_VALUES]) {
     const en = table.en;
-    for (const lang of ["fr", "de", "es", "sr", "sr-Latn"]) {
+    for (const lang of LANGS) {
       assert.deepEqual(Object.keys(table[lang]).sort(), Object.keys(en).sort(), lang);
       for (const k of Object.keys(en)) {
         assert.equal(typeof table[lang][k], "string", `${lang}.${k}`);
@@ -140,7 +149,7 @@ test("de and es are picked from Home Assistant or the card's language option", (
   assert.equal(lib.caLang({}, { language: "de" }), "de");
   assert.equal(lib.caLang({ language: "es" }, { language: "en" }), "es");
   assert.equal(lib.caLang({}, { language: "es-419" }), "es");
-  assert.equal(lib.caLang({}, { language: "it" }), "en");
+  assert.equal(lib.caLang({}, { language: "ja" }), "en");
   assert.equal(lib.caT("de", "running_n", { n: 2 }), "2 an");
   assert.equal(lib.caValueLabel("es", "level_3"), "Nivel 3");
   assert.equal(lib.caValueLabel("de", "Level4"), "Stufe 4");
@@ -151,10 +160,36 @@ test("the language: the full code when known, else the part before the dash, els
   assert.equal(lib.caLang({}, { language: "de-CH" }), "de");
   assert.equal(lib.caLang({}, { language: "sr-Latn" }), "sr-Latn");
   assert.equal(lib.caLang({}, { language: "sr" }), "sr");
-  assert.equal(lib.caLang({}, { language: "pt-BR" }), "en");
   assert.equal(lib.caLang({ language: "sr-Latn" }, { language: "fr" }), "sr-Latn");
   assert.equal(lib.caT("sr-Latn", "running_n", { n: 2 }), "2 uključeno");
   assert.equal(lib.caValueLabel("sr", "level_3"), "Ниво 3");
+});
+
+test("it, nl, pt and pl: picked from the full code, else the part before the dash; pt-BR falls back to European Portuguese", () => {
+  assert.equal(lib.caLang({}, { language: "it-IT" }), "it");
+  assert.equal(lib.caLang({}, { language: "nl-BE" }), "nl");
+  assert.equal(lib.caLang({}, { language: "pt" }), "pt");
+  assert.equal(lib.caLang({}, { language: "pt-BR" }), "pt");
+  assert.equal(lib.caLang({}, { language: "pl-PL" }), "pl");
+  assert.equal(lib.caLang({}, { language: "sr-Latn" }), "sr-Latn");
+  assert.equal(lib.caLang({}, { language: "ja" }), "en");
+  assert.equal(lib.caLang({ language: "pl" }, { language: "fr" }), "pl");
+  assert.equal(lib.caT("nl", "running_n", { n: 2 }), "2 aan");
+  assert.equal(lib.caT("pl", "running_n", { n: 5 }), "Włączone: 5");
+  assert.equal(lib.caValueLabel("it", "level_3"), "Livello 3");
+  assert.equal(lib.caValueLabel("pt", "livello_2"), "Nível 2");
+  assert.equal(lib.caValueLabel("pl", "poziom_1"), "Poziom 1");
+});
+
+test("the editor offers every language, once, each under its own name", () => {
+  const [group] = lib.caAdvanced("en", "language");
+  const options = group.schema[0].selector.select.options;
+  assert.deepEqual(json(options.map((o) => o.value)), ["", "en", ...LANGS]);
+  const labels = Object.fromEntries(options.map((o) => [o.value, o.label]));
+  assert.equal(labels.it, "Italiano");
+  assert.equal(labels.nl, "Nederlands");
+  assert.equal(labels.pt, "Português");
+  assert.equal(labels.pl, "Polski");
 });
 
 test("Serbian: no Latin letter in sr, no Cyrillic one in sr-Latn, but for names, units and entity IDs", () => {
