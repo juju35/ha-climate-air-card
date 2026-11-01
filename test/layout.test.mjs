@@ -174,17 +174,25 @@ test("narrow air conditioner: the target stepper tightens so its buttons stay in
 });
 
 // A size container (container-type: inline-size) has no content width: in an inline-block or a grid's auto column
-// the card fell to 26 px. An intrinsic width stands in for the content, and the host's min-width: 0 still lets the
-// card shrink in a 1fr grid column (layout-card, grid card, horizontal stack) instead of overflowing it.
+// the card fell to 26 px. contain-intrinsic-inline-size gave it a min-content width too: wrapped in a <div> in a 1fr
+// grid column, the div (min-width: auto) kept 326 px and the cards overflowed by up to 340 px. An empty, zero-height
+// grid before the content gives the host a max-content width of 300 px and a min-content width of 0 instead.
 test("size containers keep a width in shrink-to-fit parents and still shrink in 1fr columns", () => {
   const all = [...cards(), ["climate-air-overview-card", overview()]];
   for (const [tag, el] of all) {
     const rs = rules(el);
     const card = decl(rs, "ha-card");
     assert.equal(card["container-type"], "inline-size", tag);
-    assert.match(card["contain-intrinsic-inline-size"] || "", /^(auto )?([2-9]\d\d)px$/, `${tag}: intrinsic width`);
+    for (const r of rs)
+      for (const prop of Object.keys(r.decl)) assert.doesNotMatch(prop, /^contain-intrinsic/, `${tag} ${r.sel}: no min-content width`);
     const host = decl(rs, ":host");
-    assert.equal(host["min-width"], "0", `${tag}: the host can shrink below the intrinsic width`);
+    assert.equal(host.display, "block", tag);
+    assert.ok(!host["min-width"] || host["min-width"] === "0", `${tag}: no px min-width on the host`);
+    const before = decl(rs, ":host::before");
+    assert.equal(before.content, '""', tag);
+    assert.equal(before.display, "grid", tag);
+    assert.equal(before["grid-template-columns"], "minmax(0, 300px)", tag);
+    assert.equal(before.height, "0", tag);
   }
 });
 
