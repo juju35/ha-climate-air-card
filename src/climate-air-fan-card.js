@@ -88,7 +88,7 @@ class ClimateAirFanCard extends CaCard {
     const timer = this._num(ent.timer);
     if (on && timer) {
       const unit = this._st(ent.timer).attributes.unit_of_measurement || "";
-      chips.push(this._chip("mdi:timer-outline", `${caFmtNum(this._lang(), timer)}${unit ? ` ${unit}` : ""}`, "tint", this._t("timer")));
+      chips.push(this._chip("mdi:timer-outline", `${caFmtNum(this._intlLang(), timer)}${unit ? ` ${unit}` : ""}`, "tint", this._t("timer")));
     }
     return {
       state: on ? "on" : "off",

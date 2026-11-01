@@ -188,7 +188,7 @@ test("the editor offers every language, once, each under its own name", () => {
   const labels = Object.fromEntries(options.map((o) => [o.value, o.label]));
   assert.equal(labels.it, "Italiano");
   assert.equal(labels.nl, "Nederlands");
-  assert.equal(labels.pt, "Português");
+  assert.equal(labels.pt, "Português (Portugal)");
   assert.equal(labels.pl, "Polski");
 });
 
@@ -231,4 +231,18 @@ test("roles are found on a German or Spanish installation, and VOC / NO₂ by de
   assert.equal(lib.caFindRole(h, list, "voc"), "sensor.klimaanlage_luftqualitat_index");
   assert.equal(lib.caFindRole(h, list, "no2"), "sensor.klimaanlage_no2_wert");
   assert.equal(lib.caFindRole(h, list, "timer"), "number.klimaanlage_temporizador");
+});
+
+test("numbers are formatted with Home Assistant's full locale; bare pt is European Portuguese; the language option wins", () => {
+  assert.equal(lib.caIntlLang({}, { language: "pt" }), "pt-PT");
+  assert.equal(lib.caIntlLang({}, { language: "pt", locale: { language: "pt" } }), "pt-PT");
+  assert.equal(lib.caIntlLang({}, { language: "pt-BR" }), "pt-BR");
+  assert.equal(lib.caIntlLang({}, { language: "fr", locale: { language: "fr-CH" } }), "fr-CH");
+  assert.equal(lib.caIntlLang({}, { language: "ja" }), "en");
+  assert.equal(lib.caIntlLang({ language: "pt" }, { language: "de", locale: { language: "de-CH" } }), "pt-PT");
+  assert.equal(lib.caIntlLang({ language: "de" }, { language: "pt-BR" }), "de");
+  assert.equal(lib.caIntlLang({}, { language: "sr-Latn" }), "sr-Latn");
+  // European grouping (a space), not the Brazilian dot.
+  assert.match(lib.caFmtNum(lib.caIntlLang({}, { language: "pt" }), 12345.6), /^12\s345,6$/);
+  assert.equal(lib.caFmtNum(lib.caIntlLang({}, { language: "pt-BR" }), 12345.6), "12.345,6");
 });

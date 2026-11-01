@@ -1198,6 +1198,16 @@ function caLang(config, hass) {
   return CA_I18N[base] ? base : "en";
 }
 
+// The locale handed to Intl / toLocaleString: Home Assistant's full locale ("pt-BR", "de-CH") when it is in the
+// card's language, else the card's language; bare "pt" (Home Assistant's European Portuguese) becomes "pt-PT", or
+// Intl formats it the Brazilian way. The card's language option wins.
+function caIntlLang(config, hass) {
+  const lang = caLang(config, hass);
+  const full = String(config?.language || hass?.locale?.language || hass?.language || "");
+  const loc = full && full.split("-")[0] === lang.split("-")[0] ? full : lang;
+  return loc === "pt" ? "pt-PT" : loc;
+}
+
 function caEsc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 }
@@ -1595,6 +1605,10 @@ class CaElement extends HTMLElement {
     return caLang(this._config, this._hass);
   }
 
+  _intlLang() {
+    return caIntlLang(this._config, this._hass);
+  }
+
   _t(k, vars) {
     return caT(this._lang(), k, vars);
   }
@@ -1721,7 +1735,7 @@ class CaCard extends CaElement {
     const v = Number(st.state);
     if (!Number.isFinite(v)) return this._fmtState(id);
     const unit = st.attributes.unit_of_measurement || "";
-    return `${caFmtNum(this._lang(), v)}${unit ? (unit === "%" ? " %" : ` ${unit}`) : ""}`;
+    return `${caFmtNum(this._intlLang(), v)}${unit ? (unit === "%" ? " %" : ` ${unit}`) : ""}`;
   }
 
   // An entity's name without the device name in front ("Air conditioner Anion" → "Anion").
@@ -1885,7 +1899,7 @@ class CaCard extends CaElement {
       const opts = Array.from({ length: count }, (_, i) => +(min + i * step).toFixed(4));
       if (!opts.includes(v)) opts.push(v);
       opts.sort((x, y) => x - y);
-      const text = (o) => (o === 0 && /timer|countdown|delay|minuterie|temporizador|ausschalt/.test(id) ? this._t("timer_off") : `${caFmtNum(this._lang(), o)}${unit ? ` ${unit}` : ""}`);
+      const text = (o) => (o === 0 && /timer|countdown|delay|minuterie|temporizador|ausschalt/.test(id) ? this._t("timer_off") : `${caFmtNum(this._intlLang(), o)}${unit ? ` ${unit}` : ""}`);
       return `<label class="field"><span>${caEsc(label)}</span><select data-number="${caEsc(id)}">${opts
         .map((o) => `<option value="${o}"${o === v ? " selected" : ""}>${caEsc(text(o))}</option>`)
         .join("")}</select></label>`;
@@ -1893,7 +1907,7 @@ class CaCard extends CaElement {
     return (
       `<div class="slider"><ha-icon icon="${icon || "mdi:tune-variant"}"></ha-icon><span class="sl-label">${caEsc(label)}</span>` +
       `<input type="range" min="${min}" max="${max}" step="${step}" value="${v}" data-number="${caEsc(id)}" aria-label="${caEsc(label)}" style="--p:${((v - min) / (max - min || 1)) * 100}%">` +
-      `<span class="v">${caFmtNum(this._lang(), v)}${unit ? ` ${unit}` : ""}</span></div>`
+      `<span class="v">${caFmtNum(this._intlLang(), v)}${unit ? ` ${unit}` : ""}</span></div>`
     );
   }
 
@@ -2349,7 +2363,7 @@ const caAdvanced = (lang, ...names) => [
                   { value: "sr-Latn", label: "Srpski (latinica)" },
                   { value: "it", label: "Italiano" },
                   { value: "nl", label: "Nederlands" },
-                  { value: "pt", label: "Português" },
+                  { value: "pt", label: "Português (Portugal)" },
                   { value: "pl", label: "Polski" },
                 ],
               },
