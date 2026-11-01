@@ -148,6 +148,26 @@ test("mini cards are compact until their detail button is pressed", () => {
   assert.doesNotMatch(html(plain), /data-action="zoom"/);
 });
 
+// The zoom button is rebuilt by the render: from the keyboard, the focus moves to the new one without scrolling the
+// page (the card changes size under it), so `preventScroll` is required.
+test("the zoom button gets the focus back from the keyboard without scrolling the page", () => {
+  const spy = (el) => {
+    const calls = [];
+    el.shadowRoot.querySelector(".zoom").focus = (opts) => calls.push(opts);
+    return calls;
+  };
+  const mini = mount(lib, "climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan" }, makeHass());
+  const miniCalls = spy(mini);
+  mini._toggleZoom({ detail: 1 });
+  assert.equal(miniCalls.length, 0, "a mouse click leaves the focus where the browser put it");
+  mini._toggleZoom({ detail: 0 });
+  assert.deepEqual(JSON.parse(JSON.stringify(miniCalls)), [{ preventScroll: true }]);
+  const ov = mount(lib, "climate-air-overview-card", {}, makeHass());
+  const ovCalls = spy(ov);
+  ov._onClick({ composedPath: () => [{ dataset: { action: "zoom" } }], detail: 0 });
+  assert.deepEqual(JSON.parse(JSON.stringify(ovCalls)), [{ preventScroll: true }]);
+});
+
 test("without an entity, a card takes the first device of its kind", () => {
   const el = mount(lib, "climate-air-purifier-card", {}, makeHass());
   assert.match(html(el), /Bedroom purifier/);
