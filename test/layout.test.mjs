@@ -96,26 +96,30 @@ test("overview: the pill shrinks and truncates instead of crushing the title, bu
   for (const btn of [".badge", ".zoom"]) assert.equal(decl(rs, btn).flex, "none", btn);
 });
 
-// Below a width, the pill keeps only its coloured dot: its text is hidden visually but stays for screen readers
-// (clipped, not display: none) and in the pill's tooltip.
-const assertDotOnly = (rs, stt, label) => {
-  const narrow = rs.filter((r) => r.sel === stt && /^@container/.test(r.cond) && r.decl.position === "absolute");
-  assert.equal(narrow.length, 1, `${label}: one narrow rule clips the pill text`);
-  assert.ok(maxWidth(narrow[0].cond) >= 260, `${label}: dot only from ${maxWidth(narrow[0].cond)}px`);
+// When its whole label does not fit (measured by caFitPills, see narrow-header.test.mjs), the pill keeps only its
+// coloured dot: its text is hidden visually but stays for screen readers (clipped, not display: none) and in the
+// pill's tooltip. No width threshold hides it: a 245 px card showed only dots although the labels fitted.
+const assertDotOnly = (rs, pill, label) => {
+  const narrow = rs.filter((r) => r.sel === `${pill}.dot-only .stt`);
+  assert.equal(narrow.length, 1, `${label}: one rule clips the text of a dot-only pill`);
+  assert.equal(narrow[0].cond, "", `${label}: not tied to a width`);
+  assert.equal(narrow[0].decl.position, "absolute");
   assert.notEqual(narrow[0].decl.display, "none", `${label}: text kept for screen readers`);
   assert.match(narrow[0].decl["clip-path"] || narrow[0].decl.clip || "", /inset|rect/, `${label}: text clipped`);
+  const byWidth = rs.filter((r) => /^@container/.test(r.cond) && r.decl.position === "absolute" && r.sel.includes(".stt"));
+  assert.deepEqual(byWidth, [], `${label}: no container query hides the label`);
 };
 
-test("narrow cards: the pill shows only its dot, with the status in its tooltip", () => {
+test("a pill too narrow for its label shows only its dot, with the status in its tooltip", () => {
   for (const [tag, el] of cards("pl")) {
-    assertDotOnly(rules(el), ".stt", tag);
+    assertDotOnly(rules(el), ".st", tag);
     const out = el.shadowRoot.innerHTML;
     const pill = /<span class="st" title="([^"]+)"><span class="dot"><\/span><span class="stt">([^<]+)<\/span><\/span>/.exec(out);
     assert.ok(pill, `${tag}: pill markup`);
     assert.equal(pill[1], pill[2], `${tag}: tooltip = status`);
   }
   const ov = overview("pl");
-  assertDotOnly(rules(ov), ".pill .stt", "overview");
+  assertDotOnly(rules(ov), ".pill", "overview");
   const head = ov.shadowRoot.querySelector("ha-card").querySelector(".head").innerHTML;
   const pill = /<div class="pill" title="([^"]+)"><span class="dot"><\/span><span class="stt">([^<]+)<\/span><\/div>/.exec(head);
   assert.ok(pill, "overview pill markup");
@@ -234,4 +238,13 @@ test("narrow full cards: the info goes under the picture and long chips wrap ins
   const chip = decl(rules(overview()), ".chips .chip");
   assert.equal(chip["white-space"], "normal");
   assert.equal(chip.height, "auto");
+  // Between words only: a span of 30-45 px next to the icon cut « Wymi|eń », « Repla|ce ». In a narrow tile the
+  // alert gets the whole tile width instead.
+  const ovRules = rules(overview());
+  for (const r of ovRules.filter((r) => r.sel.startsWith(".chips")))
+    for (const [k, v] of Object.entries(r.decl))
+      assert.ok(!/^(overflow-wrap|word-wrap|word-break)$/.test(k) || /^(normal|keep-all)$/.test(v), `${r.sel} { ${k}: ${v} }`);
+  const wide = ovRules.find((r) => r.sel === ".dev:has(.chips)" && /^@container/.test(r.cond));
+  assert.ok(wide && maxWidth(wide.cond) >= 130, "a narrow rule gives the alert the whole tile");
+  assert.match(wide.decl["grid-template-areas"], /"chips chips"/);
 });
