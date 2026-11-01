@@ -336,8 +336,9 @@ class ClimateAirOverviewCard extends CaElement {
 const CA_OVERVIEW_STYLES = `
   :host { display: block; --ca-ok: var(--success-color, #43a047); --ca-warn: var(--warning-color, #ffa600); --ca-on: var(--info-color, #039be5);
           --ca-idle: var(--secondary-text-color, #9e9e9e); min-width: 0; }
-  /* A size container: the intrinsic width stands in for its content in a shrink-to-fit parent (see the device cards). */
-  ha-card { padding: 12px; overflow: hidden; container-type: inline-size; contain-intrinsic-inline-size: 300px; position: relative; }
+  /* A size container: the empty grid before it stands in for its content in a shrink-to-fit parent (see the device cards). */
+  :host::before { content: ""; display: grid; grid-template-columns: minmax(0, 300px); height: 0; }
+  ha-card { padding: 12px; overflow: hidden; container-type: inline-size; position: relative; }
   ha-card.lvl-ok { --c: var(--ca-idle); }
   ha-card.lvl-on { --c: var(--ca-on); }
   ha-card.lvl-warn { --c: var(--ca-warn); }

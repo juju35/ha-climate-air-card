@@ -9,7 +9,7 @@
 - Air conditioner card on a narrow card (about 160 to 180 px): the mode buttons no longer leave the card. They share the width as icons, the selected mode's name staying in its tooltip and for screen readers.
 - Narrow full cards (about 160 to 200 px): the device's info goes under the illustration, so *Unavailable* or a long chip such as *Device offline* is no longer cut. On the Overview, a long filter alert wraps inside its tile instead of being cut.
 - At usual widths, the status pill shows its whole label (*Purifying*, *Unavailable*): the name gives way first and the pill is only truncated when there is really no room.
-- Cards placed in a container that sizes them to their content (an `inline-block`, a grid's `auto` column, as in some layout-card or button-card setups) no longer collapse to a thin strip, and they still shrink to fit two-column grids and horizontal stacks.
+- Cards placed in a container that sizes them to their content (an `inline-block`, a grid's `auto` column, as in some layout-card or button-card setups) no longer collapse to a thin strip, and they still shrink to fit two-column grids and horizontal stacks, also when the card is wrapped in another element there (it used to keep a 326 px width and overflow its column).
 - Mini cards and Overview: opening or closing the details from the keyboard no longer scrolls the page.
 
 ## 1.8.7 — 2026-11-01

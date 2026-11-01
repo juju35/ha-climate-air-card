@@ -2127,11 +2127,12 @@ const CA_ART_STYLES = `
 // ── Styles ───────────────────────────────────────────────────────────────────
 const CA_STYLES = `${CA_ART_STYLES}
   /* ha-card is a size container, so its content gives it no width: in a shrink-to-fit parent (inline-block, a grid's
-     auto column) it would fall to its padding. The intrinsic width stands in for the content, and the host's
-     min-width: 0 lets the card still shrink below it in a 1fr grid column or a stack. */
+     auto column) it would fall to its padding. The empty, zero-height grid before it stands in for the content: a
+     300 px max-content width but no min-content width, so the card still shrinks in a 1fr grid column or a stack,
+     even wrapped in a <div> (contain-intrinsic-inline-size gave a min-content width, and the card overflowed). */
   :host { display: block; height: 100%; min-width: 0; }
-  ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size;
-            contain-intrinsic-inline-size: 300px; }
+  :host::before { content: ""; display: grid; grid-template-columns: minmax(0, 300px); height: 0; }
+  ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size; }
   .empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }
   /* The body starts 8px under the header, like the other ha-* cards (the card's gap is 10px, 8px on the mini cards). */
   .header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }
