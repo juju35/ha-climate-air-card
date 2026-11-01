@@ -74,7 +74,8 @@ test("device cards: the status pill shrinks and truncates instead of crushing th
     assert.equal(stt["text-overflow"], "ellipsis", `${tag} .stt ellipsis`);
     assert.equal(stt["white-space"], "nowrap", `${tag} .stt nowrap`);
     const titles = decl(rs, ".titles");
-    assert.equal(titles.flex, "1 1 auto", `${tag} .titles flex`);
+    // A zero basis: the pill gets its whole label first, the title takes what is left (but keeps a few characters).
+    assert.equal(titles.flex, "1 1 0", `${tag} .titles flex`);
     assert.match(titles["min-width"] || "", /^\d+(\.\d+)?ch$/, `${tag} .titles keeps a few characters`);
     for (const btn of [".badge", ".power", ".zoom", ".round"]) assert.equal(decl(rs, btn).flex, "none", `${tag} ${btn} never shrinks`);
     assert.equal(decl(rs, "ha-card")["container-type"], "inline-size", `${tag} ha-card is a size container`);
@@ -90,7 +91,7 @@ test("overview: the pill shrinks and truncates instead of crushing the title, bu
   assert.equal(pill.overflow, "hidden");
   assert.equal(decl(rs, ".pill .stt")["text-overflow"], "ellipsis");
   const title = decl(rs, ".title");
-  assert.equal(title.flex, "1 1 auto");
+  assert.equal(title.flex, "1 1 0");
   assert.match(title["min-width"], /^\d+(\.\d+)?ch$/);
   for (const btn of [".badge", ".zoom"]) assert.equal(decl(rs, btn).flex, "none", btn);
 });
@@ -170,4 +171,59 @@ test("narrow air conditioner: the target stepper tightens so its buttons stay in
   // The widest the stepper can be in a 160 px card (136 px inside): 36 + 4 + value + 4 + 36.
   const at136 = new RegExp(`max-width: (${narrow.filter((w) => w >= 136 && w <= 180).join("|")})px`);
   assert.equal(decl(rs, ".stepper .round", at136).width, "36px");
+});
+
+// A size container (container-type: inline-size) has no content width: in an inline-block or a grid's auto column
+// the card fell to 26 px. An intrinsic width stands in for the content, and the host's min-width: 0 still lets the
+// card shrink in a 1fr grid column (layout-card, grid card, horizontal stack) instead of overflowing it.
+test("size containers keep a width in shrink-to-fit parents and still shrink in 1fr columns", () => {
+  const all = [...cards(), ["climate-air-overview-card", overview()]];
+  for (const [tag, el] of all) {
+    const rs = rules(el);
+    const card = decl(rs, "ha-card");
+    assert.equal(card["container-type"], "inline-size", tag);
+    assert.match(card["contain-intrinsic-inline-size"] || "", /^(auto )?([2-9]\d\d)px$/, `${tag}: intrinsic width`);
+    const host = decl(rs, ":host");
+    assert.equal(host["min-width"], "0", `${tag}: the host can shrink below the intrinsic width`);
+  }
+});
+
+// 5 modes in a 156 px card (6 columns of a 320 px section): the unselected modes are 36 px icons that do not shrink,
+// so the last one left the card and the selected one was crushed. Below 180 px inside, every segment shares the width.
+test("narrow air conditioner: the mode segments share the width instead of leaving the card", () => {
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass());
+  assert.match(el.shadowRoot.innerHTML, /class="seg short"/, "the modes render as short segments");
+  const rs = rules(el);
+  assert.equal(decl(rs, ".seg.short").flex, "0 0 auto", "wide card: icons keep their size");
+  const narrow = rs.filter((r) => r.sel === ".segments:has(.short) .seg" && /^@container/.test(r.cond));
+  assert.equal(narrow.length, 1, "one narrow rule for the segments");
+  // The segments overflowed up to a 180 px card: 154 px inside (12 px padding and 1 px border each side).
+  assert.ok(maxWidth(narrow[0].cond) >= 160, `segments share the width from ${maxWidth(narrow[0].cond)} px`);
+  assert.equal(narrow[0].decl.flex, "1 1 0");
+  assert.equal(narrow[0].decl["min-width"], "0");
+  const label = decl(rs, ".segments:has(.short) .seg.on span", new RegExp(narrow[0].cond.replace(/[()]/g, "\\$&")));
+  assert.equal(label.position, "absolute", "the selected label is clipped");
+  assert.match(label["clip-path"] || "", /inset/);
+  assert.notEqual(label.display, "none", "still read by screen readers");
+});
+
+// At 156 px the info next to the picture had 64 px: « Unavailable » (22 px) left the card and a long chip
+// (« Na zewnątrz 31 °C », « Urządzenie offline ») was cut. Below 180 px inside, the info goes under the picture and
+// the chips wrap their text.
+test("narrow full cards: the info goes under the picture and long chips wrap instead of being cut", () => {
+  for (const [tag, el] of cards()) {
+    const rs = rules(el);
+    assert.equal(decl(rs, ".chips .chip")["white-space"], "normal", `${tag}: chips wrap`);
+    assert.equal(decl(rs, ".state-big")["overflow-wrap"], "break-word", `${tag}: a status word never leaves the card`);
+    if (tag.endsWith("-mini-card")) continue;
+    const narrow = rs.filter((r) => r.sel === "ha-card:not(.mini) .hero" && /^@container/.test(r.cond) && r.decl["flex-wrap"] === "wrap");
+    assert.equal(narrow.length, 1, `${tag}: one narrow rule wraps the hero`);
+    assert.ok(maxWidth(narrow[0].cond) >= 154, `${tag}: from ${maxWidth(narrow[0].cond)} px`);
+    const info = decl(rs, "ha-card:not(.mini) .hero .info", new RegExp(narrow[0].cond.replace(/[()]/g, "\\$&")));
+    assert.equal(info["flex-basis"], "100%", `${tag}: the info takes the whole width`);
+  }
+  // The overview's filter alert, in a 156 px card: « Replace the filter » was cut to « Replace the ».
+  const chip = decl(rules(overview()), ".chips .chip");
+  assert.equal(chip["white-space"], "normal");
+  assert.equal(chip.height, "auto");
 });
