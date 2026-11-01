@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.5 — 2026-10-29
+
+### Fixes
+- Overview visual editor: the *Alerts* toggle is now offered (on by default). Turning it off hides the filter alerts on the purifier and air conditioner tiles, as `show_alerts: false` already did in YAML.
+
 ## 1.8.4 — 2026-10-29
 
 ### Fixes
