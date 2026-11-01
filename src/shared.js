@@ -1811,7 +1811,7 @@ class CaCard extends CaElement {
     this.shadowRoot.innerHTML =
       `${this._styles(m.color)}<ha-card>` +
       `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>` +
-      `<span class="st"><span class="dot"></span>${caEsc(m.statusText)}</span>${m.powerBtn}${this._zoomButton()}</div>` +
+      `${caPill(m.statusText)}${m.powerBtn}${this._zoomButton()}</div>` +
       `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : ""}</div></div>` +
       (c.show_controls && m.online ? this._controls(m) : "") +
       "</ha-card>";
@@ -2064,12 +2064,16 @@ const caMini = (Base) =>
       return (
         `${this._styles(m.color)}<ha-card class="mini">` +
         `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div></div>` +
-        `<span class="st"><span class="dot"></span>${caEsc(m.statusText)}</span>${this._zoomButton()}</div>` +
+        `${caPill(m.statusText)}${this._zoomButton()}</div>` +
         `<div class="content">${this._picture(m)}<div class="info">${this._miniInfo(m)}${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div>` +
         `${btns.length ? `<div class="mcontrols">${btns.join("")}</div>` : ""}</div></ha-card>`
       );
     }
   };
+
+// The status pill of the header: its text truncates, and on a narrow card only the dot shows (the status stays in the
+// tooltip, and for screen readers in the clipped text).
+const caPill = (text) => `<span class="st" title="${caEsc(text)}"><span class="dot"></span><span class="stt">${caEsc(text)}</span></span>`;
 
 // A mini bar with its value: speed, filter life.
 const caBar = (pct, value, icon) =>
@@ -2123,7 +2127,7 @@ const CA_ART_STYLES = `
 // ── Styles ───────────────────────────────────────────────────────────────────
 const CA_STYLES = `${CA_ART_STYLES}
   :host { display: block; height: 100%; }
-  ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size; }
   .empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }
   /* The body starts 8px under the header, like the other ha-* cards (the card's gap is 10px, 8px on the mini cards). */
   .header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }
@@ -2131,20 +2135,23 @@ const CA_STYLES = `${CA_ART_STYLES}
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); transition: background .4s, color .4s; }
   .badge ha-icon { --mdc-icon-size: 24px; }
-  .titles { flex: 1; min-width: 0; }
+  /* The title shrinks first but keeps about four characters; the pill takes at most half the header. */
+  .titles { flex: 1 1 auto; min-width: 5ch; font-size: 16px; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .st { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
+  .st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative;
+        padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
         white-space: nowrap; background: color-mix(in srgb, var(--ca-color) 15%, transparent); color: var(--ca-color); }
-  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ca-color); }
+  .stt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--ca-color); }
   ha-card:has(.running) .dot { animation: ca-blink 1.6s ease-in-out infinite; }
   button { font: inherit; cursor: pointer; border: none; }
   button:disabled { cursor: default; opacity: .5; }
-  .power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  .power { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: none;
            background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--secondary-text-color); }
   .power.on { background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
   .power.on:hover, .round.on:hover:not(:disabled) { background: color-mix(in srgb, var(--ca-color) 24%, transparent); }
-  .zoom { all: unset; flex-shrink: 0; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
+  .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom ha-icon { --mdc-icon-size: 16px; }
   .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
@@ -2165,8 +2172,9 @@ const CA_STYLES = `${CA_ART_STYLES}
   .state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--ca-color); }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 1px 8px 1px 5px; border-radius: 12px;
-          background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--secondary-text-color); white-space: nowrap; }
-  .chip ha-icon { --mdc-icon-size: 13px; }
+          background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--secondary-text-color); white-space: nowrap;
+          max-width: 100%; box-sizing: border-box; overflow: hidden; }
+  .chip ha-icon { --mdc-icon-size: 13px; flex: none; }
   .chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }
   .chip.alert { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }
   .chip.tint { --k: var(--ca-color); background: color-mix(in srgb, var(--k) 15%, transparent); color: var(--k); }
@@ -2211,7 +2219,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   .toggle.on { background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
   .row { display: flex; align-items: center; gap: 8px; }
   .row > .field { flex: 1; }
-  .round { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
+  .round { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none;
            background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--primary-text-color); }
   .round ha-icon { --mdc-icon-size: 20px; }
   .round.on { background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
@@ -2230,6 +2238,30 @@ const CA_STYLES = `${CA_ART_STYLES}
   .line b { color: var(--primary-text-color); font-weight: 500; }
   .mcontrols { display: flex; gap: 6px; flex-shrink: 0; }
   ha-card.mini .power { width: 40px; height: 40px; }
+
+  /* Narrow cards (6 columns of the Sections view, about 160 to 300 px; the widths below are the card's inner width).
+     The pill keeps only its dot: its text is clipped, still read by screen readers and shown in the tooltip. */
+  @container (max-width: 280px) {
+    .header { gap: 8px; }
+    .st { flex: none; padding: 4px; }
+    .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  }
+  /* The mini card's buttons move under the info, which gets the whole line next to the picture. */
+  @container (max-width: 300px) {
+    ha-card.mini .content { flex-wrap: wrap; row-gap: 8px; }
+    ha-card.mini .info { flex: 0 0 calc(100% - 68px); }
+    ha-card.mini .mcontrols { flex-basis: 100%; justify-content: flex-end; }
+  }
+  /* The narrowest: the full card drops its header badge (the illustration shows the device) and draws it smaller;
+     the mini card drops its illustration (its badge shows the device) and its info takes the whole width. */
+  @container (max-width: 180px) {
+    .header { gap: 6px; }
+    ha-card:not(.mini) .badge { display: none; }
+    ha-card:not(.mini) .hero { gap: 10px; }
+    ha-card:not(.mini) .hero .picture { width: 56px; height: 66px; }
+    ha-card.mini .content > .picture { display: none; }
+    ha-card.mini .info { flex-basis: 100%; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .dot, .iconart ha-icon { animation: none !important; }

@@ -215,9 +215,10 @@ class ClimateAirOverviewCard extends CaElement {
       c.zoom === false
         ? ""
         : `<button class="zoom" data-action="zoom" title="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}" aria-label="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}"><ha-icon icon="${this._zoomed ? "mdi:arrow-collapse" : "mdi:arrow-expand"}"></ha-icon></button>`;
+    const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
     card.querySelector(".head").innerHTML =
       `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${caEsc(c.title || this._t("title"))}</div>` +
-      `${alertChip}<div class="pill">${caEsc(on.length ? this._t("running_n", { n: on.length }) : this._t("all_off"))}</div>${zoom}`;
+      `${alertChip}<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div>${zoom}`;
 
     const body = card.querySelector(".body");
     const cols = c.columns || 2;
@@ -343,9 +344,13 @@ const CA_OVERVIEW_STYLES = `
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); }
   .badge ha-icon { --mdc-icon-size: 24px; }
-  .title { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pill { flex: none; display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px;
+  /* The title shrinks first but keeps about four characters; the pill takes at most half the header. */
+  .title { flex: 1 1 auto; min-width: 5ch; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pill { flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative; display: inline-flex; align-items: center;
+          font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px;
           color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); white-space: nowrap; }
+  .pill .stt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pill .dot { display: none; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
   .chip { --k: var(--ca-idle); flex: none; display: inline-flex; align-items: center; gap: 2px; height: 18px; padding: 0 5px; border-radius: 999px;
           font-size: 11px; font-weight: 500; line-height: 1; white-space: nowrap; color: var(--k); background: color-mix(in srgb, var(--k) 14%, transparent); }
   .head .chip { height: 20px; padding: 0 6px; }
@@ -353,6 +358,14 @@ const CA_OVERVIEW_STYLES = `
   .chip.on { --k: var(--ca-on); }
   .chip.warn { --k: var(--ca-warn); }
   @container (max-width: 340px) { .head { gap: 6px; } .head .chip { display: none; } }
+  /* Narrow (inner width): the pill keeps only a dot, its text clipped (still read by screen readers, and in the
+     tooltip); at the narrowest the header badge goes too. */
+  @container (max-width: 280px) {
+    .pill { flex: none; padding: 4px; }
+    .pill .dot { display: block; }
+    .pill .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  }
+  @container (max-width: 180px) { .head .badge { display: none; } }
   .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom ha-icon { --mdc-icon-size: 16px; }

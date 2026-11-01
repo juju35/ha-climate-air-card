@@ -26,6 +26,8 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 
 All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese and Polish labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
 
+On narrow cards (6 columns of a Sections view), the status pill keeps only its coloured dot (the status stays in its tooltip), the title keeps its first characters, and the mini cards move their buttons under the device's info.
+
 ## Features
 
 ### Overview
