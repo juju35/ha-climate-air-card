@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.8 — 2026-11-01
+
+### Fixes
+- Narrow cards (6 columns of a Sections view): the status pill no longer squeezes the card's name down to nothing. It now takes at most half the header and truncates, and on a narrow card it keeps only its coloured dot, with the status in its tooltip (and still read by screen readers). The name always keeps its first characters, and no button leaves the card. Same on the Overview header.
+- Mini cards at their default width: the round buttons move under the device's info, so the air quality, fan mode or temperature line is no longer cut to a couple of letters and the speed value no longer overlaps the buttons. On the narrowest cards the illustration makes way for the info.
+- Air conditioner card on a narrow card: the target temperature stepper tightens so its − and + buttons stay inside the card.
+
 ## 1.8.7 — 2026-11-01
 
 ### Changes
