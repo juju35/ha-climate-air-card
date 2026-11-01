@@ -335,8 +335,9 @@ class ClimateAirOverviewCard extends CaElement {
 
 const CA_OVERVIEW_STYLES = `
   :host { display: block; --ca-ok: var(--success-color, #43a047); --ca-warn: var(--warning-color, #ffa600); --ca-on: var(--info-color, #039be5);
-          --ca-idle: var(--secondary-text-color, #9e9e9e); }
-  ha-card { padding: 12px; overflow: hidden; container-type: inline-size; position: relative; }
+          --ca-idle: var(--secondary-text-color, #9e9e9e); min-width: 0; }
+  /* A size container: the intrinsic width stands in for its content in a shrink-to-fit parent (see the device cards). */
+  ha-card { padding: 12px; overflow: hidden; container-type: inline-size; contain-intrinsic-inline-size: 300px; position: relative; }
   ha-card.lvl-ok { --c: var(--ca-idle); }
   ha-card.lvl-on { --c: var(--ca-on); }
   ha-card.lvl-warn { --c: var(--ca-warn); }
@@ -344,8 +345,9 @@ const CA_OVERVIEW_STYLES = `
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); }
   .badge ha-icon { --mdc-icon-size: 24px; }
-  /* The title shrinks first but keeps about four characters; the pill takes at most half the header. */
-  .title { flex: 1 1 auto; min-width: 5ch; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
+     characters: the pill is only truncated when even that does not fit. */
+  .title { flex: 1 1 0; min-width: 5ch; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pill { flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative; display: inline-flex; align-items: center;
           font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px;
           color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); white-space: nowrap; }
@@ -419,7 +421,9 @@ const CA_OVERVIEW_STYLES = `
   .state { grid-area: state; margin-top: 1px; font-size: 11px; line-height: 1.25; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dev.on .state { color: var(--t); }
   .chips { grid-area: chips; display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; min-width: 0; }
-  .chips .chip { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  /* The alert wraps inside the tile instead of being cut (« Replace the filter » in a narrow card). */
+  .chips .chip { max-width: 100%; box-sizing: border-box; overflow: hidden; height: auto; min-height: 18px; padding: 2px 5px; white-space: normal; }
+  .chips .chip > span { min-width: 0; overflow-wrap: break-word; }
 
   .panel { margin-top: 8px; border-radius: 12px; overflow: hidden; background: var(--secondary-background-color, transparent);
            --ha-card-background: transparent; --card-background-color: transparent; --ha-card-box-shadow: none; --ha-card-border-width: 0; }

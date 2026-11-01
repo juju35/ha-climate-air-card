@@ -2126,8 +2126,12 @@ const CA_ART_STYLES = `
 
 // ── Styles ───────────────────────────────────────────────────────────────────
 const CA_STYLES = `${CA_ART_STYLES}
-  :host { display: block; height: 100%; }
-  ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size; }
+  /* ha-card is a size container, so its content gives it no width: in a shrink-to-fit parent (inline-block, a grid's
+     auto column) it would fall to its padding. The intrinsic width stands in for the content, and the host's
+     min-width: 0 lets the card still shrink below it in a 1fr grid column or a stack. */
+  :host { display: block; height: 100%; min-width: 0; }
+  ha-card { height: 100%; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px; container-type: inline-size;
+            contain-intrinsic-inline-size: 300px; }
   .empty { display: flex; align-items: center; gap: 10px; color: var(--secondary-text-color); }
   /* The body starts 8px under the header, like the other ha-* cards (the card's gap is 10px, 8px on the mini cards). */
   .header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }
@@ -2135,8 +2139,9 @@ const CA_STYLES = `${CA_ART_STYLES}
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); transition: background .4s, color .4s; }
   .badge ha-icon { --mdc-icon-size: 24px; }
-  /* The title shrinks first but keeps about four characters; the pill takes at most half the header. */
-  .titles { flex: 1 1 auto; min-width: 5ch; font-size: 16px; }
+  /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
+     characters: the pill is only truncated when even that does not fit. */
+  .titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative;
@@ -2169,11 +2174,13 @@ const CA_STYLES = `${CA_ART_STYLES}
   .big .val small { font-size: 14px; color: var(--secondary-text-color); }
   .big .lbl { font-size: 13px; font-weight: 500; color: var(--ca-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .big .arrow { font-size: 14px; color: var(--secondary-text-color); white-space: nowrap; }
-  .state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--ca-color); }
+  .state-big { font-size: 22px; font-weight: 400; line-height: 1.2; color: var(--ca-color); overflow-wrap: break-word; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 1px 8px 1px 5px; border-radius: 12px;
           background: var(--secondary-background-color, rgba(128,128,128,.12)); color: var(--secondary-text-color); white-space: nowrap;
           max-width: 100%; box-sizing: border-box; overflow: hidden; }
+  /* A chip too long for the card (« Device offline » in a narrow card) wraps instead of being cut. */
+  .chips .chip { white-space: normal; }
   .chip ha-icon { --mdc-icon-size: 13px; flex: none; }
   .chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }
   .chip.alert { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }
@@ -2259,8 +2266,17 @@ const CA_STYLES = `${CA_ART_STYLES}
     ha-card:not(.mini) .badge { display: none; }
     ha-card:not(.mini) .hero { gap: 10px; }
     ha-card:not(.mini) .hero .picture { width: 56px; height: 66px; }
+    /* The info gets the whole width under the picture: next to it, it had 64 px at 156 px and cut the values
+       (« Unavailable », « Na zewnątrz 31 °C »). */
+    ha-card:not(.mini) .hero { flex-wrap: wrap; justify-content: center; row-gap: 6px; }
+    ha-card:not(.mini) .hero .info { flex-basis: 100%; }
+    .state-big { font-size: 20px; }
     ha-card.mini .content > .picture { display: none; }
     ha-card.mini .info { flex-basis: 100%; }
+    /* Many segments (the air conditioner's modes): they share the width as icons, the selected one's label kept for
+       screen readers and in its tooltip. */
+    .segments:has(.short) .seg { position: relative; flex: 1 1 0; min-width: 0; padding: 6px 2px; }
+    .segments:has(.short) .seg.on span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   }
 
   @media (prefers-reduced-motion: reduce) {
