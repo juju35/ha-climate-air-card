@@ -3,11 +3,11 @@
 ## 1.8.8 — 2026-11-01
 
 ### Fixes
-- Narrow cards (6 columns of a Sections view): the status pill no longer squeezes the card's name down to nothing. It now takes at most half the header and truncates, and on a narrow card it keeps only its coloured dot, with the status in its tooltip (and still read by screen readers). The name always keeps its first characters. Same on the Overview header.
+- Narrow cards (6 columns of a Sections view): the status pill no longer squeezes the card's name down to nothing. It takes at most half the header and shows its whole label; only when that label really does not fit does it keep just its coloured dot, with the status in its tooltip (and still read by screen readers). The name always keeps its first characters. Same on the Overview header.
 - Mini cards at their default width: the round buttons move under the device's info, so the air quality, fan mode or temperature line is no longer cut to a couple of letters and the speed value no longer overlaps the buttons. On the narrowest cards the illustration makes way for the info.
 - Air conditioner card on a narrow card: the target temperature stepper tightens so its − and + buttons stay inside the card.
 - Air conditioner card on a narrow card (about 160 to 180 px): the mode buttons no longer leave the card. They share the width as icons, the selected mode's name staying in its tooltip and for screen readers.
-- Narrow full cards (about 160 to 200 px): the device's info goes under the illustration, so *Unavailable* or a long chip such as *Device offline* is no longer cut. On the Overview, a long filter alert wraps inside its tile instead of being cut.
+- Narrow full cards (about 160 to 200 px): the device's info goes under the illustration, so *Unavailable* or a long chip such as *Device offline* is no longer cut. On the Overview, a long filter alert wraps inside its tile, between words, and on a narrow card it takes the tile's whole width instead of being cut.
 - At usual widths, the status pill shows its whole label (*Purifying*, *Unavailable*): the name gives way first and the pill is only truncated when there is really no room.
 - Cards placed in a container that sizes them to their content (an `inline-block`, a grid's `auto` column, as in some layout-card or button-card setups) no longer collapse to a thin strip, and they still shrink to fit two-column grids and horizontal stacks, also when the card is wrapped in another element there (it used to keep a 326 px width and overflow its column).
 - Mini cards and Overview: opening or closing the details from the keyboard no longer scrolls the page.

@@ -54,10 +54,12 @@ class ClimateAirOverviewCard extends CaElement {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     document.addEventListener("click", this._onOutside, true);
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback();
     document.removeEventListener("click", this._onOutside, true);
   }
 
@@ -219,6 +221,7 @@ class ClimateAirOverviewCard extends CaElement {
     card.querySelector(".head").innerHTML =
       `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${caEsc(c.title || this._t("title"))}</div>` +
       `${alertChip}<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div>${zoom}`;
+    this._fitPills();
 
     const body = card.querySelector(".body");
     const cols = c.columns || 2;
@@ -361,13 +364,11 @@ const CA_OVERVIEW_STYLES = `
   .chip.on { --k: var(--ca-on); }
   .chip.warn { --k: var(--ca-warn); }
   @container (max-width: 340px) { .head { gap: 6px; } .head .chip { display: none; } }
-  /* Narrow (inner width): the pill keeps only a dot, its text clipped (still read by screen readers, and in the
-     tooltip); at the narrowest the header badge goes too. */
-  @container (max-width: 280px) {
-    .pill { flex: none; padding: 4px; }
-    .pill .dot { display: block; }
-    .pill .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-  }
+  /* A pill whose whole label does not fit (caFitPills) keeps only a dot, its text clipped (still read by screen
+     readers, and in the tooltip); at the narrowest the header badge goes too. */
+  .pill.dot-only { flex: none; padding: 4px; }
+  .pill.dot-only .dot { display: block; }
+  .pill.dot-only .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   @container (max-width: 180px) { .head .badge { display: none; } }
   .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
@@ -422,9 +423,15 @@ const CA_OVERVIEW_STYLES = `
   .state { grid-area: state; margin-top: 1px; font-size: 11px; line-height: 1.25; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dev.on .state { color: var(--t); }
   .chips { grid-area: chips; display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; min-width: 0; }
-  /* The alert wraps inside the tile instead of being cut (« Replace the filter » in a narrow card). */
+  /* The alert wraps inside the tile, between words, instead of being cut (« Replace the filter » in a narrow card). */
   .chips .chip { max-width: 100%; box-sizing: border-box; overflow: hidden; height: auto; min-height: 18px; padding: 2px 5px; white-space: normal; }
-  .chips .chip > span { min-width: 0; overflow-wrap: break-word; }
+  .chips .chip > span { min-width: 0; }
+  /* In a narrow tile the alert takes the whole tile width, under the icon too: next to it, the 30 to 45 px left at
+     156 px could not hold « Zamenite » or « Wymień » and cut them mid-word. */
+  @container (max-width: 200px) {
+    .dev:has(.chips) { grid-template-areas: "ic name" "ic state" "chips chips"; }
+    .dev:has(.chips) .ic.pic { grid-row: 1 / 3; }
+  }
 
   .panel { margin-top: 8px; border-radius: 12px; overflow: hidden; background: var(--secondary-background-color, transparent);
            --ha-card-background: transparent; --card-background-color: transparent; --ha-card-box-shadow: none; --ha-card-border-width: 0; }

@@ -1596,7 +1596,33 @@ function caName(hass, id) {
 //   _miniInfo(m)          the lines of the mini card
 //   _miniButtons(m)       extra round buttons of the mini card (the power button is added after them)
 // What every card of the bundle shares: grid size, language and labels.
+// The status pill shows its whole label, or only its dot when that label truncates (at most half the header, the
+// title keeping a few characters): measured on the rendered text, since a width threshold also hid labels that fit
+// (a 245 px card showed only dots). Re-measured after each render and whenever the card's width changes.
+const caFitPills = (root) => {
+  for (const pill of root?.querySelectorAll?.(".st, .pill") || []) {
+    if (!pill.getClientRects?.().length) continue;
+    pill.classList.remove("dot-only");
+    const stt = pill.querySelector(".stt");
+    if (stt && (stt.scrollWidth > stt.clientWidth + 0.5 || pill.scrollWidth > pill.clientWidth + 0.5)) pill.classList.add("dot-only");
+  }
+};
+
 class CaElement extends HTMLElement {
+  connectedCallback() {
+    if (typeof ResizeObserver === "undefined") return;
+    this._ro ??= new ResizeObserver(() => this._fitPills());
+    this._ro.observe(this);
+  }
+
+  disconnectedCallback() {
+    this._ro?.disconnect();
+  }
+
+  _fitPills() {
+    caFitPills(this.shadowRoot);
+  }
+
   getGridOptions() {
     return { columns: 12, min_columns: 6 };
   }
@@ -1665,6 +1691,7 @@ class CaCard extends CaElement {
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback();
     clearTimeout(this._tempTimer);
     // Detached mid-debounce (dashboard edit, panel fold, zoom): send the pending target now instead of losing it.
     if (this._pendingTemp !== undefined) {
@@ -1763,6 +1790,7 @@ class CaCard extends CaElement {
     this._sig = sig;
     this._r = r;
     this._render(r);
+    this._fitPills();
   }
 
   // Overridden by the mini cards.
@@ -2247,12 +2275,13 @@ const CA_STYLES = `${CA_ART_STYLES}
   .mcontrols { display: flex; gap: 6px; flex-shrink: 0; }
   ha-card.mini .power { width: 40px; height: 40px; }
 
-  /* Narrow cards (6 columns of the Sections view, about 160 to 300 px; the widths below are the card's inner width).
-     The pill keeps only its dot: its text is clipped, still read by screen readers and shown in the tooltip. */
+  /* A pill whose whole label does not fit (caFitPills) keeps only its dot: its text is clipped, still read by screen
+     readers and shown in the tooltip. */
+  .st.dot-only { flex: none; padding: 4px; }
+  .st.dot-only .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  /* Narrow cards (6 columns of the Sections view, about 160 to 300 px; the widths below are the card's inner width). */
   @container (max-width: 280px) {
     .header { gap: 8px; }
-    .st { flex: none; padding: 4px; }
-    .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   }
   /* The mini card's buttons move under the info, which gets the whole line next to the picture. */
   @container (max-width: 300px) {
