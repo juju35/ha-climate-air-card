@@ -280,7 +280,7 @@ class ClimateAirOverviewCard extends CaElement {
     if (zoom) {
       this._zoomed = !this._zoomed;
       this._render();
-      if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+      if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus({ preventScroll: true });
       return;
     }
     const toggle = path.find((n) => n.dataset?.toggle);
