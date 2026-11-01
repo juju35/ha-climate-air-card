@@ -428,7 +428,7 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { zoom: true, group_by: "type" };
+    return { zoom: true, show_alerts: true, group_by: "type" };
   }
 
   _helpers() {
@@ -487,6 +487,7 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
         ],
       },
       { name: "zoom", selector: { boolean: {} } },
+      { name: "show_alerts", selector: { boolean: {} } },
       { name: "exclude", selector: { entity: { multiple: true, include_entities: found } } },
       { name: "include", selector: { entity: { multiple: true, domain: ["climate", "fan"] } } },
       {

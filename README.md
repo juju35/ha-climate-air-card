@@ -171,6 +171,7 @@ devices:
 | `group_by` | ❌ | `type` | `type` (air conditioners, air purifiers, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |
 | `zoom` | ❌ | `true` | Only the devices on or needing attention show, and a detail button shows them all; `false`: every device, always |
+| `show_alerts` | ❌ | `true` | Filter alerts on the purifier and air conditioner tiles (a device needing attention shows even when off, with `zoom`); `false`: none |
 | `exclude` | ❌ | — | Devices left out |
 | `include` | ❌ | — | `climate` or `fan` entities the card would not pick on its own (a heat-only thermostat shows as an air conditioner) |
 | `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `aircon`, `purifier`, `fan` (they win over `icons` and `illustrations`) |
