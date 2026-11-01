@@ -24,7 +24,7 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 |---|---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all-dark.png"><img alt="Overview" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card-dark.png"><img alt="Air purifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card-dark.png"><img alt="Fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card-dark.png"><img alt="Air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card.png"></picture> |
 
-All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish and Serbian (Cyrillic and Latin) labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
+All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese and Polish labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
 
 ## Features
 
@@ -127,7 +127,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
 | `show_alerts` | ❌ | `true` | Purifier and air conditioner cards only: show the filter alerts (the fan cards have none) |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
-| `language` | ❌ | Auto | Force language: `en`, `fr`, `de`, `es`, `sr` or `sr-Latn` (auto-detects from HA settings); also on the Overview card |
+| `language` | ❌ | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt` or `pl` (auto-detects from HA settings; `pt-BR` gets European Portuguese); also on the Overview card |
 | `entities` | ❌ | Auto | Override the sensors and controls found on the device (see [Entity overrides](#entity-overrides)) |
 
 ### Overview
@@ -318,6 +318,10 @@ The cards auto-detect the language from your Home Assistant settings. Currently 
 | Español | `es` |
 | Српски | `sr` |
 | Srpski (latinica) | `sr-Latn` |
+| Italiano | `it` |
+| Nederlands | `nl` |
+| Português (Portugal) | `pt` |
+| Polski | `pl` |
 
 Contributions for additional languages are welcome!
 

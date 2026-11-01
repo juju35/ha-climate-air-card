@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.7 — 2026-11-01
+
+### Changes
+- Added Italian, Dutch, European Portuguese and Polish translations: every card, the visual editor (which now offers *Italiano*, *Nederlands*, *Português* and *Polski* in its language list) and the labels of the preset and fan mode values the integrations leave untranslated. A Home Assistant set to Brazilian Portuguese (`pt-BR`) gets the European Portuguese labels. *Livello n* and *Poziom n* values are recognized like *Level n*.
+
 ## 1.8.6 — 2026-11-01
 
 ### Changes
