@@ -38,6 +38,23 @@ test("a screenshot re-encoded with the same pixels is left alone, a changed one 
   }
 });
 
+// The comparison covers every channel: two opaque RGBA screenshots of different colours have the same alpha plane,
+// which a comparison of the alpha alone (ImageChops.difference(a, b).getbbox() on RGBA) would call identical.
+test("opaque RGBA screenshots of different colours are different pictures", { skip: !ffmpeg && "no ffmpeg" }, () => {
+  const dir = mkdtempSync(join(tmpdir(), "ca-wic-"));
+  try {
+    const [a, b, c] = ["a.png", "b.png", "c.png"].map((f) => join(dir, f));
+    for (const [file, color] of [[a, "0x102030"], [b, "0x102031"], [c, "0x102030"]]) make(file, color, ["-pix_fmt", "rgba"]);
+    assert.match(execFileSync("ffprobe", ["-v", "error", "-show_entries", "stream=pix_fmt", "-of", "csv=p=0", a]).toString(), /rgba/);
+    assert.equal(samePixels(a, b), false, "one blue level apart, same alpha: different");
+    assert.equal(samePixels(a, c), true);
+    assert.equal(writeIfChanged(b, a), true, "rewritten");
+    assert.deepEqual(readFileSync(a), readFileSync(b));
+  } finally {
+    rmSync(dir, { recursive: true });
+  }
+});
+
 test("the harness writes screenshots through the pixel comparison", () => {
   const src = readFileSync(new URL("../scripts/screenshots/harness.mjs", import.meta.url), "utf8");
   assert.doesNotMatch(src, /page\.screenshot\(\{\s*path: `\$\{root\}/, "PNG written straight over the committed file");
