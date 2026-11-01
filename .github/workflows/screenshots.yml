@@ -7,6 +7,8 @@ on:
     paths:
       - "src/**"
       - "scripts/**"
+      # A Playwright bump (Dependabot's grouped npm PR) is rendered too, so a rendering break shows on its own PR.
+      - "package-lock.json"
 
 # Protected main is never pushed to: the job commits the refreshed screenshots
 # back onto the pull request's own branch, so they land through the normal merge.
@@ -63,7 +65,8 @@ jobs:
           }
       - name: Commit refreshed screenshots
         id: commit
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        # Dependabot's runs get a read-only token: they only check that the screenshots still render.
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
         run: |
           if [ -z "$(git status --porcelain screenshots)" ]; then
             echo "No screenshot changes."
