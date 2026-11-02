@@ -82,6 +82,17 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 |---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini-dark.png"><img alt="Air purifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini-dark.png"><img alt="Fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini-dark.png"><img alt="Air conditioner mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini.png"></picture> |
 
+## Supported integrations
+
+The cards work with **any integration** that provides air purifiers and fans as `fan` entities and air conditioners as `climate` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson…). Some get a specific treatment:
+
+| Integration | What the cards add |
+|---|---|
+| [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
+| [Dyson](https://github.com/libdyson-wg/ha-dyson) (HACS) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
+
+The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
+
 ## Prerequisites
 
 - Home Assistant 2024.8 or later
