@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+- Mini cards: the header icon keeps its full size (40 px, 24 px icon) in the compact view, like the full card.
+
 ## 1.8.8 — 2026-11-01
 
 ### Fixes
