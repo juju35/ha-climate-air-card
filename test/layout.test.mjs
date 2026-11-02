@@ -82,6 +82,22 @@ test("device cards: the status pill shrinks and truncates instead of crushing th
   }
 });
 
+test("mini cards: the header badge keeps the full card's size", () => {
+  for (const [kind, entity] of DEVICES) {
+    const full = rules(mount(lib, `${kind}-card`, { entity }, makeHass()));
+    const mini = rules(mount(lib, `${kind}-mini-card`, { entity }, makeHass()));
+    for (const rs of [full, mini]) {
+      assert.equal(decl(rs, ".badge").width, "40px", `${kind}: 40 px badge`);
+      assert.equal(decl(rs, ".badge ha-icon")["--mdc-icon-size"], "24px", `${kind}: 24 px badge icon`);
+    }
+    assert.deepEqual(
+      mini.filter((r) => !r.cond && /^ha-card\.mini \.badge/.test(r.sel)),
+      [],
+      `${kind}: no mini-only badge size`,
+    );
+  }
+});
+
 test("overview: the pill shrinks and truncates instead of crushing the title, buttons never shrink", () => {
   const rs = rules(overview());
   const pill = decl(rs, ".pill");
