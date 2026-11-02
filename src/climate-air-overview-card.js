@@ -54,10 +54,12 @@ class ClimateAirOverviewCard extends CaElement {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     document.addEventListener("click", this._onOutside, true);
   }
 
   disconnectedCallback() {
+    super.disconnectedCallback();
     document.removeEventListener("click", this._onOutside, true);
   }
 
@@ -215,9 +217,11 @@ class ClimateAirOverviewCard extends CaElement {
       c.zoom === false
         ? ""
         : `<button class="zoom" data-action="zoom" title="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}" aria-label="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}"><ha-icon icon="${this._zoomed ? "mdi:arrow-collapse" : "mdi:arrow-expand"}"></ha-icon></button>`;
+    const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
     card.querySelector(".head").innerHTML =
       `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${caEsc(c.title || this._t("title"))}</div>` +
-      `${alertChip}<div class="pill">${caEsc(on.length ? this._t("running_n", { n: on.length }) : this._t("all_off"))}</div>${zoom}`;
+      `${alertChip}<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div>${zoom}`;
+    this._fitPills();
 
     const body = card.querySelector(".body");
     const cols = c.columns || 2;
@@ -279,7 +283,7 @@ class ClimateAirOverviewCard extends CaElement {
     if (zoom) {
       this._zoomed = !this._zoomed;
       this._render();
-      if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus();
+      if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus({ preventScroll: true });
       return;
     }
     const toggle = path.find((n) => n.dataset?.toggle);
@@ -334,7 +338,9 @@ class ClimateAirOverviewCard extends CaElement {
 
 const CA_OVERVIEW_STYLES = `
   :host { display: block; --ca-ok: var(--success-color, #43a047); --ca-warn: var(--warning-color, #ffa600); --ca-on: var(--info-color, #039be5);
-          --ca-idle: var(--secondary-text-color, #9e9e9e); }
+          --ca-idle: var(--secondary-text-color, #9e9e9e); min-width: 0; }
+  /* A size container: the empty grid before it stands in for its content in a shrink-to-fit parent (see the device cards). */
+  :host::before { content: ""; display: grid; grid-template-columns: minmax(0, 300px); height: 0; }
   ha-card { padding: 12px; overflow: hidden; container-type: inline-size; position: relative; }
   ha-card.lvl-ok { --c: var(--ca-idle); }
   ha-card.lvl-on { --c: var(--ca-on); }
@@ -343,9 +349,14 @@ const CA_OVERVIEW_STYLES = `
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); }
   .badge ha-icon { --mdc-icon-size: 24px; }
-  .title { flex: 1; min-width: 0; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pill { flex: none; display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px;
+  /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
+     characters: the pill is only truncated when even that does not fit. */
+  .title { flex: 1 1 0; min-width: 5ch; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pill { flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative; display: inline-flex; align-items: center;
+          font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px;
           color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); white-space: nowrap; }
+  .pill .stt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pill .dot { display: none; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--c); }
   .chip { --k: var(--ca-idle); flex: none; display: inline-flex; align-items: center; gap: 2px; height: 18px; padding: 0 5px; border-radius: 999px;
           font-size: 11px; font-weight: 500; line-height: 1; white-space: nowrap; color: var(--k); background: color-mix(in srgb, var(--k) 14%, transparent); }
   .head .chip { height: 20px; padding: 0 6px; }
@@ -353,6 +364,12 @@ const CA_OVERVIEW_STYLES = `
   .chip.on { --k: var(--ca-on); }
   .chip.warn { --k: var(--ca-warn); }
   @container (max-width: 340px) { .head { gap: 6px; } .head .chip { display: none; } }
+  /* A pill whose whole label does not fit (caFitPills) keeps only a dot, its text clipped (still read by screen
+     readers, and in the tooltip); at the narrowest the header badge goes too. */
+  .pill.dot-only { flex: none; padding: 4px; }
+  .pill.dot-only .dot { display: block; }
+  .pill.dot-only .stt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  @container (max-width: 180px) { .head .badge { display: none; } }
   .zoom { all: unset; flex: none; cursor: pointer; width: 24px; height: 24px; margin: -4px -4px -4px 0; border-radius: 50%;
           display: grid; place-items: center; color: var(--secondary-text-color); }
   .zoom ha-icon { --mdc-icon-size: 16px; }
@@ -406,7 +423,15 @@ const CA_OVERVIEW_STYLES = `
   .state { grid-area: state; margin-top: 1px; font-size: 11px; line-height: 1.25; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .dev.on .state { color: var(--t); }
   .chips { grid-area: chips; display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; min-width: 0; }
-  .chips .chip { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+  /* The alert wraps inside the tile, between words, instead of being cut (« Replace the filter » in a narrow card). */
+  .chips .chip { max-width: 100%; box-sizing: border-box; overflow: hidden; height: auto; min-height: 18px; padding: 2px 5px; white-space: normal; }
+  .chips .chip > span { min-width: 0; }
+  /* In a narrow tile the alert takes the whole tile width, under the icon too: next to it, the 30 to 45 px left at
+     156 px could not hold « Zamenite » or « Wymień » and cut them mid-word. */
+  @container (max-width: 200px) {
+    .dev:has(.chips) { grid-template-areas: "ic name" "ic state" "chips chips"; }
+    .dev:has(.chips) .ic.pic { grid-row: 1 / 3; }
+  }
 
   .panel { margin-top: 8px; border-radius: 12px; overflow: hidden; background: var(--secondary-background-color, transparent);
            --ha-card-background: transparent; --card-background-color: transparent; --ha-card-box-shadow: none; --ha-card-border-width: 0; }

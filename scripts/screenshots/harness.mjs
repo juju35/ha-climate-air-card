@@ -6,6 +6,8 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as mdi from "@mdi/js";
 import { chromium } from "playwright";
+import { seekAnimations } from "./frames.mjs";
+import { writeBufferIfChanged, writeIfChanged } from "./write-if-changed.mjs";
 
 export const root = fileURLToPath(new URL("../..", import.meta.url));
 const cardJs = readFileSync(`${root}dist/ha-climate-air-card.js`, "utf8");
@@ -106,25 +108,31 @@ const openCard = async (browser, { tag, label, s, iconMap, setup }) => {
 export const shoot = async ({ prefix, tag, shots, setup, icons = [] }) => {
   const iconMap = iconsFor(icons);
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
+  const tmp = mkdtempSync(join(tmpdir(), "ca-shots-"));
   for (const s of shots) {
     const page = await openCard(browser, { tag, label: `${prefix}-${s.file}`, s, iconMap, setup });
     await page.waitForTimeout(400);
+    // Every animation (in the shadow roots too) paused at its start: the same shot is the same pixels on every run.
+    // A static card has none, which seekAnimations reports by throwing.
+    await page.evaluate(seekAnimations, 0).catch(() => {});
     const out = `screenshots/${prefix}-${s.file}.png`;
     // The card on the theme background, with the body's 16px padding around it.
     const box = await page.locator("#root").boundingBox();
-    await page.screenshot({
-      path: `${root}${out}`,
+    const png = await page.screenshot({
       clip: { x: 0, y: 0, width: widthFor(tag) + 32, height: Math.ceil(box.height) + 32 },
       animations: "disabled",
     });
-    console.log(out);
+    // Rewritten only when the pixels differ from the committed file.
+    console.log(writeBufferIfChanged(png, join(tmp, "shot.png"), `${root}${out}`) ? out : `${out} (unchanged)`);
     await page.close();
   }
   await browser.close();
+  rmSync(tmp, { recursive: true });
 };
 
 // Records `tag` (configured by setup) as a looping GIF screenshots/<file>.gif — needs ffmpeg on PATH. Every
-// animation is paused and stepped frame by frame, so the GIF is identical whatever the machine's speed.
+// animation, in the cards' shadow roots too, is paused and stepped frame by frame (seekAnimations), so the GIF is
+// identical whatever the machine's speed.
 export const animate = async ({ file, tag, setup, theme = "light", icons = [], fps = 20, seconds = 3 }) => {
   const iconMap = iconsFor(icons);
   const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
@@ -135,22 +143,19 @@ export const animate = async ({ file, tag, setup, theme = "light", icons = [], f
   const dir = mkdtempSync(join(tmpdir(), "ca-frames-"));
   const frames = Math.round(fps * seconds);
   for (let i = 0; i < frames; i++) {
-    await page.evaluate((t) => {
-      for (const a of document.getAnimations()) {
-        a.pause();
-        a.currentTime = t;
-      }
-    }, (i * 1000) / fps);
+    await page.evaluate(seekAnimations, (i * 1000) / fps);
     await page.screenshot({ path: join(dir, `f${String(i).padStart(3, "0")}.png`), clip });
   }
   await browser.close();
-  const out = `${root}screenshots/${file}.gif`;
+  const out = join(dir, "out.gif");
   // Halve the retina capture and build a per-clip palette: the colours stay clean and the file stays small.
   execFileSync("ffmpeg", [
     "-y", "-loglevel", "error", "-framerate", String(fps), "-i", join(dir, "f%03d.png"),
     "-vf", `scale=${clip.width}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128[p];[b][p]paletteuse=dither=bayer:bayer_scale=4`,
     "-loop", "0", out,
   ]);
+  // Rewritten only when a frame's pixels differ from the committed GIF.
+  const changed = writeIfChanged(out, `${root}screenshots/${file}.gif`);
   rmSync(dir, { recursive: true });
-  console.log(`screenshots/${file}.gif`);
+  console.log(`screenshots/${file}.gif${changed ? "" : " (unchanged)"}`);
 };

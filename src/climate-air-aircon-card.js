@@ -340,6 +340,13 @@ class ClimateAirAirconCard extends CaCard {
     .stepper .round { width: 44px; height: 44px; background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
     .stepper .round:hover:not(:disabled) { background: color-mix(in srgb, var(--ca-color) 24%, transparent); }
     ha-card.mini .round[data-action=temp] { width: 36px; height: 36px; }
+    /* Narrow cards (inner width): the target stepper tightens so its buttons stay inside the card. */
+    @container (max-width: 230px) { .stepper { gap: 8px; } .tv { min-width: 0; } }
+    @container (max-width: 180px) {
+      .stepper { gap: 4px; }
+      .stepper .round { width: 36px; height: 36px; }
+      .tval { font-size: 24px; }
+    }
   `;
 }
 
