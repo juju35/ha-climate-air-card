@@ -1,4 +1,4 @@
-// Rendered narrow headers and tiles, in en, pl and sr-Latn: the overview's filter alert wraps between words, never
+// Rendered narrow headers and tiles, in en, pl, sr-Latn, bg, el and ru: the overview's filter alert wraps between words, never
 // inside one, and a status pill shows its whole label, or only its dot when that label really does not fit. Needs the
 // built card, Playwright and its Chromium: skipped without them (the CSS rules are checked in layout.test.mjs).
 import assert from "node:assert/strict";
@@ -15,7 +15,7 @@ try {
 let browser = null;
 if (chromium && existsSync(dist)) browser = await chromium.launch().catch(() => null);
 
-const LANGS = ["en", "pl", "sr-Latn"];
+const LANGS = ["en", "pl", "sr-Latn", "bg", "el", "ru"];
 const UNAVAILABLE = {
   "fan.living_room_purifier_air_purifier": { state: "unavailable" },
   "fan.bedroom_purifier": { state: "unavailable" },
