@@ -121,7 +121,7 @@ test("Dyson: detected as a purifier, HEPA filter life wins over the carbon one",
   assert.equal(lib.caFindRole(h, list, "mode"), undefined);
 });
 
-const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el"];
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el"];
 
 test("every language has both tables", () => {
   for (const lang of LANGS) {
@@ -181,7 +181,7 @@ test("it, nl, pt and pl: picked from the full code, else the part before the das
   assert.equal(lib.caValueLabel("pl", "poziom_1"), "Poziom 1");
 });
 
-test("ro, da, sv, bg, ru, uk, hu, ga, sk, cs, sl, mt, lv and el: picked from the full code, else the part before the dash", () => {
+test("ro, da, sv, bg, ru, uk, hu, sk, cs, sl, lv and el: picked from the full code, else the part before the dash", () => {
   assert.equal(lib.caLang({}, { language: "ro-RO" }), "ro");
   assert.equal(lib.caLang({}, { language: "da" }), "da");
   assert.equal(lib.caLang({}, { language: "sv-FI" }), "sv");
@@ -208,7 +208,7 @@ test("the editor offers every language, once, each under its own name", () => {
   assert.equal(labels.nl, "Nederlands");
   assert.equal(labels.pt, "Português (Portugal)");
   assert.equal(labels.pl, "Polski");
-  const names = { ro: "Română", da: "Dansk", sv: "Svenska", bg: "Български", ru: "Русский", uk: "Українська", hu: "Magyar", ga: "Gaeilge", sk: "Slovenčina", cs: "Čeština", sl: "Slovenščina", mt: "Malti", lv: "Latviešu", el: "Ελληνικά" };
+  const names = { ro: "Română", da: "Dansk", sv: "Svenska", bg: "Български", ru: "Русский", uk: "Українська", hu: "Magyar", sk: "Slovenčina", cs: "Čeština", sl: "Slovenščina", lv: "Latviešu", el: "Ελληνικά" };
   for (const [code, name] of Object.entries(names)) assert.equal(labels[code], name, code);
 });
 

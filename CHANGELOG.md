@@ -3,7 +3,7 @@
 ## 1.8.10 — 2026-11-04
 
 ### Changes
-- Added Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Irish, Slovak, Czech, Slovenian, Maltese, Latvian and Greek translations: every card, the visual editor (which now offers *Română*, *Dansk*, *Svenska*, *Български*, *Русский*, *Українська*, *Magyar*, *Gaeilge*, *Slovenčina*, *Čeština*, *Slovenščina*, *Malti*, *Latviešu* and *Ελληνικά* in its language list) and the labels of the preset and fan mode values the integrations leave untranslated. *Nivå n*, *Уровень n*, *Szint n*, *Úroveň n*, *Επίπεδο n* and the like are recognized like *Level n*.
+- Added Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek translations: every card, the visual editor (which now offers *Română*, *Dansk*, *Svenska*, *Български*, *Русский*, *Українська*, *Magyar*, *Slovenčina*, *Čeština*, *Slovenščina*, *Latviešu* and *Ελληνικά* in its language list) and the labels of the preset and fan mode values the integrations leave untranslated. *Nivå n*, *Уровень n*, *Szint n*, *Úroveň n*, *Επίπεδο n* and the like are recognized like *Level n*.
 
 ## 1.8.9 - 2026-11-02
 
