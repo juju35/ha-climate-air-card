@@ -121,7 +121,7 @@ test("Dyson: detected as a purifier, HEPA filter life wins over the carbon one",
   assert.equal(lib.caFindRole(h, list, "mode"), undefined);
 });
 
-const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+const LANGS = ["fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el"];
 
 test("every language has both tables", () => {
   for (const lang of LANGS) {
@@ -181,6 +181,24 @@ test("it, nl, pt and pl: picked from the full code, else the part before the das
   assert.equal(lib.caValueLabel("pl", "poziom_1"), "Poziom 1");
 });
 
+test("ro, da, sv, bg, ru, uk, hu, ga, sk, cs, sl, mt, lv and el: picked from the full code, else the part before the dash", () => {
+  assert.equal(lib.caLang({}, { language: "ro-RO" }), "ro");
+  assert.equal(lib.caLang({}, { language: "da" }), "da");
+  assert.equal(lib.caLang({}, { language: "sv-FI" }), "sv");
+  assert.equal(lib.caLang({}, { language: "ru-RU" }), "ru");
+  assert.equal(lib.caLang({}, { language: "el" }), "el");
+  assert.equal(lib.caLang({ language: "uk" }, { language: "ru" }), "uk");
+  assert.equal(lib.caLang({}, { language: "nb" }), "en");
+  assert.equal(lib.caT("da", "running_n", { n: 2 }), "2 tændt");
+  assert.equal(lib.caT("ru", "running_n", { n: 5 }), "Включено: 5");
+  assert.equal(lib.caT("hu", "level", { n: 3 }), "3. szint");
+  assert.equal(lib.caValueLabel("sv", "level_3"), "Nivå 3");
+  assert.equal(lib.caValueLabel("cs", "úroveň_2"), "Úroveň 2");
+  assert.equal(lib.caValueLabel("uk", "Рівень 1"), "Рівень 1");
+  assert.equal(lib.caValueLabel("el", "επίπεδο_4"), "Επίπεδο 4");
+  assert.equal(lib.caValueLabel("lv", "off"), "Izslēgts");
+});
+
 test("the editor offers every language, once, each under its own name", () => {
   const [group] = lib.caAdvanced("en", "language");
   const options = group.schema[0].selector.select.options;
@@ -190,6 +208,8 @@ test("the editor offers every language, once, each under its own name", () => {
   assert.equal(labels.nl, "Nederlands");
   assert.equal(labels.pt, "Português (Portugal)");
   assert.equal(labels.pl, "Polski");
+  const names = { ro: "Română", da: "Dansk", sv: "Svenska", bg: "Български", ru: "Русский", uk: "Українська", hu: "Magyar", ga: "Gaeilge", sk: "Slovenčina", cs: "Čeština", sl: "Slovenščina", mt: "Malti", lv: "Latviešu", el: "Ελληνικά" };
+  for (const [code, name] of Object.entries(names)) assert.equal(labels[code], name, code);
 });
 
 test("Serbian: no Latin letter in sr, no Cyrillic one in sr-Latn, but for names, units and entity IDs", () => {
