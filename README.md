@@ -24,7 +24,7 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 
 | Overview | Air purifier | Fan | Air conditioner |
 |---|---|---|---|
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all-dark.png"><img alt="Overview" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card-dark.png"><img alt="Air purifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card-dark.png"><img alt="Fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card-dark.png"><img alt="Air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card.png"></picture> |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all-dark.png"><img alt="Overview" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card-dark.png"><img alt="Air purifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card-dark.png"><img alt="Fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card-dark.png"><img alt="Air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card.png" width="400"></picture> |
 
 All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
 
@@ -82,7 +82,7 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 
 | Air purifier | Fan | Air conditioner |
 |---|---|---|
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini-dark.png"><img alt="Air purifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini-dark.png"><img alt="Fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini.png"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini-dark.png"><img alt="Air conditioner mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini.png"></picture> |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini-dark.png"><img alt="Air purifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini-dark.png"><img alt="Fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini-dark.png"><img alt="Air conditioner mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini.png" width="400"></picture> |
 
 ## Supported integrations
 
@@ -253,55 +253,55 @@ The air purifier draws air in: the side inlets pull it through, the base glows a
 
 | Light | Dark |
 |---|---|
-| ![air purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier.gif) | ![air purifier animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier.gif" alt="air purifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dark.gif" alt="air purifier animation, dark theme" width="400"> |
 
 A Dyson-style bladeless purifier has no blades to turn: clean air streams up through its hollow loop instead.
 
 | Light | Dark |
 |---|---|
-| ![Dyson bladeless purifier animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson.gif) | ![Dyson bladeless purifier animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson.gif" alt="Dyson bladeless purifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson-dark.gif" alt="Dyson bladeless purifier animation, dark theme" width="400"> |
 
 The fan spins its blades, the head slowly oscillates from side to side, and gusts of air stream out in front of it.
 
 | Light | Dark |
 |---|---|
-| ![fan animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan.gif) | ![fan animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan.gif" alt="fan animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-dark.gif" alt="fan animation, dark theme" width="400"> |
 
 The air conditioner swings its louvres while the cooled air falls out of the vent.
 
 | Light | Dark |
 |---|---|
-| ![air conditioner animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon.gif) | ![air conditioner animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon.gif" alt="air conditioner animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dark.gif" alt="air conditioner animation, dark theme" width="400"> |
 
 Heating, the warm air shimmers as it rises out of the vent.
 
 | Light | Dark |
 |---|---|
-| ![air conditioner heating animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.gif) | ![air conditioner heating animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.gif" alt="air conditioner heating animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat-dark.gif" alt="air conditioner heating animation, dark theme" width="400"> |
 
 Drying, droplets fall from the vent instead.
 
 | Light | Dark |
 |---|---|
-| ![air conditioner drying animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif) | ![air conditioner drying animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif" alt="air conditioner drying animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.gif" alt="air conditioner drying animation, dark theme" width="400"> |
 
 The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
 
 | Light | Dark |
 |---|---|
-| ![overview animation](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif) | ![overview animation, dark theme](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-dark.gif) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview.gif" alt="overview animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-dark.gif" alt="overview animation, dark theme" width="400"> |
 
 | | Light | Dark |
 |---|---|---|
-| Overview, devices on | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active-dark.png) |
-| Overview grouped by area, tiles labelled by kind | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-area.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-area-dark.png) |
-| Overview, a device unfolded | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details-dark.png) |
-| Air purifier, filter to replace | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-alert.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-alert-dark.png) |
-| Air purifier, round and box | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-round.png) ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-box.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-round-dark.png) ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-box-dark.png) |
-| Air purifier, Dyson bladeless | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson-dark.png) |
-| Fan | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card-dark.png) |
-| Air conditioner, heating | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat-dark.png) |
-| Air conditioner, portable and window split | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable.png) ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window.png) | ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable-dark.png) ![](https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-dark.png) |
+| Overview, devices on | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-active-dark.png" alt="" width="400"> |
+| Overview grouped by area, tiles labelled by kind | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-area.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-area-dark.png" alt="" width="400"> |
+| Overview, a device unfolded | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details.png" alt="" width="357"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-details-dark.png" alt="" width="357"> |
+| Air purifier, filter to replace | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-alert.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-alert-dark.png" alt="" width="400"> |
+| Air purifier, round and box | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-round.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-box.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-round-dark.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-box-dark.png" alt="" width="400"> |
+| Air purifier, Dyson bladeless | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-dyson-dark.png" alt="" width="400"> |
+| Fan | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card-dark.png" alt="" width="400"> |
+| Air conditioner, heating | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat-dark.png" alt="" width="400"> |
+| Air conditioner, portable and window split | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable-dark.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-dark.png" alt="" width="400"> |
 
 ## Development
 
