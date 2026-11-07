@@ -204,6 +204,14 @@ test("air conditioner mini in heat_cool: the range is shown, its steppers stay o
   assert.match(html(el), /data-action="temp_low"/);
 });
 
+test("overview: an air conditioner in heat_cool shows its target range", () => {
+  const { body } = overview({}, rangeHass());
+  assert.match(body, /<span class="state">Heat\/Cool · 20–24 °C<\/span>/);
+  assert.match(body, /<text class="disp"[^>]*>20-24<\/text>/);
+  const fr = overview({}, rangeHass({}, "fr")).body;
+  assert.match(fr, /<span class="state">[^<]+ · 20–24 °C<\/span>/);
+});
+
 test("air conditioner off: no target, dirty filter flagged", () => {
   const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" },
     makeHass("en", { "climate.air_conditioner": { state: "off" }, "binary_sensor.air_conditioner_full_dust": { state: "on" } }));
@@ -629,4 +637,41 @@ test("focus moving out of the card to another element of the page still draws th
   el.shadowRoot.emit("focusout", { relatedTarget: { tagName: "BUTTON" } });
   await new Promise((r) => setTimeout(r, 5));
   assert.match(html(el), /st-off/);
+});
+
+// Each chip opens the more-info dialog of the entity it shows, from the cards and from the overview tiles.
+const moreInfo = (el) => {
+  const events = [];
+  el.dispatchEvent = (ev) => events.push([ev.type, ev.detail?.entityId]);
+  return events;
+};
+
+test("chips carry their entity and a click opens its more-info", () => {
+  const h = makeHass("en", { "binary_sensor.air_conditioner_full_dust": { state: "on" } });
+  const ac = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  const out = html(ac);
+  assert.match(out, /class="chip warn" data-more-info="binary_sensor\.air_conditioner_full_dust"/);
+  assert.match(out, /data-more-info="sensor\.air_conditioner_outdoor_temperature"/);
+  const events = moreInfo(ac);
+  ac._onClick({ composedPath: () => [{ dataset: { moreInfo: "sensor.air_conditioner_outdoor_temperature" } }] });
+  assert.deepEqual(events, [["hass-more-info", "sensor.air_conditioner_outdoor_temperature"]]);
+  assert.equal(h.calls.length, 0);
+  assert.match(html(mount(lib, "climate-air-purifier-card", { entity: "fan.bedroom_purifier" }, makeHass())), /chip warn" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
+  assert.match(html(mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, makeHass())), /data-more-info="sensor\.bedroom_fan_relative_humidity"/);
+});
+
+test("overview: the filter alert chip opens its entity's more-info, not the device's card", () => {
+  const { el, body } = overview();
+  assert.match(body, /class="chip warn" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
+  const events = moreInfo(el);
+  el._onClick({ composedPath: () => [{ dataset: { moreInfo: "sensor.bedroom_purifier_filter_lifetime" } }, { classList: { contains: (c) => c === "dev" }, dataset: { id: "fan.bedroom_purifier" } }] });
+  assert.deepEqual(events, [["hass-more-info", "sensor.bedroom_purifier_filter_lifetime"]]);
+  assert.equal(el._open, undefined);
+});
+
+test("mini cards size their height to their content in a Sections view", () => {
+  const el = mount(lib, "climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan" }, makeHass());
+  assert.deepEqual({ ...el.getGridOptions() }, { columns: 6, min_columns: 6, rows: "auto" });
+  el._toggleZoom({ detail: 1 });
+  assert.equal(el.getGridOptions().rows, "auto");
 });

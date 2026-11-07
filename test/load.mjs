@@ -58,7 +58,12 @@ export const load = () => {
   }
   const sandbox = {
     HTMLElement,
-    CustomEvent: class {},
+    CustomEvent: class {
+      constructor(type, init = {}) {
+        this.type = type;
+        this.detail = init.detail;
+      }
+    },
     console: { info() {} },
     customElements: { get: (t) => registry.get(t), define: (t, c) => registry.set(t, c) },
     document: {

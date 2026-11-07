@@ -2963,6 +2963,17 @@ const CA_CLIMATE_SWING = 32;
 // The service data of a pending target: one temperature, or a low / high range (`target_temp_low`, `target_temp_high`).
 const caTempData = (pending) => (typeof pending === "number" ? { temperature: pending } : pending);
 
+// The low / high range of a climate entity (heat_cool, auto) when it sets one instead of a single target, else null.
+const caClimateRange = (a) => {
+  const f = a.supported_features || 0;
+  if (!(f & CA_CLIMATE_RANGE) || a.target_temp_low == null || a.target_temp_high == null) return null;
+  if (f & CA_CLIMATE_TARGET && a.temperature != null) return null;
+  return { low: Number(a.target_temp_low), high: Number(a.target_temp_high) };
+};
+
+// Opens Home Assistant's more-info dialog of `entityId`, from the element `el`.
+const caMoreInfo = (el, entityId) => el.dispatchEvent(new CustomEvent("hass-more-info", { bubbles: true, composed: true, detail: { entityId } }));
+
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
 
 // Entities a device may have next to its fan or climate entity. Each role is looked up by its registry
@@ -3396,7 +3407,7 @@ class CaCard extends CaElement {
     m.name = c.name || caName(this._hass, r.id) || this._t(kind);
     m.icon = icon;
     m.chips = m.chips || [];
-    if (!m.online) m.chips.push(`<span class="chip"><ha-icon icon="mdi:cloud-off-outline"></ha-icon>${this._t("offline")}</span>`);
+    if (!m.online) m.chips.push(this._chip("mdi:cloud-off-outline", this._t("offline"), "", "", r.id));
     m.variant = caVariant(this._hass, kind, r.id, c.illustration);
     m.powerBtn = m.online
       ? `<button class="power${m.running ? " on" : ""}" data-action="power" title="${caEsc(this._t("power"))}" aria-label="${caEsc(this._t("power"))}"><ha-icon icon="mdi:power"></ha-icon></button>`
@@ -3424,9 +3435,10 @@ class CaCard extends CaElement {
     return caPicture(this.constructor.kind, m.variant, m);
   }
 
-  // A chip with an icon and a value; `cls` tints it (warn, alert).
-  _chip(icon, text, cls = "", title = "") {
-    return `<span class="chip ${cls}"${title ? ` title="${caEsc(title)}"` : ""}><ha-icon icon="${icon}"></ha-icon>${caEsc(text)}</span>`;
+  // A chip with an icon and a value; `cls` tints it (warn, alert). With an `entity`, a click opens its more-info.
+  _chip(icon, text, cls = "", title = "", entity = "") {
+    const more = entity ? ` data-more-info="${caEsc(entity)}"` : "";
+    return `<span class="chip ${cls}"${more}${title ? ` title="${caEsc(title)}"` : ""}><ha-icon icon="${icon}"></ha-icon>${caEsc(text)}</span>`;
   }
 
   // The measurements of the device as chips (temperature, humidity, …), each one only if found.
@@ -3438,7 +3450,7 @@ class CaCard extends CaElement {
       if (v == null) continue;
       const prefix =
         role === "pm10" ? "PM10 " : role === "outdoor_temp" ? `${this._t("outdoor")} ` : role === "voc" || role === "no2" ? `${this._t(role)} ` : "";
-      out.push(this._chip(icons[role], `${prefix}${v}`, "", this._label(ent[role])));
+      out.push(this._chip(icons[role], `${prefix}${v}`, "", this._label(ent[role]), ent[role]));
     }
     return out;
   }
@@ -3551,9 +3563,13 @@ class CaCard extends CaElement {
   }
 
   _onClick(ev) {
-    const el = ev.composedPath().find((n) => n.dataset && (n.dataset.action || n.dataset.toggle || n.dataset.press));
+    const el = ev.composedPath().find((n) => n.dataset && (n.dataset.action || n.dataset.toggle || n.dataset.press || n.dataset.moreInfo));
     if (!el || el.disabled) return;
     const d = el.dataset;
+    if (d.moreInfo) {
+      caMoreInfo(this, d.moreInfo);
+      return;
+    }
     if (d.toggle) {
       this._call(d.toggle.split(".")[0], "toggle", { entity_id: d.toggle });
       return;
@@ -3633,7 +3649,7 @@ const caMini = (Base) =>
     }
 
     getGridOptions() {
-      return this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 };
+      return { ...(this._zoomed ? super.getGridOptions() : { columns: 6, min_columns: 6 }), rows: "auto" };
     }
 
     _compact() {
@@ -3783,6 +3799,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   /* A chip too long for the card (« Device offline » in a narrow card) wraps instead of being cut. */
   .chips .chip { white-space: normal; }
   .chip ha-icon { --mdc-icon-size: 13px; flex: none; }
+  .chip[data-more-info] { cursor: pointer; }
   .chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }
   .chip.alert { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }
   .chip.tint { --k: var(--ca-color); background: color-mix(in srgb, var(--k) 15%, transparent); color: var(--k); }

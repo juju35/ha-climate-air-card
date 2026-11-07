@@ -159,7 +159,7 @@ class ClimateAirPurifierCard extends CaCard {
     const preset = st.attributes.preset_mode;
     const modeSub = preset ? this._fmtAttr(r.id, "preset_mode", preset) : this._avail(ent.mode) ? this._fmtState(ent.mode) : "";
     const chips = [];
-    if (c.show_alerts && filter != null && filter <= 10) chips.push(this._chip("mdi:air-filter", this._t("filter_low"), "warn"));
+    if (c.show_alerts && filter != null && filter <= 10) chips.push(this._chip("mdi:air-filter", this._t("filter_low"), "warn", "", ent.filter));
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["temperature", "humidity", "pm10", "voc", "no2"]));
     const aqColor = aq?.color || CA_FAN_COLOR;
     return {

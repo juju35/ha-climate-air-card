@@ -137,7 +137,10 @@ class ClimateAirOverviewCard extends CaElement {
       const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       if (item.on) {
         const label = caValueLabel(lang, mode, h.formatEntityState?.(st));
-        const target = a.temperature != null && mode !== "fan_only" ? temp(Number(a.temperature)) : "";
+        // In heat_cool or auto, the entity may set a low / high range instead of one target (20–24 °C).
+        const range = mode !== "fan_only" ? caClimateRange(a) : null;
+        const n = (v, digits) => caFmtNum(this._intlLang(), v, digits);
+        const target = range ? `${n(range.low)}–${temp(range.high)}` : a.temperature != null && mode !== "fan_only" ? temp(Number(a.temperature)) : "";
         item.text = [label, target].filter(Boolean).join(" · ");
         item.color = CA_MODE_COLORS[mode] || CA_FAN_COLOR;
         // A running air conditioner shows its mode, unless an icon was set for it.
@@ -152,12 +155,15 @@ class ClimateAirOverviewCard extends CaElement {
           mode,
           swing: a.swing_mode,
           active: freq != null ? freq > 0 : action ? !["idle", "off"].includes(action) : true,
-          display: a.temperature != null && mode !== "fan_only" ? `${caFmtNum(this._intlLang(), Number(a.temperature))}°` : "--",
+          display: range ? `${n(range.low, 0)}-${n(range.high, 0)}` : a.temperature != null && mode !== "fan_only" ? `${n(Number(a.temperature))}°` : "--",
         };
       } else {
         item.text = [this._t("st_off"), cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
       }
-      if (this._config.show_alerts !== false && roleSt("filter_alert")?.state === "on") item.alert = this._t("filter_dirty");
+      if (this._config.show_alerts !== false && roleSt("filter_alert")?.state === "on") {
+        item.alert = this._t("filter_dirty");
+        item.alertEntity = this._role(id, "filter_alert");
+      }
     } else {
       item.on = st.state === "on";
       const pct = item.on ? Number(a.percentage ?? 0) : 0;
@@ -177,7 +183,10 @@ class ClimateAirOverviewCard extends CaElement {
           display: pm25 != null ? caFmtNum(this._intlLang(), pm25, 0) : aqi != null ? caFmtNum(this._intlLang(), aqi, 0) : "",
         };
         const filter = caNum(roleSt("filter"));
-        if (this._config.show_alerts !== false && filter != null && filter <= 10) item.alert = this._t("filter_low");
+        if (this._config.show_alerts !== false && filter != null && filter <= 10) {
+          item.alert = this._t("filter_low");
+          item.alertEntity = this._role(id, "filter");
+        }
       } else {
         item.text = item.on ? [`${Math.round(pct)} %`, preset].filter(Boolean).join(" · ") : this._t("st_off");
         item.color = item.on ? CA_FAN_COLOR : CA_IDLE;
@@ -271,7 +280,7 @@ class ClimateAirOverviewCard extends CaElement {
       `<button class="ic ${x.iconSet ? x.anim : "pic"}" data-toggle="${caEsc(x.id)}" title="${caEsc(this._t("toggle"))}" aria-label="${caEsc(`${this._t("toggle")} ${x.name}`)}"${x.na ? " disabled" : ""}>${look}</button>` +
       `<span class="name">${caEsc(label)}</span>` +
       `<span class="state">${caEsc(x.text)}</span>` +
-      (x.alert ? `<span class="chips"><span class="chip warn"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>` : "") +
+      (x.alert ? `<span class="chips"><span class="chip warn" data-more-info="${caEsc(x.alertEntity)}"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>` : "") +
       "</div>"
     );
   }
@@ -284,6 +293,11 @@ class ClimateAirOverviewCard extends CaElement {
       this._zoomed = !this._zoomed;
       this._render();
       if (ev.detail === 0) this.shadowRoot.querySelector(".zoom")?.focus({ preventScroll: true });
+      return;
+    }
+    const more = path.find((n) => n.dataset?.moreInfo);
+    if (more) {
+      caMoreInfo(this, more.dataset.moreInfo);
       return;
     }
     const toggle = path.find((n) => n.dataset?.toggle);
@@ -363,6 +377,7 @@ const CA_OVERVIEW_STYLES = `
   .chip ha-icon { --mdc-icon-size: 12px; }
   .chip.on { --k: var(--ca-on); }
   .chip.warn { --k: var(--ca-warn); }
+  .chip[data-more-info] { cursor: pointer; }
   @container (max-width: 340px) { .head { gap: 6px; } .head .chip { display: none; } }
   /* A pill whose whole label does not fit (caFitPills) keeps only a dot, its text clipped (still read by screen
      readers, and in the tooltip); at the narrowest the header badge goes too. */
