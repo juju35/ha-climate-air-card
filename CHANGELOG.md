@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.0 - 2026-11-07
+
+### Fixes
+- Air conditioner card: in *Heat/Cool* or *Auto* mode, when the entity sets a low / high range (`target_temp_low` / `target_temp_high`) instead of one target, the card now shows both ends, each with its own − / + (*Heat to*, *Cool to*, in every language), kept within the device's limits and a step apart. The target and its buttons used to disappear, so the temperature could not be set. The mini card shows the range; its buttons stay on the full card.
+
 ## 1.8.11 — 2026-11-04
 
 ### Documentation

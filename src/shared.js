@@ -56,6 +56,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Level {n}",
     target: "Target",
+    target_low: "Heat to",
+    target_high: "Cool to",
     outdoor: "Outdoor",
     fan_mode: "Fan",
     swing_mode: "Swing",
@@ -173,6 +175,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Consigne",
+    target_low: "Chauffer à",
+    target_high: "Refroidir à",
     outdoor: "Extérieur",
     fan_mode: "Ventilation",
     swing_mode: "Balayage",
@@ -291,6 +295,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Stufe {n}",
     target: "Sollwert",
+    target_low: "Heizen auf",
+    target_high: "Kühlen auf",
     outdoor: "Außen",
     fan_mode: "Lüfter",
     swing_mode: "Schwenken",
@@ -408,6 +414,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Objetivo",
+    target_low: "Calentar a",
+    target_high: "Enfriar a",
     outdoor: "Exterior",
     fan_mode: "Ventilador",
     swing_mode: "Oscilación",
@@ -525,6 +533,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Циљ",
+    target_low: "Грејање на",
+    target_high: "Хлађење на",
     outdoor: "Споља",
     fan_mode: "Вентилатор",
     swing_mode: "Усмеравање",
@@ -642,6 +652,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Nivo {n}",
     target: "Cilj",
+    target_low: "Grejanje na",
+    target_high: "Hlađenje na",
     outdoor: "Spolja",
     fan_mode: "Ventilator",
     swing_mode: "Usmeravanje",
@@ -759,6 +771,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Livello {n}",
     target: "Obiettivo",
+    target_low: "Riscalda a",
+    target_high: "Raffredda a",
     outdoor: "Esterno",
     fan_mode: "Ventilazione",
     swing_mode: "Oscillazione alette",
@@ -877,6 +891,8 @@ const CA_I18N = {
     hours: "{n} u",
     level: "Niveau {n}",
     target: "Doel",
+    target_low: "Verwarmen tot",
+    target_high: "Koelen tot",
     outdoor: "Buiten",
     fan_mode: "Ventilatie",
     swing_mode: "Zwenken",
@@ -995,6 +1011,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Nível {n}",
     target: "Alvo",
+    target_low: "Aquecer a",
+    target_high: "Arrefecer a",
     outdoor: "Exterior",
     fan_mode: "Ventilação",
     swing_mode: "Oscilação",
@@ -1113,6 +1131,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Poziom {n}",
     target: "Cel",
+    target_low: "Grzanie do",
+    target_high: "Chłodzenie do",
     outdoor: "Na zewnątrz",
     fan_mode: "Nawiew",
     swing_mode: "Kierunek nawiewu",
@@ -1231,6 +1251,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Țintă",
+    target_low: "Încălzire la",
+    target_high: "Răcire la",
     outdoor: "Exterior",
     fan_mode: "Ventilație",
     swing_mode: "Baleiere",
@@ -1349,6 +1371,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Mål",
+    target_low: "Varm til",
+    target_high: "Køl til",
     outdoor: "Ude",
     fan_mode: "Blæser",
     swing_mode: "Lameller",
@@ -1467,6 +1491,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Nivå {n}",
     target: "Mål",
+    target_low: "Värm till",
+    target_high: "Kyl till",
     outdoor: "Ute",
     fan_mode: "Fläkt",
     swing_mode: "Svängning",
@@ -1585,6 +1611,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Цел",
+    target_low: "Отопление до",
+    target_high: "Охлаждане до",
     outdoor: "Навън",
     fan_mode: "Вентилатор",
     swing_mode: "Люлеене",
@@ -1703,6 +1731,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Уровень {n}",
     target: "Цель",
+    target_low: "Нагрев до",
+    target_high: "Охлаждение до",
     outdoor: "На улице",
     fan_mode: "Обдув",
     swing_mode: "Качание жалюзи",
@@ -1821,6 +1851,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Рівень {n}",
     target: "Ціль",
+    target_low: "Нагрів до",
+    target_high: "Охолодження до",
     outdoor: "Надворі",
     fan_mode: "Обдув",
     swing_mode: "Хитання жалюзі",
@@ -1939,6 +1971,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "{n}. szint",
     target: "Cél",
+    target_low: "Fűtés",
+    target_high: "Hűtés",
     outdoor: "Kültéri",
     fan_mode: "Ventilátor",
     swing_mode: "Legyezés",
@@ -2057,6 +2091,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cieľ",
+    target_low: "Kúrenie na",
+    target_high: "Chladenie na",
     outdoor: "Vonku",
     fan_mode: "Ventilátor",
     swing_mode: "Natáčanie lamiel",
@@ -2175,6 +2211,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cíl",
+    target_low: "Topení na",
+    target_high: "Chlazení na",
     outdoor: "Venku",
     fan_mode: "Ventilátor",
     swing_mode: "Natáčení lamel",
@@ -2293,6 +2331,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Raven {n}",
     target: "Cilj",
+    target_low: "Ogrevanje na",
+    target_high: "Hlajenje na",
     outdoor: "Zunaj",
     fan_mode: "Ventilator",
     swing_mode: "Nihanje lamel",
@@ -2411,6 +2451,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Līmenis {n}",
     target: "Mērķis",
+    target_low: "Sildīt līdz",
+    target_high: "Dzesēt līdz",
     outdoor: "Ārā",
     fan_mode: "Ventilators",
     swing_mode: "Žalūziju kustība",
@@ -2529,6 +2571,8 @@ const CA_I18N = {
     hours: "{n} h",
     level: "Επίπεδο {n}",
     target: "Στόχος",
+    target_low: "Θέρμανση στους",
+    target_high: "Ψύξη στους",
     outdoor: "Εξωτερικά",
     fan_mode: "Ανεμιστήρας",
     swing_mode: "Ταλάντευση",
@@ -2911,9 +2955,13 @@ const CA_FAN_SET_SPEED = 1;
 const CA_FAN_OSCILLATE = 2;
 const CA_FAN_PRESET = 8;
 const CA_CLIMATE_TARGET = 1;
+const CA_CLIMATE_RANGE = 2;
 const CA_CLIMATE_FAN_MODE = 8;
 const CA_CLIMATE_PRESET = 16;
 const CA_CLIMATE_SWING = 32;
+
+// The service data of a pending target: one temperature, or a low / high range (`target_temp_low`, `target_temp_high`).
+const caTempData = (pending) => (typeof pending === "number" ? { temperature: pending } : pending);
 
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
 
@@ -3219,10 +3267,10 @@ class CaCard extends CaElement {
     clearTimeout(this._tempTimer);
     // Detached mid-debounce (dashboard edit, panel fold, zoom): send the pending target now instead of losing it.
     if (this._pendingTemp !== undefined) {
-      const temperature = this._pendingTemp;
+      const pending = this._pendingTemp;
       this._pendingTemp = undefined;
       this._sig = null;
-      if (this._r?.id) this._call("climate", "set_temperature", { entity_id: this._r.id, temperature });
+      if (this._r?.id) this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
     }
   }
 

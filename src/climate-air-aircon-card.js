@@ -194,7 +194,19 @@ class ClimateAirAirconCard extends CaCard {
   }
 
   _target(st) {
-    return this._pendingTemp ?? (st.attributes.temperature == null ? null : Number(st.attributes.temperature));
+    if (typeof this._pendingTemp === "number") return this._pendingTemp;
+    return st.attributes.temperature == null ? null : Number(st.attributes.temperature);
+  }
+
+  // A low / high range (heat_cool, auto) when the entity sets one instead of a single target.
+  _range(st) {
+    const a = st.attributes;
+    const f = a.supported_features || 0;
+    if (!(f & CA_CLIMATE_RANGE) || a.target_temp_low == null || a.target_temp_high == null) return null;
+    if (f & CA_CLIMATE_TARGET && a.temperature != null) return null;
+    const p = this._pendingTemp;
+    if (p && typeof p === "object") return { low: p.target_temp_low, high: p.target_temp_high };
+    return { low: Number(a.target_temp_low), high: Number(a.target_temp_high) };
   }
 
   _model(r) {
@@ -205,7 +217,8 @@ class ClimateAirAirconCard extends CaCard {
     const mode = st.state;
     const on = mode !== "off";
     const cur = a.current_temperature != null ? Number(a.current_temperature) : this._num(ent.indoor_temp);
-    const target = this._target(st);
+    const range = this._range(st);
+    const target = range ? null : this._target(st);
     const freq = this._num(ent.compressor);
     // The compressor (or what the climate entity says it does) tells whether it is actually cooling or heating.
     const action = a.hvac_action;
@@ -227,10 +240,19 @@ class ClimateAirAirconCard extends CaCard {
       fanMode,
       cur,
       target,
+      range,
       chips,
-      display: on && target != null && mode !== "fan_only" ? `${caFmtNum(this._intlLang(), target)}°` : on ? "--" : "",
+      display: on ? this._display(mode, target, range) : "",
       swing,
     };
+  }
+
+  // The text on the unit's display: the target, the range in whole degrees (20-24) or "--".
+  _display(mode, target, range) {
+    const n = (v, digits) => caFmtNum(this._intlLang(), v, digits);
+    if (mode === "fan_only") return "--";
+    if (range) return `${n(range.low, 0)}-${n(range.high, 0)}`;
+    return target != null ? `${n(target)}°` : "--";
   }
 
   _temp(v, digits = 1) {
@@ -238,12 +260,33 @@ class ClimateAirAirconCard extends CaCard {
   }
 
   _showTarget(m) {
-    return m.running && m.target != null && m.mode !== "fan_only";
+    return m.running && (m.target != null || m.range != null) && m.mode !== "fan_only";
+  }
+
+  // The target as text: one temperature, or the range (20–24 °C).
+  _targetText(m) {
+    if (!m.range) return this._temp(m.target);
+    return `${caFmtNum(this._intlLang(), m.range.low)}–${this._temp(m.range.high)}`;
+  }
+
+  // One − / + stepper: `action` is temp (single target), temp_low or temp_high, `hint` names the value in the labels.
+  _stepper(action, value, label, hint) {
+    const btn = (dir, key, icon) => {
+      const text = hint ? `${this._t(key)} (${hint})` : this._t(key);
+      return `<button class="round" data-action="${action}" data-value="${dir}" title="${caEsc(text)}" aria-label="${caEsc(text)}"><ha-icon icon="${icon}"></ha-icon></button>`;
+    };
+    return (
+      '<div class="stepper">' +
+      btn("-1", "temp_down", "mdi:minus") +
+      `<div class="tv"><span class="tval">${caFmtNum(this._intlLang(), value)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(label)}</span></div>` +
+      btn("1", "temp_up", "mdi:plus") +
+      "</div>"
+    );
   }
 
   _heroInfo(m) {
     const cur = m.cur != null ? `<span class="val">${caFmtNum(this._intlLang(), m.cur)}<small> ${caEsc(this._unit())}</small></span>` : "";
-    const target = this._showTarget(m) ? `<span class="arrow">→ ${caEsc(this._temp(m.target))}</span>` : "";
+    const target = this._showTarget(m) ? `<span class="arrow">→ ${caEsc(this._targetText(m))}</span>` : "";
     if (!cur) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     return `<div class="big">${cur}${target}</div>${m.fanMode ? caLine("mdi:fan", m.fanMode) : ""}`;
   }
@@ -256,13 +299,11 @@ class ClimateAirAirconCard extends CaCard {
     const modes = (a.hvac_modes || []).filter((x) => x !== "off");
     const segs = this._segments("hvac", modes, m.mode, (o) => this._fmtState(r.id, o), (o) => CA_MODE_ICONS[o]);
     let stepper = "";
-    if (f & CA_CLIMATE_TARGET && this._showTarget(m)) {
-      stepper =
-        '<div class="stepper">' +
-        `<button class="round" data-action="temp" data-value="-1" title="${caEsc(this._t("temp_down"))}" aria-label="${caEsc(this._t("temp_down"))}"><ha-icon icon="mdi:minus"></ha-icon></button>` +
-        `<div class="tv"><span class="tval">${caFmtNum(this._intlLang(), m.target)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(this._t("target"))}</span></div>` +
-        `<button class="round" data-action="temp" data-value="1" title="${caEsc(this._t("temp_up"))}" aria-label="${caEsc(this._t("temp_up"))}"><ha-icon icon="mdi:plus"></ha-icon></button></div>`;
-    }
+    if (m.range && this._showTarget(m)) {
+      const low = this._t("target_low");
+      const high = this._t("target_high");
+      stepper = `<div class="steppers">${this._stepper("temp_low", m.range.low, low, low)}${this._stepper("temp_high", m.range.high, high, high)}</div>`;
+    } else if (f & CA_CLIMATE_TARGET && this._showTarget(m)) stepper = this._stepper("temp", m.target, this._t("target"));
     const selects = m.running
       ? [
           f & CA_CLIMATE_FAN_MODE ? this._selectAttr("fan_mode", "fan_modes", "set_fan_mode", this._t("fan_mode")) : "",
@@ -283,28 +324,42 @@ class ClimateAirAirconCard extends CaCard {
     const id = this._r.id;
     if (action === "hvac") this._call("climate", "set_hvac_mode", { entity_id: id, hvac_mode: value });
     else if (action === "temp") this._step(Number(value));
+    else if (action === "temp_low") this._step(Number(value), "low");
+    else if (action === "temp_high") this._step(Number(value), "high");
     else super._action(action, value);
   }
 
-  // Each tap moves the target by one step at once on screen; the service is called once the taps stop.
-  _step(dir) {
+  // Each tap moves the target by one step at once on screen; the service is called once the taps stop. `bound` (low
+  // or high) moves that end of a range, which keeps at least one step between the two.
+  _step(dir, bound) {
     const st = this._st(this._r.id);
     const a = st.attributes;
     const step = Number(a.target_temp_step) || (this._unit() === "°F" ? 1 : 0.5);
-    const cur = this._target(st);
-    if (cur == null) return;
     const min = Number(a.min_temp ?? 7);
     const max = Number(a.max_temp ?? 35);
     // Rounded so a 0.1 step sends 21.3, not 21.300000000000001.
-    this._pendingTemp = +Math.min(max, Math.max(min, Math.round((cur + dir * step) / step) * step)).toFixed(2);
+    const fix = (v) => +v.toFixed(2);
+    const next = (cur, lo, hi) => fix(Math.min(hi, Math.max(lo, Math.round((cur + dir * step) / step) * step)));
+    if (bound) {
+      const r = this._range(st);
+      if (!r) return;
+      this._pendingTemp =
+        bound === "low"
+          ? { target_temp_low: next(r.low, min, Math.min(max, fix(r.high - step))), target_temp_high: r.high }
+          : { target_temp_low: r.low, target_temp_high: next(r.high, Math.max(min, fix(r.low + step)), max) };
+    } else {
+      const cur = this._target(st);
+      if (cur == null) return;
+      this._pendingTemp = next(cur, min, max);
+    }
     this._update();
     clearTimeout(this._tempTimer);
     this._tempTimer = setTimeout(async () => {
-      const temperature = this._pendingTemp;
+      const pending = this._pendingTemp;
       try {
-        await this._call("climate", "set_temperature", { entity_id: this._r.id, temperature });
+        await this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
       } finally {
-        if (this._pendingTemp === temperature) this._pendingTemp = undefined;
+        if (this._pendingTemp === pending) this._pendingTemp = undefined;
         this._sig = null;
         this._update();
       }
@@ -314,7 +369,7 @@ class ClimateAirAirconCard extends CaCard {
   _miniInfo(m) {
     const lines = [];
     if (m.cur != null) {
-      const target = this._showTarget(m) ? ` → ${this._temp(m.target)}` : "";
+      const target = this._showTarget(m) ? ` → ${this._targetText(m)}` : "";
       lines.push(`<div class="line tline"><ha-icon icon="mdi:thermometer"></ha-icon><span><b>${caEsc(this._temp(m.cur))}</b>${caEsc(target)}</span></div>`);
     }
     if (m.running && (m.fanMode || m.sub)) lines.push(caLine("mdi:fan", [m.fanMode, m.sub].filter(Boolean).join(" · ")));
@@ -324,7 +379,8 @@ class ClimateAirAirconCard extends CaCard {
   }
 
   _miniButtons(m) {
-    if (!this._showTarget(m) || !((this._st(this._r.id).attributes.supported_features || 0) & CA_CLIMATE_TARGET)) return [];
+    // A range has four buttons: they stay on the full card, which the mini card unfolds into.
+    if (m.range || !this._showTarget(m) || !((this._st(this._r.id).attributes.supported_features || 0) & CA_CLIMATE_TARGET)) return [];
     return [
       ["-1", "mdi:minus", "temp_down"],
       ["1", "mdi:plus", "temp_up"],
@@ -333,6 +389,12 @@ class ClimateAirAirconCard extends CaCard {
 
   static styles = `
     .stepper { display: flex; align-items: center; justify-content: center; gap: 18px; }
+    /* A low / high range: two steppers side by side, one under the other when they do not fit. */
+    .steppers { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }
+    .steppers .stepper { gap: 8px; }
+    .steppers .tv { min-width: 72px; }
+    .steppers .tval { font-size: 24px; }
+    .steppers .round { width: 40px; height: 40px; }
     .tv { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
     .tval { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .tval small { font-size: 14px; color: var(--secondary-text-color); }
