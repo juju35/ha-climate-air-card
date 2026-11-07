@@ -1,6 +1,6 @@
 # ha-climate-air-card
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![Marketplace](https://img.shields.io/badge/Marketplace-Custom-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
 [![HACS Validation](https://github.com/juju35/ha-climate-air-card/actions/workflows/hacs.yml/badge.svg)](https://github.com/juju35/ha-climate-air-card/actions/workflows/hacs.yml)
 [![Validate](https://github.com/juju35/ha-climate-air-card/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-climate-air-card/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-climate-air-card/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-climate-air-card/actions/workflows/lint.yml)
@@ -10,7 +10,7 @@
 
 Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
+[![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
 
 | Card | Type | What it shows |
 |---|---|---|
@@ -26,7 +26,7 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 |---|---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all-dark.png"><img alt="Overview" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/overview-all.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card-dark.png"><img alt="Air purifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card-dark.png"><img alt="Fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card-dark.png"><img alt="Air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-card.png" width="400"></picture> |
 
-All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek labels following the Home Assistant language, light and dark themes, and come in a single HACS download with no dependency.
+All the cards share the same look (header with a status pill and a power button, illustration next to the state, mini cards with a detail button), a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek labels following the Home Assistant language, light and dark themes, and come in a single Marketplace install with no dependency.
 
 On narrow cards (6 columns of a Sections view), the status pill keeps only its coloured dot (the status stays in its tooltip), the title keeps its first characters, and the mini cards move their buttons under the device's info.
 
@@ -91,7 +91,7 @@ The cards work with **any integration** that provides air purifiers and fans as 
 | Integration | What the cards add |
 |---|---|
 | [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
-| [Dyson](https://github.com/libdyson-wg/ha-dyson) (HACS) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
+| [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
 
@@ -102,20 +102,20 @@ The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) 
 
 ## Installation
 
-### Via HACS (recommended)
+### Via the Marketplace (recommended)
 
 Click the button below to add the repository directly:
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
+[![Add to the Marketplace](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
 
 Or manually:
 
-1. Open HACS → **⋮** (top right) → **Custom repositories**
+1. Open **Settings → Marketplace → Add from link** (top right; this needs a GitHub account connected)
 2. Add `https://github.com/juju35/ha-climate-air-card` — Category: **Dashboard**
-3. Search for **Climate Air Cards** and install it
+3. Open **Climate Air Cards** and click **Install**
 4. Clear your browser cache and refresh
 
-HACS registers the dashboard resource for you; the single file provides every card.
+The Marketplace registers the dashboard resource for you; the single file provides every card.
 
 ### Manual
 
@@ -313,7 +313,7 @@ npm test             # unit tests, no browser
 npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon cool, heat and dry/overview, needs ffmpeg) with mock data into screenshots/
 ```
 
-Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single HACS file. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where HACS downloads it from.
+Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single file the Marketplace installs. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where the Marketplace installs it from.
 
 ### Releasing
 
