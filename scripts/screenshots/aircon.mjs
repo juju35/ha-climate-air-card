@@ -12,10 +12,23 @@ const heating = {
   "binary_sensor.air_conditioner_full_dust": { state: "on" },
 };
 
+// Heat / cool (auto) with a low / high range instead of one target.
+const range = {
+  [entity]: {
+    state: "heat_cool",
+    hvac_modes: ["off", "heat_cool", "cool", "dry", "heat", "fan_only"],
+    supported_features: 442,
+    temperature: null,
+    target_temp_low: 20,
+    target_temp_high: 24,
+    hvac_action: "cooling",
+  },
+};
+
 await shoot({
   prefix: "aircon",
   tag: "climate-air-aircon-card",
-  shots: [...pair("card"), ...pair("heat", { changes: heating })],
+  shots: [...pair("card"), ...pair("heat", { changes: heating }), ...pair("range", { changes: range })],
   setup: (s, lang) => ({ hass: mockHass(lang, s.changes), config: { entity } }),
 });
 

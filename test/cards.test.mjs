@@ -127,6 +127,83 @@ test("air conditioner: a pending target is sent right away when the card is deta
   assert.equal(h.calls.length, 1); // the debounce timer was cancelled, nothing is sent twice
 });
 
+// heat_cool / auto: the entity sets a low / high range (TARGET_TEMPERATURE_RANGE) instead of one target.
+const rangeHass = (attrs = {}, lang = "en") =>
+  makeHass(lang, {
+    "climate.air_conditioner": { state: "heat_cool", supported_features: 442, temperature: null, target_temp_low: 20, target_temp_high: 24, ...attrs },
+  });
+
+test("air conditioner in heat_cool: both ends of the range, each with its own stepper", () => {
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, rangeHass());
+  const out = html(el);
+  assert.match(out, /→ 20–24 °C/);
+  assert.match(out, /class="steppers"/);
+  assert.match(out, /<span class="tval">20<small> °C<\/small><\/span><span class="tl">Heat to<\/span>/);
+  assert.match(out, /<span class="tval">24<small> °C<\/small><\/span><span class="tl">Cool to<\/span>/);
+  for (const a of ["temp_low", "temp_high"]) for (const v of ["-1", "1"]) assert.match(out, new RegExp(`data-action="${a}" data-value="${v}"`));
+  assert.match(out, /aria-label="Raise the target \(Heat to\)"/);
+  assert.doesNotMatch(out, /data-action="temp"/);
+  const fr = html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, rangeHass({}, "fr")));
+  assert.match(fr, /Chauffer à<\/span>.*Refroidir à<\/span>/s);
+});
+
+test("air conditioner in heat_cool: low and high steps are sent together, within min/max and apart", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const h = rangeHass();
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  el._action("temp_low", "1");
+  el._action("temp_low", "1");
+  el._action("temp_high", "-1");
+  assert.match(html(el), /→ 21–23\.5 °C/);
+  assert.equal(h.calls.length, 0);
+  t.mock.timers.tick(1000);
+  await new Promise((r) => setImmediate(r));
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
+    ["climate", "set_temperature", { entity_id: "climate.air_conditioner", target_temp_low: 21, target_temp_high: 23.5 }],
+  ]);
+  assert.equal(el._pendingTemp, undefined);
+});
+
+test("air conditioner in heat_cool: the low end stays a step under the high end, the high end under max_temp", () => {
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, rangeHass({ target_temp_low: 23, target_temp_high: 24 }));
+  for (let i = 0; i < 4; i++) el._action("temp_low", "1");
+  assert.deepEqual({ ...el._pendingTemp }, { target_temp_low: 23.5, target_temp_high: 24 });
+  for (let i = 0; i < 4; i++) el._action("temp_high", "-1");
+  assert.deepEqual({ ...el._pendingTemp }, { target_temp_low: 23.5, target_temp_high: 24 });
+  const top = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, rangeHass({ target_temp_low: 16, target_temp_high: 30 }));
+  top._action("temp_high", "1");
+  top._action("temp_low", "-1");
+  assert.deepEqual({ ...top._pendingTemp }, { target_temp_low: 16, target_temp_high: 30 });
+  clearTimeout(el._tempTimer);
+  clearTimeout(top._tempTimer);
+});
+
+test("air conditioner in heat_cool: a pending range is sent right away when the card is detached", () => {
+  const h = rangeHass();
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  el._action("temp_high", "1");
+  el.disconnectedCallback();
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
+    ["climate", "set_temperature", { entity_id: "climate.air_conditioner", target_temp_low: 20, target_temp_high: 24.5 }],
+  ]);
+});
+
+test("air conditioner with range support but a single target in its mode: one stepper, as before", () => {
+  const out = html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" },
+    makeHass("en", { "climate.air_conditioner": { supported_features: 443, target_temp_low: null, target_temp_high: null } })));
+  assert.match(out, /data-action="temp" data-value="1"/);
+  assert.doesNotMatch(out, /class="steppers"|temp_low/);
+  assert.match(out, /→ 22 °C/);
+});
+
+test("air conditioner mini in heat_cool: the range is shown, its steppers stay on the full card", () => {
+  const el = mount(lib, "climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }, rangeHass());
+  assert.match(html(el), /25\.5 °C<\/b> → 20–24 °C/);
+  assert.doesNotMatch(html(el), /data-action="temp/);
+  el._toggleZoom({ detail: 1 });
+  assert.match(html(el), /data-action="temp_low"/);
+});
+
 test("air conditioner off: no target, dirty filter flagged", () => {
   const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" },
     makeHass("en", { "climate.air_conditioner": { state: "off" }, "binary_sensor.air_conditioner_full_dust": { state: "on" } }));
