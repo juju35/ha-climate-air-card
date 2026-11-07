@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.11.0 - 2026-11-07
+
+### What's new
+- Air conditioner card: a *Horizontal swing* select, in every language, for the entities that support it (`swing_horizontal_mode`).
+
+### Fixes
+- The keyboard focus stays on the control that had it when the card redraws (− / + of the target, mode buttons, toggles, Overview tiles), instead of falling back to the page.
+- A dropdown or slider changed from the keyboard keeps the focus, and a slider moved with the arrow keys calls the service once the presses stop; with a mouse or a finger, the focus still leaves the control.
+- Chips that open a more-info can be reached with Tab and opened with Enter or Space; an Overview tile is no longer a button holding other buttons, its name is the button that unfolds the device's card.
+
 ## 1.10.0 - 2026-11-07
 
 ### What's new

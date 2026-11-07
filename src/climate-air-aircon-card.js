@@ -119,8 +119,6 @@ const CA_SWITCHES = [
 ];
 const caSwitchInfo = (id) => CA_SWITCHES.find(([re]) => re.test(id.split(".")[1] || id));
 
-const CA_TEMP_DEBOUNCE = 900;
-
 CA_ART.aircon = {
   variants: ["split", "portable", "window"],
   guess: caAirconVariant,
@@ -132,7 +130,7 @@ CA_ART.aircon = {
         `m-${s.mode}`,
         s.active ? "active" : "",
         s.running && /vert|both|3d|all|^on$|^swing$/.test(swing) ? "swing-v" : "",
-        s.running && /hor|both|3d|all/.test(swing) ? "swing-h" : "",
+        s.running && (/hor|both|3d|all/.test(swing) || !/^(off|none)?$/i.test(s.swingH || "")) ? "swing-h" : "",
       ],
     };
   },
@@ -241,6 +239,7 @@ class ClimateAirAirconCard extends CaCard {
       chips,
       display: on ? this._display(mode, target, range) : "",
       swing,
+      swingH: a.swing_horizontal_mode,
     };
   }
 
@@ -305,6 +304,9 @@ class ClimateAirAirconCard extends CaCard {
       ? [
           f & CA_CLIMATE_FAN_MODE ? this._selectAttr("fan_mode", "fan_modes", "set_fan_mode", this._t("fan_mode")) : "",
           f & CA_CLIMATE_SWING ? this._selectAttr("swing_mode", "swing_modes", "set_swing_mode", this._t("swing_mode")) : "",
+          f & CA_CLIMATE_SWING_HORIZONTAL
+            ? this._selectAttr("swing_horizontal_mode", "swing_horizontal_modes", "set_swing_horizontal_mode", this._t("swing_horizontal_mode"))
+            : "",
           f & CA_CLIMATE_PRESET ? this._selectAttr("preset_mode", "preset_modes", "set_preset_mode", this._t("preset_mode")) : "",
         ].filter(Boolean)
       : [];

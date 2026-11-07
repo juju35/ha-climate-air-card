@@ -61,6 +61,7 @@ const CA_I18N = {
     outdoor: "Outdoor",
     fan_mode: "Fan",
     swing_mode: "Swing",
+    swing_horizontal_mode: "Horizontal swing",
     preset_mode: "Preset",
     options: "Options",
     offline: "Device offline",
@@ -180,6 +181,7 @@ const CA_I18N = {
     outdoor: "Extérieur",
     fan_mode: "Ventilation",
     swing_mode: "Balayage",
+    swing_horizontal_mode: "Balayage horizontal",
     preset_mode: "Préréglage",
     options: "Options",
     offline: "Appareil hors ligne",
@@ -300,6 +302,7 @@ const CA_I18N = {
     outdoor: "Außen",
     fan_mode: "Lüfter",
     swing_mode: "Schwenken",
+    swing_horizontal_mode: "Horizontal schwenken",
     preset_mode: "Voreinstellung",
     options: "Optionen",
     offline: "Gerät offline",
@@ -419,6 +422,7 @@ const CA_I18N = {
     outdoor: "Exterior",
     fan_mode: "Ventilador",
     swing_mode: "Oscilación",
+    swing_horizontal_mode: "Oscilación horizontal",
     preset_mode: "Preajuste",
     options: "Opciones",
     offline: "Dispositivo sin conexión",
@@ -538,6 +542,7 @@ const CA_I18N = {
     outdoor: "Споља",
     fan_mode: "Вентилатор",
     swing_mode: "Усмеравање",
+    swing_horizontal_mode: "Хоризонтално усмеравање",
     preset_mode: "Предефинисано",
     options: "Опције",
     offline: "Уређај је ван мреже",
@@ -657,6 +662,7 @@ const CA_I18N = {
     outdoor: "Spolja",
     fan_mode: "Ventilator",
     swing_mode: "Usmeravanje",
+    swing_horizontal_mode: "Horizontalno usmeravanje",
     preset_mode: "Predefinisano",
     options: "Opcije",
     offline: "Uređaj je van mreže",
@@ -776,6 +782,7 @@ const CA_I18N = {
     outdoor: "Esterno",
     fan_mode: "Ventilazione",
     swing_mode: "Oscillazione alette",
+    swing_horizontal_mode: "Oscillazione orizzontale",
     preset_mode: "Preimpostazione",
     options: "Opzioni",
     offline: "Dispositivo offline",
@@ -896,6 +903,7 @@ const CA_I18N = {
     outdoor: "Buiten",
     fan_mode: "Ventilatie",
     swing_mode: "Zwenken",
+    swing_horizontal_mode: "Horizontaal zwenken",
     preset_mode: "Voorinstelling",
     options: "Opties",
     offline: "Apparaat offline",
@@ -1016,6 +1024,7 @@ const CA_I18N = {
     outdoor: "Exterior",
     fan_mode: "Ventilação",
     swing_mode: "Oscilação",
+    swing_horizontal_mode: "Oscilação horizontal",
     preset_mode: "Predefinição",
     options: "Opções",
     offline: "Dispositivo offline",
@@ -1136,6 +1145,7 @@ const CA_I18N = {
     outdoor: "Na zewnątrz",
     fan_mode: "Nawiew",
     swing_mode: "Kierunek nawiewu",
+    swing_horizontal_mode: "Nawiew poziomy",
     preset_mode: "Ustawienie wstępne",
     options: "Opcje",
     offline: "Urządzenie offline",
@@ -1256,6 +1266,7 @@ const CA_I18N = {
     outdoor: "Exterior",
     fan_mode: "Ventilație",
     swing_mode: "Baleiere",
+    swing_horizontal_mode: "Baleiere orizontală",
     preset_mode: "Presetare",
     options: "Opțiuni",
     offline: "Dispozitiv offline",
@@ -1376,6 +1387,7 @@ const CA_I18N = {
     outdoor: "Ude",
     fan_mode: "Blæser",
     swing_mode: "Lameller",
+    swing_horizontal_mode: "Vandrette lameller",
     preset_mode: "Forudindstilling",
     options: "Valg",
     offline: "Enhed offline",
@@ -1496,6 +1508,7 @@ const CA_I18N = {
     outdoor: "Ute",
     fan_mode: "Fläkt",
     swing_mode: "Svängning",
+    swing_horizontal_mode: "Horisontell svängning",
     preset_mode: "Förinställning",
     options: "Alternativ",
     offline: "Enheten är offline",
@@ -1616,6 +1629,7 @@ const CA_I18N = {
     outdoor: "Навън",
     fan_mode: "Вентилатор",
     swing_mode: "Люлеене",
+    swing_horizontal_mode: "Хоризонтално люлеене",
     preset_mode: "Предварителна настройка",
     options: "Опции",
     offline: "Няма връзка",
@@ -1736,6 +1750,7 @@ const CA_I18N = {
     outdoor: "На улице",
     fan_mode: "Обдув",
     swing_mode: "Качание жалюзи",
+    swing_horizontal_mode: "Горизонтальное качание",
     preset_mode: "Предустановка",
     options: "Параметры",
     offline: "Не в сети",
@@ -1856,6 +1871,7 @@ const CA_I18N = {
     outdoor: "Надворі",
     fan_mode: "Обдув",
     swing_mode: "Хитання жалюзі",
+    swing_horizontal_mode: "Горизонтальне хитання",
     preset_mode: "Попереднє налаштування",
     options: "Параметри",
     offline: "Не в мережі",
@@ -1976,6 +1992,7 @@ const CA_I18N = {
     outdoor: "Kültéri",
     fan_mode: "Ventilátor",
     swing_mode: "Legyezés",
+    swing_horizontal_mode: "Vízszintes legyezés",
     preset_mode: "Előbeállítás",
     options: "Opciók",
     offline: "Az eszköz offline",
@@ -2096,6 +2113,7 @@ const CA_I18N = {
     outdoor: "Vonku",
     fan_mode: "Ventilátor",
     swing_mode: "Natáčanie lamiel",
+    swing_horizontal_mode: "Horizontálne natáčanie",
     preset_mode: "Predvoľba",
     options: "Možnosti",
     offline: "Zariadenie je offline",
@@ -2216,6 +2234,7 @@ const CA_I18N = {
     outdoor: "Venku",
     fan_mode: "Ventilátor",
     swing_mode: "Natáčení lamel",
+    swing_horizontal_mode: "Horizontální natáčení",
     preset_mode: "Předvolba",
     options: "Možnosti",
     offline: "Zařízení je offline",
@@ -2336,6 +2355,7 @@ const CA_I18N = {
     outdoor: "Zunaj",
     fan_mode: "Ventilator",
     swing_mode: "Nihanje lamel",
+    swing_horizontal_mode: "Vodoravno nihanje",
     preset_mode: "Prednastavitev",
     options: "Možnosti",
     offline: "Ni povezave",
@@ -2456,6 +2476,7 @@ const CA_I18N = {
     outdoor: "Ārā",
     fan_mode: "Ventilators",
     swing_mode: "Žalūziju kustība",
+    swing_horizontal_mode: "Horizontāla žalūziju kustība",
     preset_mode: "Iestatījums",
     options: "Opcijas",
     offline: "Ierīce bezsaistē",
@@ -2576,6 +2597,7 @@ const CA_I18N = {
     outdoor: "Εξωτερικά",
     fan_mode: "Ανεμιστήρας",
     swing_mode: "Ταλάντευση",
+    swing_horizontal_mode: "Οριζόντια ταλάντευση",
     preset_mode: "Προεπιλογή",
     options: "Επιλογές",
     offline: "Εκτός σύνδεσης",
@@ -2959,6 +2981,10 @@ const CA_CLIMATE_RANGE = 2;
 const CA_CLIMATE_FAN_MODE = 8;
 const CA_CLIMATE_PRESET = 16;
 const CA_CLIMATE_SWING = 32;
+const CA_CLIMATE_SWING_HORIZONTAL = 512;
+
+// Taps on − / + and a slider moved from the keyboard: the service is called once they stop for this long.
+const CA_TEMP_DEBOUNCE = 900;
 
 // The service data of a pending target: one temperature, or a low / high range (`target_temp_low`, `target_temp_high`).
 const caTempData = (pending) => (typeof pending === "number" ? { temperature: pending } : pending);
@@ -2973,6 +2999,28 @@ const caClimateRange = (a) => {
 
 // Opens Home Assistant's more-info dialog of `entityId`, from the element `el`.
 const caMoreInfo = (el, entityId) => el.dispatchEvent(new CustomEvent("hass-more-info", { bubbles: true, composed: true, detail: { entityId } }));
+
+// Chips are not buttons: Enter or Space on a focused one opens its more-info, like a click. True when handled.
+const caChipKey = (host, ev) => {
+  const entity = ev.target?.dataset?.moreInfo;
+  if (!entity || (ev.key !== "Enter" && ev.key !== " ")) return false;
+  ev.preventDefault();
+  caMoreInfo(host, entity);
+  return true;
+};
+
+// A render rebuilds the card's markup, which drops the focus: what identifies the focused control (its tag and its
+// data-* attributes: data-action + data-value, data-toggle, data-more-info…) finds its replacement afterwards.
+const caFocusKey = (el) => {
+  const data = [...(el?.attributes || [])].filter((a) => a.name.startsWith("data-")).map((a) => [a.name, a.value]);
+  return data.length ? { tag: el.localName, data } : null;
+};
+
+const caRestoreFocus = (root, key) => {
+  if (!key || root.activeElement) return;
+  const el = [...root.querySelectorAll(key.tag)].find((n) => key.data.every(([k, v]) => n.getAttribute(k) === v));
+  el?.focus({ preventScroll: true });
+};
 
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
 
@@ -3250,12 +3298,21 @@ class CaCard extends CaElement {
       this.attachShadow({ mode: "open" });
       this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
       this.shadowRoot.addEventListener("change", (ev) => this._onChange(ev));
+      // Whether the last input came from a pointer or the keyboard: only a pointer is done with a control it changed.
+      this.shadowRoot.addEventListener("pointerdown", () => {
+        this._pointer = true;
+      });
+      this.shadowRoot.addEventListener("keydown", (ev) => {
+        this._pointer = false;
+        caChipKey(this, ev);
+      });
       // A dropdown closed with Escape or a slider thumb touched without moving it fires no `change`: when the focus
       // leaves, draw the updates held back while it was there. Deferred so the focus has settled (it may only move
       // to another control of the card, which still holds them back). Focus staying inside the card draws nothing:
       // a mouse press on a button moves the focus between mousedown and mouseup, and a rebuild there would drop the
       // click; the click itself (or the next tick) draws the held updates.
       this.shadowRoot.addEventListener("focusout", (ev) => {
+        this._flushRange();
         if (ev.relatedTarget && this.shadowRoot.contains(ev.relatedTarget)) return;
         setTimeout(() => this._update(), 0);
       });
@@ -3275,6 +3332,7 @@ class CaCard extends CaElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    this._flushRange();
     clearTimeout(this._tempTimer);
     // Detached mid-debounce (dashboard edit, panel fold, zoom): send the pending target now instead of losing it.
     if (this._pendingTemp !== undefined) {
@@ -3372,7 +3430,9 @@ class CaCard extends CaElement {
     if (active && (active.tagName === "SELECT" || active.tagName === "INPUT")) return;
     this._sig = sig;
     this._r = r;
+    const focus = caFocusKey(active);
     this._render(r);
+    caRestoreFocus(this.shadowRoot, focus);
     this._fitPills();
   }
 
@@ -3435,9 +3495,10 @@ class CaCard extends CaElement {
     return caPicture(this.constructor.kind, m.variant, m);
   }
 
-  // A chip with an icon and a value; `cls` tints it (warn, alert). With an `entity`, a click opens its more-info.
+  // A chip with an icon and a value; `cls` tints it (warn, alert). With an `entity`, a click (or Enter / Space) opens
+  // its more-info.
   _chip(icon, text, cls = "", title = "", entity = "") {
-    const more = entity ? ` data-more-info="${caEsc(entity)}"` : "";
+    const more = entity ? ` data-more-info="${caEsc(entity)}" role="button" tabindex="0"` : "";
     return `<span class="chip ${cls}"${more}${title ? ` title="${caEsc(title)}"` : ""}><ha-icon icon="${icon}"></ha-icon>${caEsc(text)}</span>`;
   }
 
@@ -3599,12 +3660,37 @@ class CaCard extends CaElement {
     const d = el?.dataset;
     if (!d) return;
     const id = this._r.id;
-    if (d.range === "percentage") this._call("fan", "set_percentage", { entity_id: id, percentage: Number(el.value) });
-    else if (d.number) this._call("number", "set_value", { entity_id: d.number, value: Number(el.value) });
-    else if (d.select) this._call("select", "select_option", { entity_id: d.select, option: el.value });
-    else if (d.attrService) this._call(id.split(".")[0], d.attrService, { entity_id: id, [d.attr]: el.value });
+    const value = el.value;
+    let send;
+    if (d.range === "percentage") send = () => this._call("fan", "set_percentage", { entity_id: id, percentage: Number(value) });
+    else if (d.number) send = () => this._call("number", "set_value", { entity_id: d.number, value: Number(value) });
+    else if (d.select) send = () => this._call("select", "select_option", { entity_id: d.select, option: value });
+    else if (d.attrService) send = () => this._call(id.split(".")[0], d.attrService, { entity_id: id, [d.attr]: value });
     else return;
-    el.blur();
+    if (this._pointer) {
+      // A pointer is done with the control: the focus leaves it, so the card redraws (it does not while a dropdown or
+      // a slider has the focus).
+      send();
+      el.blur();
+      return;
+    }
+    // From the keyboard the focus stays. A slider sends a change per arrow press: like the − / + of the target
+    // temperature, the service is called once the presses stop (or the focus leaves).
+    if (el.type !== "range") {
+      send();
+      return;
+    }
+    clearTimeout(this._rangeTimer);
+    this._rangeSend = send;
+    this._rangeTimer = setTimeout(() => this._flushRange(), CA_TEMP_DEBOUNCE);
+  }
+
+  // Sends the slider value still waiting for the keyboard presses to stop.
+  _flushRange() {
+    clearTimeout(this._rangeTimer);
+    const send = this._rangeSend;
+    this._rangeSend = null;
+    send?.();
   }
 
   // ── Styles ──
@@ -3800,6 +3886,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   .chips .chip { white-space: normal; }
   .chip ha-icon { --mdc-icon-size: 13px; flex: none; }
   .chip[data-more-info] { cursor: pointer; }
+  .chip[data-more-info]:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }
   .chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }
   .chip.alert { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }
   .chip.tint { --k: var(--ca-color); background: color-mix(in srgb, var(--k) 15%, transparent); color: var(--k); }
