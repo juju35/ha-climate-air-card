@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.10.0 - 2026-11-07
+
+### What's new
+- Overview: an air conditioner in *Heat/Cool* or *Auto* with a low / high range shows that range on its tile (*Heat/Cool · 20–24 °C*) and on its illustration's display.
+- Clicking a chip (a measurement, a filter alert, oscillation, timer, offline) opens the more-info dialog of its entity, on the cards and on the Overview tiles.
+- Mini cards take the height of their content in a Sections view (`rows: auto`).
+
 ## 1.9.0 - 2026-11-07
 
 ### Fixes

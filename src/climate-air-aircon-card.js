@@ -200,13 +200,10 @@ class ClimateAirAirconCard extends CaCard {
 
   // A low / high range (heat_cool, auto) when the entity sets one instead of a single target.
   _range(st) {
-    const a = st.attributes;
-    const f = a.supported_features || 0;
-    if (!(f & CA_CLIMATE_RANGE) || a.target_temp_low == null || a.target_temp_high == null) return null;
-    if (f & CA_CLIMATE_TARGET && a.temperature != null) return null;
+    const range = caClimateRange(st.attributes);
     const p = this._pendingTemp;
-    if (p && typeof p === "object") return { low: p.target_temp_low, high: p.target_temp_high };
-    return { low: Number(a.target_temp_low), high: Number(a.target_temp_high) };
+    if (range && p && typeof p === "object") return { low: p.target_temp_low, high: p.target_temp_high };
+    return range;
   }
 
   _model(r) {
@@ -225,7 +222,7 @@ class ClimateAirAirconCard extends CaCard {
     const active = on && (freq != null ? freq > 0 : action ? !["idle", "off"].includes(action) : true);
     const swing = String(a.swing_mode || "off").toLowerCase();
     const chips = [];
-    if (c.show_alerts && this._val(ent.filter_alert) === "on") chips.push(this._chip("mdi:air-filter", this._t("filter_dirty"), "warn"));
+    if (c.show_alerts && this._val(ent.filter_alert) === "on") chips.push(this._chip("mdi:air-filter", this._t("filter_dirty"), "warn", "", ent.filter_alert));
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["outdoor_temp", "humidity", ...(on ? ["power"] : [])]));
     const fanMode = on && a.fan_mode ? this._fmtAttr(r.id, "fan_mode", a.fan_mode) : "";
     const preset = on && a.preset_mode && a.preset_mode !== "none" ? this._fmtAttr(r.id, "preset_mode", a.preset_mode) : "";

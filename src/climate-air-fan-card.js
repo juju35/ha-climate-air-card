@@ -83,12 +83,12 @@ class ClimateAirFanCard extends CaCard {
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["temperature", "humidity"]));
     if (on && osc && (a.supported_features || 0) & CA_FAN_OSCILLATE) {
       const angle = this._avail(ent.angle) ? ` ${this._val(ent.angle)}°` : "";
-      chips.push(this._chip("mdi:arrow-oscillating", `${this._t("oscillation")}${angle}`, "tint"));
+      chips.push(this._chip("mdi:arrow-oscillating", `${this._t("oscillation")}${angle}`, "tint", "", angle ? ent.angle : r.id));
     }
     const timer = this._num(ent.timer);
     if (on && timer) {
       const unit = this._st(ent.timer).attributes.unit_of_measurement || "";
-      chips.push(this._chip("mdi:timer-outline", `${caFmtNum(this._intlLang(), timer)}${unit ? ` ${unit}` : ""}`, "tint", this._t("timer")));
+      chips.push(this._chip("mdi:timer-outline", `${caFmtNum(this._intlLang(), timer)}${unit ? ` ${unit}` : ""}`, "tint", this._t("timer"), ent.timer));
     }
     return {
       state: on ? "on" : "off",
