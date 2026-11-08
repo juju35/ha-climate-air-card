@@ -191,6 +191,31 @@ class ClimateAirAirconCard extends CaCard {
     return this._hass.config?.unit_system?.temperature || "°C";
   }
 
+  // A target sent stays on screen until the entity reports it (then the entity's own value takes over), so it does
+  // not jump back to the old one in between.
+  _update() {
+    this._settle();
+    super._update();
+  }
+
+  _settle() {
+    const p = this._pendingTemp;
+    const st = this._tempSent && this._r && this._st(this._r.id);
+    if (!st) return;
+    const a = st.attributes;
+    const same = (x, y) => x != null && Math.abs(Number(x) - y) < 1e-6;
+    if (typeof p === "number" ? same(a.temperature, p) : same(a.target_temp_low, p.target_temp_low) && same(a.target_temp_high, p.target_temp_high)) {
+      this._clearPending();
+    }
+  }
+
+  _clearPending() {
+    clearTimeout(this._settleTimer);
+    this._pendingTemp = undefined;
+    this._tempSent = false;
+    this._sig = null;
+  }
+
   _target(st) {
     if (typeof this._pendingTemp === "number") return this._pendingTemp;
     return st.attributes.temperature == null ? null : Number(st.attributes.temperature);
@@ -300,6 +325,11 @@ class ClimateAirAirconCard extends CaCard {
       const high = this._t("target_high");
       stepper = `<div class="steppers">${this._stepper("temp_low", m.range.low, low, low)}${this._stepper("temp_high", m.range.high, high, high)}</div>`;
     } else if (f & CA_CLIMATE_TARGET && this._showTarget(m)) stepper = this._stepper("temp", m.target, this._t("target"));
+    // Target humidity (dehumidifying units): a slider calling climate.set_humidity.
+    const hum =
+      m.running && f & CA_CLIMATE_TARGET_HUMIDITY && a.humidity != null
+        ? this._rangeHtml("humidity", "target", "mdi:water-percent", this._t("target_humidity"), Number(a.min_humidity ?? 30), Number(a.max_humidity ?? 99), 1, Number(a.humidity))
+        : "";
     const selects = m.running
       ? [
           f & CA_CLIMATE_FAN_MODE ? this._selectAttr("fan_mode", "fan_modes", "set_fan_mode", this._t("fan_mode")) : "",
@@ -316,7 +346,7 @@ class ClimateAirAirconCard extends CaCard {
         return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
       }),
     );
-    return this._section("", segs + stepper + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles);
+    return this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles);
   }
 
   _action(action, value) {
@@ -328,8 +358,9 @@ class ClimateAirAirconCard extends CaCard {
     else super._action(action, value);
   }
 
-  // Each tap moves the target by one step at once on screen; the service is called once the taps stop. `bound` (low
-  // or high) moves that end of a range, which keeps at least one step between the two.
+  // Each tap moves the target by one step at once on screen; the service is called once the taps stop, and the new
+  // target stays shown until the entity reports it (CA_TEMP_SETTLE at most, at once if the call is refused). `bound`
+  // (low or high) moves that end of a range, which keeps at least one step between the two.
   _step(dir, bound) {
     const st = this._st(this._r.id);
     const a = st.attributes;
@@ -351,17 +382,25 @@ class ClimateAirAirconCard extends CaCard {
       if (cur == null) return;
       this._pendingTemp = next(cur, min, max);
     }
+    clearTimeout(this._settleTimer);
+    this._tempSent = false;
     this._update();
     clearTimeout(this._tempTimer);
     this._tempTimer = setTimeout(async () => {
       const pending = this._pendingTemp;
-      try {
-        await this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
-      } finally {
-        if (this._pendingTemp === pending) this._pendingTemp = undefined;
-        this._sig = null;
-        this._update();
+      const ok = await this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
+      // Tapped again meanwhile: that newer target is the one waiting.
+      if (this._pendingTemp !== pending) return;
+      if (!ok) this._clearPending();
+      else {
+        this._tempSent = true;
+        this._settleTimer = setTimeout(() => {
+          if (this._pendingTemp !== pending) return;
+          this._clearPending();
+          this._update();
+        }, CA_TEMP_SETTLE);
       }
+      this._update();
     }, CA_TEMP_DEBOUNCE);
   }
 

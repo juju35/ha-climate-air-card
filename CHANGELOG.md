@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.12.0 - 2026-11-08
+
+### What's new
+- Air conditioner card: a *Target humidity* slider, in every language, for the entities that support it (`climate.set_humidity`).
+
+### Fixes
+- A slider shows its fill and its value while it moves, not only once it is released.
+- A dropdown or slider that keeps the focus no longer freezes the card: the rest of the card is redrawn around it, and the control keeps its value and the focus.
+- Air conditioner card: the target set with − / + no longer jumps back to the old value after the call; it stays until the device reports it (10 seconds at most).
+
 ## 1.11.0 - 2026-11-07
 
 ### What's new
