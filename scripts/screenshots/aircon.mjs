@@ -25,10 +25,15 @@ const range = {
   },
 };
 
+// Drying, with a target humidity (TARGET_HUMIDITY).
+const dry = {
+  [entity]: { state: "dry", supported_features: 957, humidity: 50, min_humidity: 30, max_humidity: 80, current_humidity: 64, fan_mode: "low" },
+};
+
 await shoot({
   prefix: "aircon",
   tag: "climate-air-aircon-card",
-  shots: [...pair("card"), ...pair("heat", { changes: heating }), ...pair("range", { changes: range })],
+  shots: [...pair("card"), ...pair("heat", { changes: heating }), ...pair("range", { changes: range }), ...pair("dry", { changes: dry })],
   setup: (s, lang) => ({ hass: mockHass(lang, s.changes), config: { entity } }),
 });
 

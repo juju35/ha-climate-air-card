@@ -58,6 +58,7 @@ const CA_I18N = {
     target: "Target",
     target_low: "Heat to",
     target_high: "Cool to",
+    target_humidity: "Target humidity",
     outdoor: "Outdoor",
     fan_mode: "Fan",
     swing_mode: "Swing",
@@ -178,6 +179,7 @@ const CA_I18N = {
     target: "Consigne",
     target_low: "Chauffer à",
     target_high: "Refroidir à",
+    target_humidity: "Humidité cible",
     outdoor: "Extérieur",
     fan_mode: "Ventilation",
     swing_mode: "Balayage",
@@ -299,6 +301,7 @@ const CA_I18N = {
     target: "Sollwert",
     target_low: "Heizen auf",
     target_high: "Kühlen auf",
+    target_humidity: "Zielfeuchte",
     outdoor: "Außen",
     fan_mode: "Lüfter",
     swing_mode: "Schwenken",
@@ -419,6 +422,7 @@ const CA_I18N = {
     target: "Objetivo",
     target_low: "Calentar a",
     target_high: "Enfriar a",
+    target_humidity: "Humedad objetivo",
     outdoor: "Exterior",
     fan_mode: "Ventilador",
     swing_mode: "Oscilación",
@@ -539,6 +543,7 @@ const CA_I18N = {
     target: "Циљ",
     target_low: "Грејање на",
     target_high: "Хлађење на",
+    target_humidity: "Циљна влажност",
     outdoor: "Споља",
     fan_mode: "Вентилатор",
     swing_mode: "Усмеравање",
@@ -659,6 +664,7 @@ const CA_I18N = {
     target: "Cilj",
     target_low: "Grejanje na",
     target_high: "Hlađenje na",
+    target_humidity: "Ciljna vlažnost",
     outdoor: "Spolja",
     fan_mode: "Ventilator",
     swing_mode: "Usmeravanje",
@@ -779,6 +785,7 @@ const CA_I18N = {
     target: "Obiettivo",
     target_low: "Riscalda a",
     target_high: "Raffredda a",
+    target_humidity: "Umidità desiderata",
     outdoor: "Esterno",
     fan_mode: "Ventilazione",
     swing_mode: "Oscillazione alette",
@@ -900,6 +907,7 @@ const CA_I18N = {
     target: "Doel",
     target_low: "Verwarmen tot",
     target_high: "Koelen tot",
+    target_humidity: "Doelvochtigheid",
     outdoor: "Buiten",
     fan_mode: "Ventilatie",
     swing_mode: "Zwenken",
@@ -1021,6 +1029,7 @@ const CA_I18N = {
     target: "Alvo",
     target_low: "Aquecer a",
     target_high: "Arrefecer a",
+    target_humidity: "Humidade alvo",
     outdoor: "Exterior",
     fan_mode: "Ventilação",
     swing_mode: "Oscilação",
@@ -1142,6 +1151,7 @@ const CA_I18N = {
     target: "Cel",
     target_low: "Grzanie do",
     target_high: "Chłodzenie do",
+    target_humidity: "Wilgotność docelowa",
     outdoor: "Na zewnątrz",
     fan_mode: "Nawiew",
     swing_mode: "Kierunek nawiewu",
@@ -1263,6 +1273,7 @@ const CA_I18N = {
     target: "Țintă",
     target_low: "Încălzire la",
     target_high: "Răcire la",
+    target_humidity: "Umiditate țintă",
     outdoor: "Exterior",
     fan_mode: "Ventilație",
     swing_mode: "Baleiere",
@@ -1384,6 +1395,7 @@ const CA_I18N = {
     target: "Mål",
     target_low: "Varm til",
     target_high: "Køl til",
+    target_humidity: "Ønsket luftfugtighed",
     outdoor: "Ude",
     fan_mode: "Blæser",
     swing_mode: "Lameller",
@@ -1505,6 +1517,7 @@ const CA_I18N = {
     target: "Mål",
     target_low: "Värm till",
     target_high: "Kyl till",
+    target_humidity: "Önskad luftfuktighet",
     outdoor: "Ute",
     fan_mode: "Fläkt",
     swing_mode: "Svängning",
@@ -1626,6 +1639,7 @@ const CA_I18N = {
     target: "Цел",
     target_low: "Отопление до",
     target_high: "Охлаждане до",
+    target_humidity: "Желана влажност",
     outdoor: "Навън",
     fan_mode: "Вентилатор",
     swing_mode: "Люлеене",
@@ -1747,6 +1761,7 @@ const CA_I18N = {
     target: "Цель",
     target_low: "Нагрев до",
     target_high: "Охлаждение до",
+    target_humidity: "Целевая влажность",
     outdoor: "На улице",
     fan_mode: "Обдув",
     swing_mode: "Качание жалюзи",
@@ -1868,6 +1883,7 @@ const CA_I18N = {
     target: "Ціль",
     target_low: "Нагрів до",
     target_high: "Охолодження до",
+    target_humidity: "Цільова вологість",
     outdoor: "Надворі",
     fan_mode: "Обдув",
     swing_mode: "Хитання жалюзі",
@@ -1989,6 +2005,7 @@ const CA_I18N = {
     target: "Cél",
     target_low: "Fűtés",
     target_high: "Hűtés",
+    target_humidity: "Célpáratartalom",
     outdoor: "Kültéri",
     fan_mode: "Ventilátor",
     swing_mode: "Legyezés",
@@ -2110,6 +2127,7 @@ const CA_I18N = {
     target: "Cieľ",
     target_low: "Kúrenie na",
     target_high: "Chladenie na",
+    target_humidity: "Cieľová vlhkosť",
     outdoor: "Vonku",
     fan_mode: "Ventilátor",
     swing_mode: "Natáčanie lamiel",
@@ -2231,6 +2249,7 @@ const CA_I18N = {
     target: "Cíl",
     target_low: "Topení na",
     target_high: "Chlazení na",
+    target_humidity: "Cílová vlhkost",
     outdoor: "Venku",
     fan_mode: "Ventilátor",
     swing_mode: "Natáčení lamel",
@@ -2352,6 +2371,7 @@ const CA_I18N = {
     target: "Cilj",
     target_low: "Ogrevanje na",
     target_high: "Hlajenje na",
+    target_humidity: "Ciljna vlažnost",
     outdoor: "Zunaj",
     fan_mode: "Ventilator",
     swing_mode: "Nihanje lamel",
@@ -2473,6 +2493,7 @@ const CA_I18N = {
     target: "Mērķis",
     target_low: "Sildīt līdz",
     target_high: "Dzesēt līdz",
+    target_humidity: "Mērķa mitrums",
     outdoor: "Ārā",
     fan_mode: "Ventilators",
     swing_mode: "Žalūziju kustība",
@@ -2594,6 +2615,7 @@ const CA_I18N = {
     target: "Στόχος",
     target_low: "Θέρμανση στους",
     target_high: "Ψύξη στους",
+    target_humidity: "Επιθυμητή υγρασία",
     outdoor: "Εξωτερικά",
     fan_mode: "Ανεμιστήρας",
     swing_mode: "Ταλάντευση",
@@ -2978,6 +3000,7 @@ const CA_FAN_OSCILLATE = 2;
 const CA_FAN_PRESET = 8;
 const CA_CLIMATE_TARGET = 1;
 const CA_CLIMATE_RANGE = 2;
+const CA_CLIMATE_TARGET_HUMIDITY = 4;
 const CA_CLIMATE_FAN_MODE = 8;
 const CA_CLIMATE_PRESET = 16;
 const CA_CLIMATE_SWING = 32;
@@ -2985,6 +3008,8 @@ const CA_CLIMATE_SWING_HORIZONTAL = 512;
 
 // Taps on − / + and a slider moved from the keyboard: the service is called once they stop for this long.
 const CA_TEMP_DEBOUNCE = 900;
+// Once sent, a target stays on screen until the entity reports it, or for this long at most (a device that rounds it).
+const CA_TEMP_SETTLE = 10000;
 
 // The service data of a pending target: one temperature, or a low / high range (`target_temp_low`, `target_temp_high`).
 const caTempData = (pending) => (typeof pending === "number" ? { temperature: pending } : pending);
@@ -3016,10 +3041,44 @@ const caFocusKey = (el) => {
   return data.length ? { tag: el.localName, data } : null;
 };
 
+const caFindKey = (root, key) => [...root.querySelectorAll(key.tag)].find((n) => key.data.every(([k, v]) => n.getAttribute(k) === v));
+
 const caRestoreFocus = (root, key) => {
   if (!key || root.activeElement) return;
-  const el = [...root.querySelectorAll(key.tag)].find((n) => key.data.every(([k, v]) => n.getAttribute(k) === v));
-  el?.focus({ preventScroll: true });
+  caFindKey(root, key)?.focus({ preventScroll: true });
+};
+
+// A dropdown or a slider that has the focus (open, dragged, moved with the arrows) must not be rebuilt under the
+// finger, but the rest of the card must not freeze either: `root` takes the new markup of `fresh` (detached) around
+// `keep`, which stays in place with its focus, its value and its open list; `twin` is its counterpart in `fresh`.
+// Its ancestors stay too, with the attributes of their counterparts, and everything else is replaced. False when the
+// two trees do not line up (the control moved): the caller rebuilds the whole card then.
+const caPatchAround = (root, fresh, keep, twin) => {
+  const path = (n, top) => {
+    const out = [];
+    for (; n && n !== top; n = n.parentNode) out.unshift(n);
+    return n === top ? out : null;
+  };
+  const olds = path(keep, root);
+  const news = path(twin, fresh);
+  if (!olds || !news || olds.length !== news.length || olds.some((n, i) => n.localName !== news[i].localName)) return false;
+  let oldParent = root;
+  let newParent = fresh;
+  olds.forEach((node, i) => {
+    const twinNode = news[i];
+    const kids = [...newParent.childNodes];
+    const at = kids.indexOf(twinNode);
+    for (const n of [...oldParent.childNodes]) if (n !== node) n.remove();
+    node.before(...kids.slice(0, at));
+    node.after(...kids.slice(at + 1));
+    if (node !== keep) {
+      for (const a of [...node.attributes]) if (!twinNode.hasAttribute(a.name)) node.removeAttribute(a.name);
+      for (const a of [...twinNode.attributes]) if (node.getAttribute(a.name) !== a.value) node.setAttribute(a.name, a.value);
+    }
+    oldParent = node;
+    newParent = twinNode;
+  });
+  return true;
 };
 
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
@@ -3298,6 +3357,10 @@ class CaCard extends CaElement {
       this.attachShadow({ mode: "open" });
       this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
       this.shadowRoot.addEventListener("change", (ev) => this._onChange(ev));
+      // A slider shows its fill and its value while it moves, before the service is called.
+      this.shadowRoot.addEventListener("input", (ev) => {
+        if (ev.target?.type === "range") this._showRange(ev.target);
+      });
       // Whether the last input came from a pointer or the keyboard: only a pointer is done with a control it changed.
       this.shadowRoot.addEventListener("pointerdown", () => {
         this._pointer = true;
@@ -3313,6 +3376,8 @@ class CaCard extends CaElement {
       // click; the click itself (or the next tick) draws the held updates.
       this.shadowRoot.addEventListener("focusout", (ev) => {
         this._flushRange();
+        // Redrawn around a focused control: the next update rebuilds that control too.
+        if (this._patched) this._sig = null;
         if (ev.relatedTarget && this.shadowRoot.contains(ev.relatedTarget)) return;
         setTimeout(() => this._update(), 0);
       });
@@ -3334,12 +3399,16 @@ class CaCard extends CaElement {
     super.disconnectedCallback();
     this._flushRange();
     clearTimeout(this._tempTimer);
-    // Detached mid-debounce (dashboard edit, panel fold, zoom): send the pending target now instead of losing it.
+    clearTimeout(this._settleTimer);
+    // Detached mid-debounce (dashboard edit, panel fold, zoom): send the pending target now instead of losing it
+    // (unless it was sent already and only waits for the entity to report it).
     if (this._pendingTemp !== undefined) {
       const pending = this._pendingTemp;
+      const sent = this._tempSent;
       this._pendingTemp = undefined;
+      this._tempSent = false;
       this._sig = null;
-      if (this._r?.id) this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
+      if (!sent && this._r?.id) this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
     }
   }
 
@@ -3425,15 +3494,29 @@ class CaCard extends CaElement {
     // object references is enough to tell a tick apart, with nothing serialized.
     const sig = [this._lang(), this._zoomed, this._pendingTemp, ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
-    // No rebuild while a dropdown is open or a slider is held in the card.
+    // A dropdown open or a slider held in the card is not rebuilt: the card is redrawn around it.
     const active = this.shadowRoot.activeElement;
-    if (active && (active.tagName === "SELECT" || active.tagName === "INPUT")) return;
+    const held = active && (active.tagName === "SELECT" || active.tagName === "INPUT");
+    const focus = caFocusKey(active);
+    if (held && !focus) return;
     this._sig = sig;
     this._r = r;
-    const focus = caFocusKey(active);
-    this._render(r);
-    caRestoreFocus(this.shadowRoot, focus);
+    this._patched = held && this._renderAround(r, active, focus);
+    if (!this._patched) {
+      this._render(r);
+      caRestoreFocus(this.shadowRoot, focus);
+    }
     this._fitPills();
+  }
+
+  // Draws the card around the focused control `keep` (see caPatchAround); false when it cannot.
+  _renderAround(r, keep, key) {
+    const fresh = document.createElement("div");
+    this._render(r, fresh);
+    const twin = caFindKey(fresh, key);
+    if (!twin || !caPatchAround(this.shadowRoot, fresh, keep, twin)) return false;
+    if (keep.type === "range") this._showRange(keep);
+    return true;
   }
 
   // Overridden by the mini cards.
@@ -3445,13 +3528,14 @@ class CaCard extends CaElement {
     return "";
   }
 
-  _render(r) {
+  // Writes the card's markup into `target` (the shadow root, or a detached element for _renderAround).
+  _render(r, target = this.shadowRoot) {
     const c = this._config;
     const kind = this.constructor.kind;
     const st = this._st(r.id);
     const icon = c.icon || CA_KIND_ICONS[kind];
     if (!st) {
-      this.shadowRoot.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
+      target.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
         c.entity ? `${this._t("no_device")} (${c.entity})` : this._t("no_device"),
       )}</div></ha-card>`;
       return;
@@ -3475,11 +3559,11 @@ class CaCard extends CaElement {
     m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon></div>`;
 
     if (this._compact()) {
-      this.shadowRoot.innerHTML = this._miniHtml(m);
+      target.innerHTML = this._miniHtml(m);
       return;
     }
     const sub = [caAreaName(this._hass, r.id), m.sub].filter(Boolean).join(" · ");
-    this.shadowRoot.innerHTML =
+    target.innerHTML =
       `${this._styles(m.color)}<ha-card>` +
       `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>` +
       `${caPill(m.statusText)}${m.powerBtn}${this._zoomButton()}</div>` +
@@ -3549,11 +3633,40 @@ class CaCard extends CaElement {
     // The step stays decimal: rounded, a 3-speed fan (33.333) would offer 33/66/99 and never reach full speed.
     // The top notch (99.999) still lands in the last speed band, since fans map a percentage by rounding up.
     const step = Math.max(1, Number(st.attributes.percentage_step) || 1);
+    return this._rangeHtml("range", "percentage", "mdi:speedometer", this._t("speed"), step, 100, step, Math.max(step, pct), st.state === "on" ? `${Math.round(pct)} %` : "—", pct);
+  }
+
+  // A slider: icon, label, the range input and its value. `data-<key>="<val>"` names what it sets (range: percentage,
+  // number: an entity, humidity: the climate target); `text` and `fill` replace the value shown and the fill (a fan
+  // shows its own percentage, which the notches may round: — and no fill when off).
+  _rangeHtml(key, val, icon, label, min, max, step, value, text = null, fill = null) {
+    const d = { [key]: val };
+    const pct = fill ?? this._rangePct(d, value, min, max);
     return (
-      `<div class="slider"><ha-icon icon="mdi:speedometer"></ha-icon><span class="sl-label">${caEsc(this._t("speed"))}</span>` +
-      `<input type="range" min="${step}" max="100" step="${step}" value="${Math.max(step, pct)}" data-range="percentage" aria-label="${caEsc(this._t("speed"))}" style="--p:${pct}%">` +
-      `<span class="v">${st.state === "on" ? `${Math.round(pct)} %` : "—"}</span></div>`
+      `<div class="slider"><ha-icon icon="${icon}"></ha-icon><span class="sl-label">${caEsc(label)}</span>` +
+      `<input type="range" min="${min}" max="${max}" step="${step}" value="${value}" data-${key}="${caEsc(val)}" aria-label="${caEsc(label)}" style="--p:${pct}%">` +
+      `<span class="v">${caEsc(text ?? this._rangeText(d, value))}</span></div>`
     );
+  }
+
+  // The fill of a slider (%): a fan speed is already a percentage, other values are placed between min and max.
+  _rangePct(d, v, min, max) {
+    return d.range === "percentage" ? v : ((v - min) / (max - min || 1)) * 100;
+  }
+
+  // The value shown next to a slider.
+  _rangeText(d, v) {
+    if (d.range === "percentage" || d.humidity) return `${Math.round(v)} %`;
+    const unit = (d.number && this._st(d.number)?.attributes.unit_of_measurement) || "";
+    return `${caFmtNum(this._intlLang(), v)}${unit ? ` ${unit}` : ""}`;
+  }
+
+  // While a slider moves (dragged, or arrows held down), its fill and value follow it.
+  _showRange(el) {
+    const v = Number(el.value);
+    el.style.setProperty("--p", `${this._rangePct(el.dataset, v, Number(el.min), Number(el.max))}%`);
+    const out = el.parentNode?.querySelector(".v");
+    if (out) out.textContent = this._rangeText(el.dataset, v);
   }
 
   // A number entity as a dropdown when it has few steps (timer, angle, level), as a slider otherwise.
@@ -3577,11 +3690,7 @@ class CaCard extends CaElement {
         .map((o) => `<option value="${o}"${o === v ? " selected" : ""}>${caEsc(text(o))}</option>`)
         .join("")}</select></label>`;
     }
-    return (
-      `<div class="slider"><ha-icon icon="${icon || "mdi:tune-variant"}"></ha-icon><span class="sl-label">${caEsc(label)}</span>` +
-      `<input type="range" min="${min}" max="${max}" step="${step}" value="${v}" data-number="${caEsc(id)}" aria-label="${caEsc(label)}" style="--p:${((v - min) / (max - min || 1)) * 100}%">` +
-      `<span class="v">${caFmtNum(this._intlLang(), v)}${unit ? ` ${unit}` : ""}</span></div>`
-    );
+    return this._rangeHtml("number", id, icon || "mdi:tune-variant", label, min, max, step, v);
   }
 
   _selectEntity(id, label) {
@@ -3619,8 +3728,12 @@ class CaCard extends CaElement {
   // ── Actions ──
   // A refusal (out of range, entity unavailable) is already reported by Home Assistant's own toast: it must not
   // also surface as an unhandled rejection.
+  // Resolves to whether Home Assistant accepted the call; a refused call is not an unhandled rejection.
   _call(domain, service, data) {
-    return Promise.resolve(this._hass.callService(domain, service, data)).catch(() => {});
+    return Promise.resolve(this._hass.callService(domain, service, data)).then(
+      () => true,
+      () => false,
+    );
   }
 
   _onClick(ev) {
@@ -3664,6 +3777,7 @@ class CaCard extends CaElement {
     let send;
     if (d.range === "percentage") send = () => this._call("fan", "set_percentage", { entity_id: id, percentage: Number(value) });
     else if (d.number) send = () => this._call("number", "set_value", { entity_id: d.number, value: Number(value) });
+    else if (d.humidity) send = () => this._call("climate", "set_humidity", { entity_id: id, humidity: Number(value) });
     else if (d.select) send = () => this._call("select", "select_option", { entity_id: d.select, option: value });
     else if (d.attrService) send = () => this._call(id.split(".")[0], d.attrService, { entity_id: id, [d.attr]: value });
     else return;

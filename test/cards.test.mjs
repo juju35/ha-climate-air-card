@@ -161,7 +161,12 @@ test("air conditioner in heat_cool: low and high steps are sent together, within
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
     ["climate", "set_temperature", { entity_id: "climate.air_conditioner", target_temp_low: 21, target_temp_high: 23.5 }],
   ]);
+  // The range sent stays on screen until the entity reports it.
+  el.hass = rangeHass();
+  assert.match(html(el), /→ 21–23\.5 °C/);
+  el.hass = rangeHass({ target_temp_low: 21, target_temp_high: 23.5 });
   assert.equal(el._pendingTemp, undefined);
+  assert.match(html(el), /→ 21–23\.5 °C/);
 });
 
 test("air conditioner in heat_cool: the low end stays a step under the high end, the high end under max_temp", () => {
@@ -817,4 +822,155 @@ test("air conditioner: a horizontal swing select when the entity supports it", (
   const plain = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { supported_features: 441 } }));
   assert.doesNotMatch(html(plain), /swing_horizontal_mode/);
   assert.match(html(plain), /class="picture k-aircon [^"]*swing-v"/);
+});
+
+test("air conditioner: − / + does not jump back after the call, until the entity reports the target or 10 s pass", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const h = makeHass();
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  el._action("temp", "1");
+  t.mock.timers.tick(1000);
+  await new Promise((r) => setImmediate(r));
+  assert.equal(h.calls.length, 1);
+  // A state update that still carries the old target (another attribute changed): the new one stays shown.
+  el.hass = makeHass("en", { "climate.air_conditioner": { current_temperature: 25 } });
+  assert.match(html(el), /→ 22\.5 °C/);
+  assert.equal(el._pendingTemp, 22.5);
+  // Detached meanwhile: nothing is sent twice.
+  el.disconnectedCallback();
+  assert.equal(h.calls.length, 1);
+  // The entity reports the target: the entity's value takes over.
+  const ok = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass());
+  ok._action("temp", "-1");
+  t.mock.timers.tick(1000);
+  await new Promise((r) => setImmediate(r));
+  ok.hass = makeHass("en", { "climate.air_conditioner": { temperature: 21.5 } });
+  assert.equal(ok._pendingTemp, undefined);
+  assert.match(html(ok), /→ 21\.5 °C/);
+  // The entity never reports it (a device that rounds the target): its own value is back after 10 s.
+  const late = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass());
+  late._action("temp", "1");
+  t.mock.timers.tick(1000);
+  await new Promise((r) => setImmediate(r));
+  assert.equal(late._pendingTemp, 22.5);
+  t.mock.timers.tick(10000);
+  assert.equal(late._pendingTemp, undefined);
+  assert.match(html(late), /→ 22 °C/);
+});
+
+test("air conditioner: a tap during the wait for the entity sends the new target from the one shown", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const h = makeHass();
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  el._action("temp", "1");
+  t.mock.timers.tick(1000);
+  await new Promise((r) => setImmediate(r));
+  el._action("temp", "1");
+  t.mock.timers.tick(1000);
+  await new Promise((r) => setImmediate(r));
+  assert.deepEqual(h.calls.map((c) => c[2].temperature), [22.5, 23]);
+  // The first settle timer was cancelled: the second target stays.
+  t.mock.timers.tick(9500);
+  assert.equal(el._pendingTemp, 23);
+  t.mock.timers.tick(1000);
+  assert.equal(el._pendingTemp, undefined);
+});
+
+// A slider stand-in: its value, its style and the value text next to it.
+const slider = (data, attrs) => {
+  const v = { textContent: "" };
+  const props = [];
+  return { type: "range", dataset: data, ...attrs, style: { setProperty: (k, val) => props.push([k, val]) }, parentNode: { querySelector: (s) => (s === ".v" ? v : null) }, v, props };
+};
+
+test("a slider shows its fill and value while it moves, before any service call", () => {
+  const h = makeHass();
+  const el = mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" }, h);
+  const speed = slider({ range: "percentage" }, { min: "1", max: "100", value: "42" });
+  el.shadowRoot.emit("input", { target: speed });
+  assert.deepEqual(speed.props, [["--p", "42%"]]);
+  assert.equal(speed.v.textContent, "42 %");
+  const level = slider({ number: "number.living_room_purifier_favorite_fan_level" }, { min: "0", max: "14", value: "7" });
+  el.shadowRoot.emit("input", { target: level });
+  assert.deepEqual(level.props, [["--p", "50%"]]);
+  assert.equal(level.v.textContent, "7");
+  assert.equal(h.calls.length, 0);
+});
+
+test("a focused dropdown no longer freezes the card: it is redrawn around it", () => {
+  const id = "fan.living_room_purifier_air_purifier";
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, makeHass());
+  // The stand-in DOM cannot find the control in the new markup: the whole card is redrawn (it was held back before).
+  el.shadowRoot.activeElement = { tagName: "SELECT", localName: "select", attributes: [{ name: "data-attr-service", value: "set_preset_mode" }] };
+  el.hass = makeHass("en", { [id]: { state: "off" } });
+  assert.match(html(el), /st-off/);
+});
+
+// A tiny DOM for caPatchAround: tag, attributes, children, before / after / remove.
+const dom = (tag, attrs = {}, kids = []) => {
+  const n = { localName: tag, parentNode: null, childNodes: [], attrs: { ...attrs } };
+  Object.defineProperty(n, "attributes", { get: () => Object.entries(n.attrs).map(([name, value]) => ({ name, value })) });
+  n.hasAttribute = (k) => k in n.attrs;
+  n.getAttribute = (k) => n.attrs[k] ?? null;
+  n.setAttribute = (k, v) => {
+    n.attrs[k] = v;
+  };
+  n.removeAttribute = (k) => {
+    delete n.attrs[k];
+  };
+  n.remove = () => {
+    if (!n.parentNode) return;
+    n.parentNode.childNodes.splice(n.parentNode.childNodes.indexOf(n), 1);
+    n.parentNode = null;
+  };
+  const insert = (after) => (...items) => {
+    items.forEach((it, k) => {
+      it.remove();
+      const p = n.parentNode;
+      p.childNodes.splice(p.childNodes.indexOf(n) + (after ? 1 + k : 0), 0, it);
+      it.parentNode = p;
+    });
+  };
+  n.before = insert(false);
+  n.after = insert(true);
+  for (const k of kids) {
+    k.parentNode = n;
+    n.childNodes.push(k);
+  }
+  return n;
+};
+const shape = (n) => [n.localName, n.attrs.class || n.attrs.text || "", n.childNodes.map(shape)];
+
+test("caPatchAround replaces everything but the focused control and its ancestors", () => {
+  const keep = dom("input", { "data-range": "percentage", value: "40" });
+  const oldCard = dom("ha-card", { class: "old" }, [dom("div", { class: "header", text: "On" }), dom("div", { class: "slider old" }, [dom("span", { class: "v", text: "40 %" }), keep])]);
+  const root = dom("#root", {}, [dom("style"), oldCard]);
+  const twin = dom("input", { "data-range": "percentage", value: "10" });
+  const fresh = dom("div", {}, [dom("style"), dom("ha-card", { class: "new" }, [dom("div", { class: "header", text: "Off" }), dom("div", { class: "slider" }, [dom("span", { class: "v", text: "10 %" }), twin, dom("i")])])]);
+  assert.equal(lib.caPatchAround(root, fresh, keep, twin), true);
+  // Same nodes kept (focus, value, open list), attributes of the ancestors updated, the rest from the new markup.
+  assert.equal(root.childNodes[1], oldCard);
+  assert.equal(oldCard.childNodes[1].childNodes[1], keep);
+  assert.equal(keep.attrs.value, "40");
+  assert.deepEqual(shape(root), ["#root", "", [["style", "", []], ["ha-card", "new", [["div", "header", []], ["div", "slider", [["span", "v", []], ["input", "", []], ["i", "", []]]]]]]]);
+  assert.equal(oldCard.childNodes[0].attrs.text, "Off");
+  // The control moved (another depth): not patched.
+  const moved = dom("input");
+  const other = dom("div", {}, [dom("ha-card", {}, [moved])]);
+  assert.equal(lib.caPatchAround(root, other, keep, moved), false);
+});
+
+test("air conditioner: a target humidity slider when the entity supports it, calling climate.set_humidity", () => {
+  const h = makeHass("en", { "climate.air_conditioner": { state: "dry", supported_features: 957, humidity: 55, min_humidity: 35, max_humidity: 85 } });
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  const out = html(el);
+  assert.match(out, /<span class="sl-label">Target humidity<\/span><input type="range" min="35" max="85" step="1" value="55" data-humidity="target" aria-label="Target humidity" style="--p:40%">/);
+  assert.match(out, /<span class="v">55 %<\/span>/);
+  el._pointer = true;
+  el._onChange({ target: { dataset: { humidity: "target" }, value: "60", type: "range", blur() {} } });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["climate", "set_humidity", { entity_id: "climate.air_conditioner", humidity: 60 }]]);
+  assert.match(html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("fr", { "climate.air_conditioner": { supported_features: 957, humidity: 55 } }))), /Humidité cible/);
+  // Without the feature bit (4), or off: no slider.
+  assert.doesNotMatch(html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { humidity: 55 } }))), /data-humidity/);
+  assert.doesNotMatch(html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { state: "off", supported_features: 957, humidity: 55 } }))), /data-humidity/);
 });
