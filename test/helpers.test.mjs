@@ -17,10 +17,12 @@ test("devices are sorted into air conditioners, purifiers and fans", () => {
   assert.equal(lib.caKindOf(h, "fan.bedroom_fan_fan"), "fan");
 });
 
-test("a heat-only thermostat is not an air conditioner", () => {
+test("a climate entity that cannot cool, dry or blow is a thermostat, not an air conditioner", () => {
   const h = makeHass();
-  assert.equal(lib.caKindOf(h, "climate.bathroom_thermostat"), null);
+  assert.equal(lib.caKindOf(h, "climate.bathroom_thermostat"), "thermostat");
+  assert.equal(lib.caKindOf(h, "climate.air_conditioner"), "aircon");
   assert.deepEqual(json(lib.caFindEntities(h, "aircon")), ["climate.air_conditioner"]);
+  assert.deepEqual(json(lib.caFindEntities(h, "thermostat")), ["climate.bathroom_thermostat", "climate.bedroom_radiator_valve"]);
 });
 
 test("every device of a kind is found, sorted by name", () => {

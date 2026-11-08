@@ -30,6 +30,8 @@ const CARDS = [
   ["climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan" }],
   ["climate-air-aircon-card", { entity: "climate.air_conditioner" }],
   ["climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }],
+  ["climate-air-thermostat-card", { entity: "climate.bedroom_radiator_valve" }],
+  ["climate-air-thermostat-mini-card", { entity: "climate.bedroom_radiator_valve" }],
   ["climate-air-overview-card", {}],
 ];
 const STUBS = `customElements.define("ha-card", class extends HTMLElement { constructor() { super();

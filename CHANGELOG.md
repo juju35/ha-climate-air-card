@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.13.0 - 2026-11-09
+
+### What's new
+- Thermostats: a new `custom:climate-air-thermostat-card` and its mini card (`custom:climate-air-thermostat-mini-card`), for every `climate` entity that heats but cannot cool, dry or blow (wall thermostats, electric radiators, radiator valves). The room temperature and the target with − / +, what it does (*Heating*, *Idle*), the presets as buttons (*Comfort*, *Eco*, *Away*…), the valve opening and the battery, *Window open* and *Low battery* alerts, and an animated illustration while it heats: a round wall thermostat, a column radiator or a radiator valve (`illustration: dial`, `radiator` or `valve`, guessed from the device otherwise). In every language.
+- Overview: thermostats are found by themselves and get their own group, tiles (*Heating · 21 °C*) and alerts; `thermostat` is a new kind in `illustrations`, `icons` and `devices`. The header's alert chip counts open windows and low batteries too.
+
+### Changes
+- A heat-only thermostat added under `include` used to show as an air conditioner; it is now a thermostat (set `type: aircon` under `devices` to keep the old tile). Thermostats now show on the Overview without `include`: list them under `exclude` to leave them out.
+
 ## 1.12.0 - 2026-11-08
 
 ### What's new
