@@ -291,10 +291,10 @@ test("overview: exclude, include and group by area", () => {
   const office = overview({ zoom: false, group_by: "area" }).body;
   assert.match(office, /<ha-icon icon="mdi:texture-box"><\/ha-icon><span>Office</);
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
-  const names = [...body.matchAll(/class="name">([^<]+)</g)].map((m) => m[1]);
+  const names = [...body.matchAll(/class="name"[^>]*>([^<]+)</g)].map((m) => m[1]);
   assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
   const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Bedroom air" }] }).body;
-  assert.match(grouped, /class="name">Bedroom air</);
+  assert.match(grouped, /class="name"[^>]*>Bedroom air</);
 });
 
 test("overview: an area icon with markup in it stays inert in the group heading", () => {
@@ -674,4 +674,147 @@ test("mini cards size their height to their content in a Sections view", () => {
   assert.deepEqual({ ...el.getGridOptions() }, { columns: 6, min_columns: 6, rows: "auto" });
   el._toggleZoom({ detail: 1 });
   assert.equal(el.getGridOptions().rows, "auto");
+});
+
+// A focused control of the stand-in DOM: its tag and data-* attributes, as caFocusKey reads them.
+const control = (tag, data) => {
+  const el = { localName: tag, attributes: Object.entries(data).map(([name, value]) => ({ name, value })), focused: [] };
+  el.getAttribute = (k) => data[k] ?? null;
+  el.focus = (opts) => el.focused.push(opts);
+  return el;
+};
+
+// Like the browser: rebuilding `node`'s markup removes the focused control, so `root` has none focused any more.
+const dropFocusOnRebuild = (root, node = root) => {
+  let markup = node.innerHTML;
+  Object.defineProperty(node, "innerHTML", {
+    get: () => markup,
+    set: (v) => {
+      markup = v;
+      root.activeElement = null;
+    },
+  });
+};
+
+test("a render puts the focus back on the control that had it (− / + of the target, from the keyboard)", (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass());
+  const root = el.shadowRoot;
+  dropFocusOnRebuild(root);
+  const plus = control("button", { "data-action": "temp", "data-value": "1" });
+  const minus = control("button", { "data-action": "temp", "data-value": "-1" });
+  root.querySelectorAll = (tag) => (tag === "button" ? [minus, plus] : []);
+  root.activeElement = control("button", { "data-action": "temp", "data-value": "1" });
+  el._action("temp", "1");
+  assert.match(html(el), /22,5|22\.5/);
+  assert.deepEqual(JSON.parse(JSON.stringify(plus.focused)), [{ preventScroll: true }]);
+  assert.equal(minus.focused.length, 0);
+  // Nothing focused before the render: nothing is focused after it.
+  root.activeElement = null;
+  el._action("temp", "1");
+  assert.equal(plus.focused.length, 1);
+});
+
+test("overview: a render puts the focus back on the tile's button that had it", () => {
+  const h = makeHass();
+  const el = mount(lib, "climate-air-overview-card", {}, h);
+  const root = el.shadowRoot;
+  dropFocusOnRebuild(root, part(el, ".body"));
+  const open = control("button", { "data-open": "fan.bedroom_purifier" });
+  root.querySelectorAll = (tag) => (tag === "button" ? [control("button", { "data-toggle": "fan.bedroom_purifier" }), open] : []);
+  root.activeElement = control("button", { "data-open": "fan.bedroom_purifier" });
+  el.hass = makeHass("en", { "fan.bedroom_purifier": { percentage: 20 } });
+  assert.deepEqual(JSON.parse(JSON.stringify(open.focused)), [{ preventScroll: true }]);
+});
+
+test("a dropdown or slider changed with a pointer lets go of the focus; from the keyboard it keeps it", () => {
+  const id = "fan.living_room_purifier_air_purifier";
+  const h = makeHass();
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, h);
+  const select = () => {
+    const s = { type: "select-one", value: "Sleep", dataset: { attrService: "set_preset_mode", attr: "preset_mode" }, blurred: 0 };
+    s.blur = () => s.blurred++;
+    return s;
+  };
+  el.shadowRoot.emit("pointerdown");
+  const byPointer = select();
+  el._onChange({ target: byPointer });
+  assert.equal(byPointer.blurred, 1);
+  el.shadowRoot.emit("keydown", { key: "ArrowDown", target: {} });
+  const byKey = select();
+  el._onChange({ target: byKey });
+  assert.equal(byKey.blurred, 0);
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
+    ["fan", "set_preset_mode", { entity_id: id, preset_mode: "Sleep" }],
+    ["fan", "set_preset_mode", { entity_id: id, preset_mode: "Sleep" }],
+  ]);
+});
+
+test("a slider moved from the keyboard sends its value once the presses stop, or when the focus leaves", (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
+  const id = "fan.living_room_purifier_air_purifier";
+  const h = makeHass();
+  const el = mount(lib, "climate-air-purifier-card", { entity: id }, h);
+  const slider = { type: "range", value: "50", dataset: { range: "percentage" }, blur: () => assert.fail("no blur from the keyboard") };
+  el.shadowRoot.emit("keydown", { key: "ArrowRight", target: slider });
+  for (const v of ["51", "52", "53"]) {
+    slider.value = v;
+    el._onChange({ target: slider });
+    t.mock.timers.tick(300);
+  }
+  assert.equal(h.calls.length, 0);
+  t.mock.timers.tick(1000);
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["fan", "set_percentage", { entity_id: id, percentage: 53 }]]);
+  slider.value = "60";
+  el._onChange({ target: slider });
+  el.shadowRoot.emit("focusout", {});
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["fan", "set_percentage", { entity_id: id, percentage: 60 }]);
+  t.mock.timers.tick(1000);
+  assert.equal(h.calls.length, 2);
+});
+
+test("chips that open a more-info are focusable buttons that Enter and Space open", () => {
+  const h = makeHass("en", { "binary_sensor.air_conditioner_full_dust": { state: "on" } });
+  const ac = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  assert.match(html(ac), /class="chip warn" data-more-info="binary_sensor\.air_conditioner_full_dust" role="button" tabindex="0"/);
+  const events = moreInfo(ac);
+  const chip = { dataset: { moreInfo: "binary_sensor.air_conditioner_full_dust" } };
+  let prevented = 0;
+  for (const key of ["Enter", " ", "a"]) ac.shadowRoot.emit("keydown", { key, target: chip, preventDefault: () => prevented++ });
+  assert.deepEqual(events, [
+    ["hass-more-info", "binary_sensor.air_conditioner_full_dust"],
+    ["hass-more-info", "binary_sensor.air_conditioner_full_dust"],
+  ]);
+  assert.equal(prevented, 2);
+  const { el, body } = overview();
+  assert.match(body, /class="chip warn" data-more-info="sensor\.bedroom_purifier_filter_lifetime" role="button" tabindex="0"/);
+  const ovEvents = moreInfo(el);
+  el.shadowRoot.emit("keydown", { key: "Enter", target: { dataset: { moreInfo: "sensor.bedroom_purifier_filter_lifetime" } }, preventDefault() {} });
+  assert.deepEqual(ovEvents, [["hass-more-info", "sensor.bedroom_purifier_filter_lifetime"]]);
+});
+
+test("overview: a tile is no button holding buttons; its name is the button that unfolds the card", () => {
+  const { el, body } = overview();
+  assert.doesNotMatch(body, /class="dev[^"]*"[^>]*role="button"/);
+  assert.doesNotMatch(body, /class="dev[^"]*"[^>]*tabindex/);
+  assert.match(body, /<button class="name" data-open="fan\.bedroom_purifier" aria-expanded="false">/);
+  el._onClick({ composedPath: () => [{ dataset: { open: "fan.bedroom_purifier" } }, { classList: { contains: (c) => c === "dev" }, dataset: { id: "fan.bedroom_purifier" } }] });
+  assert.equal(el._open, "fan.bedroom_purifier");
+  assert.match(part(el, ".body").innerHTML, /data-open="fan\.bedroom_purifier" aria-expanded="true"/);
+});
+
+test("air conditioner: a horizontal swing select when the entity supports it", () => {
+  const h = makeHass("fr", { "climate.air_conditioner": { swing_horizontal_mode: "auto" } });
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  const out = html(el);
+  assert.match(out, /<span>Balayage horizontal<\/span><select data-attr-service="set_swing_horizontal_mode" data-attr="swing_horizontal_mode">/);
+  assert.match(out, /<option value="auto" selected>/);
+  assert.match(out, /class="picture k-aircon [^"]*swing-v swing-h"/);
+  el.shadowRoot.emit("pointerdown");
+  el._onChange({ target: { value: "left", dataset: { attrService: "set_swing_horizontal_mode", attr: "swing_horizontal_mode" }, blur() {} } });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["climate", "set_swing_horizontal_mode", { entity_id: "climate.air_conditioner", swing_horizontal_mode: "left" }]]);
+  // Without the feature bit (512), no select.
+  const plain = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { supported_features: 441 } }));
+  assert.doesNotMatch(html(plain), /swing_horizontal_mode/);
+  assert.match(html(plain), /class="picture k-aircon [^"]*swing-v"/);
 });
