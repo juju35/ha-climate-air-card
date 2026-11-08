@@ -133,6 +133,8 @@ const CA_I18N = {
     ed_columns: "Columns",
     ed_columns_helper: "Empty: 2, or 1 on narrow screens",
     ed_ov_zoom_helper: "Only the devices on or needing attention show; the button shows every device. Off: every device, always",
+    ed_show_all: "Show every device",
+    ed_show_all_helper: "Every device shows at first; the detail button keeps only the ones on or needing attention",
     ed_exclude: "Devices to exclude",
     ed_include: "Devices to add",
     ed_include_helper: "Climate or fan entities the card would not pick on its own (a hidden entity, say)",
@@ -263,6 +265,8 @@ const CA_I18N = {
     ed_columns_helper: "Vide : 2, ou 1 sur les écrans étroits",
     ed_ov_zoom_helper:
       "Seuls les appareils en marche ou à surveiller s'affichent ; le bouton affiche tous les appareils. Désactivé : toujours tous les appareils",
+    ed_show_all: "Tout afficher",
+    ed_show_all_helper: "Tous les appareils s'affichent d'emblée ; le bouton détail ne garde que ceux allumés ou en alerte",
     ed_exclude: "Appareils à exclure",
     ed_include: "Appareils à ajouter",
     ed_include_helper: "Entités climate ou fan que la carte ne prendrait pas d'elle-même (une entité masquée, par exemple)",
@@ -392,6 +396,8 @@ const CA_I18N = {
     ed_columns: "Spalten",
     ed_columns_helper: "Leer: 2, oder 1 auf schmalen Bildschirmen",
     ed_ov_zoom_helper: "Nur eingeschaltete oder zu beachtende Geräte werden angezeigt; die Schaltfläche zeigt alle Geräte. Aus: immer alle Geräte",
+    ed_show_all: "Alle Geräte anzeigen",
+    ed_show_all_helper: "Alle Geräte werden zuerst angezeigt; die Detailschaltfläche behält nur die eingeschalteten oder zu beachtenden",
     ed_exclude: "Auszuschließende Geräte",
     ed_include: "Hinzuzufügende Geräte",
     ed_include_helper: "Climate- oder Fan-Entitäten, die die Karte nicht von selbst übernehmen würde (z. B. eine ausgeblendete Entität)",
@@ -521,6 +527,8 @@ const CA_I18N = {
     ed_columns: "Columnas",
     ed_columns_helper: "Vacío: 2, o 1 en pantallas estrechas",
     ed_ov_zoom_helper: "Solo se muestran los dispositivos encendidos o que requieren atención; el botón muestra todos los dispositivos. Desactivado: siempre todos los dispositivos",
+    ed_show_all: "Mostrar todos los dispositivos",
+    ed_show_all_helper: "Todos los dispositivos se muestran al principio; el botón de detalle deja solo los encendidos o que requieren atención",
     ed_exclude: "Dispositivos que excluir",
     ed_include: "Dispositivos que añadir",
     ed_include_helper: "Entidades climate o fan que la tarjeta no elegiría por sí sola (una entidad oculta, por ejemplo)",
@@ -650,6 +658,8 @@ const CA_I18N = {
     ed_columns: "Колоне",
     ed_columns_helper: "Празно: 2, или 1 на уским екранима",
     ed_ov_zoom_helper: "Приказују се само уређаји који раде или захтевају пажњу; дугме приказује све уређаје. Искључено: сви уређаји, увек",
+    ed_show_all: "Прикажи све уређаје",
+    ed_show_all_helper: "Сви уређаји се приказују одмах; дугме за детаље задржава само укључене или оне који траже пажњу",
     ed_exclude: "Уређаји за искључивање",
     ed_include: "Уређаји за додавање",
     ed_include_helper: "Ентитети климе или вентилатора које картица не би сама препознала (нпр. скривени ентитет)",
@@ -779,6 +789,8 @@ const CA_I18N = {
     ed_columns: "Kolone",
     ed_columns_helper: "Prazno: 2, ili 1 na uskim ekranima",
     ed_ov_zoom_helper: "Prikazuju se samo uređaji koji rade ili zahtevaju pažnju; dugme prikazuje sve uređaje. Isključeno: svi uređaji, uvek",
+    ed_show_all: "Prikaži sve uređaje",
+    ed_show_all_helper: "Svi uređaji se prikazuju odmah; dugme za detalje zadržava samo uključene ili one koji traže pažnju",
     ed_exclude: "Uređaji za isključivanje",
     ed_include: "Uređaji za dodavanje",
     ed_include_helper: "Entiteti klime ili ventilatora koje kartica ne bi sama prepoznala (npr. skriveni entitet)",
@@ -909,6 +921,8 @@ const CA_I18N = {
     ed_columns_helper: "Vuoto: 2, o 1 sugli schermi stretti",
     ed_ov_zoom_helper:
       "Sono mostrati solo i dispositivi accesi o che richiedono attenzione; il pulsante mostra tutti i dispositivi. Disattivato: sempre tutti i dispositivi",
+    ed_show_all: "Mostra tutti i dispositivi",
+    ed_show_all_helper: "Tutti i dispositivi sono mostrati subito; il pulsante dettagli tiene solo quelli accesi o che richiedono attenzione",
     ed_exclude: "Dispositivi da escludere",
     ed_include: "Dispositivi da aggiungere",
     ed_include_helper: "Entità climate o fan che la scheda non sceglierebbe da sola (ad esempio un'entità nascosta)",
@@ -1039,6 +1053,8 @@ const CA_I18N = {
     ed_columns_helper: "Leeg: 2, of 1 op smalle schermen",
     ed_ov_zoom_helper:
       "Alleen apparaten die aan staan of aandacht nodig hebben worden getoond; de knop toont alle apparaten. Uit: altijd alle apparaten",
+    ed_show_all: "Alle apparaten tonen",
+    ed_show_all_helper: "Alle apparaten worden meteen getoond; de detailknop houdt alleen de ingeschakelde of aandacht vragende over",
     ed_exclude: "Uit te sluiten apparaten",
     ed_include: "Toe te voegen apparaten",
     ed_include_helper: "Climate- of fan-entiteiten die de kaart niet uit zichzelf zou kiezen (bijvoorbeeld een verborgen entiteit)",
@@ -1169,6 +1185,8 @@ const CA_I18N = {
     ed_columns_helper: "Vazio: 2, ou 1 em ecrãs estreitos",
     ed_ov_zoom_helper:
       "Só aparecem os dispositivos ligados ou que precisam de atenção; o botão mostra todos os dispositivos. Desativado: sempre todos os dispositivos",
+    ed_show_all: "Mostrar todos os dispositivos",
+    ed_show_all_helper: "Todos os dispositivos aparecem logo; o botão de detalhe deixa só os ligados ou que precisam de atenção",
     ed_exclude: "Dispositivos a excluir",
     ed_include: "Dispositivos a adicionar",
     ed_include_helper: "Entidades climate ou fan que o cartão não escolheria sozinho (por exemplo, uma entidade oculta)",
@@ -1299,6 +1317,8 @@ const CA_I18N = {
     ed_columns_helper: "Puste: 2 lub 1 na wąskich ekranach",
     ed_ov_zoom_helper:
       "Wyświetlane są tylko urządzenia włączone lub wymagające uwagi; przycisk pokazuje wszystkie urządzenia. Wyłączone: zawsze wszystkie urządzenia",
+    ed_show_all: "Pokaż wszystkie urządzenia",
+    ed_show_all_helper: "Wszystkie urządzenia są widoczne od razu; przycisk szczegółów zostawia tylko włączone lub wymagające uwagi",
     ed_exclude: "Urządzenia do wykluczenia",
     ed_include: "Urządzenia do dodania",
     ed_include_helper: "Encje climate lub fan, których karta nie wybrałaby sama (np. ukryta encja)",
@@ -1429,6 +1449,8 @@ const CA_I18N = {
     ed_columns_helper: "Gol: 2, sau 1 pe ecranele înguste",
     ed_ov_zoom_helper:
       "Se afișează doar dispozitivele pornite sau care necesită atenție; butonul afișează toate dispozitivele. Dezactivat: mereu toate dispozitivele",
+    ed_show_all: "Afișează toate dispozitivele",
+    ed_show_all_helper: "Toate dispozitivele apar de la început; butonul de detalii le păstrează doar pe cele pornite sau care necesită atenție",
     ed_exclude: "Dispozitive de exclus",
     ed_include: "Dispozitive de adăugat",
     ed_include_helper: "Entități climate sau fan pe care cardul nu le-ar alege singur (de ex. o entitate ascunsă)",
@@ -1559,6 +1581,8 @@ const CA_I18N = {
     ed_columns_helper: "Tomt: 2, eller 1 på smalle skærme",
     ed_ov_zoom_helper:
       "Kun enheder, der er tændt eller kræver opmærksomhed, vises; knappen viser alle enheder. Fra: altid alle enheder",
+    ed_show_all: "Vis alle enheder",
+    ed_show_all_helper: "Alle enheder vises fra start; detaljeknappen beholder kun dem, der er tændt eller kræver opmærksomhed",
     ed_exclude: "Enheder, der udelades",
     ed_include: "Enheder, der tilføjes",
     ed_include_helper: "Climate- eller fan-entiteter, som kortet ikke selv ville vælge (f.eks. en skjult entitet)",
@@ -1689,6 +1713,8 @@ const CA_I18N = {
     ed_columns_helper: "Tomt: 2, eller 1 på smala skärmar",
     ed_ov_zoom_helper:
       "Endast enheter som är på eller behöver uppmärksamhet visas; knappen visar alla enheter. Av: alltid alla enheter",
+    ed_show_all: "Visa alla enheter",
+    ed_show_all_helper: "Alla enheter visas direkt; detaljknappen behåller bara de som är på eller behöver åtgärdas",
     ed_exclude: "Enheter att utesluta",
     ed_include: "Enheter att lägga till",
     ed_include_helper: "Climate- eller fan-entiteter som kortet inte skulle välja självt (t.ex. en dold entitet)",
@@ -1819,6 +1845,8 @@ const CA_I18N = {
     ed_columns_helper: "Празно: 2 или 1 на тесни екрани",
     ed_ov_zoom_helper:
       "Показват се само включените устройства или тези, които изискват внимание; бутонът показва всички устройства. Изключено: винаги всички устройства",
+    ed_show_all: "Покажи всички устройства",
+    ed_show_all_helper: "Всички устройства се показват веднага; бутонът за детайли оставя само включените или изискващите внимание",
     ed_exclude: "Устройства за изключване",
     ed_include: "Устройства за добавяне",
     ed_include_helper: "Обекти climate или fan, които картата не би избрала сама (напр. скрит обект)",
@@ -1949,6 +1977,8 @@ const CA_I18N = {
     ed_columns_helper: "Пусто: 2 или 1 на узких экранах",
     ed_ov_zoom_helper:
       "Показываются только включённые устройства и те, что требуют внимания; кнопка показывает все устройства. Выключено: всегда все устройства",
+    ed_show_all: "Показывать все устройства",
+    ed_show_all_helper: "Все устройства видны сразу; кнопка подробностей оставляет только включённые или требующие внимания",
     ed_exclude: "Исключить устройства",
     ed_include: "Добавить устройства",
     ed_include_helper: "Объекты climate или fan, которые карточка не выбрала бы сама (например, скрытый объект)",
@@ -2079,6 +2109,8 @@ const CA_I18N = {
     ed_columns_helper: "Порожньо: 2 або 1 на вузьких екранах",
     ed_ov_zoom_helper:
       "Показано лише ввімкнені пристрої та ті, що потребують уваги; кнопка показує всі пристрої. Вимкнено: завжди всі пристрої",
+    ed_show_all: "Показувати всі пристрої",
+    ed_show_all_helper: "Усі пристрої видно одразу; кнопка подробиць залишає лише ввімкнені або ті, що потребують уваги",
     ed_exclude: "Виключити пристрої",
     ed_include: "Додати пристрої",
     ed_include_helper: "Сутності climate або fan, які картка не вибрала б сама (наприклад, прихована сутність)",
@@ -2209,6 +2241,8 @@ const CA_I18N = {
     ed_columns_helper: "Üres: 2, keskeny képernyőn 1",
     ed_ov_zoom_helper:
       "Csak a bekapcsolt vagy figyelmet igénylő eszközök jelennek meg; a gomb az összes eszközt mutatja. Ki: mindig az összes eszköz",
+    ed_show_all: "Minden eszköz megjelenítése",
+    ed_show_all_helper: "Minden eszköz azonnal látszik; a részletek gomb csak a bekapcsoltakat vagy figyelmet igénylőket hagyja meg",
     ed_exclude: "Kizárandó eszközök",
     ed_include: "Hozzáadandó eszközök",
     ed_include_helper: "Climate vagy fan entitások, amelyeket a kártya magától nem választana (pl. egy rejtett entitás)",
@@ -2339,6 +2373,8 @@ const CA_I18N = {
     ed_columns_helper: "Prázdne: 2, alebo 1 na úzkych obrazovkách",
     ed_ov_zoom_helper:
       "Zobrazujú sa len zapnuté zariadenia alebo tie, ktoré vyžadujú pozornosť; tlačidlo zobrazí všetky zariadenia. Vypnuté: vždy všetky zariadenia",
+    ed_show_all: "Zobraziť všetky zariadenia",
+    ed_show_all_helper: "Všetky zariadenia sa zobrazia hneď; tlačidlo detailu ponechá len zapnuté alebo vyžadujúce pozornosť",
     ed_exclude: "Vylúčené zariadenia",
     ed_include: "Pridané zariadenia",
     ed_include_helper: "Entity climate alebo fan, ktoré by karta sama nevybrala (napr. skrytá entita)",
@@ -2469,6 +2505,8 @@ const CA_I18N = {
     ed_columns_helper: "Prázdné: 2, nebo 1 na úzkých obrazovkách",
     ed_ov_zoom_helper:
       "Zobrazují se jen zapnutá zařízení nebo ta, která vyžadují pozornost; tlačítko zobrazí všechna zařízení. Vypnuto: vždy všechna zařízení",
+    ed_show_all: "Zobrazit všechna zařízení",
+    ed_show_all_helper: "Všechna zařízení se zobrazí hned; tlačítko detailu ponechá jen zapnutá nebo vyžadující pozornost",
     ed_exclude: "Vyloučená zařízení",
     ed_include: "Přidaná zařízení",
     ed_include_helper: "Entity climate nebo fan, které by karta sama nevybrala (např. skrytá entita)",
@@ -2599,6 +2637,8 @@ const CA_I18N = {
     ed_columns_helper: "Prazno: 2 ali 1 na ozkih zaslonih",
     ed_ov_zoom_helper:
       "Prikazane so le vklopljene naprave ali tiste, ki potrebujejo pozornost; gumb prikaže vse naprave. Izklopljeno: vedno vse naprave",
+    ed_show_all: "Prikaži vse naprave",
+    ed_show_all_helper: "Vse naprave so prikazane takoj; gumb za podrobnosti obdrži le vklopljene ali tiste, ki zahtevajo pozornost",
     ed_exclude: "Izključene naprave",
     ed_include: "Dodane naprave",
     ed_include_helper: "Entitete climate ali fan, ki jih kartica sama ne bi izbrala (npr. skrita entiteta)",
@@ -2729,6 +2769,8 @@ const CA_I18N = {
     ed_columns_helper: "Tukšs: 2 vai 1 šauros ekrānos",
     ed_ov_zoom_helper:
       "Tiek rādītas tikai ieslēgtās ierīces vai tās, kurām nepieciešama uzmanība; poga parāda visas ierīces. Izslēgts: vienmēr visas ierīces",
+    ed_show_all: "Rādīt visas ierīces",
+    ed_show_all_helper: "Visas ierīces redzamas uzreiz; detaļu poga atstāj tikai ieslēgtās vai uzmanību prasošās",
     ed_exclude: "Izslēdzamās ierīces",
     ed_include: "Pievienojamās ierīces",
     ed_include_helper: "Climate vai fan vienības, kuras karte pati neizvēlētos (piem., paslēpta vienība)",
@@ -2859,6 +2901,8 @@ const CA_I18N = {
     ed_columns_helper: "Κενό: 2 ή 1 σε στενές οθόνες",
     ed_ov_zoom_helper:
       "Εμφανίζονται μόνο οι ενεργές συσκευές ή όσες χρειάζονται προσοχή· το κουμπί εμφανίζει όλες τις συσκευές. Ανενεργό: πάντα όλες οι συσκευές",
+    ed_show_all: "Εμφάνιση όλων των συσκευών",
+    ed_show_all_helper: "Όλες οι συσκευές εμφανίζονται αμέσως· το κουμπί λεπτομερειών κρατά μόνο όσες είναι αναμμένες ή χρειάζονται προσοχή",
     ed_exclude: "Συσκευές προς εξαίρεση",
     ed_include: "Συσκευές προς προσθήκη",
     ed_include_helper: "Οντότητες climate ή fan που η κάρτα δεν θα επέλεγε μόνη της (π.χ. μια κρυφή οντότητα)",

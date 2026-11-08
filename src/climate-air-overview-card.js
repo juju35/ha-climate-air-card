@@ -246,7 +246,9 @@ class ClimateAirOverviewCard extends CaElement {
     if (!this._config || !this._hass || !this.shadowRoot) return;
     const c = this._config;
     const all = this._collect();
-    const compact = c.zoom !== false && !this._zoomed;
+    // The detail button switches between the devices on or needing attention and every device; `show_all` starts
+    // on every device (the button then keeps only the others), `zoom: false` shows every device with no button.
+    const compact = c.zoom !== false && (c.show_all ? !!this._zoomed : !this._zoomed);
     const shown = compact ? all.filter((x) => x.on || x.alert || x.id === this._open) : all;
     this._items = shown;
     // Home Assistant replaces a `states[id]` object whenever the entity changes, and the registry objects when the
@@ -271,10 +273,11 @@ class ClimateAirOverviewCard extends CaElement {
     const alertIcon = kinds.size === 1 ? [...kinds][0] : "mdi:alert-circle-outline";
     const alertTitle = [...new Set(flagged.map((x) => x.alert))].join(", ");
     const alertChip = alerts ? `<span class="chip warn" title="${caEsc(alertTitle)}"><ha-icon icon="${alertIcon}"></ha-icon><span>${alerts}</span></span>` : "";
+    const zoomLabel = caEsc(this._t(compact ? "zoom_in" : "zoom_out"));
     const zoom =
       c.zoom === false
         ? ""
-        : `<button class="zoom" data-action="zoom" title="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}" aria-label="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}"><ha-icon icon="${this._zoomed ? "mdi:arrow-collapse" : "mdi:arrow-expand"}"></ha-icon></button>`;
+        : `<button class="zoom" data-action="zoom" title="${zoomLabel}" aria-label="${zoomLabel}"><ha-icon icon="${compact ? "mdi:arrow-expand" : "mdi:arrow-collapse"}"></ha-icon></button>`;
     const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
     card.querySelector(".head").innerHTML =
       `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${caEsc(c.title || this._t("title"))}</div>` +
@@ -522,11 +525,11 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { zoom: true, show_alerts: true, group_by: "type" };
+    return { zoom: true, show_all: false, show_alerts: true, group_by: "type" };
   }
 
   _helpers() {
-    return ["title", "columns", "exclude", "include", "kinds", "devs", "language"];
+    return ["title", "columns", "show_all", "exclude", "include", "kinds", "devs", "language"];
   }
 
   // Every device the card can show: found or added by hand, excluded ones left out.
@@ -580,7 +583,14 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
           { name: "columns", selector: { number: { min: 1, max: 6, mode: "box" } } },
         ],
       },
-      { name: "zoom", selector: { boolean: {} } },
+      {
+        type: "grid",
+        name: "",
+        schema: [
+          { name: "zoom", selector: { boolean: {} } },
+          { name: "show_all", selector: { boolean: {} } },
+        ],
+      },
       { name: "show_alerts", selector: { boolean: {} } },
       { name: "exclude", selector: { entity: { multiple: true, include_entities: found } } },
       { name: "include", selector: { entity: { multiple: true, domain: ["climate", "fan"] } } },

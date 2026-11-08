@@ -43,7 +43,7 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 - The state on each tile: *Cool · 22 °C*, *Heating · 21 °C*, *PM2.5 6 · Good air*, *45 % · Natural wind*, or *Off* (with the room temperature for an air conditioner or a thermostat); a chip flags a filter to replace or to clean, an open window or a radiator valve's low battery (a click on it opens that entity's more-info); an air conditioner with a low / high range shows it (*Heat/Cool · 20–24 °C*)
 - Grouped by kind of device, by area, or not at all (`group_by`)
 - **Tap** the icon of a tile to turn the device on or off; **tap** the tile to unfold its full card at the top of the overview, tap it again or anywhere else to fold it back
-- Only the devices that are on or need attention show; the **detail** button (top right) shows every device, and back, as does a click anywhere else (`zoom: false`: every device, always, no button)
+- Only the devices that are on or need attention show; the **detail** button (top right) shows every device, and back, as does a click anywhere else. `show_all: true` starts on every device instead, the button then keeping only the devices on or needing attention (`zoom: false`: every device, always, no button)
 - Header with how many devices are on and how many need attention (filters, open windows, low batteries)
 - The illustration of every device of a kind or of each device (`illustrations`, guessed from the device model otherwise), or an icon instead (`icons`); a name and a type per device (`devices`); the header icon (`icon`). In the visual editor, the **Device types** and **Devices** sections set all of them, without YAML
 
@@ -176,6 +176,7 @@ icon: mdi:home-thermometer
 group_by: type
 columns: 2
 zoom: true
+show_all: false
 exclude:
   - fan.garage_fan
 include:
@@ -201,6 +202,7 @@ devices:
 | `group_by` | ❌ | `type` | `type` (air conditioners, thermostats, air purifiers, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner, Thermostat…) instead of repeating the room — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |
 | `zoom` | ❌ | `true` | Only the devices on or needing attention show, and a detail button shows them all; `false`: every device, always |
+| `show_all` | ❌ | `false` | Every device shows at first, and the detail button keeps only the ones on or needing attention (a click elsewhere brings every device back). In the visual editor: **Show every device** |
 | `show_alerts` | ❌ | `true` | Filter alerts on the purifier and air conditioner tiles, open window and low battery alerts on the thermostat tiles (a device needing attention shows even when off, with `zoom`); `false`: none |
 | `exclude` | ❌ | — | Devices left out |
 | `include` | ❌ | — | `climate` or `fan` entities the card would not pick on its own (a hidden entity) |

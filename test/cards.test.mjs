@@ -385,6 +385,25 @@ test("overview: exclude, include and group by area", () => {
   assert.match(grouped, /class="name"[^>]*>Bedroom air</);
 });
 
+test("overview: show_all starts on every device, the detail button keeps only the ones on", () => {
+  const { el, body } = overview({ show_all: true });
+  assert.match(body, /fan\.office_fan_fan/);
+  assert.match(part(el, ".head").innerHTML, /title="Back to the compact view"[^>]*><ha-icon icon="mdi:arrow-collapse">/);
+  el._onClick({ composedPath: () => [{ dataset: { action: "zoom" } }], detail: 1 });
+  assert.doesNotMatch(part(el, ".body").innerHTML, /fan\.office_fan_fan/);
+  assert.match(part(el, ".head").innerHTML, /<ha-icon icon="mdi:arrow-expand">/);
+  // The editor offers it next to the detail button, off by default (dropped from the YAML).
+  const ed = new (lib.customElements.get("climate-air-overview-card-editor"))();
+  ed.setConfig({ type: "custom:climate-air-overview-card" });
+  ed.hass = makeHass("fr");
+  const grid = ed._form.schema.find((x) => x.schema?.some((f) => f.name === "show_all"));
+  assert.deepEqual(JSON.parse(JSON.stringify(grid.schema.map((f) => f.name))), ["zoom", "show_all"]);
+  assert.equal(ed._form.computeLabel({ name: "show_all" }), "Tout afficher");
+  assert.match(ed._form.computeHelper({ name: "show_all" }), /bouton détail/);
+  ed._valueChanged({ stopPropagation() {}, detail: { value: { ...ed._form.data, show_all: false } } });
+  assert.deepEqual(JSON.parse(JSON.stringify(ed._config)), { type: "custom:climate-air-overview-card" });
+});
+
 test("overview: an area icon with markup in it stays inert in the group heading", () => {
   const h = makeHass();
   h.areas.bedroom.icon = 'mdi:bed" onclick="alert(1)';
