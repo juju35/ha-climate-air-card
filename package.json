@@ -1,6 +1,6 @@
 {
   "name": "ha-climate-air-card",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Lovelace cards for Home Assistant: air purifiers, fans, air conditioners and thermostats, each with a mini card, and an overview of every device.",
   "private": true,
   "type": "module",
@@ -13,6 +13,7 @@
   "license": "MIT",
   "devDependencies": {
     "@mdi/js": "^7.4.47",
+    "acorn": "^8.19.0",
     "playwright": "^1.56.1"
   }
 }
