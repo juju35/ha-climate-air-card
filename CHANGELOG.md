@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.14.2 - 2026-11-09
+
+### Performance
+- A role a device lacks (no filter sensor, no VOC sensor…) is remembered with the states it was worked out from, instead of the device being scanned again on every update of the home; it is looked up again as soon as one of the device's entities changes (back from unavailable, say). The overview with hundreds of devices spends about 40 % less time per update; a home with a few devices sees no difference.
+
 ## 1.14.1 - 2026-11-09
 
 ### Fixes
