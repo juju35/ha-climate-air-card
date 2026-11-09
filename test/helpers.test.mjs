@@ -268,3 +268,23 @@ test("numbers are formatted with Home Assistant's full locale; bare pt is Europe
   assert.match(lib.caFmtNum(lib.caIntlLang({}, { language: "pt" }), 12345.6), /^12\s345,6$/);
   assert.equal(lib.caFmtNum(lib.caIntlLang({}, { language: "pt-BR" }), 12345.6), "12.345,6");
 });
+
+test("a role a device lacks is kept as a miss until one of its entities changes", () => {
+  const h = makeHass();
+  // Unavailable at first: no device class yet, so nothing says it measures VOC.
+  h.states["sensor.bedroom_fan_air"] = { entity_id: "sensor.bedroom_fan_air", state: "unavailable", attributes: {} };
+  h.entities["sensor.bedroom_fan_air"] = { entity_id: "sensor.bedroom_fan_air", device_id: "dev_f1", platform: "mock" };
+  assert.equal(lib.caRoleOf(h, "fan.bedroom_fan_fan", "voc"), undefined);
+  // Another entity of the home changes: Home Assistant hands a new states object, the miss is reused.
+  const other = { ...h, states: { ...h.states, "fan.office_fan_fan": { ...h.states["fan.office_fan_fan"], state: "off" } } };
+  assert.equal(lib.caRoleOf(other, "fan.bedroom_fan_fan", "voc"), undefined);
+  // The sensor comes back with its device class: the device is looked up again.
+  const back = {
+    ...other,
+    states: {
+      ...other.states,
+      "sensor.bedroom_fan_air": { entity_id: "sensor.bedroom_fan_air", state: "120", attributes: { device_class: "volatile_organic_compounds_parts" } },
+    },
+  };
+  assert.equal(lib.caRoleOf(back, "fan.bedroom_fan_fan", "voc"), "sensor.bedroom_fan_air");
+});

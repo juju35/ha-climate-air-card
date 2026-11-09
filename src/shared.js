@@ -3419,18 +3419,32 @@ function caStateCount(states) {
 
 // Memo for lookups that scan the registry or all of `hass.states` (kind of device, roles, entity lists), keyed on
 // the `hass.entities` object like caRegistryIndex. The results also depend on which states exist: the memo starts
-// over when the number of states changes (states still arriving while Home Assistant starts, after the registry),
-// and a miss (no such role, unknown kind) is never kept, so an entity that shows up later is found.
+// over when the number of states changes (states still arriving while Home Assistant starts, after the registry).
+// A miss (no such role) is kept with the state objects it was worked out from (`deps`, the device's entities): it
+// is reused while none of them changed, so a device without a filter sensor is not scanned again on every update
+// of the home, and looked up again once one of them changes (an entity coming back from unavailable, say).
+// Without `deps`, a miss is never kept.
 const caMemoStore = new WeakMap();
-function caMemo(hass, key, compute) {
+class CaMiss {
+  constructor(value, deps) {
+    this.value = value;
+    this.deps = deps;
+  }
+}
+const caSameDeps = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
+function caMemo(hass, key, compute, deps) {
   const reg = hass?.entities;
   if (!reg) return compute();
   const count = caStateCount(hass.states);
   let memo = caMemoStore.get(reg);
   if (!memo || memo.count !== count) caMemoStore.set(reg, (memo = { count, map: new Map() }));
-  if (memo.map.has(key)) return memo.map.get(key);
+  const kept = memo.map.get(key);
+  if (kept instanceof CaMiss) {
+    if (caSameDeps(kept.deps, deps())) return kept.value;
+  } else if (memo.map.has(key)) return kept;
   const value = compute();
   if (value != null) memo.map.set(key, value);
+  else if (deps) memo.map.set(key, new CaMiss(value, deps()));
   return value;
 }
 
@@ -3504,7 +3518,13 @@ function caKindOf(hass, id) {
 // A role of an entity's device, memoized (see caMemo): the whole-device scans only run again when the registry
 // or the set of states changes.
 function caRoleOf(hass, id, role) {
-  return caMemo(hass, `role:${id}:${role}`, () => caFindRole(hass, caDeviceEntities(hass, caDeviceOf(hass, id)), role));
+  const list = () => caDeviceEntities(hass, caDeviceOf(hass, id));
+  return caMemo(
+    hass,
+    `role:${id}:${role}`,
+    () => caFindRole(hass, list(), role),
+    () => list().map((e) => hass.states[e.entity_id]),
+  );
 }
 
 // Every entity of a kind, sorted by name; hidden entities and configuration entities are left out.
