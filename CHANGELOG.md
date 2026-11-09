@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.14.3 - 2026-11-09
+
+### Maintenance
+- No code change: released again to check the installation from the Marketplace.
+
 ## 1.14.2 - 2026-11-09
 
 ### Performance
