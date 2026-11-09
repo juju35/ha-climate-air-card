@@ -12,6 +12,7 @@ const CA_I18N = {
     purifier: "Air purifier",
     fan: "Fan",
     aircon: "Air conditioner",
+    thermostat: "Thermostat",
     st_off: "Off",
     st_on: "On",
     st_unavailable: "Unavailable",
@@ -53,6 +54,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Replace the filter",
     filter_dirty: "Clean the filter",
+    window_open: "Window open",
+    battery_low: "Low battery",
+    valve: "Valve",
     hours: "{n} h",
     level: "Level {n}",
     target: "Target",
@@ -79,10 +83,11 @@ const CA_I18N = {
     all_off: "Everything is off",
     nothing_on: "Nothing on right now",
     g_aircon: "Air conditioners",
+    g_thermostat: "Thermostats",
     g_purifier: "Air purifiers",
     g_fan: "Fans",
     no_area: "No area",
-    no_devices: "No air conditioner, air purifier or fan found",
+    no_devices: "No air conditioner, thermostat, air purifier or fan found",
     toggle: "Turn on / off",
     ed_entity: "Device",
     ed_entity_helper: "Leave empty to use the first one found",
@@ -100,6 +105,9 @@ const CA_I18N = {
     ill_split: "Wall split unit",
     ill_portable: "Portable unit",
     ill_window: "Window split",
+    ill_dial: "Wall thermostat",
+    ill_radiator: "Radiator",
+    ill_valve: "Radiator valve",
     ed_show_controls: "Controls",
     ed_show_sensors: "Measurements",
     ed_show_alerts: "Alerts",
@@ -125,14 +133,17 @@ const CA_I18N = {
     ed_columns: "Columns",
     ed_columns_helper: "Empty: 2, or 1 on narrow screens",
     ed_ov_zoom_helper: "Only the devices on or needing attention show; the button shows every device. Off: every device, always",
+    ed_show_all: "Show every device",
+    ed_show_all_helper: "Every device shows at first; the detail button keeps only the ones on or needing attention",
     ed_exclude: "Devices to exclude",
     ed_include: "Devices to add",
-    ed_include_helper: "Climate or fan entities the card would not pick on its own (a heat-only thermostat, say)",
+    ed_include_helper: "Climate or fan entities the card would not pick on its own (a hidden entity, say)",
   },
   fr: {
     purifier: "Purificateur",
     fan: "Ventilateur",
     aircon: "Climatiseur",
+    thermostat: "Thermostat",
     st_off: "Arrêt",
     st_on: "En marche",
     st_unavailable: "Indisponible",
@@ -174,6 +185,9 @@ const CA_I18N = {
     filter: "Filtre",
     filter_low: "Filtre à changer",
     filter_dirty: "Filtre à nettoyer",
+    window_open: "Fenêtre ouverte",
+    battery_low: "Batterie faible",
+    valve: "Vanne",
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Consigne",
@@ -200,10 +214,11 @@ const CA_I18N = {
     all_off: "Tout est à l'arrêt",
     nothing_on: "Rien en marche pour l'instant",
     g_aircon: "Climatiseurs",
+    g_thermostat: "Thermostats",
     g_purifier: "Purificateurs",
     g_fan: "Ventilateurs",
     no_area: "Sans pièce",
-    no_devices: "Aucun climatiseur, purificateur ou ventilateur trouvé",
+    no_devices: "Aucun climatiseur, thermostat, purificateur ou ventilateur trouvé",
     toggle: "Allumer / éteindre",
     ed_entity: "Appareil",
     ed_entity_helper: "Laisser vide pour le premier trouvé",
@@ -221,6 +236,9 @@ const CA_I18N = {
     ill_split: "Split mural",
     ill_portable: "Climatiseur mobile",
     ill_window: "Split de fenêtre",
+    ill_dial: "Thermostat mural",
+    ill_radiator: "Radiateur",
+    ill_valve: "Tête thermostatique",
     ed_show_controls: "Commandes",
     ed_show_sensors: "Mesures",
     ed_show_alerts: "Alertes",
@@ -247,14 +265,17 @@ const CA_I18N = {
     ed_columns_helper: "Vide : 2, ou 1 sur les écrans étroits",
     ed_ov_zoom_helper:
       "Seuls les appareils en marche ou à surveiller s'affichent ; le bouton affiche tous les appareils. Désactivé : toujours tous les appareils",
+    ed_show_all: "Tout afficher",
+    ed_show_all_helper: "Tous les appareils s'affichent d'emblée ; le bouton détail ne garde que ceux allumés ou en alerte",
     ed_exclude: "Appareils à exclure",
     ed_include: "Appareils à ajouter",
-    ed_include_helper: "Entités climate ou fan que la carte ne prendrait pas d'elle-même (un thermostat chauffage seul, par exemple)",
+    ed_include_helper: "Entités climate ou fan que la carte ne prendrait pas d'elle-même (une entité masquée, par exemple)",
   },
   de: {
     purifier: "Luftreiniger",
     fan: "Ventilator",
     aircon: "Klimaanlage",
+    thermostat: "Thermostat",
     st_off: "Aus",
     st_on: "An",
     st_unavailable: "Nicht verfügbar",
@@ -296,6 +317,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Filter wechseln",
     filter_dirty: "Filter reinigen",
+    window_open: "Fenster offen",
+    battery_low: "Batterie schwach",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Stufe {n}",
     target: "Sollwert",
@@ -322,10 +346,11 @@ const CA_I18N = {
     all_off: "Alles ist aus",
     nothing_on: "Gerade ist nichts an",
     g_aircon: "Klimaanlagen",
+    g_thermostat: "Thermostate",
     g_purifier: "Luftreiniger",
     g_fan: "Ventilatoren",
     no_area: "Kein Bereich",
-    no_devices: "Keine Klimaanlage, kein Luftreiniger und kein Ventilator gefunden",
+    no_devices: "Keine Klimaanlage, kein Thermostat, kein Luftreiniger und kein Ventilator gefunden",
     toggle: "Ein- / ausschalten",
     ed_entity: "Gerät",
     ed_entity_helper: "Leer lassen, um das erste gefundene zu verwenden",
@@ -343,6 +368,9 @@ const CA_I18N = {
     ill_split: "Wand-Split-Gerät",
     ill_portable: "Mobiles Gerät",
     ill_window: "Fenster-Split",
+    ill_dial: "Wandthermostat",
+    ill_radiator: "Heizkörper",
+    ill_valve: "Heizkörperthermostat",
     ed_show_controls: "Steuerung",
     ed_show_sensors: "Messwerte",
     ed_show_alerts: "Warnungen",
@@ -368,14 +396,17 @@ const CA_I18N = {
     ed_columns: "Spalten",
     ed_columns_helper: "Leer: 2, oder 1 auf schmalen Bildschirmen",
     ed_ov_zoom_helper: "Nur eingeschaltete oder zu beachtende Geräte werden angezeigt; die Schaltfläche zeigt alle Geräte. Aus: immer alle Geräte",
+    ed_show_all: "Alle Geräte anzeigen",
+    ed_show_all_helper: "Alle Geräte werden zuerst angezeigt; die Detailschaltfläche behält nur die eingeschalteten oder zu beachtenden",
     ed_exclude: "Auszuschließende Geräte",
     ed_include: "Hinzuzufügende Geräte",
-    ed_include_helper: "Climate- oder Fan-Entitäten, die die Karte nicht von selbst übernehmen würde (z. B. ein reines Heizungsthermostat)",
+    ed_include_helper: "Climate- oder Fan-Entitäten, die die Karte nicht von selbst übernehmen würde (z. B. eine ausgeblendete Entität)",
   },
   es: {
     purifier: "Purificador de aire",
     fan: "Ventilador",
     aircon: "Aire acondicionado",
+    thermostat: "Termostato",
     st_off: "Apagado",
     st_on: "Encendido",
     st_unavailable: "No disponible",
@@ -417,6 +448,9 @@ const CA_I18N = {
     filter: "Filtro",
     filter_low: "Cambia el filtro",
     filter_dirty: "Limpia el filtro",
+    window_open: "Ventana abierta",
+    battery_low: "Batería baja",
+    valve: "Válvula",
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Objetivo",
@@ -443,10 +477,11 @@ const CA_I18N = {
     all_off: "Todo está apagado",
     nothing_on: "Nada encendido ahora mismo",
     g_aircon: "Aires acondicionados",
+    g_thermostat: "Termostatos",
     g_purifier: "Purificadores de aire",
     g_fan: "Ventiladores",
     no_area: "Sin área",
-    no_devices: "No se encontró ningún aire acondicionado, purificador ni ventilador",
+    no_devices: "No se encontró ningún aire acondicionado, termostato, purificador ni ventilador",
     toggle: "Encender / apagar",
     ed_entity: "Dispositivo",
     ed_entity_helper: "Déjalo vacío para usar el primero que se encuentre",
@@ -464,6 +499,9 @@ const CA_I18N = {
     ill_split: "Split de pared",
     ill_portable: "Equipo portátil",
     ill_window: "Split de ventana",
+    ill_dial: "Termostato de pared",
+    ill_radiator: "Radiador",
+    ill_valve: "Válvula termostática",
     ed_show_controls: "Controles",
     ed_show_sensors: "Mediciones",
     ed_show_alerts: "Alertas",
@@ -489,14 +527,17 @@ const CA_I18N = {
     ed_columns: "Columnas",
     ed_columns_helper: "Vacío: 2, o 1 en pantallas estrechas",
     ed_ov_zoom_helper: "Solo se muestran los dispositivos encendidos o que requieren atención; el botón muestra todos los dispositivos. Desactivado: siempre todos los dispositivos",
+    ed_show_all: "Mostrar todos los dispositivos",
+    ed_show_all_helper: "Todos los dispositivos se muestran al principio; el botón de detalle deja solo los encendidos o que requieren atención",
     ed_exclude: "Dispositivos que excluir",
     ed_include: "Dispositivos que añadir",
-    ed_include_helper: "Entidades climate o fan que la tarjeta no elegiría por sí sola (un termostato solo de calefacción, por ejemplo)",
+    ed_include_helper: "Entidades climate o fan que la tarjeta no elegiría por sí sola (una entidad oculta, por ejemplo)",
   },
   sr: {
     purifier: "Пречишћивач ваздуха",
     fan: "Вентилатор",
     aircon: "Клима уређај",
+    thermostat: "Термостат",
     st_off: "Искључено",
     st_on: "Укључено",
     st_unavailable: "Недоступно",
@@ -538,6 +579,9 @@ const CA_I18N = {
     filter: "Филтер",
     filter_low: "Замените филтер",
     filter_dirty: "Очистите филтер",
+    window_open: "Прозор отворен",
+    battery_low: "Слаба батерија",
+    valve: "Вентил",
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Циљ",
@@ -564,10 +608,11 @@ const CA_I18N = {
     all_off: "Све је искључено",
     nothing_on: "Тренутно ништа није укључено",
     g_aircon: "Клима уређаји",
+    g_thermostat: "Термостати",
     g_purifier: "Пречишћивачи ваздуха",
     g_fan: "Вентилатори",
     no_area: "Без просторије",
-    no_devices: "Није пронађен ниједан клима уређај, пречишћивач ваздуха или вентилатор",
+    no_devices: "Није пронађен ниједан клима уређај, термостат, пречишћивач ваздуха или вентилатор",
     toggle: "Укључи / Искључи",
     ed_entity: "Уређај",
     ed_entity_helper: "Остави празно да се користи први пронађени",
@@ -585,6 +630,9 @@ const CA_I18N = {
     ill_split: "Зидна сплит јединица",
     ill_portable: "Покретна јединица",
     ill_window: "Прозорска сплит јединица",
+    ill_dial: "Зидни термостат",
+    ill_radiator: "Радијатор",
+    ill_valve: "Радијаторски вентил",
     ed_show_controls: "Контроле",
     ed_show_sensors: "Мерења",
     ed_show_alerts: "Упозорења",
@@ -610,14 +658,17 @@ const CA_I18N = {
     ed_columns: "Колоне",
     ed_columns_helper: "Празно: 2, или 1 на уским екранима",
     ed_ov_zoom_helper: "Приказују се само уређаји који раде или захтевају пажњу; дугме приказује све уређаје. Искључено: сви уређаји, увек",
+    ed_show_all: "Прикажи све уређаје",
+    ed_show_all_helper: "Сви уређаји се приказују одмах; дугме за детаље задржава само укључене или оне који траже пажњу",
     ed_exclude: "Уређаји за искључивање",
     ed_include: "Уређаји за додавање",
-    ed_include_helper: "Ентитети климе или вентилатора које картица не би сама препознала (нпр. термостат који подржава само грејање)",
+    ed_include_helper: "Ентитети климе или вентилатора које картица не би сама препознала (нпр. скривени ентитет)",
   },
   "sr-Latn": {
     purifier: "Prečišćivač vazduha",
     fan: "Ventilator",
     aircon: "Klima uređaj",
+    thermostat: "Termostat",
     st_off: "Isključeno",
     st_on: "Uključeno",
     st_unavailable: "Nedostupno",
@@ -659,6 +710,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Zamenite filter",
     filter_dirty: "Očistite filter",
+    window_open: "Prozor otvoren",
+    battery_low: "Slaba baterija",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Nivo {n}",
     target: "Cilj",
@@ -685,10 +739,11 @@ const CA_I18N = {
     all_off: "Sve je isključeno",
     nothing_on: "Trenutno ništa nije uključeno",
     g_aircon: "Klima uređaji",
+    g_thermostat: "Termostati",
     g_purifier: "Prečišćivači vazduha",
     g_fan: "Ventilatori",
     no_area: "Bez prostorije",
-    no_devices: "Nije pronađen nijedan klima uređaj, prečišćivač vazduha ili ventilator",
+    no_devices: "Nije pronađen nijedan klima uređaj, termostat, prečišćivač vazduha ili ventilator",
     toggle: "Uključi / Isključi",
     ed_entity: "Uređaj",
     ed_entity_helper: "Ostavi prazno da se koristi prvi pronađeni",
@@ -706,6 +761,9 @@ const CA_I18N = {
     ill_split: "Zidna split jedinica",
     ill_portable: "Pokretna jedinica",
     ill_window: "Prozorska split jedinica",
+    ill_dial: "Zidni termostat",
+    ill_radiator: "Radijator",
+    ill_valve: "Radijatorski ventil",
     ed_show_controls: "Kontrole",
     ed_show_sensors: "Merenja",
     ed_show_alerts: "Upozorenja",
@@ -731,14 +789,17 @@ const CA_I18N = {
     ed_columns: "Kolone",
     ed_columns_helper: "Prazno: 2, ili 1 na uskim ekranima",
     ed_ov_zoom_helper: "Prikazuju se samo uređaji koji rade ili zahtevaju pažnju; dugme prikazuje sve uređaje. Isključeno: svi uređaji, uvek",
+    ed_show_all: "Prikaži sve uređaje",
+    ed_show_all_helper: "Svi uređaji se prikazuju odmah; dugme za detalje zadržava samo uključene ili one koji traže pažnju",
     ed_exclude: "Uređaji za isključivanje",
     ed_include: "Uređaji za dodavanje",
-    ed_include_helper: "Entiteti klime ili ventilatora koje kartica ne bi sama prepoznala (npr. termostat koji podržava samo grejanje)",
+    ed_include_helper: "Entiteti klime ili ventilatora koje kartica ne bi sama prepoznala (npr. skriveni entitet)",
   },
   it: {
     purifier: "Purificatore d'aria",
     fan: "Ventilatore",
     aircon: "Condizionatore",
+    thermostat: "Termostato",
     st_off: "Spento",
     st_on: "Acceso",
     st_unavailable: "Non disponibile",
@@ -780,6 +841,9 @@ const CA_I18N = {
     filter: "Filtro",
     filter_low: "Sostituire il filtro",
     filter_dirty: "Pulire il filtro",
+    window_open: "Finestra aperta",
+    battery_low: "Batteria scarica",
+    valve: "Valvola",
     hours: "{n} h",
     level: "Livello {n}",
     target: "Obiettivo",
@@ -806,10 +870,11 @@ const CA_I18N = {
     all_off: "Tutto è spento",
     nothing_on: "Niente acceso al momento",
     g_aircon: "Condizionatori",
+    g_thermostat: "Termostati",
     g_purifier: "Purificatori",
     g_fan: "Ventilatori",
     no_area: "Nessuna area",
-    no_devices: "Nessun condizionatore, purificatore d'aria o ventilatore trovato",
+    no_devices: "Nessun condizionatore, termostato, purificatore d'aria o ventilatore trovato",
     toggle: "Accendi / spegni",
     ed_entity: "Dispositivo",
     ed_entity_helper: "Lascia vuoto per usare il primo trovato",
@@ -827,6 +892,9 @@ const CA_I18N = {
     ill_split: "Split a parete",
     ill_portable: "Condizionatore portatile",
     ill_window: "Split da finestra",
+    ill_dial: "Termostato a parete",
+    ill_radiator: "Radiatore",
+    ill_valve: "Valvola termostatica",
     ed_show_controls: "Comandi",
     ed_show_sensors: "Misure",
     ed_show_alerts: "Avvisi",
@@ -853,14 +921,17 @@ const CA_I18N = {
     ed_columns_helper: "Vuoto: 2, o 1 sugli schermi stretti",
     ed_ov_zoom_helper:
       "Sono mostrati solo i dispositivi accesi o che richiedono attenzione; il pulsante mostra tutti i dispositivi. Disattivato: sempre tutti i dispositivi",
+    ed_show_all: "Mostra tutti i dispositivi",
+    ed_show_all_helper: "Tutti i dispositivi sono mostrati subito; il pulsante dettagli tiene solo quelli accesi o che richiedono attenzione",
     ed_exclude: "Dispositivi da escludere",
     ed_include: "Dispositivi da aggiungere",
-    ed_include_helper: "Entità climate o fan che la scheda non sceglierebbe da sola (ad esempio un termostato solo riscaldamento)",
+    ed_include_helper: "Entità climate o fan che la scheda non sceglierebbe da sola (ad esempio un'entità nascosta)",
   },
   nl: {
     purifier: "Luchtreiniger",
     fan: "Ventilator",
     aircon: "Airconditioner",
+    thermostat: "Thermostaat",
     st_off: "Uit",
     st_on: "Aan",
     st_unavailable: "Niet beschikbaar",
@@ -902,6 +973,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Vervang het filter",
     filter_dirty: "Reinig het filter",
+    window_open: "Raam open",
+    battery_low: "Batterij bijna leeg",
+    valve: "Klep",
     hours: "{n} u",
     level: "Niveau {n}",
     target: "Doel",
@@ -928,10 +1002,11 @@ const CA_I18N = {
     all_off: "Alles staat uit",
     nothing_on: "Er staat nu niets aan",
     g_aircon: "Airconditioners",
+    g_thermostat: "Thermostaten",
     g_purifier: "Luchtreinigers",
     g_fan: "Ventilatoren",
     no_area: "Geen ruimte",
-    no_devices: "Geen airconditioner, luchtreiniger of ventilator gevonden",
+    no_devices: "Geen airconditioner, thermostaat, luchtreiniger of ventilator gevonden",
     toggle: "In- / uitschakelen",
     ed_entity: "Apparaat",
     ed_entity_helper: "Leeg laten om het eerst gevonden apparaat te gebruiken",
@@ -949,6 +1024,9 @@ const CA_I18N = {
     ill_split: "Wandunit (split)",
     ill_portable: "Mobiele unit",
     ill_window: "Raamunit (split)",
+    ill_dial: "Wandthermostaat",
+    ill_radiator: "Radiator",
+    ill_valve: "Radiatorknop",
     ed_show_controls: "Bediening",
     ed_show_sensors: "Metingen",
     ed_show_alerts: "Waarschuwingen",
@@ -975,14 +1053,17 @@ const CA_I18N = {
     ed_columns_helper: "Leeg: 2, of 1 op smalle schermen",
     ed_ov_zoom_helper:
       "Alleen apparaten die aan staan of aandacht nodig hebben worden getoond; de knop toont alle apparaten. Uit: altijd alle apparaten",
+    ed_show_all: "Alle apparaten tonen",
+    ed_show_all_helper: "Alle apparaten worden meteen getoond; de detailknop houdt alleen de ingeschakelde of aandacht vragende over",
     ed_exclude: "Uit te sluiten apparaten",
     ed_include: "Toe te voegen apparaten",
-    ed_include_helper: "Climate- of fan-entiteiten die de kaart niet uit zichzelf zou kiezen (bijvoorbeeld een thermostaat die alleen verwarmt)",
+    ed_include_helper: "Climate- of fan-entiteiten die de kaart niet uit zichzelf zou kiezen (bijvoorbeeld een verborgen entiteit)",
   },
   pt: {
     purifier: "Purificador de ar",
     fan: "Ventoinha",
     aircon: "Ar condicionado",
+    thermostat: "Termóstato",
     st_off: "Desligado",
     st_on: "Ligado",
     st_unavailable: "Indisponível",
@@ -1024,6 +1105,9 @@ const CA_I18N = {
     filter: "Filtro",
     filter_low: "Substituir o filtro",
     filter_dirty: "Limpar o filtro",
+    window_open: "Janela aberta",
+    battery_low: "Bateria fraca",
+    valve: "Válvula",
     hours: "{n} h",
     level: "Nível {n}",
     target: "Alvo",
@@ -1050,10 +1134,11 @@ const CA_I18N = {
     all_off: "Está tudo desligado",
     nothing_on: "Nada ligado de momento",
     g_aircon: "Ares condicionados",
+    g_thermostat: "Termóstatos",
     g_purifier: "Purificadores",
     g_fan: "Ventoinhas",
     no_area: "Sem área",
-    no_devices: "Nenhum ar condicionado, purificador de ar ou ventoinha encontrado",
+    no_devices: "Nenhum ar condicionado, termóstato, purificador de ar ou ventoinha encontrado",
     toggle: "Ligar / desligar",
     ed_entity: "Dispositivo",
     ed_entity_helper: "Deixe vazio para usar o primeiro encontrado",
@@ -1071,6 +1156,9 @@ const CA_I18N = {
     ill_split: "Split de parede",
     ill_portable: "Unidade portátil",
     ill_window: "Split de janela",
+    ill_dial: "Termóstato de parede",
+    ill_radiator: "Radiador",
+    ill_valve: "Válvula termostática",
     ed_show_controls: "Comandos",
     ed_show_sensors: "Medições",
     ed_show_alerts: "Alertas",
@@ -1097,14 +1185,17 @@ const CA_I18N = {
     ed_columns_helper: "Vazio: 2, ou 1 em ecrãs estreitos",
     ed_ov_zoom_helper:
       "Só aparecem os dispositivos ligados ou que precisam de atenção; o botão mostra todos os dispositivos. Desativado: sempre todos os dispositivos",
+    ed_show_all: "Mostrar todos os dispositivos",
+    ed_show_all_helper: "Todos os dispositivos aparecem logo; o botão de detalhe deixa só os ligados ou que precisam de atenção",
     ed_exclude: "Dispositivos a excluir",
     ed_include: "Dispositivos a adicionar",
-    ed_include_helper: "Entidades climate ou fan que o cartão não escolheria sozinho (por exemplo, um termóstato só de aquecimento)",
+    ed_include_helper: "Entidades climate ou fan que o cartão não escolheria sozinho (por exemplo, uma entidade oculta)",
   },
   pl: {
     purifier: "Oczyszczacz powietrza",
     fan: "Wentylator",
     aircon: "Klimatyzator",
+    thermostat: "Termostat",
     st_off: "Wyłączone",
     st_on: "Włączone",
     st_unavailable: "Niedostępne",
@@ -1146,6 +1237,9 @@ const CA_I18N = {
     filter: "Filtr",
     filter_low: "Wymień filtr",
     filter_dirty: "Wyczyść filtr",
+    window_open: "Okno otwarte",
+    battery_low: "Słaba bateria",
+    valve: "Zawór",
     hours: "{n} h",
     level: "Poziom {n}",
     target: "Cel",
@@ -1172,10 +1266,11 @@ const CA_I18N = {
     all_off: "Wszystko wyłączone",
     nothing_on: "Nic nie jest teraz włączone",
     g_aircon: "Klimatyzatory",
+    g_thermostat: "Termostaty",
     g_purifier: "Oczyszczacze",
     g_fan: "Wentylatory",
     no_area: "Bez obszaru",
-    no_devices: "Nie znaleziono klimatyzatora, oczyszczacza powietrza ani wentylatora",
+    no_devices: "Nie znaleziono klimatyzatora, termostatu, oczyszczacza powietrza ani wentylatora",
     toggle: "Włącz / wyłącz",
     ed_entity: "Urządzenie",
     ed_entity_helper: "Pozostaw puste, aby użyć pierwszego znalezionego",
@@ -1193,6 +1288,9 @@ const CA_I18N = {
     ill_split: "Split ścienny",
     ill_portable: "Klimatyzator przenośny",
     ill_window: "Split okienny",
+    ill_dial: "Termostat ścienny",
+    ill_radiator: "Grzejnik",
+    ill_valve: "Głowica termostatyczna",
     ed_show_controls: "Sterowanie",
     ed_show_sensors: "Pomiary",
     ed_show_alerts: "Alerty",
@@ -1219,14 +1317,17 @@ const CA_I18N = {
     ed_columns_helper: "Puste: 2 lub 1 na wąskich ekranach",
     ed_ov_zoom_helper:
       "Wyświetlane są tylko urządzenia włączone lub wymagające uwagi; przycisk pokazuje wszystkie urządzenia. Wyłączone: zawsze wszystkie urządzenia",
+    ed_show_all: "Pokaż wszystkie urządzenia",
+    ed_show_all_helper: "Wszystkie urządzenia są widoczne od razu; przycisk szczegółów zostawia tylko włączone lub wymagające uwagi",
     ed_exclude: "Urządzenia do wykluczenia",
     ed_include: "Urządzenia do dodania",
-    ed_include_helper: "Encje climate lub fan, których karta nie wybrałaby sama (np. termostat tylko do ogrzewania)",
+    ed_include_helper: "Encje climate lub fan, których karta nie wybrałaby sama (np. ukryta encja)",
   },
   ro: {
     purifier: "Purificator de aer",
     fan: "Ventilator",
     aircon: "Aer condiționat",
+    thermostat: "Termostat",
     st_off: "Oprit",
     st_on: "Pornit",
     st_unavailable: "Indisponibil",
@@ -1268,6 +1369,9 @@ const CA_I18N = {
     filter: "Filtru",
     filter_low: "Înlocuiți filtrul",
     filter_dirty: "Curățați filtrul",
+    window_open: "Fereastră deschisă",
+    battery_low: "Baterie descărcată",
+    valve: "Robinet",
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Țintă",
@@ -1294,10 +1398,11 @@ const CA_I18N = {
     all_off: "Totul este oprit",
     nothing_on: "Nimic pornit acum",
     g_aircon: "Climatizoare",
+    g_thermostat: "Termostate",
     g_purifier: "Purificatoare de aer",
     g_fan: "Ventilatoare",
     no_area: "Fără zonă",
-    no_devices: "Nu s-a găsit niciun aparat de aer condiționat, purificator de aer sau ventilator",
+    no_devices: "Nu s-a găsit niciun aparat de aer condiționat, termostat, purificator de aer sau ventilator",
     toggle: "Pornește / oprește",
     ed_entity: "Dispozitiv",
     ed_entity_helper: "Lăsați gol pentru a-l folosi pe primul găsit",
@@ -1315,6 +1420,9 @@ const CA_I18N = {
     ill_split: "Split de perete",
     ill_portable: "Aparat portabil",
     ill_window: "Split de fereastră",
+    ill_dial: "Termostat de perete",
+    ill_radiator: "Calorifer",
+    ill_valve: "Robinet termostatic",
     ed_show_controls: "Comenzi",
     ed_show_sensors: "Măsurători",
     ed_show_alerts: "Alerte",
@@ -1341,14 +1449,17 @@ const CA_I18N = {
     ed_columns_helper: "Gol: 2, sau 1 pe ecranele înguste",
     ed_ov_zoom_helper:
       "Se afișează doar dispozitivele pornite sau care necesită atenție; butonul afișează toate dispozitivele. Dezactivat: mereu toate dispozitivele",
+    ed_show_all: "Afișează toate dispozitivele",
+    ed_show_all_helper: "Toate dispozitivele apar de la început; butonul de detalii le păstrează doar pe cele pornite sau care necesită atenție",
     ed_exclude: "Dispozitive de exclus",
     ed_include: "Dispozitive de adăugat",
-    ed_include_helper: "Entități climate sau fan pe care cardul nu le-ar alege singur (de ex. un termostat doar pentru încălzire)",
+    ed_include_helper: "Entități climate sau fan pe care cardul nu le-ar alege singur (de ex. o entitate ascunsă)",
   },
   da: {
     purifier: "Luftrenser",
     fan: "Ventilator",
     aircon: "Klimaanlæg",
+    thermostat: "Termostat",
     st_off: "Slukket",
     st_on: "Tændt",
     st_unavailable: "Utilgængelig",
@@ -1390,6 +1501,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Udskift filteret",
     filter_dirty: "Rens filteret",
+    window_open: "Vindue åbent",
+    battery_low: "Lavt batteri",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Mål",
@@ -1416,10 +1530,11 @@ const CA_I18N = {
     all_off: "Alt er slukket",
     nothing_on: "Intet er tændt lige nu",
     g_aircon: "Klimaanlæg",
+    g_thermostat: "Termostater",
     g_purifier: "Luftrensere",
     g_fan: "Ventilatorer",
     no_area: "Intet område",
-    no_devices: "Ingen klimaanlæg, luftrensere eller ventilatorer fundet",
+    no_devices: "Ingen klimaanlæg, termostater, luftrensere eller ventilatorer fundet",
     toggle: "Tænd / sluk",
     ed_entity: "Enhed",
     ed_entity_helper: "Lad feltet stå tomt for at bruge den første, der findes",
@@ -1437,6 +1552,9 @@ const CA_I18N = {
     ill_split: "Vægmonteret split",
     ill_portable: "Mobilt anlæg",
     ill_window: "Vinduessplit",
+    ill_dial: "Vægtermostat",
+    ill_radiator: "Radiator",
+    ill_valve: "Radiatortermostat",
     ed_show_controls: "Betjening",
     ed_show_sensors: "Målinger",
     ed_show_alerts: "Advarsler",
@@ -1463,14 +1581,17 @@ const CA_I18N = {
     ed_columns_helper: "Tomt: 2, eller 1 på smalle skærme",
     ed_ov_zoom_helper:
       "Kun enheder, der er tændt eller kræver opmærksomhed, vises; knappen viser alle enheder. Fra: altid alle enheder",
+    ed_show_all: "Vis alle enheder",
+    ed_show_all_helper: "Alle enheder vises fra start; detaljeknappen beholder kun dem, der er tændt eller kræver opmærksomhed",
     ed_exclude: "Enheder, der udelades",
     ed_include: "Enheder, der tilføjes",
-    ed_include_helper: "Climate- eller fan-entiteter, som kortet ikke selv ville vælge (f.eks. en termostat kun til opvarmning)",
+    ed_include_helper: "Climate- eller fan-entiteter, som kortet ikke selv ville vælge (f.eks. en skjult entitet)",
   },
   sv: {
     purifier: "Luftrenare",
     fan: "Fläkt",
     aircon: "Luftkonditionering",
+    thermostat: "Termostat",
     st_off: "Av",
     st_on: "På",
     st_unavailable: "Ej tillgänglig",
@@ -1512,6 +1633,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Byt filtret",
     filter_dirty: "Rengör filtret",
+    window_open: "Fönster öppet",
+    battery_low: "Låg batterinivå",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Nivå {n}",
     target: "Mål",
@@ -1538,10 +1662,11 @@ const CA_I18N = {
     all_off: "Allt är avstängt",
     nothing_on: "Inget är på just nu",
     g_aircon: "Luftkonditioneringar",
+    g_thermostat: "Termostater",
     g_purifier: "Luftrenare",
     g_fan: "Fläktar",
     no_area: "Inget område",
-    no_devices: "Ingen luftkonditionering, luftrenare eller fläkt hittades",
+    no_devices: "Ingen luftkonditionering, termostat, luftrenare eller fläkt hittades",
     toggle: "Slå på / av",
     ed_entity: "Enhet",
     ed_entity_helper: "Lämna tomt för att använda den första som hittas",
@@ -1559,6 +1684,9 @@ const CA_I18N = {
     ill_split: "Väggmonterad split",
     ill_portable: "Portabel enhet",
     ill_window: "Fönstersplit",
+    ill_dial: "Väggtermostat",
+    ill_radiator: "Element",
+    ill_valve: "Elementtermostat",
     ed_show_controls: "Reglage",
     ed_show_sensors: "Mätvärden",
     ed_show_alerts: "Varningar",
@@ -1585,14 +1713,17 @@ const CA_I18N = {
     ed_columns_helper: "Tomt: 2, eller 1 på smala skärmar",
     ed_ov_zoom_helper:
       "Endast enheter som är på eller behöver uppmärksamhet visas; knappen visar alla enheter. Av: alltid alla enheter",
+    ed_show_all: "Visa alla enheter",
+    ed_show_all_helper: "Alla enheter visas direkt; detaljknappen behåller bara de som är på eller behöver åtgärdas",
     ed_exclude: "Enheter att utesluta",
     ed_include: "Enheter att lägga till",
-    ed_include_helper: "Climate- eller fan-entiteter som kortet inte skulle välja självt (t.ex. en termostat som bara värmer)",
+    ed_include_helper: "Climate- eller fan-entiteter som kortet inte skulle välja självt (t.ex. en dold entitet)",
   },
   bg: {
     purifier: "Пречиствател на въздух",
     fan: "Вентилатор",
     aircon: "Климатик",
+    thermostat: "Термостат",
     st_off: "Изключен",
     st_on: "Включен",
     st_unavailable: "Недостъпен",
@@ -1634,6 +1765,9 @@ const CA_I18N = {
     filter: "Филтър",
     filter_low: "Сменете филтъра",
     filter_dirty: "Почистете филтъра",
+    window_open: "Отворен прозорец",
+    battery_low: "Слаба батерия",
+    valve: "Вентил",
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Цел",
@@ -1660,10 +1794,11 @@ const CA_I18N = {
     all_off: "Всичко е изключено",
     nothing_on: "В момента нищо не е включено",
     g_aircon: "Климатици",
+    g_thermostat: "Термостати",
     g_purifier: "Пречистватели",
     g_fan: "Вентилатори",
     no_area: "Без област",
-    no_devices: "Не е намерен климатик, пречиствател на въздух или вентилатор",
+    no_devices: "Не е намерен климатик, термостат, пречиствател на въздух или вентилатор",
     toggle: "Включване / изключване",
     ed_entity: "Устройство",
     ed_entity_helper: "Оставете празно, за да се използва първото намерено",
@@ -1681,6 +1816,9 @@ const CA_I18N = {
     ill_split: "Стенен сплит",
     ill_portable: "Мобилен климатик",
     ill_window: "Прозоречен сплит",
+    ill_dial: "Стенен термостат",
+    ill_radiator: "Радиатор",
+    ill_valve: "Термостатна глава",
     ed_show_controls: "Управление",
     ed_show_sensors: "Измервания",
     ed_show_alerts: "Предупреждения",
@@ -1707,14 +1845,17 @@ const CA_I18N = {
     ed_columns_helper: "Празно: 2 или 1 на тесни екрани",
     ed_ov_zoom_helper:
       "Показват се само включените устройства или тези, които изискват внимание; бутонът показва всички устройства. Изключено: винаги всички устройства",
+    ed_show_all: "Покажи всички устройства",
+    ed_show_all_helper: "Всички устройства се показват веднага; бутонът за детайли оставя само включените или изискващите внимание",
     ed_exclude: "Устройства за изключване",
     ed_include: "Устройства за добавяне",
-    ed_include_helper: "Обекти climate или fan, които картата не би избрала сама (напр. термостат само за отопление)",
+    ed_include_helper: "Обекти climate или fan, които картата не би избрала сама (напр. скрит обект)",
   },
   ru: {
     purifier: "Очиститель воздуха",
     fan: "Вентилятор",
     aircon: "Кондиционер",
+    thermostat: "Термостат",
     st_off: "Выключено",
     st_on: "Включено",
     st_unavailable: "Недоступно",
@@ -1756,6 +1897,9 @@ const CA_I18N = {
     filter: "Фильтр",
     filter_low: "Замените фильтр",
     filter_dirty: "Очистите фильтр",
+    window_open: "Окно открыто",
+    battery_low: "Низкий заряд батареи",
+    valve: "Клапан",
     hours: "{n} h",
     level: "Уровень {n}",
     target: "Цель",
@@ -1782,10 +1926,11 @@ const CA_I18N = {
     all_off: "Всё выключено",
     nothing_on: "Сейчас ничего не включено",
     g_aircon: "Кондиционеры",
+    g_thermostat: "Термостаты",
     g_purifier: "Очистители воздуха",
     g_fan: "Вентиляторы",
     no_area: "Без пространства",
-    no_devices: "Не найдено ни кондиционеров, ни очистителей воздуха, ни вентиляторов",
+    no_devices: "Не найдено ни кондиционеров, ни термостатов, ни очистителей воздуха, ни вентиляторов",
     toggle: "Включить / выключить",
     ed_entity: "Устройство",
     ed_entity_helper: "Оставьте пустым, чтобы использовать первое найденное",
@@ -1803,6 +1948,9 @@ const CA_I18N = {
     ill_split: "Настенная сплит-система",
     ill_portable: "Мобильный кондиционер",
     ill_window: "Оконная сплит-система",
+    ill_dial: "Настенный термостат",
+    ill_radiator: "Радиатор",
+    ill_valve: "Термоголовка",
     ed_show_controls: "Управление",
     ed_show_sensors: "Измерения",
     ed_show_alerts: "Оповещения",
@@ -1829,14 +1977,17 @@ const CA_I18N = {
     ed_columns_helper: "Пусто: 2 или 1 на узких экранах",
     ed_ov_zoom_helper:
       "Показываются только включённые устройства и те, что требуют внимания; кнопка показывает все устройства. Выключено: всегда все устройства",
+    ed_show_all: "Показывать все устройства",
+    ed_show_all_helper: "Все устройства видны сразу; кнопка подробностей оставляет только включённые или требующие внимания",
     ed_exclude: "Исключить устройства",
     ed_include: "Добавить устройства",
-    ed_include_helper: "Объекты climate или fan, которые карточка не выбрала бы сама (например, термостат только для обогрева)",
+    ed_include_helper: "Объекты climate или fan, которые карточка не выбрала бы сама (например, скрытый объект)",
   },
   uk: {
     purifier: "Очищувач повітря",
     fan: "Вентилятор",
     aircon: "Кондиціонер",
+    thermostat: "Термостат",
     st_off: "Вимкнено",
     st_on: "Увімкнено",
     st_unavailable: "Недоступно",
@@ -1878,6 +2029,9 @@ const CA_I18N = {
     filter: "Фільтр",
     filter_low: "Замініть фільтр",
     filter_dirty: "Очистьте фільтр",
+    window_open: "Вікно відчинене",
+    battery_low: "Низький заряд батареї",
+    valve: "Клапан",
     hours: "{n} h",
     level: "Рівень {n}",
     target: "Ціль",
@@ -1904,10 +2058,11 @@ const CA_I18N = {
     all_off: "Усе вимкнено",
     nothing_on: "Зараз нічого не ввімкнено",
     g_aircon: "Кондиціонери",
+    g_thermostat: "Термостати",
     g_purifier: "Очищувачі повітря",
     g_fan: "Вентилятори",
     no_area: "Без приміщення",
-    no_devices: "Не знайдено жодного кондиціонера, очищувача повітря чи вентилятора",
+    no_devices: "Не знайдено жодного кондиціонера, термостата, очищувача повітря чи вентилятора",
     toggle: "Увімкнути / вимкнути",
     ed_entity: "Пристрій",
     ed_entity_helper: "Залиште порожнім, щоб використати перший знайдений",
@@ -1925,6 +2080,9 @@ const CA_I18N = {
     ill_split: "Настінна спліт-система",
     ill_portable: "Мобільний кондиціонер",
     ill_window: "Віконна спліт-система",
+    ill_dial: "Настінний термостат",
+    ill_radiator: "Радіатор",
+    ill_valve: "Термоголовка",
     ed_show_controls: "Керування",
     ed_show_sensors: "Вимірювання",
     ed_show_alerts: "Сповіщення",
@@ -1951,14 +2109,17 @@ const CA_I18N = {
     ed_columns_helper: "Порожньо: 2 або 1 на вузьких екранах",
     ed_ov_zoom_helper:
       "Показано лише ввімкнені пристрої та ті, що потребують уваги; кнопка показує всі пристрої. Вимкнено: завжди всі пристрої",
+    ed_show_all: "Показувати всі пристрої",
+    ed_show_all_helper: "Усі пристрої видно одразу; кнопка подробиць залишає лише ввімкнені або ті, що потребують уваги",
     ed_exclude: "Виключити пристрої",
     ed_include: "Додати пристрої",
-    ed_include_helper: "Сутності climate або fan, які картка не вибрала б сама (наприклад, термостат лише для обігріву)",
+    ed_include_helper: "Сутності climate або fan, які картка не вибрала б сама (наприклад, прихована сутність)",
   },
   hu: {
     purifier: "Légtisztító",
     fan: "Ventilátor",
     aircon: "Klíma",
+    thermostat: "Termosztát",
     st_off: "Ki",
     st_on: "Be",
     st_unavailable: "Nem elérhető",
@@ -2000,6 +2161,9 @@ const CA_I18N = {
     filter: "Szűrő",
     filter_low: "Szűrőcsere",
     filter_dirty: "Szűrőtisztítás",
+    window_open: "Nyitott ablak",
+    battery_low: "Alacsony töltöttség",
+    valve: "Szelep",
     hours: "{n} h",
     level: "{n}. szint",
     target: "Cél",
@@ -2026,10 +2190,11 @@ const CA_I18N = {
     all_off: "Minden ki van kapcsolva",
     nothing_on: "Jelenleg semmi sincs bekapcsolva",
     g_aircon: "Klímák",
+    g_thermostat: "Termosztátok",
     g_purifier: "Légtisztítók",
     g_fan: "Ventilátorok",
     no_area: "Nincs terület",
-    no_devices: "Nem található klíma, légtisztító vagy ventilátor",
+    no_devices: "Nem található klíma, termosztát, légtisztító vagy ventilátor",
     toggle: "Be- / kikapcsolás",
     ed_entity: "Eszköz",
     ed_entity_helper: "Hagyja üresen az elsőként talált eszköz használatához",
@@ -2047,6 +2212,9 @@ const CA_I18N = {
     ill_split: "Fali split",
     ill_portable: "Mobil klíma",
     ill_window: "Ablakos split",
+    ill_dial: "Fali termosztát",
+    ill_radiator: "Radiátor",
+    ill_valve: "Radiátorszelep",
     ed_show_controls: "Vezérlők",
     ed_show_sensors: "Mérések",
     ed_show_alerts: "Figyelmeztetések",
@@ -2073,14 +2241,17 @@ const CA_I18N = {
     ed_columns_helper: "Üres: 2, keskeny képernyőn 1",
     ed_ov_zoom_helper:
       "Csak a bekapcsolt vagy figyelmet igénylő eszközök jelennek meg; a gomb az összes eszközt mutatja. Ki: mindig az összes eszköz",
+    ed_show_all: "Minden eszköz megjelenítése",
+    ed_show_all_helper: "Minden eszköz azonnal látszik; a részletek gomb csak a bekapcsoltakat vagy figyelmet igénylőket hagyja meg",
     ed_exclude: "Kizárandó eszközök",
     ed_include: "Hozzáadandó eszközök",
-    ed_include_helper: "Climate vagy fan entitások, amelyeket a kártya magától nem választana (pl. csak fűtő termosztát)",
+    ed_include_helper: "Climate vagy fan entitások, amelyeket a kártya magától nem választana (pl. egy rejtett entitás)",
   },
   sk: {
     purifier: "Čistička vzduchu",
     fan: "Ventilátor",
     aircon: "Klimatizácia",
+    thermostat: "Termostat",
     st_off: "Vypnuté",
     st_on: "Zapnuté",
     st_unavailable: "Nedostupné",
@@ -2122,6 +2293,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Vymeňte filter",
     filter_dirty: "Vyčistite filter",
+    window_open: "Otvorené okno",
+    battery_low: "Slabá batéria",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cieľ",
@@ -2148,10 +2322,11 @@ const CA_I18N = {
     all_off: "Všetko je vypnuté",
     nothing_on: "Momentálne nie je nič zapnuté",
     g_aircon: "Klimatizácie",
+    g_thermostat: "Termostaty",
     g_purifier: "Čističky vzduchu",
     g_fan: "Ventilátory",
     no_area: "Bez oblasti",
-    no_devices: "Nenašla sa žiadna klimatizácia, čistička vzduchu ani ventilátor",
+    no_devices: "Nenašla sa žiadna klimatizácia, termostat, čistička vzduchu ani ventilátor",
     toggle: "Zapnúť / vypnúť",
     ed_entity: "Zariadenie",
     ed_entity_helper: "Nechajte prázdne, ak chcete použiť prvé nájdené",
@@ -2169,6 +2344,9 @@ const CA_I18N = {
     ill_split: "Nástenná split jednotka",
     ill_portable: "Mobilná jednotka",
     ill_window: "Okenná split jednotka",
+    ill_dial: "Nástenný termostat",
+    ill_radiator: "Radiátor",
+    ill_valve: "Termostatická hlavica",
     ed_show_controls: "Ovládanie",
     ed_show_sensors: "Merania",
     ed_show_alerts: "Upozornenia",
@@ -2195,14 +2373,17 @@ const CA_I18N = {
     ed_columns_helper: "Prázdne: 2, alebo 1 na úzkych obrazovkách",
     ed_ov_zoom_helper:
       "Zobrazujú sa len zapnuté zariadenia alebo tie, ktoré vyžadujú pozornosť; tlačidlo zobrazí všetky zariadenia. Vypnuté: vždy všetky zariadenia",
+    ed_show_all: "Zobraziť všetky zariadenia",
+    ed_show_all_helper: "Všetky zariadenia sa zobrazia hneď; tlačidlo detailu ponechá len zapnuté alebo vyžadujúce pozornosť",
     ed_exclude: "Vylúčené zariadenia",
     ed_include: "Pridané zariadenia",
-    ed_include_helper: "Entity climate alebo fan, ktoré by karta sama nevybrala (napr. termostat len na kúrenie)",
+    ed_include_helper: "Entity climate alebo fan, ktoré by karta sama nevybrala (napr. skrytá entita)",
   },
   cs: {
     purifier: "Čistička vzduchu",
     fan: "Ventilátor",
     aircon: "Klimatizace",
+    thermostat: "Termostat",
     st_off: "Vypnuto",
     st_on: "Zapnuto",
     st_unavailable: "Nedostupné",
@@ -2244,6 +2425,9 @@ const CA_I18N = {
     filter: "Filtr",
     filter_low: "Vyměňte filtr",
     filter_dirty: "Vyčistěte filtr",
+    window_open: "Otevřené okno",
+    battery_low: "Slabá baterie",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cíl",
@@ -2270,10 +2454,11 @@ const CA_I18N = {
     all_off: "Vše je vypnuté",
     nothing_on: "Momentálně není nic zapnuté",
     g_aircon: "Klimatizace",
+    g_thermostat: "Termostaty",
     g_purifier: "Čističky vzduchu",
     g_fan: "Ventilátory",
     no_area: "Bez oblasti",
-    no_devices: "Nenalezena žádná klimatizace, čistička vzduchu ani ventilátor",
+    no_devices: "Nenalezena žádná klimatizace, termostat, čistička vzduchu ani ventilátor",
     toggle: "Zapnout / vypnout",
     ed_entity: "Zařízení",
     ed_entity_helper: "Ponechte prázdné pro použití prvního nalezeného",
@@ -2291,6 +2476,9 @@ const CA_I18N = {
     ill_split: "Nástěnná split jednotka",
     ill_portable: "Mobilní jednotka",
     ill_window: "Okenní split jednotka",
+    ill_dial: "Nástěnný termostat",
+    ill_radiator: "Radiátor",
+    ill_valve: "Termostatická hlavice",
     ed_show_controls: "Ovládání",
     ed_show_sensors: "Měření",
     ed_show_alerts: "Upozornění",
@@ -2317,14 +2505,17 @@ const CA_I18N = {
     ed_columns_helper: "Prázdné: 2, nebo 1 na úzkých obrazovkách",
     ed_ov_zoom_helper:
       "Zobrazují se jen zapnutá zařízení nebo ta, která vyžadují pozornost; tlačítko zobrazí všechna zařízení. Vypnuto: vždy všechna zařízení",
+    ed_show_all: "Zobrazit všechna zařízení",
+    ed_show_all_helper: "Všechna zařízení se zobrazí hned; tlačítko detailu ponechá jen zapnutá nebo vyžadující pozornost",
     ed_exclude: "Vyloučená zařízení",
     ed_include: "Přidaná zařízení",
-    ed_include_helper: "Entity climate nebo fan, které by karta sama nevybrala (např. termostat jen pro topení)",
+    ed_include_helper: "Entity climate nebo fan, které by karta sama nevybrala (např. skrytá entita)",
   },
   sl: {
     purifier: "Čistilnik zraka",
     fan: "Ventilator",
     aircon: "Klimatska naprava",
+    thermostat: "Termostat",
     st_off: "Izklopljeno",
     st_on: "Vklopljeno",
     st_unavailable: "Ni na voljo",
@@ -2366,6 +2557,9 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Zamenjajte filter",
     filter_dirty: "Očistite filter",
+    window_open: "Okno odprto",
+    battery_low: "Šibka baterija",
+    valve: "Ventil",
     hours: "{n} h",
     level: "Raven {n}",
     target: "Cilj",
@@ -2392,10 +2586,11 @@ const CA_I18N = {
     all_off: "Vse je izklopljeno",
     nothing_on: "Trenutno ni nič vklopljeno",
     g_aircon: "Klimatske naprave",
+    g_thermostat: "Termostati",
     g_purifier: "Čistilniki zraka",
     g_fan: "Ventilatorji",
     no_area: "Brez območja",
-    no_devices: "Ni najdene klimatske naprave, čistilnika zraka ali ventilatorja",
+    no_devices: "Ni najdene klimatske naprave, termostata, čistilnika zraka ali ventilatorja",
     toggle: "Vklopi / izklopi",
     ed_entity: "Naprava",
     ed_entity_helper: "Pustite prazno za uporabo prve najdene",
@@ -2413,6 +2608,9 @@ const CA_I18N = {
     ill_split: "Stenska split enota",
     ill_portable: "Prenosna enota",
     ill_window: "Okenska split enota",
+    ill_dial: "Stenski termostat",
+    ill_radiator: "Radiator",
+    ill_valve: "Termostatski ventil",
     ed_show_controls: "Upravljanje",
     ed_show_sensors: "Meritve",
     ed_show_alerts: "Opozorila",
@@ -2439,14 +2637,17 @@ const CA_I18N = {
     ed_columns_helper: "Prazno: 2 ali 1 na ozkih zaslonih",
     ed_ov_zoom_helper:
       "Prikazane so le vklopljene naprave ali tiste, ki potrebujejo pozornost; gumb prikaže vse naprave. Izklopljeno: vedno vse naprave",
+    ed_show_all: "Prikaži vse naprave",
+    ed_show_all_helper: "Vse naprave so prikazane takoj; gumb za podrobnosti obdrži le vklopljene ali tiste, ki zahtevajo pozornost",
     ed_exclude: "Izključene naprave",
     ed_include: "Dodane naprave",
-    ed_include_helper: "Entitete climate ali fan, ki jih kartica sama ne bi izbrala (npr. termostat samo za ogrevanje)",
+    ed_include_helper: "Entitete climate ali fan, ki jih kartica sama ne bi izbrala (npr. skrita entiteta)",
   },
   lv: {
     purifier: "Gaisa attīrītājs",
     fan: "Ventilators",
     aircon: "Gaisa kondicionieris",
+    thermostat: "Termostats",
     st_off: "Izslēgts",
     st_on: "Ieslēgts",
     st_unavailable: "Nav pieejams",
@@ -2488,6 +2689,9 @@ const CA_I18N = {
     filter: "Filtrs",
     filter_low: "Nomainiet filtru",
     filter_dirty: "Notīriet filtru",
+    window_open: "Logs atvērts",
+    battery_low: "Zems akumulatora līmenis",
+    valve: "Vārsts",
     hours: "{n} h",
     level: "Līmenis {n}",
     target: "Mērķis",
@@ -2514,10 +2718,11 @@ const CA_I18N = {
     all_off: "Viss ir izslēgts",
     nothing_on: "Pašlaik nekas nav ieslēgts",
     g_aircon: "Gaisa kondicionieri",
+    g_thermostat: "Termostati",
     g_purifier: "Gaisa attīrītāji",
     g_fan: "Ventilatori",
     no_area: "Bez apgabala",
-    no_devices: "Nav atrasts neviens gaisa kondicionieris, gaisa attīrītājs vai ventilators",
+    no_devices: "Nav atrasts neviens gaisa kondicionieris, termostats, gaisa attīrītājs vai ventilators",
     toggle: "Ieslēgt / izslēgt",
     ed_entity: "Ierīce",
     ed_entity_helper: "Atstājiet tukšu, lai izmantotu pirmo atrasto",
@@ -2535,6 +2740,9 @@ const CA_I18N = {
     ill_split: "Sienas split bloks",
     ill_portable: "Pārvietojams bloks",
     ill_window: "Loga split bloks",
+    ill_dial: "Sienas termostats",
+    ill_radiator: "Radiators",
+    ill_valve: "Radiatora termostats",
     ed_show_controls: "Vadīklas",
     ed_show_sensors: "Mērījumi",
     ed_show_alerts: "Brīdinājumi",
@@ -2561,14 +2769,17 @@ const CA_I18N = {
     ed_columns_helper: "Tukšs: 2 vai 1 šauros ekrānos",
     ed_ov_zoom_helper:
       "Tiek rādītas tikai ieslēgtās ierīces vai tās, kurām nepieciešama uzmanība; poga parāda visas ierīces. Izslēgts: vienmēr visas ierīces",
+    ed_show_all: "Rādīt visas ierīces",
+    ed_show_all_helper: "Visas ierīces redzamas uzreiz; detaļu poga atstāj tikai ieslēgtās vai uzmanību prasošās",
     ed_exclude: "Izslēdzamās ierīces",
     ed_include: "Pievienojamās ierīces",
-    ed_include_helper: "Climate vai fan vienības, kuras karte pati neizvēlētos (piem., termostats tikai apkurei)",
+    ed_include_helper: "Climate vai fan vienības, kuras karte pati neizvēlētos (piem., paslēpta vienība)",
   },
   el: {
     purifier: "Καθαριστής αέρα",
     fan: "Ανεμιστήρας",
     aircon: "Κλιματιστικό",
+    thermostat: "Θερμοστάτης",
     st_off: "Ανενεργό",
     st_on: "Ενεργό",
     st_unavailable: "Μη διαθέσιμο",
@@ -2610,6 +2821,9 @@ const CA_I18N = {
     filter: "Φίλτρο",
     filter_low: "Αλλαγή φίλτρου",
     filter_dirty: "Καθαρίστε το φίλτρο",
+    window_open: "Ανοιχτό παράθυρο",
+    battery_low: "Χαμηλή μπαταρία",
+    valve: "Βαλβίδα",
     hours: "{n} h",
     level: "Επίπεδο {n}",
     target: "Στόχος",
@@ -2636,10 +2850,11 @@ const CA_I18N = {
     all_off: "Όλα είναι ανενεργά",
     nothing_on: "Τίποτα ενεργό αυτή τη στιγμή",
     g_aircon: "Κλιματιστικά",
+    g_thermostat: "Θερμοστάτες",
     g_purifier: "Καθαριστές αέρα",
     g_fan: "Ανεμιστήρες",
     no_area: "Χωρίς περιοχή",
-    no_devices: "Δεν βρέθηκε κλιματιστικό, καθαριστής αέρα ή ανεμιστήρας",
+    no_devices: "Δεν βρέθηκε κλιματιστικό, θερμοστάτης, καθαριστής αέρα ή ανεμιστήρας",
     toggle: "Ενεργοποίηση / απενεργοποίηση",
     ed_entity: "Συσκευή",
     ed_entity_helper: "Αφήστε κενό για να χρησιμοποιηθεί η πρώτη που θα βρεθεί",
@@ -2657,6 +2872,9 @@ const CA_I18N = {
     ill_split: "Επιτοίχιο split",
     ill_portable: "Φορητή μονάδα",
     ill_window: "Split παραθύρου",
+    ill_dial: "Θερμοστάτης τοίχου",
+    ill_radiator: "Καλοριφέρ",
+    ill_valve: "Θερμοστατική κεφαλή",
     ed_show_controls: "Χειριστήρια",
     ed_show_sensors: "Μετρήσεις",
     ed_show_alerts: "Ειδοποιήσεις",
@@ -2683,9 +2901,11 @@ const CA_I18N = {
     ed_columns_helper: "Κενό: 2 ή 1 σε στενές οθόνες",
     ed_ov_zoom_helper:
       "Εμφανίζονται μόνο οι ενεργές συσκευές ή όσες χρειάζονται προσοχή· το κουμπί εμφανίζει όλες τις συσκευές. Ανενεργό: πάντα όλες οι συσκευές",
+    ed_show_all: "Εμφάνιση όλων των συσκευών",
+    ed_show_all_helper: "Όλες οι συσκευές εμφανίζονται αμέσως· το κουμπί λεπτομερειών κρατά μόνο όσες είναι αναμμένες ή χρειάζονται προσοχή",
     ed_exclude: "Συσκευές προς εξαίρεση",
     ed_include: "Συσκευές προς προσθήκη",
-    ed_include_helper: "Οντότητες climate ή fan που η κάρτα δεν θα επέλεγε μόνη της (π.χ. θερμοστάτης μόνο για θέρμανση)",
+    ed_include_helper: "Οντότητες climate ή fan που η κάρτα δεν θα επέλεγε μόνη της (π.χ. μια κρυφή οντότητα)",
   },
 };
 
@@ -2960,6 +3180,23 @@ const CA_MODE_ICONS = {
   fan_only: "mdi:fan",
 };
 
+// Icon of a climate preset (Home Assistant's own ones, and the frost protection and schedule of radiator valves).
+const caClimatePresetIcon = (p) => {
+  const s = String(p).toLowerCase();
+  if (s === "none") return "mdi:circle-off-outline";
+  if (/comfort|confort|komfort/.test(s)) return "mdi:sofa-outline";
+  if (/eco/.test(s)) return "mdi:leaf";
+  if (/away|absent|vacation|holiday|vacances/.test(s)) return "mdi:account-arrow-right-outline";
+  if (/boost|turbo/.test(s)) return "mdi:rocket-launch-outline";
+  if (/sleep|night|nuit/.test(s)) return "mdi:power-sleep";
+  if (/home|maison/.test(s)) return "mdi:home-outline";
+  if (/frost|antifreeze|hors_?gel|hg/.test(s)) return "mdi:snowflake-thermometer";
+  if (/activity|activit/.test(s)) return "mdi:motion-sensor";
+  if (/schedule|program|auto|planning/.test(s)) return "mdi:calendar-clock";
+  if (/manual|manuel/.test(s)) return "mdi:hand-back-right-outline";
+  return "mdi:tune-variant";
+};
+
 // Air quality from PM2.5 (µg/m³), or from an air quality index: HomeKit's 1–5 scale, or a US AQI above 5.
 const CA_AQ = [
   { key: "good", color: "var(--success-color, #43a047)" },
@@ -3005,6 +3242,9 @@ const CA_CLIMATE_FAN_MODE = 8;
 const CA_CLIMATE_PRESET = 16;
 const CA_CLIMATE_SWING = 32;
 const CA_CLIMATE_SWING_HORIZONTAL = 512;
+
+// A radiator valve's battery at or under this level (%) is flagged.
+const CA_BATTERY_LOW = 15;
 
 // Taps on − / + and a slider moved from the keyboard: the service is called once they stop for this long.
 const CA_TEMP_DEBOUNCE = 900;
@@ -3128,6 +3368,19 @@ const CA_ROLES = {
     test: (st, id) => st.attributes.device_class === "power" && !/compressor|compresseur|kompressor|compresor/.test(id),
   },
   filter_alert: { domain: "binary_sensor", id: /(dust|filter|filtre|filtro|staub|polvo)/ },
+  // Radiator valves (Zigbee TRVs, Netatmo, tado°…): the valve opening, the open-window detection and the battery.
+  valve: {
+    domain: ["sensor", "number"],
+    keys: ["valve_position", "pi_heating_demand", "heating_demand"],
+    id: /(valve_(position|opening|state)|pi_heating_demand|heating_demand|position_vanne|ouverture_vanne|ventilstellung|ventilposition)$/,
+  },
+  window: {
+    domain: "binary_sensor",
+    keys: ["window_open", "window_detection"],
+    id: /(window_open|window_detection|open_window|fenetre_ouverte|fenster_offen|ventana_abierta)$/,
+    test: caDc("window"),
+  },
+  battery: { domain: "sensor", test: caDc("battery") },
   compressor: {
     domain: "sensor",
     id: /(?<!target_)(compressor_frequency|frequence_compresseur|kompressorfrequenz|frecuencia_del_compresor)$/,
@@ -3222,8 +3475,12 @@ function caDeviceName(hass, id) {
 }
 
 // The kind of device a fan or climate entity stands for, or null when the cards do not handle it.
-// A climate entity is an air conditioner when it can cool, dry or only blow (a heat-only thermostat is not).
+// A climate entity is an air conditioner when it can cool, dry or only blow, a thermostat otherwise (heating only:
+// a wall thermostat, a radiator, a radiator valve).
 // A fan entity is an air purifier when its name says so or its device measures particles or has a filter.
+// The domain of the entities of a kind of device.
+const caDomain = (kind) => (kind === "aircon" || kind === "thermostat" ? "climate" : "fan");
+
 const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
 function caKindOf(hass, id) {
   const st = hass?.states?.[id];
@@ -3232,7 +3489,7 @@ function caKindOf(hass, id) {
     const domain = id.split(".")[0];
     if (domain === "climate") {
       const modes = st.attributes.hvac_modes || [];
-      return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
+      return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : "thermostat";
     }
     if (domain !== "fan") return null;
     const dev = hass.devices?.[caDeviceOf(hass, id)];
@@ -3254,7 +3511,7 @@ function caRoleOf(hass, id, role) {
 function caFindEntities(hass, kind) {
   if (!hass?.states) return [];
   return caMemo(hass, `list:${kind}`, () => {
-    const domain = kind === "aircon" ? "climate" : "fan";
+    const domain = caDomain(kind);
     return Object.keys(hass.states)
       .filter((id) => id.startsWith(`${domain}.`))
       .filter((id) => {
@@ -3813,7 +4070,293 @@ class CaCard extends CaElement {
   }
 }
 
-const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "mdi:air-conditioner" };
+// ── Climate cards ────────────────────────────────────────────────────────────
+// What the air conditioner and thermostat cards share: the mode buttons, the − / + of the target (one temperature or a
+// low / high range), the target humidity, the fan / swing / preset selects and the device's switches as options.
+// Subclasses implement _model(r) (with cur, target, range, mode, running) and may set `_presetButtons` to show the
+// presets as segmented buttons instead of a select, and `_heroLine(m)` for the line under the temperatures.
+// The device switches listed as options: icon and label (`sw_<key>`) from the entity ID, since integrations often
+// name them in English only (Midea: "Prompt tone", "Smart eye"…). The first match wins; others keep their own name.
+const CA_SWITCHES = [
+  [/outdoor_?silent|silence_?ext/, "mdi:volume-off", "outdoor_silent"],
+  [/aux|auxiliary|electric_?heat|appoint/, "mdi:radiator", "aux_heat"],
+  [/frost|freeze|8_?deg|antigel|hors_?gel/, "mdi:snowflake-thermometer", "frost"],
+  [/eco/, "mdi:leaf", "eco"],
+  [/display|screen|ecran/, "mdi:monitor", "display"],
+  [/tone|sound|buzzer|beep|prompt|bip/, "mdi:volume-high", "sound"],
+  [/self_?clean|autonettoyage|clean/, "mdi:broom", "self_clean"],
+  [/silent|quiet|silence/, "mdi:volume-off", "silent"],
+  [/smart_?eye|eye|presence/, "mdi:eye-outline", "smart_eye"],
+  [/anion|ioni/, "mdi:creation-outline", "anion"],
+  [/turbo|boost/, "mdi:rocket-launch-outline", "turbo"],
+  [/breeze/, "mdi:weather-windy", "breeze"],
+  [/sleep/, "mdi:power-sleep", "sleep"],
+  [/light|led/, "mdi:lightbulb-outline", "light"],
+];
+const caSwitchInfo = (id) => CA_SWITCHES.find(([re]) => re.test(id.split(".")[1] || id));
+
+class CaClimateCard extends CaCard {
+  // The device's other switches (eco, display, self clean, child lock…) are listed as options.
+  _switches(r) {
+    return r.list.map((e) => e.entity_id).filter((id) => id.startsWith("switch.") && !r.used.has(id));
+  }
+
+  _extraIds(r) {
+    return this._switches(r);
+  }
+
+  _unit() {
+    return this._hass.config?.unit_system?.temperature || "°C";
+  }
+
+  // A target sent stays on screen until the entity reports it (then the entity's own value takes over), so it does
+  // not jump back to the old one in between.
+  _update() {
+    this._settle();
+    super._update();
+  }
+
+  _settle() {
+    const p = this._pendingTemp;
+    const st = this._tempSent && this._r && this._st(this._r.id);
+    if (!st) return;
+    const a = st.attributes;
+    const same = (x, y) => x != null && Math.abs(Number(x) - y) < 1e-6;
+    if (typeof p === "number" ? same(a.temperature, p) : same(a.target_temp_low, p.target_temp_low) && same(a.target_temp_high, p.target_temp_high)) {
+      this._clearPending();
+    }
+  }
+
+  _clearPending() {
+    clearTimeout(this._settleTimer);
+    this._pendingTemp = undefined;
+    this._tempSent = false;
+    this._sig = null;
+  }
+
+  _target(st) {
+    if (typeof this._pendingTemp === "number") return this._pendingTemp;
+    return st.attributes.temperature == null ? null : Number(st.attributes.temperature);
+  }
+
+  // A low / high range (heat_cool, auto) when the entity sets one instead of a single target.
+  _range(st) {
+    const range = caClimateRange(st.attributes);
+    const p = this._pendingTemp;
+    if (range && p && typeof p === "object") return { low: p.target_temp_low, high: p.target_temp_high };
+    return range;
+  }
+
+  // The text on the unit's display: the target, the range in whole degrees (20-24) or "--".
+  _display(mode, target, range) {
+    const n = (v, digits) => caFmtNum(this._intlLang(), v, digits);
+    if (mode === "fan_only") return "--";
+    if (range) return `${n(range.low, 0)}-${n(range.high, 0)}`;
+    return target != null ? `${n(target)}°` : "--";
+  }
+
+  _temp(v, digits = 1) {
+    return `${caFmtNum(this._intlLang(), v, digits)} ${this._unit()}`;
+  }
+
+  _showTarget(m) {
+    return m.running && (m.target != null || m.range != null) && m.mode !== "fan_only";
+  }
+
+  // The target as text: one temperature, or the range (20–24 °C).
+  _targetText(m) {
+    if (!m.range) return this._temp(m.target);
+    return `${caFmtNum(this._intlLang(), m.range.low)}–${this._temp(m.range.high)}`;
+  }
+
+  // One − / + stepper: `action` is temp (single target), temp_low or temp_high, `hint` names the value in the labels.
+  _stepper(action, value, label, hint) {
+    const btn = (dir, key, icon) => {
+      const text = hint ? `${this._t(key)} (${hint})` : this._t(key);
+      return `<button class="round" data-action="${action}" data-value="${dir}" title="${caEsc(text)}" aria-label="${caEsc(text)}"><ha-icon icon="${icon}"></ha-icon></button>`;
+    };
+    return (
+      '<div class="stepper">' +
+      btn("-1", "temp_down", "mdi:minus") +
+      `<div class="tv"><span class="tval">${caFmtNum(this._intlLang(), value)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(label)}</span></div>` +
+      btn("1", "temp_up", "mdi:plus") +
+      "</div>"
+    );
+  }
+
+  _heroInfo(m) {
+    const cur = m.cur != null ? `<span class="val">${caFmtNum(this._intlLang(), m.cur)}<small> ${caEsc(this._unit())}</small></span>` : "";
+    const target = this._showTarget(m) ? `<span class="arrow">→ ${caEsc(this._targetText(m))}</span>` : "";
+    if (!cur) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
+    return `<div class="big">${cur}${target}</div>${this._heroLine(m)}`;
+  }
+
+  _controls(m) {
+    const r = this._r;
+    const st = this._st(r.id);
+    const a = st.attributes;
+    const f = a.supported_features || 0;
+    const modes = (a.hvac_modes || []).filter((x) => x !== "off");
+    const segs = this._segments("hvac", modes, m.mode, (o) => this._fmtState(r.id, o), (o) => CA_MODE_ICONS[o]);
+    // A thermostat's presets (comfort, eco, away…) are its main control: segmented buttons when they are few.
+    const presets = a.preset_modes || [];
+    const presetSegs =
+      this._presetButtons && m.running && f & CA_CLIMATE_PRESET && presets.length >= 2 && presets.length <= 7
+        ? this._segments("preset", presets, a.preset_mode, (o) => this._fmtAttr(r.id, "preset_mode", o), caClimatePresetIcon)
+        : "";
+    let stepper = "";
+    if (m.range && this._showTarget(m)) {
+      const low = this._t("target_low");
+      const high = this._t("target_high");
+      stepper = `<div class="steppers">${this._stepper("temp_low", m.range.low, low, low)}${this._stepper("temp_high", m.range.high, high, high)}</div>`;
+    } else if (f & CA_CLIMATE_TARGET && this._showTarget(m)) stepper = this._stepper("temp", m.target, this._t("target"));
+    // Target humidity (dehumidifying units): a slider calling climate.set_humidity.
+    const hum =
+      m.running && f & CA_CLIMATE_TARGET_HUMIDITY && a.humidity != null
+        ? this._rangeHtml("humidity", "target", "mdi:water-percent", this._t("target_humidity"), Number(a.min_humidity ?? 30), Number(a.max_humidity ?? 99), 1, Number(a.humidity))
+        : "";
+    const selects = m.running
+      ? [
+          f & CA_CLIMATE_FAN_MODE ? this._selectAttr("fan_mode", "fan_modes", "set_fan_mode", this._t("fan_mode")) : "",
+          f & CA_CLIMATE_SWING ? this._selectAttr("swing_mode", "swing_modes", "set_swing_mode", this._t("swing_mode")) : "",
+          f & CA_CLIMATE_SWING_HORIZONTAL
+            ? this._selectAttr("swing_horizontal_mode", "swing_horizontal_modes", "set_swing_horizontal_mode", this._t("swing_horizontal_mode"))
+            : "",
+          f & CA_CLIMATE_PRESET && !presetSegs ? this._selectAttr("preset_mode", "preset_modes", "set_preset_mode", this._t("preset_mode")) : "",
+        ].filter(Boolean)
+      : [];
+    const toggles = this._toggles(
+      this._switches(r).map((id) => {
+        const info = caSwitchInfo(id);
+        return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
+      }),
+    );
+    return this._section("", segs + stepper + presetSegs + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles);
+  }
+
+  _action(action, value) {
+    const id = this._r.id;
+    if (action === "hvac") this._call("climate", "set_hvac_mode", { entity_id: id, hvac_mode: value });
+    else if (action === "preset") this._call("climate", "set_preset_mode", { entity_id: id, preset_mode: value });
+    else if (action === "temp") this._step(Number(value));
+    else if (action === "temp_low") this._step(Number(value), "low");
+    else if (action === "temp_high") this._step(Number(value), "high");
+    else super._action(action, value);
+  }
+
+  // Each tap moves the target by one step at once on screen; the service is called once the taps stop, and the new
+  // target stays shown until the entity reports it (CA_TEMP_SETTLE at most, at once if the call is refused). `bound`
+  // (low or high) moves that end of a range, which keeps at least one step between the two.
+  _step(dir, bound) {
+    const st = this._st(this._r.id);
+    const a = st.attributes;
+    const step = Number(a.target_temp_step) || (this._unit() === "°F" ? 1 : 0.5);
+    const min = Number(a.min_temp ?? 7);
+    const max = Number(a.max_temp ?? 35);
+    // Rounded so a 0.1 step sends 21.3, not 21.300000000000001.
+    const fix = (v) => +v.toFixed(2);
+    const next = (cur, lo, hi) => fix(Math.min(hi, Math.max(lo, Math.round((cur + dir * step) / step) * step)));
+    if (bound) {
+      const r = this._range(st);
+      if (!r) return;
+      this._pendingTemp =
+        bound === "low"
+          ? { target_temp_low: next(r.low, min, Math.min(max, fix(r.high - step))), target_temp_high: r.high }
+          : { target_temp_low: r.low, target_temp_high: next(r.high, Math.max(min, fix(r.low + step)), max) };
+    } else {
+      const cur = this._target(st);
+      if (cur == null) return;
+      this._pendingTemp = next(cur, min, max);
+    }
+    clearTimeout(this._settleTimer);
+    this._tempSent = false;
+    this._update();
+    clearTimeout(this._tempTimer);
+    this._tempTimer = setTimeout(async () => {
+      const pending = this._pendingTemp;
+      const ok = await this._call("climate", "set_temperature", { entity_id: this._r.id, ...caTempData(pending) });
+      // Tapped again meanwhile: that newer target is the one waiting.
+      if (this._pendingTemp !== pending) return;
+      if (!ok) this._clearPending();
+      else {
+        this._tempSent = true;
+        this._settleTimer = setTimeout(() => {
+          if (this._pendingTemp !== pending) return;
+          this._clearPending();
+          this._update();
+        }, CA_TEMP_SETTLE);
+      }
+      this._update();
+    }, CA_TEMP_DEBOUNCE);
+  }
+
+  // What both climate models start from: the entity, its mode, the room temperature (from the entity, else the
+  // device's indoor sensor) and the target, one temperature or a low / high range.
+  _climate(r) {
+    const ent = r.ent;
+    const st = this._st(r.id);
+    const a = st.attributes;
+    const mode = st.state;
+    const range = this._range(st);
+    return {
+      ent,
+      st,
+      a,
+      mode,
+      on: mode !== "off",
+      cur: a.current_temperature != null ? Number(a.current_temperature) : this._num(ent.indoor_temp),
+      range,
+      target: range ? null : this._target(st),
+    };
+  }
+
+  // The mini card's temperature line: the room temperature, and the target while it runs.
+  _tempLine(m) {
+    if (m.cur == null) return "";
+    const target = this._showTarget(m) ? ` → ${this._targetText(m)}` : "";
+    return `<div class="line tline"><ha-icon icon="mdi:thermometer"></ha-icon><span><b>${caEsc(this._temp(m.cur))}</b>${caEsc(target)}</span></div>`;
+  }
+
+  // The line under the temperatures (fan mode of an air conditioner, preset of a thermostat).
+  _heroLine() {
+    return "";
+  }
+
+  _miniButtons(m) {
+    // A range has four buttons: they stay on the full card, which the mini card unfolds into.
+    if (m.range || !this._showTarget(m) || !((this._st(this._r.id).attributes.supported_features || 0) & CA_CLIMATE_TARGET)) return [];
+    return [
+      ["-1", "mdi:minus", "temp_down"],
+      ["1", "mdi:plus", "temp_up"],
+    ].map(([v, icon, key]) => `<button class="round" data-action="temp" data-value="${v}" title="${caEsc(this._t(key))}" aria-label="${caEsc(this._t(key))}"><ha-icon icon="${icon}"></ha-icon></button>`);
+  }
+
+  static styles = `
+    .stepper { display: flex; align-items: center; justify-content: center; gap: 18px; }
+    /* A low / high range: two steppers side by side, one under the other when they do not fit. */
+    .steppers { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }
+    .steppers .stepper { gap: 8px; }
+    .steppers .tv { min-width: 72px; }
+    .steppers .tval { font-size: 24px; }
+    .steppers .round { width: 40px; height: 40px; }
+    .tv { display: flex; flex-direction: column; align-items: center; min-width: 96px; }
+    .tval { font-size: 30px; font-weight: 400; line-height: 1.1; color: var(--primary-text-color); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .tval small { font-size: 14px; color: var(--secondary-text-color); }
+    .tl { font-size: 11px; color: var(--secondary-text-color); text-transform: uppercase; letter-spacing: .04em; }
+    .stepper .round { width: 44px; height: 44px; background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); }
+    .stepper .round:hover:not(:disabled) { background: color-mix(in srgb, var(--ca-color) 24%, transparent); }
+    ha-card.mini .round[data-action=temp] { width: 36px; height: 36px; }
+    /* Narrow cards (inner width): the target stepper tightens so its buttons stay inside the card. */
+    @container (max-width: 230px) { .stepper { gap: 8px; } .tv { min-width: 0; } }
+    @container (max-width: 180px) {
+      .stepper { gap: 4px; }
+      .stepper .round { width: 36px; height: 36px; }
+      .tval { font-size: 24px; }
+    }
+  `;
+}
+
+const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "mdi:air-conditioner", thermostat: "mdi:thermostat" };
 
 // ── Mini cards ───────────────────────────────────────────────────────────────
 // A mini card is the full card drawn compact, like the ha-home-connect-card and ha-roborock-card mini cards: its
@@ -4139,7 +4682,7 @@ class CaCardEditor extends HTMLElement {
   _schema() {
     const kind = this.constructor.kind;
     const ids = caFindEntities(this._hass, kind);
-    const domain = kind === "aircon" ? "climate" : "fan";
+    const domain = caDomain(kind);
     const lang = caLang(this._config, this._hass);
     const variants = CA_ILLUSTRATIONS[kind] || [];
     return [
@@ -4204,7 +4747,7 @@ class CaCardEditor extends HTMLElement {
 }
 
 // Illustration variants of each kind of device (the first is the fallback).
-const CA_ILLUSTRATIONS = { purifier: ["tower", "cylinder", "box", "dyson"], aircon: ["split", "portable", "window"] };
+const CA_ILLUSTRATIONS = { purifier: ["tower", "cylinder", "box", "dyson"], aircon: ["split", "portable", "window"], thermostat: ["dial", "radiator", "valve"] };
 
 // The folded Advanced section: the language, and the other `names` edited as YAML.
 const caAdvanced = (lang, ...names) => [

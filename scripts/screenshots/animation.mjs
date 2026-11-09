@@ -57,6 +57,30 @@ await animate({
   }),
 });
 
+// The radiator valve heating: its radiator glows from the bottom up and warm air rises from it.
+await animate({
+  file: "thermostat",
+  tag: "climate-air-thermostat-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.bedroom_radiator_valve" } }),
+});
+
+// The wall thermostat heating: its flame flickers, its halo glows and warm air rises above it.
+await animate({
+  file: "thermostat-dial",
+  tag: "climate-air-thermostat-card",
+  setup: (_s, lang) => ({
+    hass: mockHass(lang, { "climate.bathroom_thermostat": { hvac_action: "heating", current_temperature: 19.5, temperature: 22 } }),
+    config: { entity: "climate.bathroom_thermostat" },
+  }),
+});
+
+// A column radiator heating: every column glows and warm air rises above it.
+await animate({
+  file: "thermostat-radiator",
+  tag: "climate-air-thermostat-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.bedroom_radiator_valve", illustration: "radiator" } }),
+});
+
 // The overview with every device on: each tile's icon and status ring animate together.
 await animate({
   file: "overview",

@@ -1,9 +1,9 @@
 /*
- * climate-air-overview-card — every air conditioner, air purifier and fan of the instance at a glance, one tile each,
+ * climate-air-overview-card — every air conditioner, thermostat, air purifier and fan of the instance at a glance, one tile each,
  * like room-overview-card (ha-room-card). The detail button shows every device; tap a tile to unfold its full card,
  * tap its icon to turn it on or off.
  */
-const CA_KINDS = ["aircon", "purifier", "fan"];
+const CA_KINDS = ["aircon", "thermostat", "purifier", "fan"];
 const CA_AC_ICON_ANIM = { cool: "twirl", heat: "flicker", dry: "bob", fan_only: "spin", auto: "breathe", heat_cool: "breathe" };
 
 class ClimateAirOverviewCard extends CaElement {
@@ -69,10 +69,10 @@ class ClimateAirOverviewCard extends CaElement {
     const exclude = new Set(c.exclude || []);
     const kinds = new Map();
     for (const kind of CA_KINDS) for (const id of caFindEntities(h, kind)) kinds.set(id, kind);
-    // Added by hand: a heat-only thermostat is shown as an air conditioner, any other fan entity as a fan.
+    // Added by hand (a hidden entity, say): a climate entity is shown as its kind, any other fan entity as a fan.
     for (const id of c.include || []) {
       if (!h.states[id] || kinds.has(id)) continue;
-      kinds.set(id, caKindOf(h, id) || (id.startsWith("climate.") ? "aircon" : "fan"));
+      kinds.set(id, caKindOf(h, id) || (id.startsWith("climate.") ? "thermostat" : "fan"));
     }
     for (const [id, o] of Object.entries(over)) if (CA_KINDS.includes(o.type) && h.states[id]) kinds.set(id, o.type);
     return [...kinds]
@@ -123,7 +123,8 @@ class ClimateAirOverviewCard extends CaElement {
       return item;
     }
     const fmtAttr = (attr, v) => caValueLabel(lang, v, h.formatEntityAttributeValue?.(st, attr, v));
-    if (kind === "aircon") {
+    if (kind === "thermostat") this._thermostat(item, st, roleSt, o, icons);
+    else if (kind === "aircon") {
       item.on = st.state !== "off";
       const mode = st.state;
       const cur = a.current_temperature != null ? Number(a.current_temperature) : null;
@@ -193,12 +194,61 @@ class ClimateAirOverviewCard extends CaElement {
     return item;
   }
 
+  // A thermostat's tile: what it does (Heating, Idle) or its mode, its target, and the room temperature when off; an
+  // open window or a low battery flags it.
+  _thermostat(item, st, roleSt, o, icons) {
+    const h = this._hass;
+    const lang = this._lang();
+    const a = st.attributes;
+    const mode = st.state;
+    const unit = h.config?.unit_system?.temperature || "°C";
+    const n = (v, digits) => caFmtNum(this._intlLang(), v, digits);
+    const temp = (v) => `${n(v)} ${unit}`;
+    const cur = a.current_temperature != null ? Number(a.current_temperature) : null;
+    item.on = mode !== "off";
+    if (item.on) {
+      const action = a.hvac_action;
+      const valve = caNum(roleSt("valve"));
+      const range = caClimateRange(a);
+      const target = range ? `${n(range.low)}–${temp(range.high)}` : a.temperature != null ? temp(Number(a.temperature)) : "";
+      const label = action ? caValueLabel(lang, action, h.formatEntityAttributeValue?.(st, "hvac_action", action)) : caValueLabel(lang, mode, h.formatEntityState?.(st));
+      item.text = [label, target].filter(Boolean).join(" · ");
+      const active = action ? !["idle", "off"].includes(action) : valve != null ? valve > 0 : true;
+      item.color = action === "heating" ? CA_MODE_COLORS.heat : CA_MODE_COLORS[mode] || CA_MODE_COLORS.heat;
+      item.icon = o.icon || icons[item.id] || icons.thermostat || (active ? "mdi:radiator" : item.icon);
+      item.anim = active ? "flicker" : "";
+      const set = range ? range.high : a.temperature != null ? Number(a.temperature) : null;
+      const min = Number(a.min_temp ?? 7);
+      const max = Number(a.max_temp ?? 35);
+      item.art = {
+        running: true,
+        state: mode,
+        active,
+        display: range ? `${n(range.low, 0)}-${n(range.high, 0)}` : set != null ? `${n(set)}°` : "--",
+        level: set != null ? (set - min) / (max - min || 1) : 0,
+      };
+    } else item.text = [this._t("st_off"), cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
+    if (this._config.show_alerts === false) return;
+    const battery = caNum(roleSt("battery"));
+    if (roleSt("window")?.state === "on") {
+      item.alert = this._t("window_open");
+      item.alertIcon = "mdi:window-open-variant";
+      item.alertEntity = this._role(item.id, "window");
+    } else if (battery != null && battery <= CA_BATTERY_LOW) {
+      item.alert = this._t("battery_low");
+      item.alertIcon = "mdi:battery-alert-variant-outline";
+      item.alertEntity = this._role(item.id, "battery");
+    }
+  }
+
   // ── Render ─────────────────────────────────────────────────────────────────
   _render() {
     if (!this._config || !this._hass || !this.shadowRoot) return;
     const c = this._config;
     const all = this._collect();
-    const compact = c.zoom !== false && !this._zoomed;
+    // The detail button switches between the devices on or needing attention and every device; `show_all` starts
+    // on every device (the button then keeps only the others), `zoom: false` shows every device with no button.
+    const compact = c.zoom !== false && (c.show_all ? !!this._zoomed : !this._zoomed);
     const shown = compact ? all.filter((x) => x.on || x.alert || x.id === this._open) : all;
     this._items = shown;
     // Home Assistant replaces a `states[id]` object whenever the entity changes, and the registry objects when the
@@ -215,13 +265,19 @@ class ClimateAirOverviewCard extends CaElement {
     }
     const card = this.shadowRoot.querySelector("ha-card");
     const on = all.filter((x) => x.on);
-    const alerts = all.filter((x) => x.alert).length;
+    const flagged = all.filter((x) => x.alert);
+    const alerts = flagged.length;
     card.className = alerts ? "lvl-warn" : on.length ? "lvl-on" : "lvl-ok";
-    const alertChip = alerts ? `<span class="chip warn" title="${caEsc(this._t("filter"))}"><ha-icon icon="mdi:air-filter"></ha-icon><span>${alerts}</span></span>` : "";
+    // The filter icon when every alert is a filter one, a generic alert icon when they are mixed (open window, battery).
+    const kinds = new Set(flagged.map((x) => x.alertIcon || "mdi:air-filter"));
+    const alertIcon = kinds.size === 1 ? [...kinds][0] : "mdi:alert-circle-outline";
+    const alertTitle = [...new Set(flagged.map((x) => x.alert))].join(", ");
+    const alertChip = alerts ? `<span class="chip warn" title="${caEsc(alertTitle)}"><ha-icon icon="${alertIcon}"></ha-icon><span>${alerts}</span></span>` : "";
+    const zoomLabel = caEsc(this._t(compact ? "zoom_in" : "zoom_out"));
     const zoom =
       c.zoom === false
         ? ""
-        : `<button class="zoom" data-action="zoom" title="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}" aria-label="${caEsc(this._t(this._zoomed ? "zoom_out" : "zoom_in"))}"><ha-icon icon="${this._zoomed ? "mdi:arrow-collapse" : "mdi:arrow-expand"}"></ha-icon></button>`;
+        : `<button class="zoom" data-action="zoom" title="${zoomLabel}" aria-label="${zoomLabel}"><ha-icon icon="${compact ? "mdi:arrow-expand" : "mdi:arrow-collapse"}"></ha-icon></button>`;
     const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
     card.querySelector(".head").innerHTML =
       `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${caEsc(c.title || this._t("title"))}</div>` +
@@ -280,7 +336,7 @@ class ClimateAirOverviewCard extends CaElement {
       `<button class="name" data-open="${caEsc(x.id)}" aria-expanded="${x.id === this._open}">${caEsc(label)}</button>` +
       `<span class="state">${caEsc(x.text)}</span>` +
       (x.alert
-        ? `<span class="chips"><span class="chip warn" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
+        ? `<span class="chips"><span class="chip warn" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="${x.alertIcon || "mdi:air-filter"}"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
         : "") +
       "</div>"
     );
@@ -469,11 +525,11 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { zoom: true, show_alerts: true, group_by: "type" };
+    return { zoom: true, show_all: false, show_alerts: true, group_by: "type" };
   }
 
   _helpers() {
-    return ["title", "columns", "exclude", "include", "kinds", "devs", "language"];
+    return ["title", "columns", "show_all", "exclude", "include", "kinds", "devs", "language"];
   }
 
   // Every device the card can show: found or added by hand, excluded ones left out.
@@ -486,7 +542,7 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
 
   _kindOf(id, type) {
     if (CA_KINDS.includes(type)) return type;
-    return caKindOf(this._hass, id) || (id.startsWith("climate.") ? "aircon" : "fan");
+    return caKindOf(this._hass, id) || (id.startsWith("climate.") ? "thermostat" : "fan");
   }
 
   _illustrationField(lang, kind) {
@@ -527,7 +583,14 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
           { name: "columns", selector: { number: { min: 1, max: 6, mode: "box" } } },
         ],
       },
-      { name: "zoom", selector: { boolean: {} } },
+      {
+        type: "grid",
+        name: "",
+        schema: [
+          { name: "zoom", selector: { boolean: {} } },
+          { name: "show_all", selector: { boolean: {} } },
+        ],
+      },
       { name: "show_alerts", selector: { boolean: {} } },
       { name: "exclude", selector: { entity: { multiple: true, include_entities: found } } },
       { name: "include", selector: { entity: { multiple: true, domain: ["climate", "fan"] } } },
@@ -619,6 +682,6 @@ caRegister(
   "climate-air-overview-card",
   ClimateAirOverviewCard,
   "Climate Air · Overview Card",
-  "Every air conditioner, air purifier and fan at a glance; tap a device for its full card",
+  "Every air conditioner, thermostat, air purifier and fan at a glance; tap a device for its full card",
   ClimateAirOverviewCardEditor,
 );
