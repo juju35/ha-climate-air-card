@@ -7,6 +7,7 @@ on:
     paths:
       - "src/**"
       - "scripts/**"
+      - ".github/workflows/screenshots.yml"
       # A Playwright bump (Dependabot's grouped npm PR) is rendered too, so a rendering break shows on its own PR.
       - "package-lock.json"
 
