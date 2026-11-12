@@ -150,6 +150,8 @@ The purifier, fan, air conditioner and thermostat cards, and their mini cards, s
 |---|---|---|---|
 | `entity` | ❌ | First found | The `fan` or `climate` entity of the device; without it, the card takes the first device of its kind |
 | `name` | ❌ | Device name | Card title |
+| `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
+| `show_subtitle` | ❌ | `true` | Show the subtitle under the title |
 | `icon` | ❌ | Illustration | Replaces the illustration with an icon |
 | `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable` or `window`; thermostat: `dial` (round wall thermostat), `radiator` or `valve` (radiator valve). `auto` picks one from the device model and name |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
@@ -196,6 +198,7 @@ devices:
 | Option | Required | Default | Description |
 |---|---|---|---|
 | `title` | ❌ | Climate & air | Card title |
+| `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
 | `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `thermostat`, `purifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`; thermostat `dial`, `radiator` or `valve`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
 | `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`aircon`, `thermostat`, `purifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner, flickering radiator of a thermostat that heats). In the visual editor's **Device types** and **Devices** sections |
