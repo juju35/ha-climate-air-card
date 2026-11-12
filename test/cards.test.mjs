@@ -397,7 +397,7 @@ test("overview: show_all starts on every device, the detail button keeps only th
   ed.setConfig({ type: "custom:climate-air-overview-card" });
   ed.hass = makeHass("fr");
   const grid = ed._form.schema.find((x) => x.schema?.some((f) => f.name === "show_all"));
-  assert.deepEqual(JSON.parse(JSON.stringify(grid.schema.map((f) => f.name))), ["zoom", "show_all"]);
+  assert.deepEqual(JSON.parse(JSON.stringify(grid.schema.map((f) => f.name))), ["show_title", "zoom", "show_all"]);
   assert.equal(ed._form.computeLabel({ name: "show_all" }), "Tout afficher");
   assert.match(ed._form.computeHelper({ name: "show_all" }), /bouton détail/);
   ed._valueChanged({ stopPropagation() {}, detail: { value: { ...ed._form.data, show_all: false } } });

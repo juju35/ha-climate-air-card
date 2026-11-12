@@ -109,6 +109,8 @@ const CA_I18N = {
     ill_radiator: "Radiator",
     ill_valve: "Radiator valve",
     ed_show_controls: "Controls",
+    ed_show_title: "Title",
+    ed_show_subtitle: "Subtitle",
     ed_show_sensors: "Measurements",
     ed_show_alerts: "Alerts",
     ed_zoom: "Detail button",
@@ -240,6 +242,8 @@ const CA_I18N = {
     ill_radiator: "Radiateur",
     ill_valve: "Tête thermostatique",
     ed_show_controls: "Commandes",
+    ed_show_title: "Titre",
+    ed_show_subtitle: "Sous-titre",
     ed_show_sensors: "Mesures",
     ed_show_alerts: "Alertes",
     ed_zoom: "Bouton détail",
@@ -372,6 +376,8 @@ const CA_I18N = {
     ill_radiator: "Heizkörper",
     ill_valve: "Heizkörperthermostat",
     ed_show_controls: "Steuerung",
+    ed_show_title: "Titel",
+    ed_show_subtitle: "Untertitel",
     ed_show_sensors: "Messwerte",
     ed_show_alerts: "Warnungen",
     ed_zoom: "Detail-Schaltfläche",
@@ -503,6 +509,8 @@ const CA_I18N = {
     ill_radiator: "Radiador",
     ill_valve: "Válvula termostática",
     ed_show_controls: "Controles",
+    ed_show_title: "Título",
+    ed_show_subtitle: "Subtítulo",
     ed_show_sensors: "Mediciones",
     ed_show_alerts: "Alertas",
     ed_zoom: "Botón de detalle",
@@ -634,6 +642,8 @@ const CA_I18N = {
     ill_radiator: "Радијатор",
     ill_valve: "Радијаторски вентил",
     ed_show_controls: "Контроле",
+    ed_show_title: "Наслов",
+    ed_show_subtitle: "Поднаслов",
     ed_show_sensors: "Мерења",
     ed_show_alerts: "Упозорења",
     ed_zoom: "Дугме за детаље",
@@ -765,6 +775,8 @@ const CA_I18N = {
     ill_radiator: "Radijator",
     ill_valve: "Radijatorski ventil",
     ed_show_controls: "Kontrole",
+    ed_show_title: "Naslov",
+    ed_show_subtitle: "Podnaslov",
     ed_show_sensors: "Merenja",
     ed_show_alerts: "Upozorenja",
     ed_zoom: "Dugme za detalje",
@@ -896,6 +908,8 @@ const CA_I18N = {
     ill_radiator: "Radiatore",
     ill_valve: "Valvola termostatica",
     ed_show_controls: "Comandi",
+    ed_show_title: "Titolo",
+    ed_show_subtitle: "Sottotitolo",
     ed_show_sensors: "Misure",
     ed_show_alerts: "Avvisi",
     ed_zoom: "Pulsante dettagli",
@@ -1028,6 +1042,8 @@ const CA_I18N = {
     ill_radiator: "Radiator",
     ill_valve: "Radiatorknop",
     ed_show_controls: "Bediening",
+    ed_show_title: "Titel",
+    ed_show_subtitle: "Ondertitel",
     ed_show_sensors: "Metingen",
     ed_show_alerts: "Waarschuwingen",
     ed_zoom: "Detailknop",
@@ -1160,6 +1176,8 @@ const CA_I18N = {
     ill_radiator: "Radiador",
     ill_valve: "Válvula termostática",
     ed_show_controls: "Comandos",
+    ed_show_title: "Título",
+    ed_show_subtitle: "Subtítulo",
     ed_show_sensors: "Medições",
     ed_show_alerts: "Alertas",
     ed_zoom: "Botão de detalhe",
@@ -1292,6 +1310,8 @@ const CA_I18N = {
     ill_radiator: "Grzejnik",
     ill_valve: "Głowica termostatyczna",
     ed_show_controls: "Sterowanie",
+    ed_show_title: "Tytuł",
+    ed_show_subtitle: "Podtytuł",
     ed_show_sensors: "Pomiary",
     ed_show_alerts: "Alerty",
     ed_zoom: "Przycisk szczegółów",
@@ -1424,6 +1444,8 @@ const CA_I18N = {
     ill_radiator: "Calorifer",
     ill_valve: "Robinet termostatic",
     ed_show_controls: "Comenzi",
+    ed_show_title: "Titlu",
+    ed_show_subtitle: "Subtitlu",
     ed_show_sensors: "Măsurători",
     ed_show_alerts: "Alerte",
     ed_zoom: "Buton de detalii",
@@ -1556,6 +1578,8 @@ const CA_I18N = {
     ill_radiator: "Radiator",
     ill_valve: "Radiatortermostat",
     ed_show_controls: "Betjening",
+    ed_show_title: "Titel",
+    ed_show_subtitle: "Undertitel",
     ed_show_sensors: "Målinger",
     ed_show_alerts: "Advarsler",
     ed_zoom: "Detaljeknap",
@@ -1688,6 +1712,8 @@ const CA_I18N = {
     ill_radiator: "Element",
     ill_valve: "Elementtermostat",
     ed_show_controls: "Reglage",
+    ed_show_title: "Rubrik",
+    ed_show_subtitle: "Underrubrik",
     ed_show_sensors: "Mätvärden",
     ed_show_alerts: "Varningar",
     ed_zoom: "Detaljknapp",
@@ -1820,6 +1846,8 @@ const CA_I18N = {
     ill_radiator: "Радиатор",
     ill_valve: "Термостатна глава",
     ed_show_controls: "Управление",
+    ed_show_title: "Заглавие",
+    ed_show_subtitle: "Подзаглавие",
     ed_show_sensors: "Измервания",
     ed_show_alerts: "Предупреждения",
     ed_zoom: "Бутон за подробности",
@@ -1952,6 +1980,8 @@ const CA_I18N = {
     ill_radiator: "Радиатор",
     ill_valve: "Термоголовка",
     ed_show_controls: "Управление",
+    ed_show_title: "Заголовок",
+    ed_show_subtitle: "Подзаголовок",
     ed_show_sensors: "Измерения",
     ed_show_alerts: "Оповещения",
     ed_zoom: "Кнопка подробностей",
@@ -2084,6 +2114,8 @@ const CA_I18N = {
     ill_radiator: "Радіатор",
     ill_valve: "Термоголовка",
     ed_show_controls: "Керування",
+    ed_show_title: "Заголовок",
+    ed_show_subtitle: "Підзаголовок",
     ed_show_sensors: "Вимірювання",
     ed_show_alerts: "Сповіщення",
     ed_zoom: "Кнопка деталей",
@@ -2216,6 +2248,8 @@ const CA_I18N = {
     ill_radiator: "Radiátor",
     ill_valve: "Radiátorszelep",
     ed_show_controls: "Vezérlők",
+    ed_show_title: "Cím",
+    ed_show_subtitle: "Alcím",
     ed_show_sensors: "Mérések",
     ed_show_alerts: "Figyelmeztetések",
     ed_zoom: "Részletek gomb",
@@ -2348,6 +2382,8 @@ const CA_I18N = {
     ill_radiator: "Radiátor",
     ill_valve: "Termostatická hlavica",
     ed_show_controls: "Ovládanie",
+    ed_show_title: "Názov",
+    ed_show_subtitle: "Podnázov",
     ed_show_sensors: "Merania",
     ed_show_alerts: "Upozornenia",
     ed_zoom: "Tlačidlo podrobností",
@@ -2480,6 +2516,8 @@ const CA_I18N = {
     ill_radiator: "Radiátor",
     ill_valve: "Termostatická hlavice",
     ed_show_controls: "Ovládání",
+    ed_show_title: "Název",
+    ed_show_subtitle: "Podnázev",
     ed_show_sensors: "Měření",
     ed_show_alerts: "Upozornění",
     ed_zoom: "Tlačítko podrobností",
@@ -2612,6 +2650,8 @@ const CA_I18N = {
     ill_radiator: "Radiator",
     ill_valve: "Termostatski ventil",
     ed_show_controls: "Upravljanje",
+    ed_show_title: "Naslov",
+    ed_show_subtitle: "Podnaslov",
     ed_show_sensors: "Meritve",
     ed_show_alerts: "Opozorila",
     ed_zoom: "Gumb za podrobnosti",
@@ -2744,6 +2784,8 @@ const CA_I18N = {
     ill_radiator: "Radiators",
     ill_valve: "Radiatora termostats",
     ed_show_controls: "Vadīklas",
+    ed_show_title: "Virsraksts",
+    ed_show_subtitle: "Apakšvirsraksts",
     ed_show_sensors: "Mērījumi",
     ed_show_alerts: "Brīdinājumi",
     ed_zoom: "Detaļu poga",
@@ -2876,6 +2918,8 @@ const CA_I18N = {
     ill_radiator: "Καλοριφέρ",
     ill_valve: "Θερμοστατική κεφαλή",
     ed_show_controls: "Χειριστήρια",
+    ed_show_title: "Τίτλος",
+    ed_show_subtitle: "Υπότιτλος",
     ed_show_sensors: "Μετρήσεις",
     ed_show_alerts: "Ειδοποιήσεις",
     ed_zoom: "Κουμπί λεπτομερειών",
@@ -3613,7 +3657,7 @@ class CaCard extends CaElement {
   }
 
   static get defaults() {
-    return { show_controls: true, show_sensors: true, show_alerts: true };
+    return { show_title: true, show_subtitle: true, show_controls: true, show_sensors: true, show_alerts: true };
   }
 
   static getConfigElement() {
@@ -3630,6 +3674,9 @@ class CaCard extends CaElement {
   setConfig(config) {
     if (!config) throw new Error("Invalid configuration");
     this._config = { ...this.constructor.defaults, ...config };
+    // show_title / show_subtitle: the header's title / subtitle, hidden by the stylesheet
+    this.toggleAttribute?.("hide-title", config.show_title === false);
+    this.toggleAttribute?.("hide-subtitle", config.show_subtitle === false);
     if (!this.shadowRoot) {
       this.attachShadow({ mode: "open" });
       this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
@@ -4522,6 +4569,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
      characters: the pill is only truncated when even that does not fit. */
   .titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }
+  :host([hide-title]) .titles > .name, :host([hide-subtitle]) .titles > .sub { display: none; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative;
@@ -4686,6 +4734,8 @@ class CaCardEditor extends HTMLElement {
 
   _defaults() {
     return {
+      show_title: true,
+      show_subtitle: true,
       show_controls: true,
       show_sensors: true,
       // The fan cards show no alert: no toggle for them.
@@ -4722,6 +4772,8 @@ class CaCardEditor extends HTMLElement {
         type: "grid",
         name: "",
         schema: [
+          { name: "show_title", selector: { boolean: {} } },
+          { name: "show_subtitle", selector: { boolean: {} } },
           { name: "show_controls", selector: { boolean: {} } },
           { name: "show_sensors", selector: { boolean: {} } },
           ...(kind === "fan" ? [] : [{ name: "show_alerts", selector: { boolean: {} } }]),

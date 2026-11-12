@@ -280,7 +280,7 @@ class ClimateAirOverviewCard extends CaElement {
         : `<button class="zoom" data-action="zoom" title="${zoomLabel}" aria-label="${zoomLabel}"><ha-icon icon="${compact ? "mdi:arrow-expand" : "mdi:arrow-collapse"}"></ha-icon></button>`;
     const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
     card.querySelector(".head").innerHTML =
-      `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${caEsc(c.title || this._t("title"))}</div>` +
+      `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${c.show_title !== false ? caEsc(c.title || this._t("title")) : ""}</div>` +
       `${alertChip}<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div>${zoom}`;
     this._fitPills();
 
@@ -525,7 +525,7 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { zoom: true, show_all: false, show_alerts: true, group_by: "type" };
+    return { show_title: true, zoom: true, show_all: false, show_alerts: true, group_by: "type" };
   }
 
   _helpers() {
@@ -587,6 +587,7 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
         type: "grid",
         name: "",
         schema: [
+          { name: "show_title", selector: { boolean: {} } },
           { name: "zoom", selector: { boolean: {} } },
           { name: "show_all", selector: { boolean: {} } },
         ],
