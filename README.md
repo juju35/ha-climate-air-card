@@ -8,6 +8,11 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/juju35/ha-climate-air-card/blob/main/LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/julienstep9)
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="HomeKit" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="Dyson" width="64">
+</p>
+
 Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
 
 [![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
@@ -91,8 +96,8 @@ The cards work with **any integration** that provides air purifiers and fans as 
 
 | Integration | What the cards add |
 |---|---|
-| [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
-| [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="" width="16"> [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
 
