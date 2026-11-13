@@ -8,6 +8,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/juju35/ha-climate-air-card/blob/main/LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/julienstep9)
 
+<p align="center"><img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/icon.svg" alt="Climate Air Cards" width="120"></p>
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="HomeKit" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="Dyson" width="64">
