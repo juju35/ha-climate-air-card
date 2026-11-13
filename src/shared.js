@@ -53,6 +53,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Replace the filter",
     filter_dirty: "Clean the filter",
+    filter_soon: "Replace the filter soon",
+    filter_ok: "Filter OK",
+    filter_reset: "Reset filter",
+    filter_reset_confirm: "Tap again to confirm",
     hours: "{n} h",
     level: "Level {n}",
     target: "Target",
@@ -105,6 +109,8 @@ const CA_I18N = {
     ed_show_subtitle: "Subtitle",
     ed_show_sensors: "Measurements",
     ed_show_alerts: "Alerts",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Filter warning threshold (%)",
     ed_zoom: "Detail button",
     ed_zoom_helper: "Button at the top right that switches the mini card to the full card and back",
     ed_language: "Language",
@@ -178,6 +184,10 @@ const CA_I18N = {
     filter: "Filtre",
     filter_low: "Filtre à changer",
     filter_dirty: "Filtre à nettoyer",
+    filter_soon: "Filtre à changer bientôt",
+    filter_ok: "Filtre OK",
+    filter_reset: "Réinitialiser le filtre",
+    filter_reset_confirm: "Touchez encore pour confirmer",
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Consigne",
@@ -230,6 +240,8 @@ const CA_I18N = {
     ed_show_subtitle: "Sous-titre",
     ed_show_sensors: "Mesures",
     ed_show_alerts: "Alertes",
+    ed_show_filter: "Filtre",
+    ed_filter_warning: "Seuil d'alerte du filtre (%)",
     ed_zoom: "Bouton détail",
     ed_zoom_helper: "Bouton en haut à droite qui passe la mini-carte en carte complète et inversement",
     ed_language: "Langue",
@@ -304,6 +316,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Filter wechseln",
     filter_dirty: "Filter reinigen",
+    filter_soon: "Filter bald wechseln",
+    filter_ok: "Filter OK",
+    filter_reset: "Filter zurücksetzen",
+    filter_reset_confirm: "Zum Bestätigen erneut tippen",
     hours: "{n} h",
     level: "Stufe {n}",
     target: "Sollwert",
@@ -356,6 +372,8 @@ const CA_I18N = {
     ed_show_subtitle: "Untertitel",
     ed_show_sensors: "Messwerte",
     ed_show_alerts: "Warnungen",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Filter-Warnschwelle (%)",
     ed_zoom: "Detail-Schaltfläche",
     ed_zoom_helper: "Schaltfläche oben rechts, die die Mini-Karte zur vollständigen Karte umschaltet und zurück",
     ed_language: "Sprache",
@@ -429,6 +447,10 @@ const CA_I18N = {
     filter: "Filtro",
     filter_low: "Cambia el filtro",
     filter_dirty: "Limpia el filtro",
+    filter_soon: "Cambia pronto el filtro",
+    filter_ok: "Filtro OK",
+    filter_reset: "Restablecer el filtro",
+    filter_reset_confirm: "Toca de nuevo para confirmar",
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Objetivo",
@@ -481,6 +503,8 @@ const CA_I18N = {
     ed_show_subtitle: "Subtítulo",
     ed_show_sensors: "Mediciones",
     ed_show_alerts: "Alertas",
+    ed_show_filter: "Filtro",
+    ed_filter_warning: "Umbral de aviso del filtro (%)",
     ed_zoom: "Botón de detalle",
     ed_zoom_helper: "Botón arriba a la derecha que cambia la minitarjeta a la tarjeta completa y viceversa",
     ed_language: "Idioma",
@@ -554,6 +578,10 @@ const CA_I18N = {
     filter: "Филтер",
     filter_low: "Замените филтер",
     filter_dirty: "Очистите филтер",
+    filter_soon: "Ускоро замените филтер",
+    filter_ok: "Филтер у реду",
+    filter_reset: "Ресетуј филтер",
+    filter_reset_confirm: "Додирните поново за потврду",
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Циљ",
@@ -606,6 +634,8 @@ const CA_I18N = {
     ed_show_subtitle: "Поднаслов",
     ed_show_sensors: "Мерења",
     ed_show_alerts: "Упозорења",
+    ed_show_filter: "Филтер",
+    ed_filter_warning: "Праг упозорења за филтер (%)",
     ed_zoom: "Дугме за детаље",
     ed_zoom_helper: "Дугме у горњем десном углу које пребацује мини картицу на пун приказ и назад",
     ed_language: "Језик",
@@ -679,6 +709,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Zamenite filter",
     filter_dirty: "Očistite filter",
+    filter_soon: "Uskoro zamenite filter",
+    filter_ok: "Filter u redu",
+    filter_reset: "Resetuj filter",
+    filter_reset_confirm: "Dodirnite ponovo za potvrdu",
     hours: "{n} h",
     level: "Nivo {n}",
     target: "Cilj",
@@ -731,6 +765,8 @@ const CA_I18N = {
     ed_show_subtitle: "Podnaslov",
     ed_show_sensors: "Merenja",
     ed_show_alerts: "Upozorenja",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Prag upozorenja za filter (%)",
     ed_zoom: "Dugme za detalje",
     ed_zoom_helper: "Dugme u gornjem desnom uglu koje prebacuje mini karticu na pun prikaz i nazad",
     ed_language: "Jezik",
@@ -804,6 +840,10 @@ const CA_I18N = {
     filter: "Filtro",
     filter_low: "Sostituire il filtro",
     filter_dirty: "Pulire il filtro",
+    filter_soon: "Sostituire presto il filtro",
+    filter_ok: "Filtro OK",
+    filter_reset: "Azzera il filtro",
+    filter_reset_confirm: "Tocca di nuovo per confermare",
     hours: "{n} h",
     level: "Livello {n}",
     target: "Obiettivo",
@@ -856,6 +896,8 @@ const CA_I18N = {
     ed_show_subtitle: "Sottotitolo",
     ed_show_sensors: "Misure",
     ed_show_alerts: "Avvisi",
+    ed_show_filter: "Filtro",
+    ed_filter_warning: "Soglia di avviso del filtro (%)",
     ed_zoom: "Pulsante dettagli",
     ed_zoom_helper: "Pulsante in alto a destra che passa dalla mini scheda alla scheda completa e viceversa",
     ed_language: "Lingua",
@@ -930,6 +972,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Vervang het filter",
     filter_dirty: "Reinig het filter",
+    filter_soon: "Vervang het filter binnenkort",
+    filter_ok: "Filter OK",
+    filter_reset: "Filter resetten",
+    filter_reset_confirm: "Tik nogmaals om te bevestigen",
     hours: "{n} u",
     level: "Niveau {n}",
     target: "Doel",
@@ -982,6 +1028,8 @@ const CA_I18N = {
     ed_show_subtitle: "Ondertitel",
     ed_show_sensors: "Metingen",
     ed_show_alerts: "Waarschuwingen",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Waarschuwingsdrempel filter (%)",
     ed_zoom: "Detailknop",
     ed_zoom_helper: "Knop rechtsboven die de minikaart naar de volledige kaart omschakelt en terug",
     ed_language: "Taal",
@@ -1056,6 +1104,10 @@ const CA_I18N = {
     filter: "Filtro",
     filter_low: "Substituir o filtro",
     filter_dirty: "Limpar o filtro",
+    filter_soon: "Substituir o filtro em breve",
+    filter_ok: "Filtro OK",
+    filter_reset: "Repor o filtro",
+    filter_reset_confirm: "Toque novamente para confirmar",
     hours: "{n} h",
     level: "Nível {n}",
     target: "Alvo",
@@ -1108,6 +1160,8 @@ const CA_I18N = {
     ed_show_subtitle: "Subtítulo",
     ed_show_sensors: "Medições",
     ed_show_alerts: "Alertas",
+    ed_show_filter: "Filtro",
+    ed_filter_warning: "Limiar de aviso do filtro (%)",
     ed_zoom: "Botão de detalhe",
     ed_zoom_helper: "Botão no canto superior direito que alterna entre o mini cartão e o cartão completo",
     ed_language: "Idioma",
@@ -1182,6 +1236,10 @@ const CA_I18N = {
     filter: "Filtr",
     filter_low: "Wymień filtr",
     filter_dirty: "Wyczyść filtr",
+    filter_soon: "Wkrótce wymień filtr",
+    filter_ok: "Filtr OK",
+    filter_reset: "Zresetuj filtr",
+    filter_reset_confirm: "Dotknij ponownie, aby potwierdzić",
     hours: "{n} h",
     level: "Poziom {n}",
     target: "Cel",
@@ -1234,6 +1292,8 @@ const CA_I18N = {
     ed_show_subtitle: "Podtytuł",
     ed_show_sensors: "Pomiary",
     ed_show_alerts: "Alerty",
+    ed_show_filter: "Filtr",
+    ed_filter_warning: "Próg ostrzeżenia filtra (%)",
     ed_zoom: "Przycisk szczegółów",
     ed_zoom_helper: "Przycisk w prawym górnym rogu, który przełącza minikartę na pełną kartę i z powrotem",
     ed_language: "Język",
@@ -1308,6 +1368,10 @@ const CA_I18N = {
     filter: "Filtru",
     filter_low: "Înlocuiți filtrul",
     filter_dirty: "Curățați filtrul",
+    filter_soon: "Înlocuiți filtrul în curând",
+    filter_ok: "Filtru OK",
+    filter_reset: "Resetați filtrul",
+    filter_reset_confirm: "Atingeți din nou pentru confirmare",
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Țintă",
@@ -1360,6 +1424,8 @@ const CA_I18N = {
     ed_show_subtitle: "Subtitlu",
     ed_show_sensors: "Măsurători",
     ed_show_alerts: "Alerte",
+    ed_show_filter: "Filtru",
+    ed_filter_warning: "Prag de avertizare filtru (%)",
     ed_zoom: "Buton de detalii",
     ed_zoom_helper: "Buton din dreapta sus care comută mini-cardul în cardul complet și înapoi",
     ed_language: "Limbă",
@@ -1434,6 +1500,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Udskift filteret",
     filter_dirty: "Rens filteret",
+    filter_soon: "Udskift snart filteret",
+    filter_ok: "Filter OK",
+    filter_reset: "Nulstil filter",
+    filter_reset_confirm: "Tryk igen for at bekræfte",
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Mål",
@@ -1486,6 +1556,8 @@ const CA_I18N = {
     ed_show_subtitle: "Undertitel",
     ed_show_sensors: "Målinger",
     ed_show_alerts: "Advarsler",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Advarselsgrænse for filter (%)",
     ed_zoom: "Detaljeknap",
     ed_zoom_helper: "Knap øverst til højre, der skifter minikortet til hele kortet og tilbage",
     ed_language: "Sprog",
@@ -1560,6 +1632,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Byt filtret",
     filter_dirty: "Rengör filtret",
+    filter_soon: "Byt filtret snart",
+    filter_ok: "Filter OK",
+    filter_reset: "Återställ filter",
+    filter_reset_confirm: "Tryck igen för att bekräfta",
     hours: "{n} h",
     level: "Nivå {n}",
     target: "Mål",
@@ -1612,6 +1688,8 @@ const CA_I18N = {
     ed_show_subtitle: "Underrubrik",
     ed_show_sensors: "Mätvärden",
     ed_show_alerts: "Varningar",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Varningsgräns för filter (%)",
     ed_zoom: "Detaljknapp",
     ed_zoom_helper: "Knapp uppe till höger som växlar minikortet till hela kortet och tillbaka",
     ed_language: "Språk",
@@ -1686,6 +1764,10 @@ const CA_I18N = {
     filter: "Филтър",
     filter_low: "Сменете филтъра",
     filter_dirty: "Почистете филтъра",
+    filter_soon: "Сменете филтъра скоро",
+    filter_ok: "Филтърът е наред",
+    filter_reset: "Нулиране на филтъра",
+    filter_reset_confirm: "Докоснете отново за потвърждение",
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Цел",
@@ -1738,6 +1820,8 @@ const CA_I18N = {
     ed_show_subtitle: "Подзаглавие",
     ed_show_sensors: "Измервания",
     ed_show_alerts: "Предупреждения",
+    ed_show_filter: "Филтър",
+    ed_filter_warning: "Праг за предупреждение за филтъра (%)",
     ed_zoom: "Бутон за подробности",
     ed_zoom_helper: "Бутон горе вдясно, който превключва мини картата към пълната карта и обратно",
     ed_language: "Език",
@@ -1812,6 +1896,10 @@ const CA_I18N = {
     filter: "Фильтр",
     filter_low: "Замените фильтр",
     filter_dirty: "Очистите фильтр",
+    filter_soon: "Скоро замените фильтр",
+    filter_ok: "Фильтр в норме",
+    filter_reset: "Сбросить фильтр",
+    filter_reset_confirm: "Нажмите ещё раз для подтверждения",
     hours: "{n} h",
     level: "Уровень {n}",
     target: "Цель",
@@ -1864,6 +1952,8 @@ const CA_I18N = {
     ed_show_subtitle: "Подзаголовок",
     ed_show_sensors: "Измерения",
     ed_show_alerts: "Оповещения",
+    ed_show_filter: "Фильтр",
+    ed_filter_warning: "Порог предупреждения о фильтре (%)",
     ed_zoom: "Кнопка подробностей",
     ed_zoom_helper: "Кнопка в правом верхнем углу, переключающая мини-карточку на полную карточку и обратно",
     ed_language: "Язык",
@@ -1938,6 +2028,10 @@ const CA_I18N = {
     filter: "Фільтр",
     filter_low: "Замініть фільтр",
     filter_dirty: "Очистьте фільтр",
+    filter_soon: "Незабаром замініть фільтр",
+    filter_ok: "Фільтр у нормі",
+    filter_reset: "Скинути фільтр",
+    filter_reset_confirm: "Торкніться ще раз для підтвердження",
     hours: "{n} h",
     level: "Рівень {n}",
     target: "Ціль",
@@ -1990,6 +2084,8 @@ const CA_I18N = {
     ed_show_subtitle: "Підзаголовок",
     ed_show_sensors: "Вимірювання",
     ed_show_alerts: "Сповіщення",
+    ed_show_filter: "Фільтр",
+    ed_filter_warning: "Поріг попередження про фільтр (%)",
     ed_zoom: "Кнопка деталей",
     ed_zoom_helper: "Кнопка у верхньому правому куті, що перемикає міні-картку на повну картку й назад",
     ed_language: "Мова",
@@ -2064,6 +2160,10 @@ const CA_I18N = {
     filter: "Szűrő",
     filter_low: "Szűrőcsere",
     filter_dirty: "Szűrőtisztítás",
+    filter_soon: "Hamarosan cserélje a szűrőt",
+    filter_ok: "Szűrő rendben",
+    filter_reset: "Szűrő visszaállítása",
+    filter_reset_confirm: "Koppintson újra a megerősítéshez",
     hours: "{n} h",
     level: "{n}. szint",
     target: "Cél",
@@ -2116,6 +2216,8 @@ const CA_I18N = {
     ed_show_subtitle: "Alcím",
     ed_show_sensors: "Mérések",
     ed_show_alerts: "Figyelmeztetések",
+    ed_show_filter: "Szűrő",
+    ed_filter_warning: "Szűrő figyelmeztetési küszöb (%)",
     ed_zoom: "Részletek gomb",
     ed_zoom_helper: "Gomb a jobb felső sarokban, amely a minikártyát teljes kártyára váltja és vissza",
     ed_language: "Nyelv",
@@ -2190,6 +2292,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Vymeňte filter",
     filter_dirty: "Vyčistite filter",
+    filter_soon: "Čoskoro vymeňte filter",
+    filter_ok: "Filter v poriadku",
+    filter_reset: "Resetovať filter",
+    filter_reset_confirm: "Ťuknite znova na potvrdenie",
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cieľ",
@@ -2242,6 +2348,8 @@ const CA_I18N = {
     ed_show_subtitle: "Podnázov",
     ed_show_sensors: "Merania",
     ed_show_alerts: "Upozornenia",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Prah upozornenia filtra (%)",
     ed_zoom: "Tlačidlo podrobností",
     ed_zoom_helper: "Tlačidlo vpravo hore, ktoré prepne minikartu na celú kartu a späť",
     ed_language: "Jazyk",
@@ -2316,6 +2424,10 @@ const CA_I18N = {
     filter: "Filtr",
     filter_low: "Vyměňte filtr",
     filter_dirty: "Vyčistěte filtr",
+    filter_soon: "Brzy vyměňte filtr",
+    filter_ok: "Filtr v pořádku",
+    filter_reset: "Resetovat filtr",
+    filter_reset_confirm: "Klepněte znovu pro potvrzení",
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cíl",
@@ -2368,6 +2480,8 @@ const CA_I18N = {
     ed_show_subtitle: "Podnázev",
     ed_show_sensors: "Měření",
     ed_show_alerts: "Upozornění",
+    ed_show_filter: "Filtr",
+    ed_filter_warning: "Práh upozornění filtru (%)",
     ed_zoom: "Tlačítko podrobností",
     ed_zoom_helper: "Tlačítko vpravo nahoře, které přepne minikartu na celou kartu a zpět",
     ed_language: "Jazyk",
@@ -2442,6 +2556,10 @@ const CA_I18N = {
     filter: "Filter",
     filter_low: "Zamenjajte filter",
     filter_dirty: "Očistite filter",
+    filter_soon: "Kmalu zamenjajte filter",
+    filter_ok: "Filter v redu",
+    filter_reset: "Ponastavi filter",
+    filter_reset_confirm: "Tapnite znova za potrditev",
     hours: "{n} h",
     level: "Raven {n}",
     target: "Cilj",
@@ -2494,6 +2612,8 @@ const CA_I18N = {
     ed_show_subtitle: "Podnaslov",
     ed_show_sensors: "Meritve",
     ed_show_alerts: "Opozorila",
+    ed_show_filter: "Filter",
+    ed_filter_warning: "Prag opozorila za filter (%)",
     ed_zoom: "Gumb za podrobnosti",
     ed_zoom_helper: "Gumb zgoraj desno, ki mini kartico preklopi v celotno kartico in nazaj",
     ed_language: "Jezik",
@@ -2568,6 +2688,10 @@ const CA_I18N = {
     filter: "Filtrs",
     filter_low: "Nomainiet filtru",
     filter_dirty: "Notīriet filtru",
+    filter_soon: "Drīzumā nomainiet filtru",
+    filter_ok: "Filtrs kārtībā",
+    filter_reset: "Atiestatīt filtru",
+    filter_reset_confirm: "Pieskarieties vēlreiz, lai apstiprinātu",
     hours: "{n} h",
     level: "Līmenis {n}",
     target: "Mērķis",
@@ -2620,6 +2744,8 @@ const CA_I18N = {
     ed_show_subtitle: "Apakšvirsraksts",
     ed_show_sensors: "Mērījumi",
     ed_show_alerts: "Brīdinājumi",
+    ed_show_filter: "Filtrs",
+    ed_filter_warning: "Filtra brīdinājuma slieksnis (%)",
     ed_zoom: "Detaļu poga",
     ed_zoom_helper: "Poga augšējā labajā stūrī, kas pārslēdz mini karti uz pilno karti un atpakaļ",
     ed_language: "Valoda",
@@ -2694,6 +2820,10 @@ const CA_I18N = {
     filter: "Φίλτρο",
     filter_low: "Αλλαγή φίλτρου",
     filter_dirty: "Καθαρίστε το φίλτρο",
+    filter_soon: "Αλλάξτε σύντομα το φίλτρο",
+    filter_ok: "Φίλτρο εντάξει",
+    filter_reset: "Επαναφορά φίλτρου",
+    filter_reset_confirm: "Πατήστε ξανά για επιβεβαίωση",
     hours: "{n} h",
     level: "Επίπεδο {n}",
     target: "Στόχος",
@@ -2746,6 +2876,8 @@ const CA_I18N = {
     ed_show_subtitle: "Υπότιτλος",
     ed_show_sensors: "Μετρήσεις",
     ed_show_alerts: "Ειδοποιήσεις",
+    ed_show_filter: "Φίλτρο",
+    ed_filter_warning: "Όριο προειδοποίησης φίλτρου (%)",
     ed_zoom: "Κουμπί λεπτομερειών",
     ed_zoom_helper: "Κουμπί πάνω δεξιά που αλλάζει τη μίνι κάρτα σε πλήρη κάρτα και αντίστροφα",
     ed_language: "Γλώσσα",
@@ -3216,6 +3348,8 @@ const CA_ROLES = {
     test: (st, id) => st.attributes.device_class === "power" && !/compressor|compresseur|kompressor|compresor/.test(id),
   },
   filter_alert: { domain: "binary_sensor", id: /(dust|filter|filtre|filtro|staub|polvo)/ },
+  // The button that resets the filter counter once it is cleaned or replaced (Midea, Xiaomi, Philips…).
+  filter_reset: { domain: "button", id: /((reset|reinit|zurucksetzen|restablecer).*(filt|dust)|(filt|dust).*(reset|reinit))/ },
   compressor: {
     domain: "sensor",
     id: /(?<!target_)(compressor_frequency|frequence_compresseur|kompressorfrequenz|frecuencia_del_compresor)$/,
@@ -3419,6 +3553,9 @@ class CaElement extends HTMLElement {
 
   disconnectedCallback() {
     this._ro?.disconnect();
+    // Off the page: an armed filter reset is disarmed (it comes back as a plain button).
+    clearTimeout(this._armTimer);
+    this._armedReset = null;
     this._pressing = false;
     window.removeEventListener("pointerup", this._onPressEnd, true);
     window.removeEventListener("pointercancel", this._onPressEnd, true);
@@ -3490,7 +3627,7 @@ class CaCard extends CaElement {
   }
 
   static get defaults() {
-    return { show_title: true, show_subtitle: true, show_controls: true, show_sensors: true, show_alerts: true };
+    return { show_title: true, show_subtitle: true, show_controls: true, show_sensors: true, show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING };
   }
 
   static getConfigElement() {
@@ -3649,7 +3786,7 @@ class CaCard extends CaElement {
     const ids = [r.id, ...Object.values(r.ent), ...(this._extraIds?.(r) || [])];
     // Home Assistant replaces a `states[id]` object whenever the entity changes: comparing the ids and the state
     // object references is enough to tell a tick apart, with nothing serialized.
-    const sig = [this._lang(), this._zoomed, this._pendingTemp, ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
+    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
     // A dropdown open or a slider held in the card is not rebuilt: the card is redrawn around it.
     const active = this.shadowRoot.activeElement;
@@ -3782,6 +3919,68 @@ class CaCard extends CaElement {
         return `<button class="seg${on ? " on" : ""}${short ? " short" : ""}" data-action="${action}" data-value="${caEsc(o)}" aria-pressed="${on}" title="${text}"${short ? ` aria-label="${text}"` : ""}>${ic ? `<ha-icon icon="${ic}"></ha-icon>` : ""}${short ? "" : `<span>${text}</span>`}</button>`;
       })
       .join("")}</div>`;
+  }
+
+  // ── Filter ──
+  // The filter of the device: its life (%, `filter`), its hours of use, and its wear `level` — "replace", "soon" (see
+  // caFilterLevel) or "dirty" (a dirty-filter binary sensor on, an air conditioner's "full dust"). `entity` is what its
+  // chip opens. `known`: the device reports its filter one way or the other.
+  _filterState(ent) {
+    const pct = this._num(ent.filter);
+    let level = caFilterLevel(pct, this._config.filter_warning);
+    if (!level && this._val(ent.filter_alert) === "on") level = "dirty";
+    const entity = level === "dirty" ? ent.filter_alert : ent.filter || ent.filter_alert;
+    return { pct, level, hours: this._num(ent.filter_hours), entity, known: pct != null || this._avail(ent.filter_alert) };
+  }
+
+  _filterText(f) {
+    if (f.level === "soon") return this._t("filter_soon");
+    if (f.level === "replace") return this._t("filter_low");
+    if (f.level === "dirty") return this._t("filter_dirty");
+    return this._t("filter_ok");
+  }
+
+  // The alert chip of a worn filter (red once it is to replace, orange before), when the alerts are shown.
+  _filterChip(f) {
+    if (!this._config.show_alerts || !f.level) return "";
+    return this._chip("mdi:air-filter", this._filterText(f), f.level === "replace" ? "alert" : "warn", "", f.entity);
+  }
+
+  // The filter's line: its life as a bar (tinted when worn), else its state from the dirty-filter sensor.
+  _filterLine(f) {
+    if (!this._config.show_filter || !f.known) return "";
+    const cls = f.level === "replace" ? " low" : f.level ? " soon" : "";
+    const hours = f.hours != null ? ` · ${this._t("hours", { n: caFmtNum(this._intlLang(), f.hours, 0) })}` : "";
+    const title = caEsc(`${this._t("filter")}${this._t("colon")}${this._filterText(f)}${hours}`);
+    const more = f.entity ? ` data-more-info="${caEsc(f.entity)}" role="button" tabindex="0"` : "";
+    if (f.pct != null) return `<div class="filter${cls}" title="${title}"${more}>${caBar(f.pct, `${Math.round(f.pct)} %`, "mdi:air-filter")}</div>`;
+    // No life figure: the state alone ("Filter OK"), left to the alert chip once dirty.
+    if (f.level && this._config.show_alerts) return "";
+    return `<div class="filter${cls}" title="${title}"${more}>${caLine("mdi:air-filter", this._filterText(f))}</div>`;
+  }
+
+  // The button that resets the filter counter, offered once the filter is worn or dirty. A first tap arms it (its
+  // label asks to tap again), the second one, within CA_RESET_ARM ms, presses the button entity.
+  _filterResetButton(f, id) {
+    if (!id || !f.level || !this._st(id)) return "";
+    const armed = this._armedReset === id;
+    const label = this._t(armed ? "filter_reset_confirm" : "filter_reset");
+    return `<button class="toggle${armed ? " on" : ""}" data-action="filter-reset" data-value="${caEsc(id)}"${this._val(id) === "unavailable" ? " disabled" : ""}><ha-icon icon="mdi:restore"></ha-icon>${caEsc(label)}</button>`;
+  }
+
+  _resetFilter(id) {
+    clearTimeout(this._armTimer);
+    if (this._armedReset === id) {
+      this._armedReset = null;
+      this._call("button", "press", { entity_id: id });
+    } else {
+      this._armedReset = id;
+      this._armTimer = setTimeout(() => {
+        this._armedReset = null;
+        this._update();
+      }, CA_RESET_ARM);
+    }
+    this._update();
   }
 
   // A speed slider for the fan or purifier entity.
@@ -3919,7 +4118,11 @@ class CaCard extends CaElement {
   }
 
   // Device-specific actions; `power` is shared.
-  _action(action) {
+  _action(action, value) {
+    if (action === "filter-reset") {
+      this._resetFilter(value);
+      return;
+    }
     if (action === "power") {
       const id = this._r.id;
       const domain = id.split(".")[0];
@@ -4089,7 +4292,7 @@ class CaClimateCard extends CaCard {
   _heroInfo(m) {
     const cur = m.cur != null ? `<span class="val">${caFmtNum(this._intlLang(), m.cur)}<small> ${caEsc(this._unit())}</small></span>` : "";
     const target = this._showTarget(m) ? `<span class="arrow">→ ${caEsc(this._targetText(m))}</span>` : "";
-    if (!cur) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
+    if (!cur) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>${this._heroLine(m)}`;
     return `<div class="big">${cur}${target}</div>${this._heroLine(m)}`;
   }
 
@@ -4127,7 +4330,13 @@ class CaClimateCard extends CaCard {
         return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
       }),
     );
-    return this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles);
+    const extra = this._toggles(this._extraOptions(m));
+    return this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles + extra);
+  }
+
+  // Buttons a kind adds at the end of the options (the air conditioner's filter reset).
+  _extraOptions() {
+    return [];
   }
 
   _action(action, value) {
@@ -4377,6 +4586,19 @@ const caPill = (text) => `<span class="st" title="${caEsc(text)}"><span class="d
 const caBar = (pct, value, icon) =>
   `<div class="mbar">${icon ? `<ha-icon icon="${icon}"></ha-icon>` : ""}<div class="bar"><div class="fill" style="width:${Math.max(0, Math.min(100, pct))}%"></div></div><span class="v">${caEsc(value)}</span></div>`;
 
+// Filter wear from its remaining life (%): "replace" at CA_FILTER_REPLACE or less, "soon" at the warning threshold
+// (`filter_warning`, CA_FILTER_WARNING by default) or less, null otherwise.
+const CA_FILTER_REPLACE = 10;
+const CA_FILTER_WARNING = 20;
+// How long the filter reset button stays armed after its first tap.
+const CA_RESET_ARM = 4000;
+function caFilterLevel(pct, warning) {
+  if (pct == null) return null;
+  const warn = Number.isFinite(Number(warning)) && warning !== "" && warning != null ? Number(warning) : CA_FILTER_WARNING;
+  if (pct <= CA_FILTER_REPLACE) return "replace";
+  return pct <= Math.max(warn, CA_FILTER_REPLACE) ? "soon" : null;
+}
+
 const caLine = (icon, text) => `<div class="line"><ha-icon icon="${icon}"></ha-icon><span>${caEsc(text)}</span></div>`;
 
 // ── Illustrations ────────────────────────────────────────────────────────────
@@ -4485,6 +4707,11 @@ const CA_STYLES = `${CA_ART_STYLES}
   .chip[data-more-info] { cursor: pointer; }
   .chip[data-more-info]:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }
   .chip.warn { background: color-mix(in srgb, var(--warning-color, #ffa600) 15%, transparent); color: var(--warning-color, #ffa600); }
+  .filter.soon .fill { background: var(--warning-color, #ffa600); }
+  .filter.low .fill { background: var(--error-color, #db4437); }
+  .filter.soon .line ha-icon, .filter.soon .mbar ha-icon { color: var(--warning-color, #ffa600); }
+  .filter.low .line ha-icon, .filter.low .mbar ha-icon { color: var(--error-color, #db4437); }
+  .filter[data-more-info] { cursor: pointer; }
   .chip.alert { background: color-mix(in srgb, var(--error-color, #db4437) 15%, transparent); color: var(--error-color, #db4437); }
   .chip.tint { --k: var(--ca-color); background: color-mix(in srgb, var(--k) 15%, transparent); color: var(--k); }
   .bar { height: 4px; border-radius: 3px; background: var(--secondary-background-color, rgba(128,128,128,.15)); overflow: hidden; flex: 1; }
@@ -4611,7 +4838,7 @@ class CaCardEditor extends HTMLElement {
       show_controls: true,
       show_sensors: true,
       // The fan cards show no alert: no toggle for them.
-      ...(this.constructor.kind === "fan" ? {} : { show_alerts: true }),
+      ...(this.constructor.kind === "fan" ? {} : { show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING }),
       ...(CA_ILLUSTRATIONS[this.constructor.kind] ? { illustration: "auto" } : {}),
       ...(this.constructor.mini ? { zoom: true } : {}),
     };
@@ -4648,10 +4875,13 @@ class CaCardEditor extends HTMLElement {
           { name: "show_subtitle", selector: { boolean: {} } },
           { name: "show_controls", selector: { boolean: {} } },
           { name: "show_sensors", selector: { boolean: {} } },
-          ...(kind === "fan" ? [] : [{ name: "show_alerts", selector: { boolean: {} } }]),
+          ...(kind === "fan" ? [] : [{ name: "show_alerts", selector: { boolean: {} } }, { name: "show_filter", selector: { boolean: {} } }]),
           ...(this.constructor.mini ? [{ name: "zoom", selector: { boolean: {} } }] : []),
         ],
       },
+      ...(kind === "fan"
+        ? []
+        : [{ name: "filter_warning", selector: { number: { min: CA_FILTER_REPLACE, max: 50, step: 1, mode: "box", unit_of_measurement: "%" } } }]),
       ...caAdvanced(caLang(this._config, this._hass), "language", "entities"),
     ];
   }

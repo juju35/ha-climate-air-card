@@ -34,7 +34,7 @@ test("purifier: air quality, filter, presets and options", () => {
 test("purifier: a worn filter is flagged, and its mode select replaces presets", () => {
   const el = mount(lib, "climate-air-purifier-card", { entity: "fan.bedroom_purifier" }, makeHass("fr"));
   const out = html(el);
-  assert.match(out, /chip warn.*Filtre à changer/);
+  assert.match(out, /chip alert.*Filtre à changer/);
   assert.match(out, /Air moyen/);
   assert.match(out, /data-action="mode" data-value="manual"/);
   assert.match(out, /Purification/);
@@ -761,13 +761,13 @@ test("chips carry their entity and a click opens its more-info", () => {
   ac._onClick({ composedPath: () => [{ dataset: { moreInfo: "sensor.air_conditioner_outdoor_temperature" } }] });
   assert.deepEqual(events, [["hass-more-info", "sensor.air_conditioner_outdoor_temperature"]]);
   assert.equal(h.calls.length, 0);
-  assert.match(html(mount(lib, "climate-air-purifier-card", { entity: "fan.bedroom_purifier" }, makeHass())), /chip warn" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
+  assert.match(html(mount(lib, "climate-air-purifier-card", { entity: "fan.bedroom_purifier" }, makeHass())), /chip alert" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
   assert.match(html(mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, makeHass())), /data-more-info="sensor\.bedroom_fan_relative_humidity"/);
 });
 
 test("overview: the filter alert chip opens its entity's more-info, not the device's card", () => {
   const { el, body } = overview();
-  assert.match(body, /class="chip warn" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
+  assert.match(body, /class="chip alert" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
   const events = moreInfo(el);
   el._onClick({ composedPath: () => [{ dataset: { moreInfo: "sensor.bedroom_purifier_filter_lifetime" } }, { classList: { contains: (c) => c === "dev" }, dataset: { id: "fan.bedroom_purifier" } }] });
   assert.deepEqual(events, [["hass-more-info", "sensor.bedroom_purifier_filter_lifetime"]]);
@@ -892,7 +892,7 @@ test("chips that open a more-info are focusable buttons that Enter and Space ope
   ]);
   assert.equal(prevented, 2);
   const { el, body } = overview();
-  assert.match(body, /class="chip warn" data-more-info="sensor\.bedroom_purifier_filter_lifetime" role="button" tabindex="0"/);
+  assert.match(body, /class="chip alert" data-more-info="sensor\.bedroom_purifier_filter_lifetime" role="button" tabindex="0"/);
   const ovEvents = moreInfo(el);
   el.shadowRoot.emit("keydown", { key: "Enter", target: { dataset: { moreInfo: "sensor.bedroom_purifier_filter_lifetime" } }, preventDefault() {} });
   assert.deepEqual(ovEvents, [["hass-more-info", "sensor.bedroom_purifier_filter_lifetime"]]);
@@ -1073,4 +1073,42 @@ test("air conditioner: a target humidity slider when the entity supports it, cal
   // Without the feature bit (4), or off: no slider.
   assert.doesNotMatch(html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { humidity: 55 } }))), /data-humidity/);
   assert.doesNotMatch(html(mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { state: "off", supported_features: 957, humidity: 55 } }))), /data-humidity/);
+});
+
+test("filter: shown on the mini card at any wear, flagged soon at the warning threshold", () => {
+  const ok = html(mount(lib, "climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier" }, makeHass()));
+  assert.match(ok, /class="filter"[^>]*>.*76 %/);
+  assert.doesNotMatch(ok, /Replace the filter/);
+  const soon = makeHass("en", { "sensor.living_room_purifier_filter_life_level": { state: "18" } });
+  const out = html(mount(lib, "climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier" }, soon));
+  assert.match(out, /class="filter soon"/);
+  assert.match(out, /chip warn"[^>]*><ha-icon icon="mdi:air-filter"><\/ha-icon>Replace the filter soon/);
+  // A higher threshold flags it sooner; show_filter: false hides the line, not the alert.
+  const at30 = makeHass("en", { "sensor.living_room_purifier_filter_life_level": { state: "28" } });
+  assert.match(html(mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier", filter_warning: 30 }, at30)), /Replace the filter soon/);
+  const hidden = html(mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier", show_filter: false }, soon));
+  assert.doesNotMatch(hidden, /class="filter/);
+  assert.match(hidden, /Replace the filter soon/);
+});
+
+test("air conditioner: filter state line, and a two-tap reset once dirty", () => {
+  const clean = html(mount(lib, "climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }, makeHass()));
+  assert.match(clean, /class="filter"[^>]*>.*Filter OK/);
+  assert.doesNotMatch(clean, /data-action="filter-reset"/);
+  const h = makeHass("en", { "binary_sensor.air_conditioner_full_dust": { state: "on" } });
+  const el = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, h);
+  assert.match(html(el), /chip warn"[^>]*><ha-icon icon="mdi:air-filter"><\/ha-icon>Clean the filter/);
+  assert.match(html(el), /data-action="filter-reset" data-value="button\.air_conditioner_reset_filter_counters"/);
+  el._action("filter-reset", "button.air_conditioner_reset_filter_counters");
+  assert.equal(h.calls.length, 0);
+  assert.match(html(el), /Tap again to confirm/);
+  el._action("filter-reset", "button.air_conditioner_reset_filter_counters");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["button", "press", { entity_id: "button.air_conditioner_reset_filter_counters" }]]);
+  clearTimeout(el._armTimer);
+});
+
+test("overview: a filter to replace soon is flagged in orange, one to replace in red", () => {
+  const { body } = overview({}, makeHass("en", { "sensor.living_room_purifier_filter_life_level": { state: "15" } }));
+  assert.match(body, /class="chip warn" data-more-info="sensor\.living_room_purifier_filter_life_level"[^>]*><ha-icon icon="mdi:air-filter"><\/ha-icon><span>Replace the filter soon/);
+  assert.match(body, /class="chip alert" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
 });

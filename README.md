@@ -151,6 +151,8 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
 | `show_alerts` | ❌ | `true` | Purifier and air conditioner cards only: show the filter alerts (the fan cards have none) |
+| `show_filter` | ❌ | `true` | Purifier and air conditioner cards only: the filter line (its life as a bar, or *Filter OK* from a dirty-filter sensor); the alert still shows when `false` |
+| `filter_warning` | ❌ | `20` | Purifier and air conditioner cards only: filter life (%) at or below which *Replace the filter soon* shows in orange; at 10 % or below, *Replace the filter* in red |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
 | `language` | ❌ | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings; `pt-BR` gets European Portuguese); also on the Overview card |
 | `entities` | ❌ | Auto | Override the sensors and controls found on the device (see [Entity overrides](#entity-overrides)) |
@@ -200,6 +202,7 @@ devices:
 | `zoom` | ❌ | `true` | Only the devices on or needing attention show, and a detail button shows them all; `false`: every device, always |
 | `show_all` | ❌ | `false` | Every device shows at first, and the detail button keeps only the ones on or needing attention (a click elsewhere brings every device back). In the visual editor: **Show every device** |
 | `show_alerts` | ❌ | `true` | Filter alerts on the purifier and air conditioner tiles (a device needing attention shows even when off, with `zoom`); `false`: none |
+| `filter_warning` | ❌ | `20` | Filter life (%) at or below which a tile shows *Replace the filter soon* (orange); at 10 % or below, *Replace the filter* (red) |
 | `exclude` | ❌ | — | Devices left out |
 | `include` | ❌ | — | `climate` or `fan` entities the card would not pick on its own (a hidden entity); a heat-only thermostat stays out unless `devices` gives it a `type` |
 | `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `aircon`, `purifier`, `fan` (they win over `icons` and `illustrations`) |
