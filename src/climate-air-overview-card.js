@@ -168,10 +168,6 @@ class ClimateAirOverviewCard extends CaElement {
       } else {
         item.text = [this._t("st_off"), cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
       }
-      if (this._config.show_alerts !== false && roleSt("filter_alert")?.state === "on") {
-        item.alert = this._t("filter_dirty");
-        item.alertEntity = this._role(id, "filter_alert");
-      }
     } else {
       item.on = st.state === "on";
       const pct = item.on ? Number(a.percentage ?? 0) : 0;
@@ -190,17 +186,24 @@ class ClimateAirOverviewCard extends CaElement {
           aqColor: aq?.color || CA_FAN_COLOR,
           display: pm25 != null ? caFmtNum(this._intlLang(), pm25, 0) : aqi != null ? caFmtNum(this._intlLang(), aqi, 0) : "",
         };
-        const filter = caNum(roleSt("filter"));
-        if (this._config.show_alerts !== false && filter != null && filter <= 10) {
-          item.alert = this._t("filter_low");
-          item.alertEntity = this._role(id, "filter");
-        }
       } else {
         item.text = item.on ? [`${Math.round(pct)} %`, preset].filter(Boolean).join(" · ") : this._t("st_off");
         item.color = item.on ? CA_FAN_COLOR : CA_IDLE;
         item.anim = item.on ? "spin" : "";
         item.spin = caSpin(pct);
         item.art = { running: item.on, pct, osc: !!a.oscillating, natural: /natur/i.test(a.preset_mode || "") };
+      }
+    }
+    // A worn filter (its life at the warning threshold or below) or a dirty one (the dirty-filter sensor on): the tile
+    // is flagged, red once the filter is to replace.
+    if (kind !== "fan" && this._config.show_alerts !== false) {
+      const filter = caNum(roleSt("filter"));
+      let level = caFilterLevel(filter, this._config.filter_warning);
+      if (!level && roleSt("filter_alert")?.state === "on") level = "dirty";
+      if (level) {
+        item.alert = this._t(level === "soon" ? "filter_soon" : level === "replace" ? "filter_low" : "filter_dirty");
+        item.alertLevel = level === "replace" ? "alert" : "warn";
+        item.alertEntity = this._role(id, level === "dirty" ? "filter_alert" : "filter");
       }
     }
     return item;
@@ -235,7 +238,7 @@ class ClimateAirOverviewCard extends CaElement {
     const alerts = flagged.length;
     card.className = alerts ? "lvl-warn" : on.length ? "lvl-on" : "lvl-ok";
     const alertTitle = [...new Set(flagged.map((x) => x.alert))].join(", ");
-    const alertChip = alerts ? `<span class="chip warn" title="${caEsc(alertTitle)}"><ha-icon icon="mdi:air-filter"></ha-icon><span>${alerts}</span></span>` : "";
+    const alertChip = alerts ? `<span class="chip ${flagged.some((x) => x.alertLevel === "alert") ? "alert" : "warn"}" title="${caEsc(alertTitle)}"><ha-icon icon="mdi:air-filter"></ha-icon><span>${alerts}</span></span>` : "";
     const zoomLabel = caEsc(this._t(compact ? "zoom_in" : "zoom_out"));
     const zoom =
       c.zoom === false
@@ -300,7 +303,7 @@ class ClimateAirOverviewCard extends CaElement {
       `<button class="name" data-open="${caEsc(x.id)}" aria-expanded="${x.id === this._open}">${caEsc(label)}</button>` +
       `<span class="state">${caEsc(x.text)}</span>` +
       (x.alert
-        ? `<span class="chips"><span class="chip warn" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
+        ? `<span class="chips"><span class="chip ${x.alertLevel || "warn"}" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
         : "") +
       "</div>"
     );
@@ -399,6 +402,7 @@ const CA_OVERVIEW_STYLES = `
   .chip ha-icon { --mdc-icon-size: 12px; }
   .chip.on { --k: var(--ca-on); }
   .chip.warn { --k: var(--ca-warn); }
+  .chip.alert { --k: var(--error-color, #db4437); }
   .chip[data-more-info] { cursor: pointer; }
   @container (max-width: 340px) { .head { gap: 6px; } .head .chip { display: none; } }
   /* A pill whose whole label does not fit (caFitPills) keeps only a dot, its text clipped (still read by screen
@@ -490,7 +494,7 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { show_title: true, zoom: true, show_all: false, show_alerts: true, group_by: "type" };
+    return { show_title: true, zoom: true, show_all: false, show_alerts: true, filter_warning: CA_FILTER_WARNING, group_by: "type" };
   }
 
   _helpers() {
@@ -557,7 +561,14 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
           { name: "show_all", selector: { boolean: {} } },
         ],
       },
-      { name: "show_alerts", selector: { boolean: {} } },
+      {
+        type: "grid",
+        name: "",
+        schema: [
+          { name: "show_alerts", selector: { boolean: {} } },
+          { name: "filter_warning", selector: { number: { min: CA_FILTER_REPLACE, max: 50, step: 1, mode: "box", unit_of_measurement: "%" } } },
+        ],
+      },
       { name: "exclude", selector: { entity: { multiple: true, include_entities: found } } },
       { name: "include", selector: { entity: { multiple: true, domain: ["climate", "fan"] } } },
       {

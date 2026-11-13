@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.1.0 - 2026-11-13
+
+### Features
+- **Filter always shown**: the purifier mini card shows its filter life at any wear (it only did at 20 % or less), and the air conditioner cards show their filter too: its life when the device reports one, else *Filter OK* from its dirty-filter sensor (Midea's *Full dust*). A tap on the line opens its entity.
+- **Filter to replace soon**: a new orange alert, *Replace the filter soon*, once the filter life reaches `filter_warning` (20 % by default) or less; at 10 % or less the alert turns red, *Replace the filter*. On the cards, the mini cards and the Overview's tiles (the Overview's alert count turns red too).
+- **Filter reset**: once the filter is to clean or replace, the purifier and air conditioner cards offer a *Reset filter* button in their options when the device has one (Midea's *Reset filter counters*…); a second tap within 4 s confirms it.
+- New options `show_filter` and `filter_warning` (also on the Overview), in the visual editors, translated in every language.
+
 ## 2.0.2 - 2026-11-13
 
 ### Fixes

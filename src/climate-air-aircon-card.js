@@ -156,7 +156,7 @@ class ClimateAirAirconCard extends CaClimateCard {
   }
 
   _roles() {
-    return ["indoor_temp", "outdoor_temp", "humidity", "power", "compressor", "filter_alert"];
+    return ["indoor_temp", "outdoor_temp", "humidity", "power", "compressor", "filter", "filter_hours", "filter_alert", "filter_reset"];
   }
 
   _model(r) {
@@ -168,7 +168,9 @@ class ClimateAirAirconCard extends CaClimateCard {
     const active = on && (freq != null ? freq > 0 : action ? !["idle", "off"].includes(action) : true);
     const swing = String(a.swing_mode || "off").toLowerCase();
     const chips = [];
-    if (c.show_alerts && this._val(ent.filter_alert) === "on") chips.push(this._chip("mdi:air-filter", this._t("filter_dirty"), "warn", "", ent.filter_alert));
+    const filterState = this._filterState(ent);
+    const filterChip = this._filterChip(filterState);
+    if (filterChip) chips.push(filterChip);
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["outdoor_temp", "humidity", ...(on ? ["power"] : [])]));
     const fanMode = on && a.fan_mode ? this._fmtAttr(r.id, "fan_mode", a.fan_mode) : "";
     const preset = on && a.preset_mode && a.preset_mode !== "none" ? this._fmtAttr(r.id, "preset_mode", a.preset_mode) : "";
@@ -185,6 +187,7 @@ class ClimateAirAirconCard extends CaClimateCard {
       target,
       range,
       chips,
+      filterState,
       display: on ? this._display(mode, target, range) : "",
       swing,
       swingH: a.swing_horizontal_mode,
@@ -192,7 +195,12 @@ class ClimateAirAirconCard extends CaClimateCard {
   }
 
   _heroLine(m) {
-    return m.fanMode ? caLine("mdi:fan", m.fanMode) : "";
+    return (m.fanMode ? caLine("mdi:fan", m.fanMode) : "") + this._filterLine(m.filterState);
+  }
+
+  // The options end with the filter reset button, once the filter is to clean or replace.
+  _extraOptions(m) {
+    return [this._filterResetButton(m.filterState, this._r.ent.filter_reset)];
   }
 
   _miniInfo(m) {
@@ -200,6 +208,7 @@ class ClimateAirAirconCard extends CaClimateCard {
     if (m.running && (m.fanMode || m.sub)) lines.push(caLine("mdi:fan", [m.fanMode, m.sub].filter(Boolean).join(" · ")));
     const out = this._config.show_sensors ? this._fmtSensor(this._r.ent.outdoor_temp) : null;
     if (out) lines.push(caLine("mdi:home-thermometer-outline", `${this._t("outdoor")} ${out}`));
+    lines.push(this._filterLine(m.filterState));
     return lines.join("");
   }
 }

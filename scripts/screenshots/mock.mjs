@@ -81,6 +81,7 @@ const DEVICES = [
     ["switch.air_conditioner_screen_display", { en: "Screen display", fr: "Écran" }, "on", {}],
     ["switch.air_conditioner_self_clean", { en: "Self clean", fr: "Autonettoyage" }, "off", {}],
     ["switch.air_conditioner_prompt_tone", { en: "Prompt tone", fr: "Bip" }, "on", {}],
+    ["button.air_conditioner_reset_filter_counters", { en: "Reset filter counters", fr: "Réinitialiser le filtre" }, "unknown", {}],
   ]],
 ];
 

@@ -142,7 +142,7 @@ class ClimateAirPurifierCard extends CaCard {
   }
 
   _roles() {
-    return ["pm25", "pm10", "voc", "no2", "aqi", "temperature", "humidity", "filter", "filter_hours", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
+    return ["pm25", "pm10", "voc", "no2", "aqi", "temperature", "humidity", "filter", "filter_hours", "filter_alert", "filter_reset", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
   }
 
   _model(r) {
@@ -154,12 +154,14 @@ class ClimateAirPurifierCard extends CaCard {
     const aqi = this._num(ent.aqi);
     const aq = caAirQuality(pm25, aqi);
     const pct = on ? Number(st.attributes.percentage ?? 0) : 0;
-    const filter = this._num(ent.filter);
+    const filterState = this._filterState(ent);
+    const filter = filterState.pct;
     const status = on ? (this._avail(ent.status) ? this._fmtState(ent.status) : this._t("st_purifying")) : this._t("st_off");
     const preset = st.attributes.preset_mode;
     const modeSub = preset ? this._fmtAttr(r.id, "preset_mode", preset) : this._avail(ent.mode) ? this._fmtState(ent.mode) : "";
     const chips = [];
-    if (c.show_alerts && filter != null && filter <= 10) chips.push(this._chip("mdi:air-filter", this._t("filter_low"), "warn", "", ent.filter));
+    const filterChip = this._filterChip(filterState);
+    if (filterChip) chips.push(filterChip);
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["temperature", "humidity", "pm10", "voc", "no2"]));
     const aqColor = aq?.color || CA_FAN_COLOR;
     return {
@@ -173,6 +175,7 @@ class ClimateAirPurifierCard extends CaCard {
       aq,
       pct,
       filter,
+      filterState,
       preset,
       chips,
       aqColor,
@@ -193,14 +196,7 @@ class ClimateAirPurifierCard extends CaCard {
     } else {
       big = `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     }
-    const ent = this._r.ent;
-    let filter = "";
-    if (m.filter != null) {
-      const hours = this._num(ent.filter_hours);
-      const title = `${this._t("filter")}${hours != null ? ` · ${this._t("hours", { n: caFmtNum(this._intlLang(), hours, 0) })}` : ""}`;
-      filter = `<div class="filter${m.filter <= 10 ? " low" : ""}" title="${caEsc(title)}">${caBar(m.filter, `${Math.round(m.filter)} %`, "mdi:air-filter")}</div>`;
-    }
-    return big + filter;
+    return big + this._filterLine(m.filterState);
   }
 
   _controls(m) {
@@ -224,7 +220,8 @@ class ClimateAirPurifierCard extends CaCard {
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(r.ent.light, this._t("light"), "mdi:lightbulb-outline"),
     ]);
-    return this._section("", modes + speed) + this._options(favorite + toggles);
+    const reset = this._toggles([this._filterResetButton(m.filterState, r.ent.filter_reset)]);
+    return this._section("", modes + speed) + this._options(favorite + toggles + reset);
   }
 
   _action(action, value) {
@@ -246,7 +243,7 @@ class ClimateAirPurifierCard extends CaCard {
     }
     if (m.running) lines.push(caBar(m.pct, `${Math.round(m.pct)} %`, "mdi:fan"));
     if (m.running && m.sub) lines.push(caLine(CA_PRESET_ICON(m.preset) || "mdi:tune-variant", m.sub));
-    if (m.filter != null && m.filter <= 20) lines.push(caBar(m.filter, `${Math.round(m.filter)} %`, "mdi:air-filter"));
+    lines.push(this._filterLine(m.filterState));
     return lines.join("");
   }
 
@@ -261,7 +258,6 @@ class ClimateAirPurifierCard extends CaCard {
 
   static styles = `
     .lbl.aq { color: var(--ca-color); }
-    .filter.low .fill { background: var(--warning-color, #ffa600); }
     .filter .fill { background: color-mix(in srgb, var(--ca-color) 70%, var(--secondary-text-color)); }
   `;
 }
