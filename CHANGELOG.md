@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.1 - 2026-11-13
+
+### Fixes
+- Folding back on a tap elsewhere now works on iOS (Safari and the companion app): a tap on something that is not clickable sent no click to the page, so the detailed view of the mini cards and the overview's open device and full list stayed open. The press and the release are caught instead; a slider dragged out of the card and a scroll do not fold anything.
+- Leaving the card (another dashboard view, a conditional card hidden) brings it back in its default state: mini cards compact, the overview back to the devices that are on.
+
 ## 2.0.0 - 2026-11-13
 
 ### ⚠ Breaking changes

@@ -18,14 +18,16 @@ class ClimateAirOverviewCard extends CaElement {
   constructor() {
     super();
     // A click anywhere else folds the open device back and returns to the devices that are on.
-    this._onOutside = (ev) => {
-      if (ev.composedPath().includes(this) || caInDialog(ev)) return;
-      if (this._open || this._zoomed) {
-        this._open = null;
-        this._zoomed = false;
-        this._render();
-      }
-    };
+    this._outside = caWatchOutside(
+      (ev) => caIsOutside(this, ev),
+      () => {
+        if (this._open || this._zoomed) {
+          this._open = null;
+          this._zoomed = false;
+          this._render();
+        }
+      },
+    );
   }
 
   setConfig(config) {
@@ -49,12 +51,17 @@ class ClimateAirOverviewCard extends CaElement {
 
   connectedCallback() {
     super.connectedCallback();
-    document.addEventListener("click", this._onOutside, true);
+    this._outside.on();
+    // Back on the page after leaving it: rendered again in its default state.
+    if (this._hass && this._config) this._render();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    document.removeEventListener("click", this._onOutside, true);
+    this._outside.off();
+    // Left (another dashboard view, a conditional card hidden): back to the devices that are on, compact.
+    this._open = null;
+    this._zoomed = false;
   }
 
   getCardSize() {
