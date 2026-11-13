@@ -36,7 +36,11 @@ class ClimateAirOverviewCard extends CaElement {
     if (!this.shadowRoot) {
       this.attachShadow({ mode: "open" });
       this.shadowRoot.addEventListener("click", (ev) => this._onClick(ev));
-      this.shadowRoot.addEventListener("keydown", (ev) => caChipKey(this, ev));
+      this._watchPress(() => this._render());
+      this.shadowRoot.addEventListener("keydown", (ev) => {
+        this._pointer = false;
+        caChipKey(this, ev);
+      });
     }
     this._sig = null;
     this._detail = null;
@@ -205,6 +209,7 @@ class ClimateAirOverviewCard extends CaElement {
   // ── Render ─────────────────────────────────────────────────────────────────
   _render() {
     if (!this._config || !this._hass || !this.shadowRoot) return;
+    if (this._held()) return;
     const c = this._config;
     const all = this._collect();
     // The detail button switches between the devices on or needing attention and every device; `show_all` starts
@@ -260,7 +265,8 @@ class ClimateAirOverviewCard extends CaElement {
         .join("");
 
     this._fillPanel(all.find((x) => x.id === this._open));
-    caRestoreFocus(this.shadowRoot, focus);
+    // The focus is put back for the keyboard only: after a mouse click, it would draw the focus ring.
+    if (!this._pointer) caRestoreFocus(this.shadowRoot, focus);
   }
 
   // The icon in front of a group heading: the kind of device, or the area's own icon from the registry.
@@ -301,6 +307,7 @@ class ClimateAirOverviewCard extends CaElement {
   }
 
   _onClick(ev) {
+    this._pressClicked(ev);
     const path = ev.composedPath();
     if (path.some((n) => n.classList?.contains("panel"))) return;
     const zoom = path.find((n) => n.dataset?.action === "zoom");
