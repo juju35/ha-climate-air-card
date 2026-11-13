@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.2 - 2026-11-13
+
+### Fixes
+- **Clicks lost under an update**: Home Assistant updates the card several times a second. When an update rewrote the card between the press and the release, the element pressed was replaced and the click landed on the card itself, doing nothing (a button, a preset or the detail button that did not react; the overview's tiles too). The card is no longer rewritten while a press is in progress; the pending update is drawn right after the click, or after the release when no click follows.
+- **Focus ring after a mouse click**: the focus was put back on the clicked element after each update, which drew the focus ring. It is now kept across updates for the keyboard only.
+
 ## 2.0.1 - 2026-11-13
 
 ### Fixes

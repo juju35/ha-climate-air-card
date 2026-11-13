@@ -303,6 +303,37 @@ test("folding: a tap elsewhere (pointer), not a press inside released outside; l
   ov.disconnectedCallback();
 });
 
+test("no rewrite under a press: the click renders at once, a release without a click draws what was held", async () => {
+  const el = mount(lib, "climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }, makeHass());
+  el.connectedCallback();
+  const before = html(el);
+  el.shadowRoot.emit("pointerdown");
+  el.hass = makeHass("fr");
+  assert.equal(html(el), before, "no rewrite under the pointer");
+  el._onClick({ composedPath: () => [{ dataset: { action: "zoom" } }], detail: 1 });
+  assert.notEqual(html(el), before, "the click renders at once");
+  assert.doesNotMatch(html(el), /class="mini"/);
+  // Pressed and released elsewhere (no click): the held update is drawn after the release.
+  const held = html(el);
+  el.shadowRoot.emit("pointerdown");
+  el.hass = makeHass();
+  assert.equal(html(el), held);
+  el._onPressEnd();
+  await new Promise((r) => setTimeout(r, 0));
+  assert.notEqual(html(el), held);
+  el.disconnectedCallback();
+  // The overview holds its rewrites the same way.
+  const ov = mount(lib, "climate-air-overview-card", {}, makeHass());
+  const head = () => part(ov, ".head").innerHTML;
+  const ovBefore = head();
+  ov.shadowRoot.emit("pointerdown");
+  ov.hass = makeHass("fr");
+  assert.equal(head(), ovBefore);
+  ov._onClick({ composedPath: () => [{ dataset: { action: "zoom" } }], detail: 1 });
+  assert.notEqual(head(), ovBefore);
+  ov.disconnectedCallback();
+});
+
 test("without an entity, a card takes the first device of its kind", () => {
   const el = mount(lib, "climate-air-purifier-card", {}, makeHass());
   assert.match(html(el), /Bedroom purifier/);

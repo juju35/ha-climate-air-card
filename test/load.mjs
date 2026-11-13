@@ -73,6 +73,8 @@ export const load = () => {
     },
     setTimeout: (...args) => globalThis.setTimeout(...args),
     clearTimeout: (id) => globalThis.clearTimeout(id),
+    addEventListener() {},
+    removeEventListener() {},
   };
   sandbox.window = sandbox;
   const ctx = vm.createContext(sandbox);

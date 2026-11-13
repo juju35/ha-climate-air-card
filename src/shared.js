@@ -3419,6 +3419,48 @@ class CaElement extends HTMLElement {
 
   disconnectedCallback() {
     this._ro?.disconnect();
+    this._pressing = false;
+    window.removeEventListener("pointerup", this._onPressEnd, true);
+    window.removeEventListener("pointercancel", this._onPressEnd, true);
+  }
+
+  // No rewrite of the card between a press and its release: Home Assistant updates the card several times a second,
+  // and a rewrite under the pointer replaces the element pressed, so that the click lands on the card itself and does
+  // nothing. The renders asked meanwhile are held (`_held()`) and `redraw` draws them once released (after the click).
+  // `_pointer` tells the last input: a pointer (no focus put back after a rewrite, it would draw the focus ring) or
+  // the keyboard.
+  _watchPress(redraw) {
+    this._onPressEnd = () => {
+      window.removeEventListener("pointerup", this._onPressEnd, true);
+      window.removeEventListener("pointercancel", this._onPressEnd, true);
+      // After the click (same task): a press with no click (released elsewhere) draws what it held back.
+      setTimeout(() => {
+        this._pressing = false;
+        if (this._dirty) redraw();
+      }, 0);
+    };
+    this.shadowRoot.addEventListener("pointerdown", () => {
+      this._pointer = true;
+      this._pressing = true;
+      window.addEventListener("pointerup", this._onPressEnd, true);
+      window.addEventListener("pointercancel", this._onPressEnd, true);
+    });
+  }
+
+  // True (and the render kept for later) while a press is in progress; called first by the renders.
+  _held() {
+    if (this._pressing) {
+      this._dirty = true;
+      return true;
+    }
+    this._dirty = false;
+    return false;
+  }
+
+  // The click ends the press (its handler renders at once); Enter / Space click with no click count.
+  _pressClicked(ev) {
+    this._pressing = false;
+    if (ev?.detail === 0) this._pointer = false;
   }
 
   _fitPills() {
@@ -3477,9 +3519,8 @@ class CaCard extends CaElement {
         if (ev.target?.type === "range") this._showRange(ev.target);
       });
       // Whether the last input came from a pointer or the keyboard: only a pointer is done with a control it changed.
-      this.shadowRoot.addEventListener("pointerdown", () => {
-        this._pointer = true;
-      });
+      // A press also holds the rewrites until its click (see _watchPress).
+      this._watchPress(() => this._update());
       this.shadowRoot.addEventListener("keydown", (ev) => {
         this._pointer = false;
         caChipKey(this, ev);
@@ -3602,6 +3643,7 @@ class CaCard extends CaElement {
 
   _update() {
     if (!this._config || !this._hass || !this.shadowRoot) return;
+    if (this._held()) return;
     const r = this._resolve();
     const hass = this._hass;
     const ids = [r.id, ...Object.values(r.ent), ...(this._extraIds?.(r) || [])];
@@ -3619,7 +3661,8 @@ class CaCard extends CaElement {
     this._patched = held && this._renderAround(r, active, focus);
     if (!this._patched) {
       this._render(r);
-      caRestoreFocus(this.shadowRoot, focus);
+      // The focus is put back for the keyboard only: after a mouse click, it would draw the focus ring.
+      if (!this._pointer) caRestoreFocus(this.shadowRoot, focus);
     }
     this._fitPills();
   }
@@ -3852,6 +3895,7 @@ class CaCard extends CaElement {
   }
 
   _onClick(ev) {
+    this._pressClicked(ev);
     const el = ev.composedPath().find((n) => n.dataset && (n.dataset.action || n.dataset.toggle || n.dataset.press || n.dataset.moreInfo));
     if (!el || el.disabled) return;
     const d = el.dataset;
