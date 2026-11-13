@@ -17,12 +17,18 @@ test("devices are sorted into air conditioners, purifiers and fans", () => {
   assert.equal(lib.caKindOf(h, "fan.bedroom_fan_fan"), "fan");
 });
 
-test("a climate entity that cannot cool, dry or blow is a thermostat, not an air conditioner", () => {
+test("a climate entity that only heats is no air conditioner: the cards leave it to ha-heating-card", () => {
   const h = makeHass();
-  assert.equal(lib.caKindOf(h, "climate.bathroom_thermostat"), "thermostat");
+  assert.equal(lib.caKindOf(h, "climate.bathroom_thermostat"), null);
   assert.equal(lib.caKindOf(h, "climate.air_conditioner"), "aircon");
   assert.deepEqual(json(lib.caFindEntities(h, "aircon")), ["climate.air_conditioner"]);
-  assert.deepEqual(json(lib.caFindEntities(h, "thermostat")), ["climate.bathroom_thermostat", "climate.bedroom_radiator_valve"]);
+  // Heat with auto or heat_cool is still a thermostat; a heat pump that can cool, dry or only blow is an air conditioner.
+  for (const modes of [["off", "heat", "auto"], ["off", "heat_cool"], ["heat"]]) {
+    assert.equal(lib.caKindOf(makeHass("en", { "climate.bathroom_thermostat": { hvac_modes: modes } }), "climate.bathroom_thermostat"), null, modes.join());
+  }
+  for (const mode of ["cool", "dry", "fan_only"]) {
+    assert.equal(lib.caKindOf(makeHass("en", { "climate.bathroom_thermostat": { hvac_modes: ["off", "heat", mode] } }), "climate.bathroom_thermostat"), "aircon", mode);
+  }
 });
 
 test("every device of a kind is found, sorted by name", () => {

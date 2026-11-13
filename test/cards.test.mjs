@@ -11,7 +11,8 @@ test("every card and its editor are registered", () => {
     assert.ok(cls, tag);
     assert.ok(lib.customElements.get(`${tag}-editor`), `${tag}-editor`);
   }
-  assert.equal(lib.window.customCards.length, 9);
+  assert.equal(lib.window.customCards.length, 7);
+  assert.ok(!lib.customElements.get("climate-air-thermostat-card"), "the thermostat card moved to ha-heating-card");
 });
 
 test("purifier: air quality, filter, presets and options", () => {
@@ -127,87 +128,14 @@ test("air conditioner: a pending target is sent right away when the card is deta
   assert.equal(h.calls.length, 1); // the debounce timer was cancelled, nothing is sent twice
 });
 
-const TRV = "climate.bedroom_radiator_valve";
-
-test("thermostat: temperatures, heating, presets as buttons, valve, battery and options", () => {
-  const out = html(mount(lib, "climate-air-thermostat-card", { entity: TRV }, makeHass("fr")));
-  assert.match(out, /19<small> °C/);
-  assert.match(out, /→ 21 °C/);
-  // Heating (hvac_action): the illustration runs and the pill says so; a radiator valve is drawn as one.
-  assert.match(out, /class="picture k-thermostat st-heat running active"/);
-  assert.match(out, /class="stt">Chauffe</);
-  // The presets are segmented buttons, the hvac modes too (off left to the power button).
-  assert.match(out, /class="seg on[^"]*" data-action="preset" data-value="comfort"/);
-  assert.doesNotMatch(out, /data-attr="preset_mode"/);
-  assert.match(out, /data-action="hvac" data-value="auto"/);
-  assert.match(out, /Vanne 45 %/);
-  assert.match(out, /82 %/);
-  assert.match(out, /data-toggle="switch\.bedroom_radiator_child_lock"/);
-  assert.match(out, /data-action="temp" data-value="1"/);
-});
-
-test("thermostat: a preset button sets the preset, − / + the target", async (t) => {
-  t.mock.timers.enable({ apis: ["setTimeout"] });
-  const h = makeHass();
-  const el = mount(lib, "climate-air-thermostat-card", { entity: TRV }, h);
-  el._action("preset", "eco");
-  el._action("temp", "-1");
-  t.mock.timers.tick(1000);
-  await Promise.resolve();
-  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
-    ["climate", "set_preset_mode", { entity_id: TRV, preset_mode: "eco" }],
-    ["climate", "set_temperature", { entity_id: TRV, temperature: 20.5 }],
-  ]);
-});
-
-test("thermostat: idle at its target, the illustration stays still; off, it is grey", () => {
-  const idle = html(mount(lib, "climate-air-thermostat-card", { entity: "climate.bathroom_thermostat" }, makeHass()));
-  assert.match(idle, /class="picture k-thermostat st-heat running"/);
-  assert.match(idle, /class="stt">Idle</);
-  // A wall thermostat without a device: the round dial, its display showing the target.
-  assert.match(idle, /class="disp big"[^>]*>21°</);
-  const off = html(mount(lib, "climate-air-thermostat-card", { entity: TRV }, makeHass("en", { [TRV]: { state: "off", hvac_action: "off" } })));
-  assert.match(off, /class="picture k-thermostat st-off"/);
-  assert.doesNotMatch(off, /data-action="preset"/);
-});
-
-test("thermostat: an open window and a low battery are flagged, unless alerts are off", () => {
-  const h = makeHass("en", { "binary_sensor.bedroom_radiator_window_open": { state: "on" }, "sensor.bedroom_radiator_battery": { state: 9 } });
-  const out = html(mount(lib, "climate-air-thermostat-card", { entity: TRV }, h));
-  assert.match(out, /class="chip warn" data-more-info="binary_sensor\.bedroom_radiator_window_open"[^>]*>.*Window open/);
-  assert.match(out, /class="chip warn" data-more-info="sensor\.bedroom_radiator_battery"[^>]*>.*Low battery · 9 %/);
-  const quiet = html(mount(lib, "climate-air-thermostat-card", { entity: TRV, show_alerts: false }, h));
-  assert.doesNotMatch(quiet, /Window open|Low battery/);
-  // The mini card keeps the alerts, the valve and the − / + of the target.
-  const mini = html(mount(lib, "climate-air-thermostat-mini-card", { entity: TRV }, h));
-  assert.match(mini, /Window open/);
-  assert.match(mini, /Valve 45 %/);
-  assert.match(mini, /data-action="temp" data-value="-1"/);
-});
-
-test("thermostat: the illustration is guessed from the device, or set", () => {
-  const h = makeHass();
-  assert.equal(lib.caVariant(h, "thermostat", TRV), "valve");
-  assert.equal(lib.caVariant(h, "thermostat", "climate.bathroom_thermostat"), "dial");
-  // An electric heater or convector, from its name or model, is drawn as a radiator.
-  h.devices.dev_trv.name = "Office convector";
-  h.states[TRV].attributes.friendly_name = "Office convector";
-  assert.equal(lib.caVariant(h, "thermostat", "climate.office_heater"), "radiator");
-  assert.equal(lib.caVariant(h, "thermostat", TRV, "radiator"), "radiator");
-  assert.match(html(mount(lib, "climate-air-thermostat-card", { entity: TRV, illustration: "radiator" }, makeHass())), /class="glow"/);
-});
-
-test("overview: thermostat tiles show what they do and flag an open window", () => {
-  const h = makeHass("en", { "binary_sensor.bedroom_radiator_window_open": { state: "on" } });
-  const { body, head } = overview({ zoom: false }, h);
-  assert.match(body, /data-toggle="climate\.bedroom_radiator_valve"[^>]*><div class="picture k-thermostat st-heat running active"/);
-  assert.match(body, /Heating · 21 °C/);
-  assert.match(body, /Idle · 21 °C/);
-  assert.match(body, /data-more-info="binary_sensor\.bedroom_radiator_window_open"[^>]*><ha-icon icon="mdi:window-open-variant">/);
-  // A filter and a window: the header's alert chip counts both under a generic icon.
-  assert.match(head, /<ha-icon icon="mdi:alert-circle-outline"><\/ha-icon><span>2</);
-  const off = overview({ zoom: false }, makeHass("en", { "climate.bathroom_thermostat": { state: "off" } })).body;
-  assert.match(off, /Off · 21 °C/);
+test("overview: a heat-only thermostat is left out, found or added under include; a type set under devices keeps it", () => {
+  const { body } = overview({ zoom: false });
+  assert.doesNotMatch(body, /climate\.bathroom_thermostat/);
+  assert.doesNotMatch(body, /Thermostat/);
+  const heatAuto = makeHass("en", { "climate.bathroom_thermostat": { hvac_modes: ["off", "heat", "auto"] } });
+  assert.doesNotMatch(overview({ zoom: false, include: ["climate.bathroom_thermostat"] }, heatAuto).body, /climate\.bathroom_thermostat/);
+  const forced = overview({ zoom: false, devices: [{ entity: "climate.bathroom_thermostat", type: "aircon" }] }).body;
+  assert.match(forced, /data-id="climate\.bathroom_thermostat"/);
 });
 
 // heat_cool / auto: the entity sets a low / high range (TARGET_TEMPERATURE_RANGE) instead of one target.
@@ -355,11 +283,11 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /7 on/);
+  assert.match(head, /5 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
-  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Air conditioners", "Thermostats", "Air purifiers", "Fans"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Air conditioners", "Air purifiers", "Fans"]);
 });
 
 test("overview: the detail button shows every device; zoom: false always does", () => {
@@ -370,9 +298,14 @@ test("overview: the detail button shows every device; zoom: false always does", 
 });
 
 test("overview: exclude, include and group by area", () => {
-  const { body } = overview({ zoom: false, exclude: ["fan.office_fan_fan"], include: ["climate.bathroom_thermostat"], group_by: "area" });
+  // A fan hidden in the registry, with no device nor area: only `include` brings it in.
+  const h = makeHass();
+  h.states["fan.hidden_fan"] = { entity_id: "fan.hidden_fan", state: "on", attributes: { friendly_name: "Hidden fan", percentage: 50 } };
+  h.entities["fan.hidden_fan"] = { entity_id: "fan.hidden_fan", platform: "mock", hidden: true };
+  assert.doesNotMatch(overview({ zoom: false }, h).body, /fan\.hidden_fan/);
+  const { body } = overview({ zoom: false, exclude: ["fan.office_fan_fan"], include: ["fan.hidden_fan"], group_by: "area" }, h);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
-  assert.match(body, /climate\.bathroom_thermostat/);
+  assert.match(body, /fan\.hidden_fan/);
   assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
   // The heading shows the area's own icon from the registry, mdi:texture-box without one, help-circle without an area.
   assert.deepEqual([...body.matchAll(/class="group"><ha-icon icon="([^"]+)"/g)].map((m) => m[1]), ["mdi:bed", "mdi:sofa", "mdi:help-circle-outline"]);
@@ -380,7 +313,7 @@ test("overview: exclude, include and group by area", () => {
   assert.match(office, /<ha-icon icon="mdi:texture-box"><\/ha-icon><span>Office</);
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
   const names = [...body.matchAll(/class="name"[^>]*>([^<]+)</g)].map((m) => m[1]);
-  assert.ok(names.every((n) => ["Air conditioner", "Thermostat", "Air purifier", "Fan"].includes(n)), names.join(", "));
+  assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
   const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Bedroom air" }] }).body;
   assert.match(grouped, /class="name"[^>]*>Bedroom air</);
 });
@@ -414,7 +347,7 @@ test("overview: an area icon with markup in it stays inert in the group heading"
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {
   const spans = (body) => [...body.matchAll(/class="grp" style="--span:(\d+)"/g)].map((m) => Number(m[1]));
-  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 2, 2, 2]);
+  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 2, 2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none" }).body), [2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [6]);
 });
@@ -478,21 +411,18 @@ test("overview editor: device types and devices as sections, written back as ill
   const kinds = schema.find((s) => s.name === "kinds");
   assert.deepEqual(json(kinds.schema.map((k) => [k.name, k.title, k.schema.map((f) => f.name)])), [
     ["aircon", "Climatiseurs", ["illustration", "icon"]],
-    ["thermostat", "Thermostats", ["illustration", "icon"]],
     ["purifier", "Purificateurs", ["illustration", "icon"]],
     ["fan", "Ventilateurs", ["icon"]],
   ]);
   const devs = schema.find((s) => s.name === "devs");
   assert.deepEqual(json(devs.schema.map((d) => [d.name, d.title])), [
     ["climate.air_conditioner", "Climatiseur"],
-    ["climate.bathroom_thermostat", "Bathroom thermostat"],
-    ["climate.bedroom_radiator_valve", "Radiateur chambre"],
     ["fan.dyson_pure_cool", "Dyson Pure Cool"],
     ["fan.bedroom_purifier", "Purificateur chambre"],
     ["fan.living_room_purifier_air_purifier", "Purificateur séjour"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
   ]);
-  assert.deepEqual(json(devs.schema[6].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[4].schema.map((f) => f.name)), ["name", "type", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;
@@ -515,7 +445,7 @@ test("overview editor: device types and devices as sections, written back as ill
 });
 
 test("overview editor keeps the illustrations and icons of devices the form does not list", () => {
-  // The README's "Full options" example: fan.garage_fan is excluded, fan.bedroom_air and climate.bathroom_thermostat
+  // The README's "Full options" example: fan.garage_fan is excluded, fan.bedroom_air and fan.attic_fan
   // are not in hass.states (an integration still loading, say).
   const ed = new (lib.customElements.get("climate-air-overview-card-editor"))();
   const config = {
@@ -523,7 +453,7 @@ test("overview editor keeps the illustrations and icons of devices the form does
     title: "Climate & air",
     columns: 2,
     exclude: ["fan.garage_fan"],
-    include: ["climate.bathroom_thermostat"],
+    include: ["fan.attic_fan"],
     illustrations: { aircon: "window", "fan.bedroom_air": "box" },
     icons: { "fan.garage_fan": "mdi:ceiling-fan" },
     devices: [{ entity: "fan.bedroom_air", name: "Bedroom", type: "purifier" }],
