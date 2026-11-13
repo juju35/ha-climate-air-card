@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0 - 2026-11-13
+
+### ⚠ Breaking changes
+- **The thermostat card moved to [ha-heating-card](https://github.com/juju35/ha-heating-card)**: `custom:climate-air-thermostat-card` and `custom:climate-air-thermostat-mini-card` are removed. Install ha-heating-card and replace them with `custom:heating-card` and `custom:heating-mini-card`; every option keeps its name and meaning (`entity`, `name`, `icon`, `illustration`, `entities`, `show_title`, `show_subtitle`, `show_controls`, `show_sensors`, `show_alerts`, `zoom`, `language`). See [Coming from 1.x](https://github.com/juju35/ha-climate-air-card#coming-from-1x-thermostats) in the README.
+- Overview: thermostats are gone too. It shows air conditioners, air purifiers and fans only: a `climate` entity is an air conditioner when it can cool, dry or only blow, and a heat-only one (heat, auto or heat/cool) is left out, even under `include`, unless `devices` gives it a `type`. The `thermostat` kind of `illustrations`, `icons` and `devices` no longer exists, nor do the *Window open* and *Low battery* tile alerts.
+
+### Changes
+- Translations: the texts only the thermostat used are removed from every language.
+- Screenshots: the Overview is rendered again without thermostats; the thermostat screenshots and animations are removed.
+
 ## 1.15.0 - 2026-11-12
 
 ### Features

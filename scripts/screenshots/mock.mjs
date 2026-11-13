@@ -1,6 +1,6 @@
-// Mock home for the screenshots (and the unit tests): three air purifiers, two fans, an air conditioner, a radiator
-// valve and a wall thermostat, with the entities their integrations expose (Xiaomi Home, HomeKit, Midea, Zigbee TRV
-// style), named in English or French (the screenshots use English, the unit tests both).
+// Mock home for the screenshots (and the unit tests): three air purifiers, two fans and an air conditioner, with the
+// entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French (the screenshots
+// use English, the unit tests both), and a heat-only thermostat the cards leave out.
 // mockHass(lang, changes) — changes: { entity_id: { state?, ...attributes } } applied on top.
 // `office` has no icon on purpose: the overview grouped by area falls back to mdi:texture-box.
 const AREAS = {
@@ -82,16 +82,6 @@ const DEVICES = [
     ["switch.air_conditioner_self_clean", { en: "Self clean", fr: "Autonettoyage" }, "off", {}],
     ["switch.air_conditioner_prompt_tone", { en: "Prompt tone", fr: "Bip" }, "on", {}],
   ]],
-  ["dev_trv", "bedroom", { en: "Bedroom radiator", fr: "Radiateur chambre" }, [
-    ["climate.bedroom_radiator_valve", null, "heat", {
-      hvac_modes: ["off", "heat", "auto"], hvac_action: "heating", min_temp: 5, max_temp: 30, target_temp_step: 0.5,
-      current_temperature: 19, temperature: 21, preset_modes: ["none", "eco", "comfort", "boost", "away"], preset_mode: "comfort",
-      supported_features: 401 }],
-    ["sensor.bedroom_radiator_valve_position", { en: "Valve position", fr: "Position de la vanne" }, 45, { unit_of_measurement: "%" }],
-    ["sensor.bedroom_radiator_battery", { en: "Battery", fr: "Batterie" }, 82, { device_class: "battery", unit_of_measurement: "%" }],
-    ["binary_sensor.bedroom_radiator_window_open", { en: "Window open", fr: "Fenêtre ouverte" }, "off", { device_class: "window" }],
-    ["switch.bedroom_radiator_child_lock", { en: "Child lock", fr: "Sécurité enfant" }, "off", {}],
-  ]],
 ];
 
 // What Home Assistant itself translates: the climate modes, and the climate fan, swing and preset values it knows.
@@ -125,7 +115,8 @@ export const mockHass = (lang = "en", changes = {}) => {
       states[entity_id] = { entity_id, state: String(s), attributes: { friendly_name, ...attributes, ...attrs }, last_changed: "" };
     }
   }
-  // A heat-only wall thermostat with no device (nor area), at its target.
+  // A heat-only wall thermostat with no device (nor area): not an air conditioner, so the cards leave it out
+  // (ha-heating-card shows it).
   const { state: bath = "heat", ...bathAttrs } = changes["climate.bathroom_thermostat"] || {};
   states["climate.bathroom_thermostat"] = {
     entity_id: "climate.bathroom_thermostat",

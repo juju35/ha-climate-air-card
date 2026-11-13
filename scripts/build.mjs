@@ -6,7 +6,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { splitDist } from "./i18n-split.mjs";
 
-const CARDS = ["climate-air-purifier-card", "climate-air-fan-card", "climate-air-aircon-card", "climate-air-thermostat-card", "climate-air-overview-card"];
+const CARDS = ["climate-air-purifier-card", "climate-air-fan-card", "climate-air-aircon-card", "climate-air-overview-card"];
 const root = fileURLToPath(new URL("..", import.meta.url));
 const pkg = JSON.parse(readFileSync(`${root}package.json`, "utf8"));
 const src = (name) => readFileSync(`${root}src/${name}.js`, "utf8").replaceAll("__VERSION__", pkg.version);

@@ -1,7 +1,7 @@
 /*
  * climate-air-aircon-card and its mini card: an air conditioner (a climate entity that can cool, dry or blow) with its
  * mode, target temperature, fan and swing modes, measurements and options. The target and the controls come from
- * CaClimateCard (shared.js), like the thermostat card's.
+ * CaClimateCard (shared.js).
  */
 
 // Illustrations: the display shows the target, the flap swings with the swing mode, and the air flowing out takes the
