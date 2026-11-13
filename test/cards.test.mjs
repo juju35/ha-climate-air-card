@@ -269,6 +269,40 @@ test("the zoom button gets the focus back from the keyboard without scrolling th
   assert.deepEqual(JSON.parse(JSON.stringify(ovCalls)), [{ preventScroll: true }]);
 });
 
+test("folding: a tap elsewhere (pointer), not a press inside released outside; leaving the page folds back", () => {
+  const el = mount(lib, "climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }, makeHass());
+  el.connectedCallback();
+  el._toggleZoom({ detail: 1 });
+  assert.doesNotMatch(html(el), /class="mini"/);
+  // Pressed in the card (a slider dragged out of it) and released outside: nothing folds.
+  el._unzoom.tap({ composedPath: () => [el] });
+  assert.doesNotMatch(html(el), /class="mini"/);
+  // A tap in a Home Assistant dialog does not fold either.
+  el._unzoom.tap({ composedPath: () => [{ localName: "ha-more-info-dialog" }] });
+  assert.doesNotMatch(html(el), /class="mini"/);
+  // A tap on a spot that sends no click (iOS): the pointer alone folds it.
+  el._unzoom.tap({ composedPath: () => [] });
+  assert.match(html(el), /<ha-card class="mini">/);
+  // Left unfolded and back: compact.
+  el._toggleZoom({ detail: 1 });
+  el.disconnectedCallback();
+  el.connectedCallback();
+  assert.match(html(el), /<ha-card class="mini">/);
+  el.disconnectedCallback();
+  // The overview comes back to the devices that are on.
+  const ov = mount(lib, "climate-air-overview-card", {}, makeHass());
+  ov.connectedCallback();
+  ov._onClick({ composedPath: () => [{ dataset: { action: "zoom" } }], detail: 1 });
+  assert.match(part(ov, ".body").innerHTML, /fan\.office_fan_fan/);
+  ov._outside.tap({ composedPath: () => [] });
+  assert.doesNotMatch(part(ov, ".body").innerHTML, /fan\.office_fan_fan/);
+  ov._onClick({ composedPath: () => [{ dataset: { action: "zoom" } }], detail: 1 });
+  ov.disconnectedCallback();
+  ov.connectedCallback();
+  assert.doesNotMatch(part(ov, ".body").innerHTML, /fan\.office_fan_fan/);
+  ov.disconnectedCallback();
+});
+
 test("without an entity, a card takes the first device of its kind", () => {
   const el = mount(lib, "climate-air-purifier-card", {}, makeHass());
   assert.match(html(el), /Bedroom purifier/);

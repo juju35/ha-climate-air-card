@@ -4214,6 +4214,42 @@ const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "m
 // detail button (top right, `zoom: false` removes it) switches it to the full card and back, and a click anywhere
 // else on the page folds it again.
 const caInDialog = (ev) => ev.composedPath().some((n) => ["ha-more-info-dialog", "ha-dialog", "dialog"].includes(n.localName));
+const caIsOutside = (card, ev) => !ev.composedPath().includes(card) && !caInDialog(ev);
+
+// "A click elsewhere" is caught on the pointer, not only on the click event: on iOS (Safari and the companion app)
+// a tap on something that is not clickable (the background, an empty spot, a card with no action) sends no click to
+// the page. It counts when the press and the release are both outside the card (a slider dragged out of the card
+// does not fold it), and a scroll does not count (the browser cancels the pointer). Keyboard clicks still go through
+// the click event. `tap(ev)` (press and release at the same spot) is for the tests.
+const caWatchOutside = (isOut, handler) => {
+  let downOutside = false;
+  const onDown = (ev) => {
+    downOutside = isOut(ev);
+  };
+  const onUp = (ev) => {
+    if (downOutside && isOut(ev)) handler(ev);
+    downOutside = false;
+  };
+  const onClick = (ev) => {
+    if (ev.detail === 0 && isOut(ev)) handler(ev);
+  };
+  return {
+    on() {
+      document.addEventListener("pointerdown", onDown, true);
+      document.addEventListener("pointerup", onUp, true);
+      document.addEventListener("click", onClick, true);
+    },
+    tap(ev) {
+      onDown(ev);
+      onUp(ev);
+    },
+    off() {
+      document.removeEventListener("pointerdown", onDown, true);
+      document.removeEventListener("pointerup", onUp, true);
+      document.removeEventListener("click", onClick, true);
+    },
+  };
+};
 
 const caMini = (Base) =>
   class extends Base {
@@ -4223,19 +4259,27 @@ const caMini = (Base) =>
 
     constructor() {
       super();
-      this._onUnzoom = (ev) => {
-        if (this._zoomed && !ev.composedPath().includes(this) && !caInDialog(ev)) this._setZoom(false);
-      };
+      this._unzoom = caWatchOutside(
+        (ev) => caIsOutside(this, ev),
+        () => {
+          if (this._zoomed) this._setZoom(false);
+        },
+      );
     }
 
     connectedCallback() {
       super.connectedCallback?.();
-      document.addEventListener("click", this._onUnzoom, true);
+      this._unzoom.on();
+      // Back on the page after leaving it: rendered again, compact.
+      if (this._hass && this._config) this._update();
     }
 
     disconnectedCallback() {
       super.disconnectedCallback();
-      document.removeEventListener("click", this._onUnzoom, true);
+      this._unzoom.off();
+      // Left (another dashboard view, a conditional card hidden): back to the compact view, so that the card does not
+      // come back unfolded.
+      this._zoomed = false;
     }
 
     getCardSize() {
