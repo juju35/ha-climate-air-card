@@ -1,9 +1,9 @@
 /*
- * climate-air-overview-card — every heat pump, air conditioner, air purifier and fan of the instance at a glance, one tile each,
+ * climate-air-overview-card — every heat pump, air conditioner, air purifier, humidifier and fan of the instance at a glance, one tile each,
  * like room-overview-card (ha-room-card). The detail button shows every device; tap a tile to unfold its full card,
  * tap its icon to turn it on or off.
  */
-const CA_KINDS = ["heatpump", "aircon", "purifier", "fan"];
+const CA_KINDS = ["heatpump", "aircon", "purifier", "humidifier", "fan"];
 const CA_HP_ICON_ANIM = { heat: "flicker", cool: "twirl", dhw: "bob" };
 const CA_AC_ICON_ANIM = { cool: "twirl", heat: "flicker", dry: "bob", fan_only: "spin", auto: "breathe", heat_cool: "breathe" };
 
@@ -153,7 +153,27 @@ class ClimateAirOverviewCard extends CaElement {
       item.art = { running: hp.on, state: hp.on ? hp.phase : "off", phase: hp.phase, active: hp.active, defrost: hp.defrost, tank: hp.tank, lang: this._intlLang() };
       return item;
     }
-    if (kind === "aircon") {
+    if (kind === "humidifier") {
+      // A humidifier, a dehumidifier or a diffuser: what it does and the room's humidity, its target once on; an empty
+      // tank or a full bucket flags the tile.
+      const hs = caHumidifierState(st, roleSt, item.variant);
+      // Grouped by area, a dehumidifier or a diffuser is labelled as such.
+      item.kindLabel = hs.dehum ? "dehumidifier" : item.variant === "diffuser" ? "ill_diffuser" : "humidifier";
+      const pct = (v) => `${caFmtNum(this._intlLang(), v, 0)} %`;
+      const cur = a.current_humidity != null ? Number(a.current_humidity) : caNum(roleSt("humidity"));
+      item.on = hs.on;
+      item.color = hs.color;
+      item.anim = hs.active ? "bob" : "";
+      const hum = cur != null ? (hs.on && a.humidity != null ? `${pct(cur)} → ${pct(Number(a.humidity))}` : pct(cur)) : "";
+      item.text = [this._t(hs.statusKey), hum].filter(Boolean).join(" · ");
+      item.art = { running: hs.on, active: hs.active, low: hs.low, level: hs.level, glow: caLightGlow(roleSt("lamp")), glowLevel: roleSt("lamp")?.state === "on" && roleSt("lamp").attributes.brightness != null ? Math.max(0.25, roleSt("lamp").attributes.brightness / 255) : 1, display: cur != null ? `${caFmtNum(this._intlLang(), cur, 0)}%` : "" };
+      if (hs.alertKey && this._config.show_alerts !== false) {
+        item.alert = this._t(hs.alertKey);
+        item.alertLevel = "alert";
+        item.alertEntity = this._role(id, hs.dehum ? "bucket_full" : "tank_empty") || this._role(id, "water_level");
+        item.alertIcon = hs.dehum ? "mdi:bucket" : "mdi:water-off";
+      }
+    } else if (kind === "aircon") {
       item.on = st.state !== "off";
       const mode = st.state;
       const cur = a.current_temperature != null ? Number(a.current_temperature) : null;
@@ -213,7 +233,7 @@ class ClimateAirOverviewCard extends CaElement {
     }
     // A worn filter (its life at the warning threshold or below) or a dirty one (the dirty-filter sensor on): the tile
     // is flagged, red once the filter is to replace.
-    if (kind !== "fan" && this._config.show_alerts !== false) {
+    if (kind !== "fan" && !item.alert && this._config.show_alerts !== false) {
       const filter = caNum(roleSt("filter"));
       let level = caFilterLevel(filter, this._config.filter_warning);
       if (!level && roleSt("filter_alert")?.state === "on") level = "dirty";
@@ -311,7 +331,7 @@ class ClimateAirOverviewCard extends CaElement {
     const look = x.iconSet ? `<ha-icon icon="${caEsc(x.icon)}"></ha-icon>` : caPicture(x.kind, x.variant, x.art, String(i));
     // Grouped by area, the heading already names the room, so the tile shows the kind of device instead of repeating
     // it — unless a name was set for the device in `devices`.
-    const label = this._config.group_by === "area" && !x.named ? this._t(x.kind) : x.name;
+    const label = this._config.group_by === "area" && !x.named ? this._t(x.kindLabel || x.kind) : x.name;
     // A click anywhere on the tile unfolds the device's card; for the keyboard and screen readers its name is the
     // button that does it, beside the on / off button and the chip (no button inside another).
     return (
@@ -320,7 +340,7 @@ class ClimateAirOverviewCard extends CaElement {
       `<button class="name" data-open="${caEsc(x.id)}" aria-expanded="${x.id === this._open}">${caEsc(label)}</button>` +
       `<span class="state">${caEsc(x.text)}</span>` +
       (x.alert
-        ? `<span class="chips"><span class="chip ${x.alertLevel || "warn"}" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="mdi:air-filter"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
+        ? `<span class="chips"><span class="chip ${x.alertLevel || "warn"}" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="${x.alertIcon || "mdi:air-filter"}"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
         : "") +
       "</div>"
     );

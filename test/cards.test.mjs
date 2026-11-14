@@ -12,7 +12,7 @@ test("every card and its editor are registered", () => {
     assert.ok(cls, tag);
     assert.ok(lib.customElements.get(`${tag}-editor`), `${tag}-editor`);
   }
-  assert.equal(lib.window.customCards.length, 9);
+  assert.equal(lib.window.customCards.length, 11);
   assert.ok(!lib.customElements.get("climate-air-thermostat-card"), "the thermostat card moved to ha-heating-card");
 });
 
@@ -228,6 +228,68 @@ test("heat pump mini card: temperature, tank and outdoor temperature; a select-d
   assert.match(out, /Extérieur 6 °C/);
   el._action("power");
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Confort" }]);
+});
+
+test("humidifier: humidity, target, tank, modes and controls", () => {
+  const h = makeHass("fr");
+  const el = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h);
+  const out = html(el);
+  assert.match(out, /class="picture k-humidifier st-on running v-column active"/);
+  assert.match(out, /48<small> %/);
+  assert.match(out, /→ 55 %/);
+  assert.match(out, /Réservoir 60 %/);
+  assert.match(out, /<span class="stt">Humidifie</);
+  assert.match(out, /class="seg on" data-action="hmode" data-value="auto"/);
+  assert.match(out, /data-hum="humidifier\.bedroom_humidifier"/);
+  assert.match(out, /data-toggle="light\.bedroom_humidifier_indicator_light"/);
+  el._action("hmode", "sleep");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["humidifier", "set_mode", { entity_id: "humidifier.bedroom_humidifier", mode: "sleep" }]);
+  el._action("power");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["humidifier", "turn_off", { entity_id: "humidifier.bedroom_humidifier" }]);
+  assert.equal(el._extraSend({ hum: "humidifier.bedroom_humidifier" }, "60") !== null, true);
+});
+
+test("humidifier: an empty tank stops it and flags it, on the card and the overview", () => {
+  const h = makeHass("en", { "sensor.bedroom_humidifier_water_level": { state: 0 } });
+  const out = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h));
+  assert.match(out, /<span class="stt">Water tank empty</);
+  assert.match(out, /class="picture k-humidifier st-on running v-column low"/);
+  assert.match(overview({ zoom: false }, h).body, /mdi:water-off"><\/ha-icon><span>Water tank empty/);
+});
+
+test("dehumidifier and diffuser: illustration, status and label from device_class and name", () => {
+  const dry = makeHass("en", { "humidifier.office_dehumidifier": { state: "on", action: "drying" }, "binary_sensor.office_dehumidifier_tank_full": { state: "on" } });
+  const out = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.office_dehumidifier" }, dry));
+  assert.match(out, /v-dehumidifier/);
+  assert.match(out, /<span class="stt">Bucket full</);
+  assert.match(out, /Bucket 30 %/);
+  const ok = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.office_dehumidifier" }, makeHass("en", { "humidifier.office_dehumidifier": { state: "on", action: "drying" } })));
+  assert.match(ok, /<span class="stt">Drying</);
+  const diff = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.living_room_diffuser" }, makeHass("fr"));
+  assert.match(html(diff), /v-diffuser/);
+  assert.match(html(diff), /<span class="stt">Diffuse</);
+  assert.match(html(diff), /icon="mdi:scent"/);
+  // Its cone takes the colour of its mood light, and its spray quantity is a slider.
+  assert.match(html(diff), /v-diffuser active lit" style="--ca-glow:rgb\(224,64,251\);--ca-glow-o:0\.9\d*"/);
+  // Its mood light has its own section: on / off, brightness and colours, sent to the light.
+  assert.match(html(diff), /data-lbright="light\.living_room_diffuser_mood_light"/);
+  assert.match(html(diff), /class="sw on" style="--sw:rgb\(224,64,251\)"/);
+  diff._action("lcolor", "0,180,255");
+  assert.deepEqual(JSON.parse(JSON.stringify(diff._hass.calls.at(-1))), ["light", "turn_on", { entity_id: "light.living_room_diffuser_mood_light", rgb_color: [0, 180, 255] }]);
+  diff._action("lcolor", "ct");
+  assert.deepEqual(JSON.parse(JSON.stringify(diff._hass.calls.at(-1))), ["light", "turn_on", { entity_id: "light.living_room_diffuser_mood_light", color_temp_kelvin: 2700 }]);
+  // The light stays usable, and lights the cone, while the diffuser is off.
+  const offLit = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.living_room_diffuser" }, makeHass("fr", { "humidifier.living_room_diffuser": { state: "off" } })));
+  assert.match(offLit, /st-off v-diffuser lit"/);
+  assert.match(offLit, /data-lbright=/);
+  assert.match(html(diff), /data-number="number\.living_room_diffuser_spray_quantity"/);
+  assert.doesNotMatch(html(diff), /→ 100 %/);
+  const dark = makeHass("fr", { "light.living_room_diffuser_mood_light": { state: "off" } });
+  assert.doesNotMatch(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.living_room_diffuser" }, dark)), / lit"/);
+  assert.doesNotMatch(html(diff), /data-hum=/);
+  // Grouped by area, each tile is named after what it is.
+  const names = [...overview({ zoom: false, group_by: "area" }).body.matchAll(/class="name"[^>]*>([^<]+)</g)].map((m) => m[1]);
+  for (const n of ["Humidifier", "Dehumidifier", "Essential oil diffuser"]) assert.ok(names.includes(n), n);
 });
 
 test("overview: a heat-only thermostat is left out, found or added under include; a type set under devices keeps it", () => {
@@ -450,11 +512,11 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /6 on/);
+  assert.match(head, /8 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
-  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Heat pumps", "Air conditioners", "Air purifiers", "Fans"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Heat pumps", "Air conditioners", "Air purifiers", "Humidity", "Fans"]);
 });
 
 test("overview: the detail button shows every device; zoom: false always does", () => {
@@ -480,7 +542,7 @@ test("overview: exclude, include and group by area", () => {
   assert.match(office, /<ha-icon icon="mdi:texture-box"><\/ha-icon><span>Office</);
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
   const names = [...body.matchAll(/class="name"[^>]*>([^<]+)</g)].map((m) => m[1]);
-  assert.ok(names.every((n) => ["Heat pump", "Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
+  assert.ok(names.every((n) => ["Heat pump", "Air conditioner", "Air purifier", "Humidifier", "Dehumidifier", "Essential oil diffuser", "Fan"].includes(n)), names.join(", "));
   const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Bedroom air" }] }).body;
   assert.match(grouped, /class="name"[^>]*>Bedroom air</);
 });
@@ -514,7 +576,7 @@ test("overview: an area icon with markup in it stays inert in the group heading"
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {
   const spans = (body) => [...body.matchAll(/class="grp" style="--span:(\d+)"/g)].map((m) => Number(m[1]));
-  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 1, 2, 2]);
+  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 1, 2, 2, 2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none" }).body), [2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [6]);
 });
@@ -580,6 +642,7 @@ test("overview editor: device types and devices as sections, written back as ill
     ["heatpump", "Pompes à chaleur", ["icon"]],
     ["aircon", "Climatiseurs", ["illustration", "icon"]],
     ["purifier", "Purificateurs", ["illustration", "icon"]],
+    ["humidifier", "Humidité", ["illustration", "icon"]],
     ["fan", "Ventilateurs", ["icon"]],
   ]);
   const devs = schema.find((s) => s.name === "devs");
@@ -589,9 +652,12 @@ test("overview editor: device types and devices as sections, written back as ill
     ["fan.dyson_pure_cool", "Dyson Pure Cool"],
     ["fan.bedroom_purifier", "Purificateur chambre"],
     ["fan.living_room_purifier_air_purifier", "Purificateur séjour"],
+    ["humidifier.office_dehumidifier", "Déshumidificateur bureau"],
+    ["humidifier.living_room_diffuser", "Diffuseur séjour"],
+    ["humidifier.bedroom_humidifier", "Humidificateur chambre"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
   ]);
-  assert.deepEqual(json(devs.schema[5].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[8].schema.map((f) => f.name)), ["name", "type", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;

@@ -26,7 +26,7 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 
 | Card | Type | What it shows |
 |---|---|---|
-| [Overview](#overview) | `custom:climate-air-overview-card` | Every heat pump, air conditioner, air purifier and fan at a glance: one tile per device, tap a tile to unfold its full card. |
+| [Overview](#overview) | `custom:climate-air-overview-card` | Every heat pump, air conditioner, air purifier, humidifier, diffuser and fan at a glance: one tile per device, tap a tile to unfold its full card. |
 | [Air purifier](#air-purifier) | `custom:climate-air-purifier-card` | Air quality, filter life, presets, speed and options of an air purifier. |
 | [Air purifier mini](#mini-cards) | `custom:climate-air-purifier-mini-card` | The same purifier on two lines, with a zoom to the full card. |
 | [Fan](#fan) | `custom:climate-air-fan-card` | Speed, oscillation, presets, angle, timer and options of a fan. |
@@ -35,6 +35,8 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 | [Air conditioner mini](#mini-cards) | `custom:climate-air-aircon-mini-card` | The same air conditioner on two lines, with a zoom to the full card. |
 | [Heat pump](#heat-pump) | `custom:climate-air-heatpump-card` | Mode, target temperature, hot water tank and measurements of an air-to-water heat pump, with an animated outdoor unit. |
 | [Heat pump mini](#mini-cards) | `custom:climate-air-heatpump-mini-card` | The same heat pump on two lines, with a zoom to the full card. |
+| [Humidifier](#humidifier) | `custom:climate-air-humidifier-card` | Humidity, target, modes and water tank of a humidifier, a dehumidifier or an essential oil diffuser, with a large animated illustration. |
+| [Humidifier mini](#mini-cards) | `custom:climate-air-humidifier-mini-card` | The same device on two lines, with a zoom to the full card. |
 
 | Overview | Air purifier | Fan | Air conditioner |
 |---|---|---|---|
@@ -102,20 +104,39 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 |---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card-dark.png"><img alt="Heat pump heating" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw-dark.png"><img alt="Heat pump heating the hot water" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost-dark.png"><img alt="Heat pump defrosting" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost.png" width="400"></picture> |
 
+### Humidifier
+
+`custom:climate-air-humidifier-card` — A humidifier, a dehumidifier or an essential oil diffuser (`humidifier` entity) and the sensors of its device.
+
+- Found by itself: every `humidifier` entity; its `device_class` (`dehumidifier`) and its model or name pick the illustration
+- The room humidity in large with the target next to it; modes as segmented buttons and a *Target humidity* slider (`humidifier.set_humidity`, within `min_humidity` / `max_humidity`). A diffuser has no target (HomeKit reports 100 %) but a *Mist intensity* slider (the VOCOlinc FlowerBud's *Spray quantity*, 1 to 5)
+- What it does in the status pill: *Humidifying*, *Drying*, *Diffusing*, *Idle*; *Water tank empty* (humidifier) or *Bucket full* (dehumidifier) as a red alert, on the card and the Overview tile
+- A *Mood light* section when the device's light can change brightness or colour (the VOCOlinc mood light), usable while the device itself is off: on / off, *Brightness* slider and colour swatches (a warm white when it supports colour temperature); the illustration follows its colour and brightness
+- The water left in the tank (or the bucket) as a bar, the filter of an evaporative humidifier, temperature chip; the device's light (the VOCOlinc ambient light), child lock, sound and other switches as option toggles
+- Large animated illustration: mist rises while it humidifies, the water in the tank waves and turns red once nearly empty, dry air leaves a dehumidifier while drops fall into its bucket. Six shapes, picked from the device or set with `illustration`: `column` (ultrasonic), `tank` (clear tank on its base, Xiaomi / Deerma style), `evaporative` (fan and wick), `vocolinc` (VOCOlinc MistFlow, its light ring lit in the colour of its light), `diffuser` (VOCOlinc FlowerBud essential oil diffuser, its frosted cone lit in the colour of its mood light) and `dehumidifier`
+
+| Humidifier | VOCOlinc MistFlow | Essential oil diffuser | Dehumidifier |
+|---|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-card-dark.png"><img alt="Humidifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-vocolinc-dark.png"><img alt="VOCOlinc MistFlow humidifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-vocolinc.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-diffuser-dark.png"><img alt="VOCOlinc essential oil diffuser" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-diffuser.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-dehumidifier-dark.png"><img alt="Dehumidifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-dehumidifier.png" width="400"></picture> |
+
 ### Mini cards
 
-`custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card`, `custom:climate-air-heatpump-mini-card` — The device on two lines, for a compact dashboard.
+`custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card`, `custom:climate-air-heatpump-mini-card`, `custom:climate-air-humidifier-mini-card` — The device on two lines, for a compact dashboard.
 
-- The illustration (animated too), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature) and round buttons: power, plus the preset (purifier), the oscillation (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
+- The illustration (animated too), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature, the humidifier's humidity and tank) and round buttons: power, plus the preset (purifier), the mode (humidifier), the oscillation (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
 - The **detail** button (top right) unfolds the full card, and back, as does a click anywhere else (`zoom: false` removes it)
 
 | Air purifier | Fan | Air conditioner | Heat pump |
 |---|---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini-dark.png"><img alt="Air purifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini-dark.png"><img alt="Fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini-dark.png"><img alt="Air conditioner mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-mini-dark.png"><img alt="Heat pump mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-mini.png" width="400"></picture> |
 
+| Humidifier | Essential oil diffuser |
+|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-mini-dark.png"><img alt="Humidifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-diffuser-mini-dark.png"><img alt="Diffuser mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-diffuser-mini.png" width="400"></picture> |
+
 ## Supported integrations
 
-The cards work with **any integration** that provides air purifiers and fans as `fan` entities and air conditioners and heat pumps as `climate` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson, Daikin Onecta, Panasonic Aquarea, MELCloud, Overkiz, ViCare, myUplink…). Some get a specific treatment:
+The cards work with **any integration** that provides air purifiers and fans as `fan` entities air conditioners and heat pumps as `climate` entities, and humidifiers, dehumidifiers and diffusers as `humidifier` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson, Daikin Onecta, Panasonic Aquarea, MELCloud, Overkiz, ViCare, myUplink…). Some get a specific treatment:
 
 | Integration | What the cards add |
 |---|---|
@@ -128,6 +149,7 @@ The cards work with **any integration** that provides air purifiers and fans as 
 | [Panasonic Aquarea Smart Cloud](https://github.com/cjaliaga/home-assistant-aquarea) (Marketplace) | Aquarea heat pumps: always on the heat pump card, with their zones and hot water tank |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="" width="16"> [Atlantic Cozytouch](https://www.home-assistant.io/integrations/cozytouch/) (built in, Overkiz) and [Cozytouch](https://github.com/gduteil/cozytouch) (Marketplace) | Alfea and other Atlantic heat pumps: recognised by their hot water tank or their name |
 | [Hitachi Yutaki](https://github.com/alepee/hass-hitachi_yutaki) (Marketplace, Modbus) | Yutaki heat pumps: always on the heat pump card, with the hot water tank, defrost and compressor |
+| [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in), VOCOlinc | The VOCOlinc MistFlow humidifier and FlowerBud essential oil diffuser (no dedicated integration: pair them with HomeKit Device) with their own illustrations, lit in the colour of their light; the FlowerBud's *Spray quantity* as a *Mist intensity* slider and its *Mood Light* as an option |
 | [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, its *Thermostat* number as the setpoint, the tank temperature and the *Aiguillage vanne* valve (air or hot water) |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
@@ -224,9 +246,9 @@ devices:
 | `title` | ❌ | Climate & air | Card title |
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
-| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
-| `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`heatpump`, `aircon`, `purifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
-| `group_by` | ❌ | `type` | `type` (heat pumps, air conditioners, air purifiers, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
+| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`, `humidifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`; humidifier `column`, `tank`, `evaporative`, `vocolinc`, `diffuser` or `dehumidifier`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
+| `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`heatpump`, `aircon`, `purifier`, `humidifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
+| `group_by` | ❌ | `type` | `type` (heat pumps, air conditioners, air purifiers, humidity, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |
 | `zoom` | ❌ | `true` | Only the devices on or needing attention show, and a detail button shows them all; `false`: every device, always |
 | `show_all` | ❌ | `false` | Every device shows at first, and the detail button keeps only the ones on or needing attention (a click elsewhere brings every device back). In the visual editor: **Show every device** |
@@ -234,7 +256,7 @@ devices:
 | `filter_warning` | ❌ | `20` | Filter life (%) at or below which a tile shows *Replace the filter soon* (orange); at 10 % or below, *Replace the filter* (red) |
 | `exclude` | ❌ | — | Devices left out |
 | `include` | ❌ | — | `climate` or `fan` entities the card would not pick on its own (a hidden entity); a heat-only thermostat stays out unless `devices` gives it a `type` |
-| `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `heatpump`, `aircon`, `purifier`, `fan` (they win over `icons` and `illustrations`) |
+| `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `heatpump`, `aircon`, `purifier`, `humidifier`, `fan` (they win over `icons` and `illustrations`) |
 
 ### Air purifier
 
@@ -267,6 +289,14 @@ entity: climate.heat_pump        # or, with TOUG: select.t_one_mode_air
 entities:                        # only for what discovery misses
   tank_temp: sensor.t_one_temperature_ballon
   setpoint: number.t_one_thermostat
+```
+
+### Humidifier
+
+```yaml
+type: custom:climate-air-humidifier-card
+entity: humidifier.bedroom_humidifier
+illustration: vocolinc   # column, tank, evaporative, vocolinc, diffuser, dehumidifier or auto
 ```
 
 ### Coming from 1.x: thermostats
@@ -314,6 +344,10 @@ The cards find the other entities of the device by their registry translation ke
 | `tank_temp` | `sensor` | Heat pump | Tank temperature, without a `water_heater` |
 | `valve` | `sensor` / `select` | Heat pump | Three-way valve: *Hot water* while it sends the heat to the tank |
 | `setpoint` | `number` | Heat pump | Target temperature of a heat pump driven by a select (TOUG) |
+| `water_level` | `sensor` | Humidifier | Water left in the tank (or the bucket of a dehumidifier), in % |
+| `tank_empty` / `bucket_full` | `binary_sensor` | Humidifier | *Water tank empty* / *Bucket full* alert |
+| `lamp` | `light` | Humidifier | The device's light (VOCOlinc mood light) as an option toggle; its colour lights the VOCOlinc illustrations |
+| `spray` | `number` | Humidifier | Mist intensity of a diffuser (VOCOlinc *Spray quantity*) |
 | `backup` / `defrost` | `binary_sensor` | Heat pump | *Backup heater* and *Defrosting* chips; frost on the illustration |
 
 ```yaml
@@ -380,6 +414,30 @@ Cooling, snowflakes fall above the unit.
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool.gif" alt="heat pump cooling animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool-dark.gif" alt="heat pump cooling animation, dark theme" width="400"> |
 
+The humidifier humidifies: mist rises from its top and the water waves in its tank.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier.gif" alt="humidifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-dark.gif" alt="humidifier animation, dark theme" width="400"> |
+
+The VOCOlinc MistFlow sends mist out of its top, its light ring in the colour of its light.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-vocolinc.gif" alt="VOCOlinc MistFlow animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-vocolinc-dark.gif" alt="VOCOlinc MistFlow animation, dark theme" width="400"> |
+
+The VOCOlinc FlowerBud sends scented mist from its tip, its frosted cone lit in the colour of its mood light (white while the light is off).
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/diffuser.gif" alt="essential oil diffuser animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/diffuser-dark.gif" alt="essential oil diffuser animation, dark theme" width="400"> |
+
+The dehumidifier blows dry air out of its top while drops fall into its bucket.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/dehumidifier.gif" alt="dehumidifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/dehumidifier-dark.gif" alt="dehumidifier animation, dark theme" width="400"> |
+
 The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
 
 | Light | Dark |
@@ -399,6 +457,9 @@ The overview gathers every device: each tile's icon moves to match its appliance
 | Air conditioner, heat / cool range | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-range.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-range-dark.png" alt="" width="400"> |
 | Air conditioner, drying to a target humidity | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.png" alt="" width="400"> |
 | Heat pump, cooling | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool-dark.png" alt="" width="400"> |
+| Humidifier, clear tank and evaporative | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-tank.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-evaporative.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-tank-dark.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-evaporative-dark.png" alt="" width="400"> |
+| Diffuser off, its mood light on in blue | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-diffuser-light.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-diffuser-light-dark.png" alt="" width="400"> |
+| Humidifier, water tank empty | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-empty.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-empty-dark.png" alt="" width="400"> |
 | Air conditioner, portable and window split | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable-dark.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-dark.png" alt="" width="400"> |
 
 ## Development
@@ -408,7 +469,7 @@ npm install
 npm run build        # bundles src/*.js into dist/ha-climate-air-card.js and stamps the version of package.json
 npm run check        # builds and checks the bundle (run in CI)
 npm test             # unit tests, no browser
-npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon cool, heat and dry/heat pump heat, hot water and cool/overview, needs ffmpeg) with mock data into screenshots/
+npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon cool, heat and dry/heat pump heat, hot water and cool/humidifier, MistFlow, diffuser and dehumidifier/overview, needs ffmpeg) with mock data into screenshots/
 ```
 
 Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single file the Marketplace installs. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where the Marketplace installs it from.
