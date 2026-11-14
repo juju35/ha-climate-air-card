@@ -182,12 +182,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
         ? this._segments("hpmode", opts, st.state, (o) => this._fmtState(r.id, o), caHpModeIcon)
         : `<div class="grid">${this._selectEntity(r.id, this._t("mode"))}</div>`;
     const setpoint = r.ent.setpoint && m.running ? this._numberControl(r.ent.setpoint, this._t("target"), "mdi:thermometer") : "";
-    const toggles = this._toggles(
-      this._switches(r).map((id) => {
-        const info = caSwitchInfo(id);
-        return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
-      }),
-    );
+    const toggles = this._switchToggles(r);
     return this._section("", modes + setpoint) + this._midSections(m) + this._options(toggles);
   }
 

@@ -4575,15 +4575,20 @@ class CaClimateCard extends CaCard {
           f & CA_CLIMATE_PRESET ? this._selectAttr("preset_mode", "preset_modes", "set_preset_mode", this._t("preset_mode")) : "",
         ].filter(Boolean)
       : [];
-    const toggles = this._toggles(
+    const toggles = this._switchToggles(r);
+    const extra = this._toggles(this._extraOptions(m));
+    return (
+      this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._midSections(m) + this._options(toggles + extra)
+    );
+  }
+
+  // The device's other switches (eco, display, self clean…) as option toggles.
+  _switchToggles(r) {
+    return this._toggles(
       this._switches(r).map((id) => {
         const info = caSwitchInfo(id);
         return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
       }),
-    );
-    const extra = this._toggles(this._extraOptions(m));
-    return (
-      this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._midSections(m) + this._options(toggles + extra)
     );
   }
 
