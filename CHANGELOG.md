@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.1 - 2026-11-14
+
+### Documentation
+- README: the logos of Xiaomi Home, Xiaomi Miio, Matter, Midea, Panasonic Aquarea, Hitachi Yutaki and ESPHome (TOUG) in the header and *Supported integrations*, with rows for Xiaomi Home, Xiaomi Miio, Matter and Midea AC LAN; the introduction now names every kind of device.
+
 ## 2.4.0 - 2026-11-14
 
 ### Features

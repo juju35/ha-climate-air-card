@@ -11,16 +11,23 @@
 <p align="center"><img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/icon.svg" alt="Climate Air Cards" width="120"></p>
 
 <p align="center">
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/xiaomi_home.png" alt="Xiaomi Home" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/xiaomi_miio.png" alt="Xiaomi Miio" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="HomeKit" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/matter.png" alt="Matter" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/midea_ac_lan.png" alt="Midea" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="Dyson" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/daikin_onecta.png" alt="Daikin Onecta" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/melcloud.png" alt="MELCloud" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vicare.png" alt="Viessmann ViCare" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/myuplink.png" alt="myUplink" width="64">&nbsp;&nbsp;
-  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="Atlantic Cozytouch" width="64">
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="Atlantic Cozytouch" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/panasonic.png" alt="Panasonic Aquarea" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/hitachi_yutaki.png" alt="Hitachi Yutaki" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="ESPHome (TOUG)" width="64">
 </p>
 
-Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
+Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifiers, humidifiers, dehumidifiers, essential oil diffusers and fans**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
 
 [![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
 
@@ -140,17 +147,21 @@ The cards work with **any integration** that provides air purifiers and fans as 
 
 | Integration | What the cards add |
 |---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/xiaomi_home.png" alt="" width="16"> [Xiaomi Home](https://github.com/XiaoMi/ha_xiaomi_home) (Marketplace) | Purifiers, fans and humidifiers (Smartmi, Deerma…): the illustration from the model, the filter life, the water level and the child lock, indicator light and sound of the device |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/xiaomi_miio.png" alt="" width="16"> [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio/) (built in) | The same devices through the local protocol: presets, favorite level, filter life, water level and dry mode of the humidifiers |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/matter.png" alt="" width="16"> [Matter](https://www.home-assistant.io/integrations/matter/) (built in) | Purifiers, fans, air conditioners and heat pumps from their standard entities, with the filter condition when the device reports it |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/midea_ac_lan.png" alt="" width="16"> [Midea AC LAN](https://github.com/wuwentao/midea_ac_lan) (Marketplace) | Air conditioners and dehumidifiers: the dehumidifier illustration, the *Bucket full* alert and the bucket level |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="" width="16"> [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/daikin_onecta.png" alt="" width="16"> [Daikin Onecta](https://github.com/jwillemsen/daikin_onecta) (Marketplace) | Altherma heat pumps: the heat pump card, with the hot water tank (`water_heater`) of the same device |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/melcloud.png" alt="" width="16"> [MELCloud](https://www.home-assistant.io/integrations/melcloud/) (built in) | Ecodan air-to-water heat pumps (climate zones and hot water tank) on the heat pump card; the air conditioners stay on the air conditioner card |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vicare.png" alt="" width="16"> [Viessmann ViCare](https://www.home-assistant.io/integrations/vicare/) (built in) | Vitocal heat pumps: heating circuits and hot water tank on the heat pump card |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/myuplink.png" alt="" width="16"> [myUplink](https://www.home-assistant.io/integrations/myuplink/) (built in) | NIBE heat pumps: always on the heat pump card |
-| [Panasonic Aquarea Smart Cloud](https://github.com/cjaliaga/home-assistant-aquarea) (Marketplace) | Aquarea heat pumps: always on the heat pump card, with their zones and hot water tank |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/panasonic.png" alt="" width="16"> [Panasonic Aquarea Smart Cloud](https://github.com/cjaliaga/home-assistant-aquarea) (Marketplace) | Aquarea heat pumps: always on the heat pump card, with their zones and hot water tank |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="" width="16"> [Atlantic Cozytouch](https://www.home-assistant.io/integrations/cozytouch/) (built in, Overkiz) and [Cozytouch](https://github.com/gduteil/cozytouch) (Marketplace) | Alfea and other Atlantic heat pumps: recognised by their hot water tank or their name |
-| [Hitachi Yutaki](https://github.com/alepee/hass-hitachi_yutaki) (Marketplace, Modbus) | Yutaki heat pumps: always on the heat pump card, with the hot water tank, defrost and compressor |
-| [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in), VOCOlinc | The VOCOlinc MistFlow humidifier and FlowerBud essential oil diffuser (no dedicated integration: pair them with HomeKit Device) with their own illustrations, lit in the colour of their light; the FlowerBud's *Spray quantity* as a *Mist intensity* slider and its *Mood Light* as an option |
-| [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, its *Thermostat* number as the setpoint, the tank temperature and the *Aiguillage vanne* valve (air or hot water) |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/hitachi_yutaki.png" alt="" width="16"> [Hitachi Yutaki](https://github.com/alepee/hass-hitachi_yutaki) (Marketplace, Modbus) | Yutaki heat pumps: always on the heat pump card, with the hot water tank, defrost and compressor |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in), VOCOlinc | The VOCOlinc MistFlow humidifier and FlowerBud essential oil diffuser (no dedicated integration: pair them with HomeKit Device) with their own illustrations, lit in the colour of their light; the FlowerBud's *Spray quantity* as a *Mist intensity* slider and its *Mood Light* as an option |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="" width="16"> [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, its *Thermostat* number as the setpoint, the tank temperature and the *Aiguillage vanne* valve (air or hot water) |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
 
