@@ -12,7 +12,12 @@
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="HomeKit" width="64">&nbsp;&nbsp;
-  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="Dyson" width="64">
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="Dyson" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/daikin_onecta.png" alt="Daikin Onecta" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/melcloud.png" alt="MELCloud" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vicare.png" alt="Viessmann ViCare" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/myuplink.png" alt="myUplink" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="Atlantic Cozytouch" width="64">
 </p>
 
 Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
@@ -116,6 +121,13 @@ The cards work with **any integration** that provides air purifiers and fans as 
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="" width="16"> [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/daikin_onecta.png" alt="" width="16"> [Daikin Onecta](https://github.com/jwillemsen/daikin_onecta) (Marketplace) | Altherma heat pumps: the heat pump card, with the hot water tank (`water_heater`) of the same device |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/melcloud.png" alt="" width="16"> [MELCloud](https://www.home-assistant.io/integrations/melcloud/) (built in) | Ecodan air-to-water heat pumps (climate zones and hot water tank) on the heat pump card; the air conditioners stay on the air conditioner card |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vicare.png" alt="" width="16"> [Viessmann ViCare](https://www.home-assistant.io/integrations/vicare/) (built in) | Vitocal heat pumps: heating circuits and hot water tank on the heat pump card |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/myuplink.png" alt="" width="16"> [myUplink](https://www.home-assistant.io/integrations/myuplink/) (built in) | NIBE heat pumps: always on the heat pump card |
+| [Panasonic Aquarea Smart Cloud](https://github.com/cjaliaga/home-assistant-aquarea) (Marketplace) | Aquarea heat pumps: always on the heat pump card, with their zones and hot water tank |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="" width="16"> [Atlantic Cozytouch](https://www.home-assistant.io/integrations/cozytouch/) (built in, Overkiz) and [Cozytouch](https://github.com/gduteil/cozytouch) (Marketplace) | Alfea and other Atlantic heat pumps: recognised by their hot water tank or their name |
+| [Hitachi Yutaki](https://github.com/alepee/hass-hitachi_yutaki) (Marketplace, Modbus) | Yutaki heat pumps: always on the heat pump card, with the hot water tank, defrost and compressor |
 | [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, its *Thermostat* number as the setpoint, the tank temperature and the *Aiguillage vanne* valve (air or hot water) |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.0 - 2026-11-14
+
+### Features
+- **Heat pump integrations**: the climate entities of NIBE myUplink, Panasonic Aquarea Smart Cloud and Hitachi Yutaki are always heat pumps, even without a hot water tank or a heat pump name. Daikin Onecta, MELCloud, Viessmann ViCare and Atlantic Cozytouch (Overkiz and the Cozytouch custom integration), which also drive air conditioners or boilers, keep being told apart by their hot water tank or their name. The README lists them under *Supported integrations*, with their logos.
+
 ## 2.2.0 - 2026-11-14
 
 ### Features

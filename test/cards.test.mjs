@@ -147,6 +147,29 @@ test("heat pump: found by its hot water tank, with its temperatures, tank, modes
   assert.equal(mount(lib, "climate-air-aircon-card", {}, makeHass())._r.id, "climate.air_conditioner");
 });
 
+test("heat pump: told apart by its integration when it has neither a tank nor a heat pump name", () => {
+  const h = makeHass();
+  const add = (id, platform) => {
+    h.states[id] = { entity_id: id, state: "heat", attributes: { friendly_name: "Living room", hvac_modes: ["off", "heat", "cool"], current_temperature: 20, temperature: 21 } };
+    h.entities[id] = { entity_id: id, platform };
+  };
+  add("climate.nibe", "myuplink");
+  add("climate.aquarea_zone_1", "aquarea");
+  add("climate.yutaki_circuit_1", "hitachi_yutaki");
+  add("climate.melcloud_split", "melcloud");
+  // Each tile under its group heading, in the overview grouped by type.
+  const ov = overview({ zoom: false }, h).body;
+  const groupOf = (id) => {
+    const at = ov.indexOf(`data-id="${id}"`);
+    assert.ok(at >= 0, id);
+    const heads = [...ov.slice(0, at).matchAll(/class="group">.*?<span>([^<]+)</g)];
+    return heads.at(-1)?.[1];
+  };
+  for (const id of ["climate.nibe", "climate.aquarea_zone_1", "climate.yutaki_circuit_1"]) assert.equal(groupOf(id), "Heat pumps", id);
+  // MELCloud also drives air conditioners: without a tank nor a heat pump name, it stays one.
+  assert.equal(groupOf("climate.melcloud_split"), "Air conditioners");
+});
+
 test("heat pump: hot water through the valve, defrost and the backup heater", () => {
   const h = makeHass("en", {
     "sensor.heat_pump_three_way_valve": { state: "Domestic hot water" },
