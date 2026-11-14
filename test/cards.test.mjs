@@ -170,6 +170,13 @@ test("heat pump: told apart by its integration when it has neither a tank nor a 
   assert.equal(groupOf("climate.melcloud_split"), "Air conditioners");
 });
 
+test("heat pump: its overview tile widens its picture column so the unit and its tank do not cover the name", () => {
+  const { el } = overview({ zoom: false });
+  const css = el.shadowRoot.innerHTML;
+  assert.match(css, /\.dev:has\(\.ic\.pic \.k-heatpump\) \{ grid-template-columns: 60px minmax\(0, 1fr\); \}/);
+  assert.match(css, /\.ic\.pic:has\(\.k-heatpump\), \.ic\.pic \.picture\.k-heatpump \{ width: 60px; height: 47px; \}/);
+});
+
 test("heat pump: hot water through the valve, defrost and the backup heater", () => {
   const h = makeHass("en", {
     "sensor.heat_pump_three_way_valve": { state: "Domestic hot water" },

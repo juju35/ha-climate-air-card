@@ -60,7 +60,9 @@ CA_ART.heatpump = {
     .picture.k-heatpump { aspect-ratio: 120 / 94; }
     .hero .picture.k-heatpump { width: 112px; }
     ha-card.mini .picture.k-heatpump { width: 84px; height: 66px; }
-    .ic.pic .picture.k-heatpump { width: 58px; }
+    /* An overview tile: the unit and its tank are wider than tall, the tile's picture column widens to fit them. */
+    .dev:has(.ic.pic .k-heatpump) { grid-template-columns: 60px minmax(0, 1fr); }
+    .ic.pic:has(.k-heatpump), .ic.pic .picture.k-heatpump { width: 60px; height: 47px; }
     @container (max-width: 180px) { ha-card:not(.mini) .hero .picture.k-heatpump { width: 84px; height: 66px; } }
     .k-heatpump .c-stop { stop-color: var(--ca-color); }
     .k-heatpump .floor { opacity: 0; transition: opacity .6s; }
