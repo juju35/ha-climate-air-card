@@ -57,6 +57,33 @@ await animate({
   }),
 });
 
+// The heat pump heating: the fan spins behind its grille, the water flows to the house and warm air rises.
+await animate({
+  file: "heatpump",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.heat_pump" } }),
+});
+
+// The heat pump heating the hot water: the valve sends the flow to the tank, heat rises above it.
+await animate({
+  file: "heatpump-dhw",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({
+    hass: mockHass(lang, { "sensor.heat_pump_three_way_valve": { state: "Domestic hot water" }, "water_heater.heat_pump_hot_water": { current_temperature: 44 } }),
+    config: { entity: "climate.heat_pump" },
+  }),
+});
+
+// The heat pump cooling: the fan spins and snowflakes fall above the unit.
+await animate({
+  file: "heatpump-cool",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({
+    hass: mockHass(lang, { "climate.heat_pump": { state: "cool", hvac_action: "cooling", current_temperature: 26.5, temperature: 24 } }),
+    config: { entity: "climate.heat_pump" },
+  }),
+});
+
 // The overview with every device on: each tile's icon and status ring animate together.
 await animate({
   file: "overview",

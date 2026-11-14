@@ -1,6 +1,6 @@
 /*
  * ha-climate-air-card — shared code: i18n, device discovery, the base card, the mini cards and the editor.
- * The device cards (purifier.js, fan.js, aircon.js) and the overview (overview.js) build on it.
+ * The device cards (purifier.js, fan.js, aircon.js, heatpump.js) and the overview (overview.js) build on it.
  * https://github.com/juju35/ha-climate-air-card
  */
 const CA_VERSION = "__VERSION__";
@@ -12,6 +12,15 @@ const CA_I18N = {
     purifier: "Air purifier",
     fan: "Fan",
     aircon: "Air conditioner",
+    heatpump: "Heat pump",
+    st_dhw: "Hot water",
+    st_heating: "Heating",
+    st_cooling: "Cooling",
+    st_idle: "Idle",
+    st_defrost: "Defrosting",
+    tank: "Tank",
+    dhw_target: "Hot water",
+    backup: "Backup heater",
     st_off: "Off",
     st_on: "On",
     st_unavailable: "Unavailable",
@@ -83,6 +92,7 @@ const CA_I18N = {
     all_off: "Everything is off",
     nothing_on: "Nothing on right now",
     g_aircon: "Air conditioners",
+    g_heatpump: "Heat pumps",
     g_purifier: "Air purifiers",
     g_fan: "Fans",
     no_area: "No area",
@@ -143,6 +153,15 @@ const CA_I18N = {
     purifier: "Purificateur",
     fan: "Ventilateur",
     aircon: "Climatiseur",
+    heatpump: "Pompe à chaleur",
+    st_dhw: "Eau chaude",
+    st_heating: "Chauffe",
+    st_cooling: "Refroidit",
+    st_idle: "En attente",
+    st_defrost: "Dégivrage",
+    tank: "Ballon",
+    dhw_target: "Eau chaude",
+    backup: "Appoint électrique",
     st_off: "Arrêt",
     st_on: "En marche",
     st_unavailable: "Indisponible",
@@ -214,6 +233,7 @@ const CA_I18N = {
     all_off: "Tout est à l'arrêt",
     nothing_on: "Rien en marche pour l'instant",
     g_aircon: "Climatiseurs",
+    g_heatpump: "Pompes à chaleur",
     g_purifier: "Purificateurs",
     g_fan: "Ventilateurs",
     no_area: "Sans pièce",
@@ -275,6 +295,15 @@ const CA_I18N = {
     purifier: "Luftreiniger",
     fan: "Ventilator",
     aircon: "Klimaanlage",
+    heatpump: "Wärmepumpe",
+    st_dhw: "Warmwasser",
+    st_heating: "Heizt",
+    st_cooling: "Kühlt",
+    st_idle: "Bereit",
+    st_defrost: "Abtauen",
+    tank: "Speicher",
+    dhw_target: "Warmwasser",
+    backup: "Heizstab",
     st_off: "Aus",
     st_on: "An",
     st_unavailable: "Nicht verfügbar",
@@ -346,6 +375,7 @@ const CA_I18N = {
     all_off: "Alles ist aus",
     nothing_on: "Gerade ist nichts an",
     g_aircon: "Klimaanlagen",
+    g_heatpump: "Wärmepumpen",
     g_purifier: "Luftreiniger",
     g_fan: "Ventilatoren",
     no_area: "Kein Bereich",
@@ -406,6 +436,15 @@ const CA_I18N = {
     purifier: "Purificador de aire",
     fan: "Ventilador",
     aircon: "Aire acondicionado",
+    heatpump: "Bomba de calor",
+    st_dhw: "Agua caliente",
+    st_heating: "Calentando",
+    st_cooling: "Enfriando",
+    st_idle: "En espera",
+    st_defrost: "Desescarche",
+    tank: "Depósito",
+    dhw_target: "Agua caliente",
+    backup: "Resistencia de apoyo",
     st_off: "Apagado",
     st_on: "Encendido",
     st_unavailable: "No disponible",
@@ -477,6 +516,7 @@ const CA_I18N = {
     all_off: "Todo está apagado",
     nothing_on: "Nada encendido ahora mismo",
     g_aircon: "Aires acondicionados",
+    g_heatpump: "Bombas de calor",
     g_purifier: "Purificadores de aire",
     g_fan: "Ventiladores",
     no_area: "Sin área",
@@ -537,6 +577,15 @@ const CA_I18N = {
     purifier: "Пречишћивач ваздуха",
     fan: "Вентилатор",
     aircon: "Клима уређај",
+    heatpump: "Топлотна пумпа",
+    st_dhw: "Топла вода",
+    st_heating: "Греје",
+    st_cooling: "Хлади",
+    st_idle: "На чекању",
+    st_defrost: "Одмрзавање",
+    tank: "Бојлер",
+    dhw_target: "Топла вода",
+    backup: "Помоћни грејач",
     st_off: "Искључено",
     st_on: "Укључено",
     st_unavailable: "Недоступно",
@@ -608,6 +657,7 @@ const CA_I18N = {
     all_off: "Све је искључено",
     nothing_on: "Тренутно ништа није укључено",
     g_aircon: "Клима уређаји",
+    g_heatpump: "Топлотне пумпе",
     g_purifier: "Пречишћивачи ваздуха",
     g_fan: "Вентилатори",
     no_area: "Без просторије",
@@ -668,6 +718,15 @@ const CA_I18N = {
     purifier: "Prečišćivač vazduha",
     fan: "Ventilator",
     aircon: "Klima uređaj",
+    heatpump: "Toplotna pumpa",
+    st_dhw: "Topla voda",
+    st_heating: "Greje",
+    st_cooling: "Hladi",
+    st_idle: "Na čekanju",
+    st_defrost: "Odmrzavanje",
+    tank: "Bojler",
+    dhw_target: "Topla voda",
+    backup: "Pomoćni grejač",
     st_off: "Isključeno",
     st_on: "Uključeno",
     st_unavailable: "Nedostupno",
@@ -739,6 +798,7 @@ const CA_I18N = {
     all_off: "Sve je isključeno",
     nothing_on: "Trenutno ništa nije uključeno",
     g_aircon: "Klima uređaji",
+    g_heatpump: "Toplotne pumpe",
     g_purifier: "Prečišćivači vazduha",
     g_fan: "Ventilatori",
     no_area: "Bez prostorije",
@@ -799,6 +859,15 @@ const CA_I18N = {
     purifier: "Purificatore d'aria",
     fan: "Ventilatore",
     aircon: "Condizionatore",
+    heatpump: "Pompa di calore",
+    st_dhw: "Acqua calda",
+    st_heating: "Riscalda",
+    st_cooling: "Raffresca",
+    st_idle: "In attesa",
+    st_defrost: "Sbrinamento",
+    tank: "Accumulo",
+    dhw_target: "Acqua calda",
+    backup: "Resistenza integrativa",
     st_off: "Spento",
     st_on: "Acceso",
     st_unavailable: "Non disponibile",
@@ -870,6 +939,7 @@ const CA_I18N = {
     all_off: "Tutto è spento",
     nothing_on: "Niente acceso al momento",
     g_aircon: "Condizionatori",
+    g_heatpump: "Pompe di calore",
     g_purifier: "Purificatori",
     g_fan: "Ventilatori",
     no_area: "Nessuna area",
@@ -931,6 +1001,15 @@ const CA_I18N = {
     purifier: "Luchtreiniger",
     fan: "Ventilator",
     aircon: "Airconditioner",
+    heatpump: "Warmtepomp",
+    st_dhw: "Warm water",
+    st_heating: "Verwarmt",
+    st_cooling: "Koelt",
+    st_idle: "Inactief",
+    st_defrost: "Ontdooien",
+    tank: "Boiler",
+    dhw_target: "Warm water",
+    backup: "Bijverwarming",
     st_off: "Uit",
     st_on: "Aan",
     st_unavailable: "Niet beschikbaar",
@@ -1002,6 +1081,7 @@ const CA_I18N = {
     all_off: "Alles staat uit",
     nothing_on: "Er staat nu niets aan",
     g_aircon: "Airconditioners",
+    g_heatpump: "Warmtepompen",
     g_purifier: "Luchtreinigers",
     g_fan: "Ventilatoren",
     no_area: "Geen ruimte",
@@ -1063,6 +1143,15 @@ const CA_I18N = {
     purifier: "Purificador de ar",
     fan: "Ventoinha",
     aircon: "Ar condicionado",
+    heatpump: "Bomba de calor",
+    st_dhw: "Água quente",
+    st_heating: "A aquecer",
+    st_cooling: "A arrefecer",
+    st_idle: "Em espera",
+    st_defrost: "Descongelação",
+    tank: "Depósito",
+    dhw_target: "Água quente",
+    backup: "Resistência de apoio",
     st_off: "Desligado",
     st_on: "Ligado",
     st_unavailable: "Indisponível",
@@ -1134,6 +1223,7 @@ const CA_I18N = {
     all_off: "Está tudo desligado",
     nothing_on: "Nada ligado de momento",
     g_aircon: "Ares condicionados",
+    g_heatpump: "Bombas de calor",
     g_purifier: "Purificadores",
     g_fan: "Ventoinhas",
     no_area: "Sem área",
@@ -1195,6 +1285,15 @@ const CA_I18N = {
     purifier: "Oczyszczacz powietrza",
     fan: "Wentylator",
     aircon: "Klimatyzator",
+    heatpump: "Pompa ciepła",
+    st_dhw: "Ciepła woda",
+    st_heating: "Grzeje",
+    st_cooling: "Chłodzi",
+    st_idle: "Bezczynna",
+    st_defrost: "Odszranianie",
+    tank: "Zasobnik",
+    dhw_target: "Ciepła woda",
+    backup: "Grzałka wspomagająca",
     st_off: "Wyłączone",
     st_on: "Włączone",
     st_unavailable: "Niedostępne",
@@ -1266,6 +1365,7 @@ const CA_I18N = {
     all_off: "Wszystko wyłączone",
     nothing_on: "Nic nie jest teraz włączone",
     g_aircon: "Klimatyzatory",
+    g_heatpump: "Pompy ciepła",
     g_purifier: "Oczyszczacze",
     g_fan: "Wentylatory",
     no_area: "Bez obszaru",
@@ -1327,6 +1427,15 @@ const CA_I18N = {
     purifier: "Purificator de aer",
     fan: "Ventilator",
     aircon: "Aer condiționat",
+    heatpump: "Pompă de căldură",
+    st_dhw: "Apă caldă",
+    st_heating: "Încălzește",
+    st_cooling: "Răcește",
+    st_idle: "În așteptare",
+    st_defrost: "Degivrare",
+    tank: "Boiler",
+    dhw_target: "Apă caldă",
+    backup: "Rezistență de rezervă",
     st_off: "Oprit",
     st_on: "Pornit",
     st_unavailable: "Indisponibil",
@@ -1398,6 +1507,7 @@ const CA_I18N = {
     all_off: "Totul este oprit",
     nothing_on: "Nimic pornit acum",
     g_aircon: "Climatizoare",
+    g_heatpump: "Pompe de căldură",
     g_purifier: "Purificatoare de aer",
     g_fan: "Ventilatoare",
     no_area: "Fără zonă",
@@ -1459,6 +1569,15 @@ const CA_I18N = {
     purifier: "Luftrenser",
     fan: "Ventilator",
     aircon: "Klimaanlæg",
+    heatpump: "Varmepumpe",
+    st_dhw: "Varmt vand",
+    st_heating: "Varmer",
+    st_cooling: "Køler",
+    st_idle: "Inaktiv",
+    st_defrost: "Afrimning",
+    tank: "Beholder",
+    dhw_target: "Varmt vand",
+    backup: "Elpatron",
     st_off: "Slukket",
     st_on: "Tændt",
     st_unavailable: "Utilgængelig",
@@ -1530,6 +1649,7 @@ const CA_I18N = {
     all_off: "Alt er slukket",
     nothing_on: "Intet er tændt lige nu",
     g_aircon: "Klimaanlæg",
+    g_heatpump: "Varmepumper",
     g_purifier: "Luftrensere",
     g_fan: "Ventilatorer",
     no_area: "Intet område",
@@ -1591,6 +1711,15 @@ const CA_I18N = {
     purifier: "Luftrenare",
     fan: "Fläkt",
     aircon: "Luftkonditionering",
+    heatpump: "Värmepump",
+    st_dhw: "Varmvatten",
+    st_heating: "Värmer",
+    st_cooling: "Kyler",
+    st_idle: "Vilar",
+    st_defrost: "Avfrostning",
+    tank: "Tank",
+    dhw_target: "Varmvatten",
+    backup: "Elpatron",
     st_off: "Av",
     st_on: "På",
     st_unavailable: "Ej tillgänglig",
@@ -1662,6 +1791,7 @@ const CA_I18N = {
     all_off: "Allt är avstängt",
     nothing_on: "Inget är på just nu",
     g_aircon: "Luftkonditioneringar",
+    g_heatpump: "Värmepumpar",
     g_purifier: "Luftrenare",
     g_fan: "Fläktar",
     no_area: "Inget område",
@@ -1723,6 +1853,15 @@ const CA_I18N = {
     purifier: "Пречиствател на въздух",
     fan: "Вентилатор",
     aircon: "Климатик",
+    heatpump: "Термопомпа",
+    st_dhw: "Топла вода",
+    st_heating: "Отоплява",
+    st_cooling: "Охлажда",
+    st_idle: "В готовност",
+    st_defrost: "Размразяване",
+    tank: "Бойлер",
+    dhw_target: "Топла вода",
+    backup: "Допълнителен нагревател",
     st_off: "Изключен",
     st_on: "Включен",
     st_unavailable: "Недостъпен",
@@ -1794,6 +1933,7 @@ const CA_I18N = {
     all_off: "Всичко е изключено",
     nothing_on: "В момента нищо не е включено",
     g_aircon: "Климатици",
+    g_heatpump: "Термопомпи",
     g_purifier: "Пречистватели",
     g_fan: "Вентилатори",
     no_area: "Без област",
@@ -1855,6 +1995,15 @@ const CA_I18N = {
     purifier: "Очиститель воздуха",
     fan: "Вентилятор",
     aircon: "Кондиционер",
+    heatpump: "Тепловой насос",
+    st_dhw: "Горячая вода",
+    st_heating: "Нагрев",
+    st_cooling: "Охлаждение",
+    st_idle: "Ожидание",
+    st_defrost: "Оттаивание",
+    tank: "Бойлер",
+    dhw_target: "Горячая вода",
+    backup: "Резервный нагреватель",
     st_off: "Выключено",
     st_on: "Включено",
     st_unavailable: "Недоступно",
@@ -1926,6 +2075,7 @@ const CA_I18N = {
     all_off: "Всё выключено",
     nothing_on: "Сейчас ничего не включено",
     g_aircon: "Кондиционеры",
+    g_heatpump: "Тепловые насосы",
     g_purifier: "Очистители воздуха",
     g_fan: "Вентиляторы",
     no_area: "Без пространства",
@@ -1987,6 +2137,15 @@ const CA_I18N = {
     purifier: "Очищувач повітря",
     fan: "Вентилятор",
     aircon: "Кондиціонер",
+    heatpump: "Тепловий насос",
+    st_dhw: "Гаряча вода",
+    st_heating: "Нагрів",
+    st_cooling: "Охолодження",
+    st_idle: "Очікування",
+    st_defrost: "Відтавання",
+    tank: "Бойлер",
+    dhw_target: "Гаряча вода",
+    backup: "Резервний нагрівач",
     st_off: "Вимкнено",
     st_on: "Увімкнено",
     st_unavailable: "Недоступно",
@@ -2058,6 +2217,7 @@ const CA_I18N = {
     all_off: "Усе вимкнено",
     nothing_on: "Зараз нічого не ввімкнено",
     g_aircon: "Кондиціонери",
+    g_heatpump: "Теплові насоси",
     g_purifier: "Очищувачі повітря",
     g_fan: "Вентилятори",
     no_area: "Без приміщення",
@@ -2119,6 +2279,15 @@ const CA_I18N = {
     purifier: "Légtisztító",
     fan: "Ventilátor",
     aircon: "Klíma",
+    heatpump: "Hőszivattyú",
+    st_dhw: "Melegvíz",
+    st_heating: "Fűt",
+    st_cooling: "Hűt",
+    st_idle: "Készenlét",
+    st_defrost: "Leolvasztás",
+    tank: "Tároló",
+    dhw_target: "Melegvíz",
+    backup: "Kiegészítő fűtőpatron",
     st_off: "Ki",
     st_on: "Be",
     st_unavailable: "Nem elérhető",
@@ -2190,6 +2359,7 @@ const CA_I18N = {
     all_off: "Minden ki van kapcsolva",
     nothing_on: "Jelenleg semmi sincs bekapcsolva",
     g_aircon: "Klímák",
+    g_heatpump: "Hőszivattyúk",
     g_purifier: "Légtisztítók",
     g_fan: "Ventilátorok",
     no_area: "Nincs terület",
@@ -2251,6 +2421,15 @@ const CA_I18N = {
     purifier: "Čistička vzduchu",
     fan: "Ventilátor",
     aircon: "Klimatizácia",
+    heatpump: "Tepelné čerpadlo",
+    st_dhw: "Teplá voda",
+    st_heating: "Kúri",
+    st_cooling: "Chladí",
+    st_idle: "Nečinné",
+    st_defrost: "Odmrazovanie",
+    tank: "Zásobník",
+    dhw_target: "Teplá voda",
+    backup: "Záložné vykurovacie teleso",
     st_off: "Vypnuté",
     st_on: "Zapnuté",
     st_unavailable: "Nedostupné",
@@ -2322,6 +2501,7 @@ const CA_I18N = {
     all_off: "Všetko je vypnuté",
     nothing_on: "Momentálne nie je nič zapnuté",
     g_aircon: "Klimatizácie",
+    g_heatpump: "Tepelné čerpadlá",
     g_purifier: "Čističky vzduchu",
     g_fan: "Ventilátory",
     no_area: "Bez oblasti",
@@ -2383,6 +2563,15 @@ const CA_I18N = {
     purifier: "Čistička vzduchu",
     fan: "Ventilátor",
     aircon: "Klimatizace",
+    heatpump: "Tepelné čerpadlo",
+    st_dhw: "Teplá voda",
+    st_heating: "Topí",
+    st_cooling: "Chladí",
+    st_idle: "Nečinné",
+    st_defrost: "Odmrazování",
+    tank: "Zásobník",
+    dhw_target: "Teplá voda",
+    backup: "Záložní topné těleso",
     st_off: "Vypnuto",
     st_on: "Zapnuto",
     st_unavailable: "Nedostupné",
@@ -2454,6 +2643,7 @@ const CA_I18N = {
     all_off: "Vše je vypnuté",
     nothing_on: "Momentálně není nic zapnuté",
     g_aircon: "Klimatizace",
+    g_heatpump: "Tepelná čerpadla",
     g_purifier: "Čističky vzduchu",
     g_fan: "Ventilátory",
     no_area: "Bez oblasti",
@@ -2515,6 +2705,15 @@ const CA_I18N = {
     purifier: "Čistilnik zraka",
     fan: "Ventilator",
     aircon: "Klimatska naprava",
+    heatpump: "Toplotna črpalka",
+    st_dhw: "Topla voda",
+    st_heating: "Greje",
+    st_cooling: "Hladi",
+    st_idle: "V pripravljenosti",
+    st_defrost: "Odtaljevanje",
+    tank: "Hranilnik",
+    dhw_target: "Topla voda",
+    backup: "Dodatni grelnik",
     st_off: "Izklopljeno",
     st_on: "Vklopljeno",
     st_unavailable: "Ni na voljo",
@@ -2586,6 +2785,7 @@ const CA_I18N = {
     all_off: "Vse je izklopljeno",
     nothing_on: "Trenutno ni nič vklopljeno",
     g_aircon: "Klimatske naprave",
+    g_heatpump: "Toplotne črpalke",
     g_purifier: "Čistilniki zraka",
     g_fan: "Ventilatorji",
     no_area: "Brez območja",
@@ -2647,6 +2847,15 @@ const CA_I18N = {
     purifier: "Gaisa attīrītājs",
     fan: "Ventilators",
     aircon: "Gaisa kondicionieris",
+    heatpump: "Siltumsūknis",
+    st_dhw: "Karstais ūdens",
+    st_heating: "Silda",
+    st_cooling: "Dzesē",
+    st_idle: "Gaidstāve",
+    st_defrost: "Atkausēšana",
+    tank: "Tvertne",
+    dhw_target: "Karstais ūdens",
+    backup: "Rezerves sildītājs",
     st_off: "Izslēgts",
     st_on: "Ieslēgts",
     st_unavailable: "Nav pieejams",
@@ -2718,6 +2927,7 @@ const CA_I18N = {
     all_off: "Viss ir izslēgts",
     nothing_on: "Pašlaik nekas nav ieslēgts",
     g_aircon: "Gaisa kondicionieri",
+    g_heatpump: "Siltumsūkņi",
     g_purifier: "Gaisa attīrītāji",
     g_fan: "Ventilatori",
     no_area: "Bez apgabala",
@@ -2779,6 +2989,15 @@ const CA_I18N = {
     purifier: "Καθαριστής αέρα",
     fan: "Ανεμιστήρας",
     aircon: "Κλιματιστικό",
+    heatpump: "Αντλία θερμότητας",
+    st_dhw: "Ζεστό νερό",
+    st_heating: "Θερμαίνει",
+    st_cooling: "Ψύχει",
+    st_idle: "Σε αναμονή",
+    st_defrost: "Απόψυξη",
+    tank: "Δοχείο",
+    dhw_target: "Ζεστό νερό",
+    backup: "Βοηθητική αντίσταση",
     st_off: "Ανενεργό",
     st_on: "Ενεργό",
     st_unavailable: "Μη διαθέσιμο",
@@ -2850,6 +3069,7 @@ const CA_I18N = {
     all_off: "Όλα είναι ανενεργά",
     nothing_on: "Τίποτα ενεργό αυτή τη στιγμή",
     g_aircon: "Κλιματιστικά",
+    g_heatpump: "Αντλίες θερμότητας",
     g_purifier: "Καθαριστές αέρα",
     g_fan: "Ανεμιστήρες",
     no_area: "Χωρίς περιοχή",
@@ -3354,6 +3574,18 @@ const CA_ROLES = {
     domain: "sensor",
     id: /(?<!target_)(compressor_frequency|frequence_compresseur|kompressorfrequenz|frecuencia_del_compresor)$/,
   },
+  // Heat pumps (air to water): the hot water tank (a water_heater entity, else its temperature), the three-way valve
+  // sending the heat to the house or to the tank (TOUG's « aiguillage vanne », Aquarea's direction), the setpoint of a
+  // pump driven without a climate entity (TOUG's thermostat number), the backup heater and the defrost cycle.
+  dhw: { domain: "water_heater", test: () => true },
+  tank_temp: {
+    domain: "sensor",
+    id: /((tank|ballon|dhw|ecs|hot_water|eau_chaude|warmwasser|speicher|acs|sanitaire).*temp|temp.*(tank|ballon|dhw|ecs|acs|sanitaire|warmwasser))/,
+  },
+  valve: { domain: ["sensor", "select"], id: /(aiguillage|three_way|3_way|diverter|direction|vanne|valve|umschalt)/ },
+  setpoint: { domain: "number", id: /(thermostat|consigne|setpoint|target_temp|sollwert)/ },
+  backup: { domain: "binary_sensor", id: /(backup|appoint|booster|resistance|heizstab|electric_heater|aux)/ },
+  defrost: { domain: "binary_sensor", id: /(defrost|degivr|abtau|desescarche)/ },
 };
 
 // Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
@@ -3462,7 +3694,11 @@ function caDeviceName(hass, id) {
 // thermostat, a radiator, a radiator valve) is not, and is left to ha-heating-card.
 // A fan entity is an air purifier when its name says so or its device measures particles or has a filter.
 // The domain of the entities of a kind of device.
-const caDomain = (kind) => (kind === "aircon" ? "climate" : "fan");
+const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : "fan");
+
+// A climate entity is a heat pump (air to water) when its device has a hot water tank, or when its device says so.
+const CA_HP_NAME =
+  /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|arotherm|geotherm|nibe)/i;
 
 const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
 function caKindOf(hass, id) {
@@ -3471,8 +3707,22 @@ function caKindOf(hass, id) {
   return caMemo(hass, `kind:${id}`, () => {
     const domain = id.split(".")[0];
     if (domain === "climate") {
+      const dev = hass.devices?.[caDeviceOf(hass, id)];
+      const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
+      const own = caDeviceEntities(hass, caDeviceOf(hass, id));
+      if (own.some((e) => e.entity_id.startsWith("water_heater.")) || CA_HP_NAME.test(names)) return "heatpump";
       const modes = st.attributes.hvac_modes || [];
       return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
+    }
+    if (domain === "select") {
+      // A heat pump without a climate entity (TOUG): the select of its mode, on a device named as a heat pump that has
+      // no climate entity of its own.
+      if (!/mode/i.test(id) || !(st.attributes.options || []).some((o) => CA_HP_OFF.test(String(o).trim()))) return null;
+      const devId = caDeviceOf(hass, id);
+      const dev = hass.devices?.[devId];
+      const names = [dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
+      if (!devId || !CA_HP_NAME.test(names)) return null;
+      return caDeviceEntities(hass, devId).some((e) => e.entity_id.startsWith("climate.")) ? null : "heatpump";
     }
     if (domain !== "fan") return null;
     const dev = hass.devices?.[caDeviceOf(hass, id)];
@@ -3500,9 +3750,9 @@ function caRoleOf(hass, id, role) {
 function caFindEntities(hass, kind) {
   if (!hass?.states) return [];
   return caMemo(hass, `list:${kind}`, () => {
-    const domain = caDomain(kind);
+    const domains = [caDomain(kind)].flat();
     return Object.keys(hass.states)
-      .filter((id) => id.startsWith(`${domain}.`))
+      .filter((id) => domains.includes(id.split(".")[0]))
       .filter((id) => {
         const e = hass.entities?.[id];
         return !e?.hidden && !e?.entity_category && caKindOf(hass, id) === kind;
@@ -4142,7 +4392,8 @@ class CaCard extends CaElement {
     else if (d.humidity) send = () => this._call("climate", "set_humidity", { entity_id: id, humidity: Number(value) });
     else if (d.select) send = () => this._call("select", "select_option", { entity_id: d.select, option: value });
     else if (d.attrService) send = () => this._call(id.split(".")[0], d.attrService, { entity_id: id, [d.attr]: value });
-    else return;
+    else send = this._extraSend?.(d, value);
+    if (!send) return;
     if (this._pointer) {
       // A pointer is done with the control: the focus leaves it, so the card redraws (it does not while a dropdown or
       // a slider has the focus).
@@ -4324,14 +4575,26 @@ class CaClimateCard extends CaCard {
           f & CA_CLIMATE_PRESET ? this._selectAttr("preset_mode", "preset_modes", "set_preset_mode", this._t("preset_mode")) : "",
         ].filter(Boolean)
       : [];
-    const toggles = this._toggles(
+    const toggles = this._switchToggles(r);
+    const extra = this._toggles(this._extraOptions(m));
+    return (
+      this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._midSections(m) + this._options(toggles + extra)
+    );
+  }
+
+  // The device's other switches (eco, display, self clean…) as option toggles.
+  _switchToggles(r) {
+    return this._toggles(
       this._switches(r).map((id) => {
         const info = caSwitchInfo(id);
         return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
       }),
     );
-    const extra = this._toggles(this._extraOptions(m));
-    return this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._options(toggles + extra);
+  }
+
+  // Sections a kind adds between the controls and the options (the heat pump's hot water).
+  _midSections() {
+    return "";
   }
 
   // Buttons a kind adds at the end of the options (the air conditioner's filter reset).
@@ -4460,7 +4723,51 @@ class CaClimateCard extends CaCard {
   `;
 }
 
-const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "mdi:air-conditioner" };
+const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "mdi:air-conditioner", heatpump: "mdi:heat-pump-outline" };
+
+// ── Heat pumps ───────────────────────────────────────────────────────────────
+// What a heat pump does, from its climate entity (or, without one, the select of its mode: TOUG's « mode air ») and
+// the roles of its device, shared by its card and the overview tiles. `roleSt(role)` gives a role's state.
+//   phase: off, heat, cool or dhw (the valve sends the heat to the hot water tank); active: the compressor runs.
+const CA_HP_DHW_COLOR = "var(--state-water_heater-on-color, #ef9f27)";
+const CA_HP_DHW = /(ecs|dhw|hot.?water|eau.?chaude|sanitaire|warm.?wasser|\bacs\b|^water$|^tank$|ballon)/i;
+const CA_HP_COOL = /(clim|cool|froid|refroid|k[uü]hl|fr[ií]o|enfri)/i;
+const CA_HP_OFF = /^(off|arr[eê]t|stop|aus|apagado|spento)$/i;
+const CA_HP_IDLE = /(standby|veille|idle|repos|attente|^off$)/i;
+const caHpIsOn = (id, state) => (id.startsWith("climate.") ? state !== "off" : !CA_HP_OFF.test(String(state ?? "").trim()));
+
+function caHeatPumpState(id, st, roleSt) {
+  const a = st.attributes;
+  const climate = id.startsWith("climate.");
+  const mode = st.state;
+  const on = caHpIsOn(id, mode);
+  const valve = String(roleSt("valve")?.state ?? "");
+  const dhw = roleSt("dhw");
+  const defrost = on && roleSt("defrost")?.state === "on";
+  const backup = on && roleSt("backup")?.state === "on";
+  const freq = caNum(roleSt("compressor"));
+  const action = climate ? a.hvac_action : undefined;
+  const toTank = on && CA_HP_DHW.test(valve);
+  const cool = climate ? (action ? action === "cooling" : mode === "cool") : CA_HP_COOL.test(String(mode));
+  const idle = action ? ["idle", "off"].includes(action) : !toTank && CA_HP_IDLE.test(valve);
+  const active = on && (freq != null ? freq > 0 : toTank || !idle);
+  const phase = !on ? "off" : toTank ? "dhw" : cool ? "cool" : "heat";
+  const tankSt = dhw?.attributes.current_temperature != null ? Number(dhw.attributes.current_temperature) : caNum(roleSt("tank_temp"));
+  return {
+    on,
+    phase,
+    active,
+    defrost,
+    backup,
+    color: phase === "off" ? CA_IDLE : phase === "dhw" ? CA_HP_DHW_COLOR : CA_MODE_COLORS[phase],
+    tank: Number.isFinite(tankSt) ? tankSt : null,
+    tankTarget: dhw?.attributes.temperature != null ? Number(dhw.attributes.temperature) : null,
+    statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? "st_idle" : cool ? "st_cooling" : "st_heating",
+  };
+}
+
+// The tank's fill in the illustration (%): its temperature between 20 and 65 °C, half full when unknown.
+const caHpTankPct = (t) => (t == null ? 50 : Math.max(8, Math.min(100, ((t - 20) / 45) * 100)));
 
 // ── Mini cards ───────────────────────────────────────────────────────────────
 // A mini card is the full card drawn compact, like the ha-home-connect-card and ha-roborock-card mini cards: its
@@ -4837,8 +5144,8 @@ class CaCardEditor extends HTMLElement {
       show_subtitle: true,
       show_controls: true,
       show_sensors: true,
-      // The fan cards show no alert: no toggle for them.
-      ...(this.constructor.kind === "fan" ? {} : { show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING }),
+      // The fan and heat pump cards show no filter alert: no toggle for them.
+      ...(CA_NO_FILTER.includes(this.constructor.kind) ? {} : { show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING }),
       ...(CA_ILLUSTRATIONS[this.constructor.kind] ? { illustration: "auto" } : {}),
       ...(this.constructor.mini ? { zoom: true } : {}),
     };
@@ -4855,7 +5162,8 @@ class CaCardEditor extends HTMLElement {
     const lang = caLang(this._config, this._hass);
     const variants = CA_ILLUSTRATIONS[kind] || [];
     return [
-      { name: "entity", selector: { entity: ids.length ? { include_entities: ids } : { domain } } },
+      // A heat pump without a climate entity is driven by the select of its mode (TOUG): both domains are offered.
+      { name: "entity", selector: { entity: kind === "heatpump" ? { domain: ["climate", "select"] } : ids.length ? { include_entities: ids } : { domain } } },
       { type: "grid", name: "", schema: [{ name: "name", selector: { text: {} } }, { name: "icon", selector: { icon: {} } }] },
       ...(variants.length
         ? [
@@ -4875,11 +5183,11 @@ class CaCardEditor extends HTMLElement {
           { name: "show_subtitle", selector: { boolean: {} } },
           { name: "show_controls", selector: { boolean: {} } },
           { name: "show_sensors", selector: { boolean: {} } },
-          ...(kind === "fan" ? [] : [{ name: "show_alerts", selector: { boolean: {} } }, { name: "show_filter", selector: { boolean: {} } }]),
+          ...(CA_NO_FILTER.includes(kind) ? [] : [{ name: "show_alerts", selector: { boolean: {} } }, { name: "show_filter", selector: { boolean: {} } }]),
           ...(this.constructor.mini ? [{ name: "zoom", selector: { boolean: {} } }] : []),
         ],
       },
-      ...(kind === "fan"
+      ...(CA_NO_FILTER.includes(kind)
         ? []
         : [{ name: "filter_warning", selector: { number: { min: CA_FILTER_REPLACE, max: 50, step: 1, mode: "box", unit_of_measurement: "%" } } }]),
       ...caAdvanced(caLang(this._config, this._hass), "language", "entities"),
@@ -4919,6 +5227,9 @@ class CaCardEditor extends HTMLElement {
     this.dispatchEvent(new CustomEvent("config-changed", { detail: { config: this._config }, bubbles: true, composed: true }));
   }
 }
+
+// The kinds of device without a filter (no filter options in their editor).
+const CA_NO_FILTER = ["fan", "heatpump"];
 
 // Illustration variants of each kind of device (the first is the fallback).
 const CA_ILLUSTRATIONS = { purifier: ["tower", "cylinder", "box", "dyson"], aircon: ["split", "portable", "window"] };

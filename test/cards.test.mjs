@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { makeHass } from "./hass.mjs";
 import { load, mount } from "./load.mjs";
+import { addToug } from "./toug.mjs";
 
 const lib = load();
 const html = (el) => el.shadowRoot.innerHTML;
@@ -11,7 +12,7 @@ test("every card and its editor are registered", () => {
     assert.ok(cls, tag);
     assert.ok(lib.customElements.get(`${tag}-editor`), `${tag}-editor`);
   }
-  assert.equal(lib.window.customCards.length, 7);
+  assert.equal(lib.window.customCards.length, 9);
   assert.ok(!lib.customElements.get("climate-air-thermostat-card"), "the thermostat card moved to ha-heating-card");
 });
 
@@ -126,6 +127,77 @@ test("air conditioner: a pending target is sent right away when the card is deta
   t.mock.timers.tick(1000);
   await Promise.resolve();
   assert.equal(h.calls.length, 1); // the debounce timer was cancelled, nothing is sent twice
+});
+
+test("heat pump: found by its hot water tank, with its temperatures, tank, modes and hot water controls", () => {
+  const h = makeHass("fr");
+  const el = mount(lib, "climate-air-heatpump-card", {}, h);
+  const out = html(el);
+  assert.equal(el._r.id, "climate.heat_pump");
+  assert.match(out, /class="picture k-heatpump st-heat running ph-heat active"/);
+  assert.match(out, /20,5<small> °C/);
+  assert.match(out, /Ballon 52 °C → 55 °C/);
+  assert.match(out, /Extérieur 4 °C/);
+  assert.match(out, /<span class="stt">Chauffe</);
+  assert.match(out, /data-dhw="water_heater\.heat_pump_hot_water"/);
+  assert.match(out, /class="seg on" data-action="dhwop" data-value="heat_pump"/);
+  el._action("dhwop", "eco");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["water_heater", "set_operation_mode", { entity_id: "water_heater.heat_pump_hot_water", operation_mode: "eco" }]);
+  // Not an air conditioner, even though it can cool.
+  assert.equal(mount(lib, "climate-air-aircon-card", {}, makeHass())._r.id, "climate.air_conditioner");
+});
+
+test("heat pump: hot water through the valve, defrost and the backup heater", () => {
+  const h = makeHass("en", {
+    "sensor.heat_pump_three_way_valve": { state: "Domestic hot water" },
+    "binary_sensor.heat_pump_defrost": { state: "on" },
+    "binary_sensor.heat_pump_backup_heater": { state: "on" },
+  });
+  const out = html(mount(lib, "climate-air-heatpump-card", { entity: "climate.heat_pump" }, h));
+  assert.match(out, /class="picture k-heatpump st-dhw running ph-dhw active defrost"/);
+  assert.match(out, /<span class="stt">Defrosting</);
+  assert.match(out, /Backup heater/);
+  const off = html(mount(lib, "climate-air-heatpump-card", { entity: "climate.heat_pump" }, makeHass("en", { "climate.heat_pump": { state: "off", hvac_action: "off" } })));
+  assert.match(off, /class="picture k-heatpump st-off ph-off"/);
+});
+
+test("heat pump: TOUG (T.One) driven by the select of its mode, found without a climate entity", () => {
+  const h = addToug(makeHass("fr"));
+  const el = mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, h);
+  const out = html(el);
+  assert.match(out, /<div class="name">T\.One AquaAir</);
+  assert.match(out, /Séjour · Confort/);
+  assert.match(out, /20,8<small> °C/);
+  assert.match(out, /Ballon 48 °C/);
+  assert.match(out, /class="seg on" data-action="hpmode" data-value="Confort"/);
+  assert.match(out, /data-number="number\.t_one_thermostat"/);
+  el._action("hpmode", "Boost");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Boost" }]);
+  // Off is its « Off » option; on goes back to the last mode it ran in.
+  el._action("power");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Off" }]);
+  h.states["select.t_one_mode_air"] = { ...h.states["select.t_one_mode_air"], state: "Off" };
+  el.hass = { ...h };
+  el._action("power");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Confort" }]);
+  // The valve on the hot water tank (« ECS »).
+  assert.match(html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, addToug(makeHass("fr"), { valve: "ECS" }))), /ph-dhw/);
+  // The overview finds it, with the Daikin one, under heat pumps; a select of another device is not one.
+  const ov = overview({ zoom: false }, h).body;
+  assert.match(ov, /data-id="select\.t_one_mode_air"/);
+  assert.doesNotMatch(ov, /select\.(?!t_one_mode_air)/);
+});
+
+test("heat pump mini card: temperature, tank and outdoor temperature; a select-driven one turns on from its card", () => {
+  const h = addToug(makeHass("fr"), { mode: "Off" });
+  const el = mount(lib, "climate-air-heatpump-mini-card", { entity: "select.t_one_mode_air" }, h);
+  const out = html(el);
+  assert.match(out, /k-heatpump st-off ph-off/);
+  assert.match(out, /<b>20,8 °C<\/b>/);
+  assert.match(out, /Ballon 48 °C/);
+  assert.match(out, /Extérieur 6 °C/);
+  el._action("power");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Confort" }]);
 });
 
 test("overview: a heat-only thermostat is left out, found or added under include; a type set under devices keeps it", () => {
@@ -348,11 +420,11 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /5 on/);
+  assert.match(head, /6 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
-  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Air conditioners", "Air purifiers", "Fans"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Heat pumps", "Air conditioners", "Air purifiers", "Fans"]);
 });
 
 test("overview: the detail button shows every device; zoom: false always does", () => {
@@ -371,14 +443,14 @@ test("overview: exclude, include and group by area", () => {
   const { body } = overview({ zoom: false, exclude: ["fan.office_fan_fan"], include: ["fan.hidden_fan"], group_by: "area" }, h);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /fan\.hidden_fan/);
-  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "No area"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Bedroom", "Living room", "Office", "No area"]);
   // The heading shows the area's own icon from the registry, mdi:texture-box without one, help-circle without an area.
-  assert.deepEqual([...body.matchAll(/class="group"><ha-icon icon="([^"]+)"/g)].map((m) => m[1]), ["mdi:bed", "mdi:sofa", "mdi:help-circle-outline"]);
+  assert.deepEqual([...body.matchAll(/class="group"><ha-icon icon="([^"]+)"/g)].map((m) => m[1]), ["mdi:bed", "mdi:sofa", "mdi:texture-box", "mdi:help-circle-outline"]);
   const office = overview({ zoom: false, group_by: "area" }).body;
   assert.match(office, /<ha-icon icon="mdi:texture-box"><\/ha-icon><span>Office</);
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
   const names = [...body.matchAll(/class="name"[^>]*>([^<]+)</g)].map((m) => m[1]);
-  assert.ok(names.every((n) => ["Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
+  assert.ok(names.every((n) => ["Heat pump", "Air conditioner", "Air purifier", "Fan"].includes(n)), names.join(", "));
   const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Bedroom air" }] }).body;
   assert.match(grouped, /class="name"[^>]*>Bedroom air</);
 });
@@ -412,7 +484,7 @@ test("overview: an area icon with markup in it stays inert in the group heading"
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {
   const spans = (body) => [...body.matchAll(/class="grp" style="--span:(\d+)"/g)].map((m) => Number(m[1]));
-  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 2, 2]);
+  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 1, 2, 2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none" }).body), [2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [6]);
 });
@@ -475,19 +547,21 @@ test("overview editor: device types and devices as sections, written back as ill
   const schema = ed._form.schema;
   const kinds = schema.find((s) => s.name === "kinds");
   assert.deepEqual(json(kinds.schema.map((k) => [k.name, k.title, k.schema.map((f) => f.name)])), [
+    ["heatpump", "Pompes à chaleur", ["icon"]],
     ["aircon", "Climatiseurs", ["illustration", "icon"]],
     ["purifier", "Purificateurs", ["illustration", "icon"]],
     ["fan", "Ventilateurs", ["icon"]],
   ]);
   const devs = schema.find((s) => s.name === "devs");
   assert.deepEqual(json(devs.schema.map((d) => [d.name, d.title])), [
+    ["climate.heat_pump", "Pompe à chaleur"],
     ["climate.air_conditioner", "Climatiseur"],
     ["fan.dyson_pure_cool", "Dyson Pure Cool"],
     ["fan.bedroom_purifier", "Purificateur chambre"],
     ["fan.living_room_purifier_air_purifier", "Purificateur séjour"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
   ]);
-  assert.deepEqual(json(devs.schema[4].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[5].schema.map((f) => f.name)), ["name", "type", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;
