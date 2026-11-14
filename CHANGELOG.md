@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.0 - 2026-11-14
+
+### Features
+- **Humidifier card**: new `custom:climate-air-humidifier-card` and `custom:climate-air-humidifier-mini-card` for humidifiers, dehumidifiers and essential oil diffusers (`humidifier` entities). Room humidity and target, modes, target humidity slider, water tank (or bucket) level, *Water tank empty* / *Bucket full* alerts, filter, light, child lock and other switches. Status *Humidifying*, *Drying* or *Diffusing*.
+- **Large animated illustrations**, picked from the device (`device_class`, model, name) or set with `illustration`: ultrasonic column, clear tank, evaporative, VOCOlinc MistFlow, VOCOlinc FlowerBud essential oil diffuser and dehumidifier (drops falling into its bucket). Mist rises, the tank's water waves and turns red once nearly empty; the VOCOlinc shapes are lit in the colour of the device's light.
+- **VOCOlinc FlowerBud** (HomeKit Device): recognised from its model, status *Diffusing*, no humidity target, its *Spray quantity* as a *Mist intensity* slider, and a *Mood light* section (on / off, brightness, colour swatches) usable while the diffuser is off; its cone takes the light's colour and brightness.
+- **Overview**: humidifiers, dehumidifiers and diffusers in a *Humidity* group, labelled as what they are when grouped by area, with their empty tank or full bucket flagged on the tile.
+
 ## 2.3.1 - 2026-11-14
 
 ### Fixes

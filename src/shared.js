@@ -13,6 +13,26 @@ const CA_I18N = {
     fan: "Fan",
     aircon: "Air conditioner",
     heatpump: "Heat pump",
+    humidifier: "Humidifier",
+    dehumidifier: "Dehumidifier",
+    g_humidifier: "Humidity",
+    st_humidifying: "Humidifying",
+    st_drying: "Drying",
+    st_diffusing: "Diffusing",
+    spray: "Mist intensity",
+    mood_light: "Mood light",
+    light_level: "Brightness",
+    color: "Colour",
+    tank_level: "Water tank",
+    bucket: "Bucket",
+    tank_empty: "Water tank empty",
+    bucket_full: "Bucket full",
+    ill_column: "Ultrasonic column",
+    ill_tank: "Clear tank",
+    ill_evaporative: "Evaporative",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Essential oil diffuser",
+    ill_dehumidifier: "Dehumidifier",
     st_dhw: "Hot water",
     st_heating: "Heating",
     st_cooling: "Cooling",
@@ -154,6 +174,26 @@ const CA_I18N = {
     fan: "Ventilateur",
     aircon: "Climatiseur",
     heatpump: "Pompe à chaleur",
+    humidifier: "Humidificateur",
+    dehumidifier: "Déshumidificateur",
+    g_humidifier: "Humidité",
+    st_humidifying: "Humidifie",
+    st_drying: "Déshumidifie",
+    st_diffusing: "Diffuse",
+    spray: "Intensité de diffusion",
+    mood_light: "Lumière d'ambiance",
+    light_level: "Luminosité",
+    color: "Couleur",
+    tank_level: "Réservoir",
+    bucket: "Bac",
+    tank_empty: "Réservoir vide",
+    bucket_full: "Bac plein",
+    ill_column: "Colonne à ultrasons",
+    ill_tank: "Réservoir transparent",
+    ill_evaporative: "Évaporatif",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Diffuseur d'huiles essentielles",
+    ill_dehumidifier: "Déshumidificateur",
     st_dhw: "Eau chaude",
     st_heating: "Chauffe",
     st_cooling: "Refroidit",
@@ -296,6 +336,26 @@ const CA_I18N = {
     fan: "Ventilator",
     aircon: "Klimaanlage",
     heatpump: "Wärmepumpe",
+    humidifier: "Luftbefeuchter",
+    dehumidifier: "Luftentfeuchter",
+    g_humidifier: "Luftfeuchte",
+    st_humidifying: "Befeuchtet",
+    st_drying: "Entfeuchtet",
+    st_diffusing: "Verströmt",
+    spray: "Sprühintensität",
+    mood_light: "Stimmungslicht",
+    light_level: "Helligkeit",
+    color: "Farbe",
+    tank_level: "Wassertank",
+    bucket: "Wasserbehälter",
+    tank_empty: "Wassertank leer",
+    bucket_full: "Behälter voll",
+    ill_column: "Ultraschallsäule",
+    ill_tank: "Transparenter Tank",
+    ill_evaporative: "Verdunster",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Aromadiffusor",
+    ill_dehumidifier: "Luftentfeuchter",
     st_dhw: "Warmwasser",
     st_heating: "Heizt",
     st_cooling: "Kühlt",
@@ -437,6 +497,26 @@ const CA_I18N = {
     fan: "Ventilador",
     aircon: "Aire acondicionado",
     heatpump: "Bomba de calor",
+    humidifier: "Humidificador",
+    dehumidifier: "Deshumidificador",
+    g_humidifier: "Humedad",
+    st_humidifying: "Humidificando",
+    st_drying: "Deshumidificando",
+    st_diffusing: "Difundiendo",
+    spray: "Intensidad de difusión",
+    mood_light: "Luz ambiental",
+    light_level: "Brillo",
+    color: "Color",
+    tank_level: "Depósito",
+    bucket: "Cubeta",
+    tank_empty: "Depósito vacío",
+    bucket_full: "Cubeta llena",
+    ill_column: "Columna ultrasónica",
+    ill_tank: "Depósito transparente",
+    ill_evaporative: "Evaporativo",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Difusor de aceites esenciales",
+    ill_dehumidifier: "Deshumidificador",
     st_dhw: "Agua caliente",
     st_heating: "Calentando",
     st_cooling: "Enfriando",
@@ -578,6 +658,26 @@ const CA_I18N = {
     fan: "Вентилатор",
     aircon: "Клима уређај",
     heatpump: "Топлотна пумпа",
+    humidifier: "Овлаживач ваздуха",
+    dehumidifier: "Одвлаживач ваздуха",
+    g_humidifier: "Влажност",
+    st_humidifying: "Овлажује",
+    st_drying: "Одвлажује",
+    st_diffusing: "Распршује",
+    spray: "Јачина распршивања",
+    mood_light: "Амбијентално светло",
+    light_level: "Осветљеност",
+    color: "Боја",
+    tank_level: "Резервоар",
+    bucket: "Посуда",
+    tank_empty: "Резервоар је празан",
+    bucket_full: "Посуда је пуна",
+    ill_column: "Ултразвучни стуб",
+    ill_tank: "Провидни резервоар",
+    ill_evaporative: "Испаривачки",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Дифузер етеричних уља",
+    ill_dehumidifier: "Одвлаживач ваздуха",
     st_dhw: "Топла вода",
     st_heating: "Греје",
     st_cooling: "Хлади",
@@ -719,6 +819,26 @@ const CA_I18N = {
     fan: "Ventilator",
     aircon: "Klima uređaj",
     heatpump: "Toplotna pumpa",
+    humidifier: "Ovlaživač vazduha",
+    dehumidifier: "Odvlaživač vazduha",
+    g_humidifier: "Vlažnost",
+    st_humidifying: "Ovlažuje",
+    st_drying: "Odvlažuje",
+    st_diffusing: "Raspršuje",
+    spray: "Jačina raspršivanja",
+    mood_light: "Ambijentalno svetlo",
+    light_level: "Osvetljenost",
+    color: "Boja",
+    tank_level: "Rezervoar",
+    bucket: "Posuda",
+    tank_empty: "Rezervoar je prazan",
+    bucket_full: "Posuda je puna",
+    ill_column: "Ultrazvučni stub",
+    ill_tank: "Providni rezervoar",
+    ill_evaporative: "Isparivački",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Difuzer eteričnih ulja",
+    ill_dehumidifier: "Odvlaživač vazduha",
     st_dhw: "Topla voda",
     st_heating: "Greje",
     st_cooling: "Hladi",
@@ -860,6 +980,26 @@ const CA_I18N = {
     fan: "Ventilatore",
     aircon: "Condizionatore",
     heatpump: "Pompa di calore",
+    humidifier: "Umidificatore",
+    dehumidifier: "Deumidificatore",
+    g_humidifier: "Umidità",
+    st_humidifying: "Umidifica",
+    st_drying: "Deumidifica",
+    st_diffusing: "Diffonde",
+    spray: "Intensità di diffusione",
+    mood_light: "Luce d'atmosfera",
+    light_level: "Luminosità",
+    color: "Colore",
+    tank_level: "Serbatoio",
+    bucket: "Tanica",
+    tank_empty: "Serbatoio vuoto",
+    bucket_full: "Tanica piena",
+    ill_column: "Colonna a ultrasuoni",
+    ill_tank: "Serbatoio trasparente",
+    ill_evaporative: "Evaporativo",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Diffusore di oli essenziali",
+    ill_dehumidifier: "Deumidificatore",
     st_dhw: "Acqua calda",
     st_heating: "Riscalda",
     st_cooling: "Raffresca",
@@ -1002,6 +1142,26 @@ const CA_I18N = {
     fan: "Ventilator",
     aircon: "Airconditioner",
     heatpump: "Warmtepomp",
+    humidifier: "Luchtbevochtiger",
+    dehumidifier: "Luchtontvochtiger",
+    g_humidifier: "Luchtvochtigheid",
+    st_humidifying: "Bevochtigt",
+    st_drying: "Ontvochtigt",
+    st_diffusing: "Verspreidt",
+    spray: "Vernevelingsintensiteit",
+    mood_light: "Sfeerlicht",
+    light_level: "Helderheid",
+    color: "Kleur",
+    tank_level: "Waterreservoir",
+    bucket: "Opvangbak",
+    tank_empty: "Waterreservoir leeg",
+    bucket_full: "Opvangbak vol",
+    ill_column: "Ultrasone zuil",
+    ill_tank: "Doorzichtig reservoir",
+    ill_evaporative: "Verdamper",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Aromadiffuser",
+    ill_dehumidifier: "Luchtontvochtiger",
     st_dhw: "Warm water",
     st_heating: "Verwarmt",
     st_cooling: "Koelt",
@@ -1144,6 +1304,26 @@ const CA_I18N = {
     fan: "Ventoinha",
     aircon: "Ar condicionado",
     heatpump: "Bomba de calor",
+    humidifier: "Humidificador",
+    dehumidifier: "Desumidificador",
+    g_humidifier: "Humidade",
+    st_humidifying: "A humidificar",
+    st_drying: "A desumidificar",
+    st_diffusing: "A difundir",
+    spray: "Intensidade de difusão",
+    mood_light: "Luz ambiente",
+    light_level: "Brilho",
+    color: "Cor",
+    tank_level: "Depósito",
+    bucket: "Depósito de água",
+    tank_empty: "Depósito vazio",
+    bucket_full: "Depósito cheio",
+    ill_column: "Coluna ultrassónica",
+    ill_tank: "Depósito transparente",
+    ill_evaporative: "Evaporativo",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Difusor de óleos essenciais",
+    ill_dehumidifier: "Desumidificador",
     st_dhw: "Água quente",
     st_heating: "A aquecer",
     st_cooling: "A arrefecer",
@@ -1286,6 +1466,26 @@ const CA_I18N = {
     fan: "Wentylator",
     aircon: "Klimatyzator",
     heatpump: "Pompa ciepła",
+    humidifier: "Nawilżacz",
+    dehumidifier: "Osuszacz",
+    g_humidifier: "Wilgotność",
+    st_humidifying: "Nawilża",
+    st_drying: "Osusza",
+    st_diffusing: "Rozprasza",
+    spray: "Intensywność mgiełki",
+    mood_light: "Światło nastrojowe",
+    light_level: "Jasność",
+    color: "Kolor",
+    tank_level: "Zbiornik",
+    bucket: "Pojemnik",
+    tank_empty: "Zbiornik pusty",
+    bucket_full: "Pojemnik pełny",
+    ill_column: "Kolumna ultradźwiękowa",
+    ill_tank: "Przezroczysty zbiornik",
+    ill_evaporative: "Ewaporacyjny",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Dyfuzor olejków eterycznych",
+    ill_dehumidifier: "Osuszacz",
     st_dhw: "Ciepła woda",
     st_heating: "Grzeje",
     st_cooling: "Chłodzi",
@@ -1428,6 +1628,26 @@ const CA_I18N = {
     fan: "Ventilator",
     aircon: "Aer condiționat",
     heatpump: "Pompă de căldură",
+    humidifier: "Umidificator",
+    dehumidifier: "Dezumidificator",
+    g_humidifier: "Umiditate",
+    st_humidifying: "Umidifică",
+    st_drying: "Dezumidifică",
+    st_diffusing: "Difuzează",
+    spray: "Intensitatea difuzării",
+    mood_light: "Lumină ambientală",
+    light_level: "Luminozitate",
+    color: "Culoare",
+    tank_level: "Rezervor",
+    bucket: "Recipient",
+    tank_empty: "Rezervor gol",
+    bucket_full: "Recipient plin",
+    ill_column: "Coloană cu ultrasunete",
+    ill_tank: "Rezervor transparent",
+    ill_evaporative: "Evaporativ",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Difuzor de uleiuri esențiale",
+    ill_dehumidifier: "Dezumidificator",
     st_dhw: "Apă caldă",
     st_heating: "Încălzește",
     st_cooling: "Răcește",
@@ -1570,6 +1790,26 @@ const CA_I18N = {
     fan: "Ventilator",
     aircon: "Klimaanlæg",
     heatpump: "Varmepumpe",
+    humidifier: "Luftfugter",
+    dehumidifier: "Affugter",
+    g_humidifier: "Luftfugtighed",
+    st_humidifying: "Fugter",
+    st_drying: "Affugter",
+    st_diffusing: "Spreder duft",
+    spray: "Tågeintensitet",
+    mood_light: "Stemningslys",
+    light_level: "Lysstyrke",
+    color: "Farve",
+    tank_level: "Vandtank",
+    bucket: "Beholder",
+    tank_empty: "Vandtank tom",
+    bucket_full: "Beholder fuld",
+    ill_column: "Ultralydssøjle",
+    ill_tank: "Gennemsigtig tank",
+    ill_evaporative: "Fordampning",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Aromadiffuser",
+    ill_dehumidifier: "Affugter",
     st_dhw: "Varmt vand",
     st_heating: "Varmer",
     st_cooling: "Køler",
@@ -1712,6 +1952,26 @@ const CA_I18N = {
     fan: "Fläkt",
     aircon: "Luftkonditionering",
     heatpump: "Värmepump",
+    humidifier: "Luftfuktare",
+    dehumidifier: "Avfuktare",
+    g_humidifier: "Luftfuktighet",
+    st_humidifying: "Fuktar",
+    st_drying: "Avfuktar",
+    st_diffusing: "Sprider doft",
+    spray: "Dimintensitet",
+    mood_light: "Stämningsljus",
+    light_level: "Ljusstyrka",
+    color: "Färg",
+    tank_level: "Vattentank",
+    bucket: "Behållare",
+    tank_empty: "Vattentank tom",
+    bucket_full: "Behållare full",
+    ill_column: "Ultraljudspelare",
+    ill_tank: "Genomskinlig tank",
+    ill_evaporative: "Avdunstning",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Doftspridare",
+    ill_dehumidifier: "Avfuktare",
     st_dhw: "Varmvatten",
     st_heating: "Värmer",
     st_cooling: "Kyler",
@@ -1854,6 +2114,26 @@ const CA_I18N = {
     fan: "Вентилатор",
     aircon: "Климатик",
     heatpump: "Термопомпа",
+    humidifier: "Овлажнител",
+    dehumidifier: "Изсушител",
+    g_humidifier: "Влажност",
+    st_humidifying: "Овлажнява",
+    st_drying: "Изсушава",
+    st_diffusing: "Разпръсква",
+    spray: "Интензитет на разпръскване",
+    mood_light: "Амбиентна светлина",
+    light_level: "Яркост",
+    color: "Цвят",
+    tank_level: "Резервоар",
+    bucket: "Съд",
+    tank_empty: "Резервоарът е празен",
+    bucket_full: "Съдът е пълен",
+    ill_column: "Ултразвукова колона",
+    ill_tank: "Прозрачен резервоар",
+    ill_evaporative: "Изпарителен",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Дифузер за етерични масла",
+    ill_dehumidifier: "Изсушител",
     st_dhw: "Топла вода",
     st_heating: "Отоплява",
     st_cooling: "Охлажда",
@@ -1996,6 +2276,26 @@ const CA_I18N = {
     fan: "Вентилятор",
     aircon: "Кондиционер",
     heatpump: "Тепловой насос",
+    humidifier: "Увлажнитель",
+    dehumidifier: "Осушитель",
+    g_humidifier: "Влажность",
+    st_humidifying: "Увлажняет",
+    st_drying: "Осушает",
+    st_diffusing: "Распыляет",
+    spray: "Интенсивность распыления",
+    mood_light: "Атмосферная подсветка",
+    light_level: "Яркость",
+    color: "Цвет",
+    tank_level: "Бак",
+    bucket: "Резервуар",
+    tank_empty: "Бак пуст",
+    bucket_full: "Резервуар полон",
+    ill_column: "Ультразвуковая колонна",
+    ill_tank: "Прозрачный бак",
+    ill_evaporative: "Испарительный",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Аромадиффузор",
+    ill_dehumidifier: "Осушитель",
     st_dhw: "Горячая вода",
     st_heating: "Нагрев",
     st_cooling: "Охлаждение",
@@ -2138,6 +2438,26 @@ const CA_I18N = {
     fan: "Вентилятор",
     aircon: "Кондиціонер",
     heatpump: "Тепловий насос",
+    humidifier: "Зволожувач",
+    dehumidifier: "Осушувач",
+    g_humidifier: "Вологість",
+    st_humidifying: "Зволожує",
+    st_drying: "Осушує",
+    st_diffusing: "Розпилює",
+    spray: "Інтенсивність розпилення",
+    mood_light: "Атмосферне підсвічування",
+    light_level: "Яскравість",
+    color: "Колір",
+    tank_level: "Бак",
+    bucket: "Резервуар",
+    tank_empty: "Бак порожній",
+    bucket_full: "Резервуар повний",
+    ill_column: "Ультразвукова колона",
+    ill_tank: "Прозорий бак",
+    ill_evaporative: "Випарний",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Аромадифузор",
+    ill_dehumidifier: "Осушувач",
     st_dhw: "Гаряча вода",
     st_heating: "Нагрів",
     st_cooling: "Охолодження",
@@ -2280,6 +2600,26 @@ const CA_I18N = {
     fan: "Ventilátor",
     aircon: "Klíma",
     heatpump: "Hőszivattyú",
+    humidifier: "Párásító",
+    dehumidifier: "Párátlanító",
+    g_humidifier: "Páratartalom",
+    st_humidifying: "Párásít",
+    st_drying: "Párátlanít",
+    st_diffusing: "Illatosít",
+    spray: "Párásítás erőssége",
+    mood_light: "Hangulatfény",
+    light_level: "Fényerő",
+    color: "Szín",
+    tank_level: "Víztartály",
+    bucket: "Gyűjtőtartály",
+    tank_empty: "Víztartály üres",
+    bucket_full: "Gyűjtőtartály tele",
+    ill_column: "Ultrahangos oszlop",
+    ill_tank: "Átlátszó tartály",
+    ill_evaporative: "Párologtató",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Aromadiffúzor",
+    ill_dehumidifier: "Párátlanító",
     st_dhw: "Melegvíz",
     st_heating: "Fűt",
     st_cooling: "Hűt",
@@ -2422,6 +2762,26 @@ const CA_I18N = {
     fan: "Ventilátor",
     aircon: "Klimatizácia",
     heatpump: "Tepelné čerpadlo",
+    humidifier: "Zvlhčovač",
+    dehumidifier: "Odvlhčovač",
+    g_humidifier: "Vlhkosť",
+    st_humidifying: "Zvlhčuje",
+    st_drying: "Odvlhčuje",
+    st_diffusing: "Rozptyľuje",
+    spray: "Intenzita rozprašovania",
+    mood_light: "Náladové svetlo",
+    light_level: "Jas",
+    color: "Farba",
+    tank_level: "Nádrž",
+    bucket: "Zásobník",
+    tank_empty: "Nádrž prázdna",
+    bucket_full: "Zásobník plný",
+    ill_column: "Ultrazvukový stĺp",
+    ill_tank: "Priehľadná nádrž",
+    ill_evaporative: "Odparovací",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Aróma difuzér",
+    ill_dehumidifier: "Odvlhčovač",
     st_dhw: "Teplá voda",
     st_heating: "Kúri",
     st_cooling: "Chladí",
@@ -2564,6 +2924,26 @@ const CA_I18N = {
     fan: "Ventilátor",
     aircon: "Klimatizace",
     heatpump: "Tepelné čerpadlo",
+    humidifier: "Zvlhčovač",
+    dehumidifier: "Odvlhčovač",
+    g_humidifier: "Vlhkost",
+    st_humidifying: "Zvlhčuje",
+    st_drying: "Odvlhčuje",
+    st_diffusing: "Rozptyluje",
+    spray: "Intenzita rozprašování",
+    mood_light: "Náladové světlo",
+    light_level: "Jas",
+    color: "Barva",
+    tank_level: "Nádrž",
+    bucket: "Zásobník",
+    tank_empty: "Nádrž prázdná",
+    bucket_full: "Zásobník plný",
+    ill_column: "Ultrazvukový sloup",
+    ill_tank: "Průhledná nádrž",
+    ill_evaporative: "Odpařovací",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Aroma difuzér",
+    ill_dehumidifier: "Odvlhčovač",
     st_dhw: "Teplá voda",
     st_heating: "Topí",
     st_cooling: "Chladí",
@@ -2706,6 +3086,26 @@ const CA_I18N = {
     fan: "Ventilator",
     aircon: "Klimatska naprava",
     heatpump: "Toplotna črpalka",
+    humidifier: "Vlažilnik",
+    dehumidifier: "Razvlažilnik",
+    g_humidifier: "Vlažnost",
+    st_humidifying: "Vlaži",
+    st_drying: "Razvlažuje",
+    st_diffusing: "Razpršuje",
+    spray: "Jakost razprševanja",
+    mood_light: "Ambientalna luč",
+    light_level: "Svetlost",
+    color: "Barva",
+    tank_level: "Rezervoar",
+    bucket: "Posoda",
+    tank_empty: "Rezervoar je prazen",
+    bucket_full: "Posoda je polna",
+    ill_column: "Ultrazvočni steber",
+    ill_tank: "Prozoren rezervoar",
+    ill_evaporative: "Izparilni",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Difuzor eteričnih olj",
+    ill_dehumidifier: "Razvlažilnik",
     st_dhw: "Topla voda",
     st_heating: "Greje",
     st_cooling: "Hladi",
@@ -2848,6 +3248,26 @@ const CA_I18N = {
     fan: "Ventilators",
     aircon: "Gaisa kondicionieris",
     heatpump: "Siltumsūknis",
+    humidifier: "Mitrinātājs",
+    dehumidifier: "Sausinātājs",
+    g_humidifier: "Mitrums",
+    st_humidifying: "Mitrina",
+    st_drying: "Sausina",
+    st_diffusing: "Izsmidzina",
+    spray: "Izsmidzināšanas intensitāte",
+    mood_light: "Noskaņas gaisma",
+    light_level: "Spilgtums",
+    color: "Krāsa",
+    tank_level: "Ūdens tvertne",
+    bucket: "Savākšanas tvertne",
+    tank_empty: "Ūdens tvertne tukša",
+    bucket_full: "Savākšanas tvertne pilna",
+    ill_column: "Ultraskaņas kolonna",
+    ill_tank: "Caurspīdīga tvertne",
+    ill_evaporative: "Iztvaicēšanas",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Ēterisko eļļu difuzors",
+    ill_dehumidifier: "Sausinātājs",
     st_dhw: "Karstais ūdens",
     st_heating: "Silda",
     st_cooling: "Dzesē",
@@ -2990,6 +3410,26 @@ const CA_I18N = {
     fan: "Ανεμιστήρας",
     aircon: "Κλιματιστικό",
     heatpump: "Αντλία θερμότητας",
+    humidifier: "Υγραντήρας",
+    dehumidifier: "Αφυγραντήρας",
+    g_humidifier: "Υγρασία",
+    st_humidifying: "Υγραίνει",
+    st_drying: "Αφυγραίνει",
+    st_diffusing: "Διαχέει",
+    spray: "Ένταση διάχυσης",
+    mood_light: "Φως ατμόσφαιρας",
+    light_level: "Φωτεινότητα",
+    color: "Χρώμα",
+    tank_level: "Δοχείο νερού",
+    bucket: "Κάδος",
+    tank_empty: "Δοχείο νερού άδειο",
+    bucket_full: "Κάδος γεμάτος",
+    ill_column: "Στήλη υπερήχων",
+    ill_tank: "Διάφανο δοχείο",
+    ill_evaporative: "Εξατμιστικός",
+    ill_vocolinc: "VOCOlinc MistFlow",
+    ill_diffuser: "Διαχυτής αιθέριων ελαίων",
+    ill_dehumidifier: "Αφυγραντήρας",
     st_dhw: "Ζεστό νερό",
     st_heating: "Θερμαίνει",
     st_cooling: "Ψύχει",
@@ -3584,6 +4024,19 @@ const CA_ROLES = {
   },
   valve: { domain: ["sensor", "select"], id: /(aiguillage|three_way|3_way|diverter|direction|vanne|valve|umschalt)/ },
   setpoint: { domain: "number", id: /(thermostat|consigne|setpoint|target_temp|sollwert)/ },
+  // Humidifiers and dehumidifiers: the water left in the tank (a percentage), the empty tank of a humidifier and the
+  // full bucket of a dehumidifier.
+  water_level: {
+    domain: "sensor",
+    id: /(water_level|tank_level|water_tank|water_remain|niveau_(d_)?eau|niveau_reservoir|reservoir|wasserstand|nivel_de_agua|depth)/,
+    avoid: /(full|plein|voll)/,
+  },
+  // Any light of a humidifier or a diffuser (the VOCOlinc ambient light), toggled from its options.
+  lamp: { domain: "light", test: () => true },
+  // The mist intensity of a diffuser (VOCOlinc's « Spray quantity », 1 to 5).
+  spray: { domain: "number", id: /(spray|mist_level|mist_quantity|mist_intensity|intensite|nebul)/ },
+  tank_empty: { domain: "binary_sensor", id: /(water_shortage|no_water|tank_empty|water_empty|lack_of_water|manque_d?_?eau|reservoir_vide|wassermangel|tank_leer)/ },
+  bucket_full: { domain: "binary_sensor", id: /(tank_full|bucket_full|water_full|full_water|water_tank_full|bac_plein|reservoir_plein|behalter_voll|tanque_lleno)/ },
   backup: { domain: "binary_sensor", id: /(backup|appoint|booster|resistance|heizstab|electric_heater|aux)/ },
   defrost: { domain: "binary_sensor", id: /(defrost|degivr|abtau|desescarche)/ },
 };
@@ -3694,7 +4147,7 @@ function caDeviceName(hass, id) {
 // thermostat, a radiator, a radiator valve) is not, and is left to ha-heating-card.
 // A fan entity is an air purifier when its name says so or its device measures particles or has a filter.
 // The domain of the entities of a kind of device.
-const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : "fan");
+const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : kind === "humidifier" ? "humidifier" : "fan");
 
 // A climate entity is a heat pump (air to water) when its device has a hot water tank, when its device says so, or
 // when it comes from an integration that only handles heat pumps (NIBE myUplink, Panasonic Aquarea Smart Cloud,
@@ -3719,6 +4172,8 @@ function caKindOf(hass, id) {
       const modes = st.attributes.hvac_modes || [];
       return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
     }
+    // Humidifiers, dehumidifiers and diffusers: every humidifier entity (its device_class picks the illustration).
+    if (domain === "humidifier") return "humidifier";
     if (domain === "select") {
       // A heat pump without a climate entity (TOUG): the select of its mode, on a device named as a heat pump that has
       // no climate entity of its own.
@@ -4083,7 +4538,7 @@ class CaCard extends CaElement {
     const c = this._config;
     const kind = this.constructor.kind;
     const st = this._st(r.id);
-    const icon = c.icon || CA_KIND_ICONS[kind];
+    const icon = c.icon || (st && this._kindIcon?.(r)) || CA_KIND_ICONS[kind];
     if (!st) {
       target.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
         c.entity ? `${this._t("no_device")} (${c.entity})` : this._t("no_device"),
@@ -4429,6 +4884,27 @@ class CaCard extends CaElement {
   _styles(color) {
     return `<style>${CA_STYLES}${CA_ART[this.constructor.kind]?.styles || ""}${this.constructor.styles || ""}</style><style>:host{--ca-color:${color || CA_IDLE};}</style>`;
   }
+
+  // The device's other switches (eco, display, self clean, child lock…) are listed as options.
+  _switches(r) {
+    return r.list.map((e) => e.entity_id).filter((id) => id.startsWith("switch.") && !r.used.has(id));
+  }
+
+  // A round button of a mini card that moves to the next option (preset, mode): `label` names it, `icon` shows it.
+  _cycleButton(action, label, icon) {
+    const t = caEsc(label);
+    return `<button class="round on" data-action="${action}" title="${t}" aria-label="${t}"><ha-icon icon="${icon || "mdi:tune-variant"}"></ha-icon></button>`;
+  }
+
+  // The device's other switches (eco, display, self clean…) as option toggles.
+  _switchToggles(r) {
+    return this._toggles(
+      this._switches(r).map((id) => {
+        const info = caSwitchInfo(id);
+        return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
+      }),
+    );
+  }
 }
 
 // ── Climate cards ────────────────────────────────────────────────────────────
@@ -4457,11 +4933,6 @@ const CA_SWITCHES = [
 const caSwitchInfo = (id) => CA_SWITCHES.find(([re]) => re.test(id.split(".")[1] || id));
 
 class CaClimateCard extends CaCard {
-  // The device's other switches (eco, display, self clean, child lock…) are listed as options.
-  _switches(r) {
-    return r.list.map((e) => e.entity_id).filter((id) => id.startsWith("switch.") && !r.used.has(id));
-  }
-
   _extraIds(r) {
     return this._switches(r);
   }
@@ -4584,16 +5055,6 @@ class CaClimateCard extends CaCard {
     const extra = this._toggles(this._extraOptions(m));
     return (
       this._section("", segs + stepper + hum + (selects.length ? `<div class="grid">${selects.join("")}</div>` : "")) + this._midSections(m) + this._options(toggles + extra)
-    );
-  }
-
-  // The device's other switches (eco, display, self clean…) as option toggles.
-  _switchToggles(r) {
-    return this._toggles(
-      this._switches(r).map((id) => {
-        const info = caSwitchInfo(id);
-        return this._toggle(id, info ? this._t(`sw_${info[2]}`) : this._label(id), info?.[1] || "mdi:toggle-switch-outline");
-      }),
     );
   }
 
@@ -4728,7 +5189,7 @@ class CaClimateCard extends CaCard {
   `;
 }
 
-const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "mdi:air-conditioner", heatpump: "mdi:heat-pump-outline" };
+const CA_KIND_ICONS = { purifier: "mdi:air-purifier", fan: "mdi:fan", aircon: "mdi:air-conditioner", heatpump: "mdi:heat-pump-outline", humidifier: "mdi:air-humidifier" };
 
 // ── Heat pumps ───────────────────────────────────────────────────────────────
 // What a heat pump does, from its climate entity (or, without one, the select of its mode: TOUG's « mode air ») and
@@ -4769,6 +5230,47 @@ function caHeatPumpState(id, st, roleSt) {
     tankTarget: dhw?.attributes.temperature != null ? Number(dhw.attributes.temperature) : null,
     statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? "st_idle" : cool ? "st_cooling" : "st_heating",
   };
+}
+
+// ── Humidifiers ──────────────────────────────────────────────────────────────
+// What a humidifier, a dehumidifier or a diffuser does, shared by its card and the overview tiles. `roleSt(role)`
+// gives a role's state; a dehumidifier is told by its device_class or its illustration.
+const CA_HUM_COLOR = "var(--state-humidifier-on-color, #26a69a)";
+const CA_DEHUM_COLOR = "#f9a825";
+const CA_DIFFUSER_COLOR = "#9575cd";
+// A tank at 10 % or less shows its water red.
+const CA_HUM_LOW = 10;
+
+function caHumidifierState(st, roleSt, variant) {
+  const a = st.attributes;
+  const on = st.state === "on";
+  const dehum = a.device_class === "dehumidifier" || variant === "dehumidifier";
+  const level = caNum(roleSt("water_level"));
+  const empty = !dehum && (roleSt("tank_empty")?.state === "on" || (level != null && level <= 0));
+  const full = dehum && (roleSt("bucket_full")?.state === "on" || (level != null && level >= 100));
+  const blocked = empty || full;
+  const action = a.action;
+  const active = on && !blocked && (action ? action === "humidifying" || action === "drying" : true);
+  const alertKey = empty ? "tank_empty" : full ? "bucket_full" : "";
+  return {
+    on,
+    dehum,
+    level,
+    active,
+    alertKey,
+    low: !dehum && level != null && level <= CA_HUM_LOW,
+    color: !on ? CA_IDLE : dehum ? CA_DEHUM_COLOR : variant === "diffuser" ? CA_DIFFUSER_COLOR : CA_HUM_COLOR,
+    statusKey: !on ? "st_off" : alertKey || (!active ? "st_idle" : dehum ? "st_drying" : variant === "diffuser" ? "st_diffusing" : "st_humidifying"),
+  };
+}
+
+// The colour a device's light gives its illustration (the VOCOlinc diffuser's cone, the MistFlow's ring): its colour
+// once on, a warm white in colour temperature mode, nothing while it is off.
+function caLightGlow(lampSt) {
+  if (lampSt?.state !== "on") return null;
+  const rgb = lampSt.attributes.rgb_color;
+  if (Array.isArray(rgb) && rgb.length === 3) return `rgb(${rgb.map((v) => Math.round(Number(v) || 0)).join(",")})`;
+  return lampSt.attributes.color_mode === "color_temp" ? "#ffd9a8" : "#e040fb";
 }
 
 // The tank's fill in the illustration (%): its temperature between 20 and 65 °C, half full when unknown.
@@ -4922,7 +5424,8 @@ const CA_ART = {};
 // The text an illustration variant is guessed from: the device model and names.
 function caVariantText(hass, id) {
   const dev = hass.devices?.[caDeviceOf(hass, id)];
-  return [dev?.model, dev?.name, dev?.name_by_user, id, hass.states[id]?.attributes.friendly_name].filter(Boolean).join(" ");
+  const a = hass.states[id]?.attributes || {};
+  return [dev?.model, dev?.name, dev?.name_by_user, id, a.friendly_name, a.device_class].filter(Boolean).join(" ");
 }
 
 // The variant of `kind` to draw for `id`: the one asked for (`illustration`), or the one guessed from the device.
@@ -5237,7 +5740,11 @@ class CaCardEditor extends HTMLElement {
 const CA_NO_FILTER = ["fan", "heatpump"];
 
 // Illustration variants of each kind of device (the first is the fallback).
-const CA_ILLUSTRATIONS = { purifier: ["tower", "cylinder", "box", "dyson"], aircon: ["split", "portable", "window"] };
+const CA_ILLUSTRATIONS = {
+  purifier: ["tower", "cylinder", "box", "dyson"],
+  aircon: ["split", "portable", "window"],
+  humidifier: ["column", "tank", "evaporative", "vocolinc", "diffuser", "dehumidifier"],
+};
 
 // The folded Advanced section: the language, and the other `names` edited as YAML.
 const caAdvanced = (lang, ...names) => [

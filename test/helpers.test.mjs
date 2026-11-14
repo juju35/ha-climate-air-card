@@ -222,7 +222,7 @@ test("the editor offers every language, once, each under its own name", () => {
 
 test("Serbian: no Latin letter in sr, no Cyrillic one in sr-Latn, but for names, units and entity IDs", () => {
   // Brand and unit names, placeholders and entity ID examples stay in Latin script in both.
-  const strip = (s) => s.replace(/\{\w+\}|Home Assistant|VOC|NO₂|pm25|sensor\.\w+|\bh\b/g, "");
+  const strip = (s) => s.replace(/\{\w+\}|Home Assistant|VOCOlinc MistFlow|VOC|NO₂|pm25|sensor\.\w+|\bh\b/g, "");
   for (const table of [lib.CA_I18N, lib.CA_VALUES]) {
     for (const [k, v] of Object.entries(table.sr)) assert.doesNotMatch(strip(v), /[A-Za-z]/, `sr.${k}`);
     for (const [k, v] of Object.entries(table["sr-Latn"])) assert.doesNotMatch(v, /[Ѐ-ӿ]/, `sr-Latn.${k}`);

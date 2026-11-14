@@ -84,6 +84,34 @@ await animate({
   }),
 });
 
+// The humidifier humidifying: mist rises from its top and the water in its tank waves.
+await animate({
+  file: "humidifier",
+  tag: "climate-air-humidifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "humidifier.bedroom_humidifier" } }),
+});
+
+// The VOCOlinc MistFlow: mist rises while its light ring cycles through colours.
+await animate({
+  file: "humidifier-vocolinc",
+  tag: "climate-air-humidifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "humidifier.bedroom_humidifier", illustration: "vocolinc" } }),
+});
+
+// The VOCOlinc essential oil diffuser: scented mist rises from its tip while its frosted cone glows in changing colours.
+await animate({
+  file: "diffuser",
+  tag: "climate-air-humidifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "humidifier.living_room_diffuser" } }),
+});
+
+// The dehumidifier drying: dry air leaves its top and drops fall into its bucket.
+await animate({
+  file: "dehumidifier",
+  tag: "climate-air-humidifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang, { "humidifier.office_dehumidifier": { state: "on", action: "drying" } }), config: { entity: "humidifier.office_dehumidifier" } }),
+});
+
 // The overview with every device on: each tile's icon and status ring animate together.
 await animate({
   file: "overview",

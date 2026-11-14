@@ -1,6 +1,6 @@
 {
   "name": "ha-climate-air-card",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Lovelace cards for Home Assistant: air purifiers, fans and air conditioners, each with a mini card, and an overview of every device.",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
     "build": "node scripts/build.mjs",
     "check": "node scripts/build.mjs && node --check dist/ha-climate-air-card.js",
     "test": "node --test test/*.test.mjs",
-    "screenshots": "node scripts/screenshots/purifier.mjs && node scripts/screenshots/fan.mjs && node scripts/screenshots/aircon.mjs && node scripts/screenshots/heatpump.mjs && node scripts/screenshots/overview.mjs && node scripts/screenshots/animation.mjs"
+    "screenshots": "node scripts/screenshots/purifier.mjs && node scripts/screenshots/fan.mjs && node scripts/screenshots/aircon.mjs && node scripts/screenshots/heatpump.mjs && node scripts/screenshots/humidifier.mjs && node scripts/screenshots/overview.mjs && node scripts/screenshots/animation.mjs"
   },
   "license": "MIT",
   "devDependencies": {

@@ -1,5 +1,5 @@
 // Mock home for the screenshots (and the unit tests): three air purifiers, two fans, an air conditioner and an
-// air-to-water heat pump with its hot water tank, with the
+// air-to-water heat pump with its hot water tank, a humidifier, an essential oil diffuser and a dehumidifier, with the
 // entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French (the screenshots
 // use English, the unit tests both), and a heat-only thermostat the cards leave out.
 // mockHass(lang, changes) — changes: { entity_id: { state?, ...attributes } } applied on top.
@@ -84,6 +84,33 @@ const DEVICES = [
     ["switch.air_conditioner_prompt_tone", { en: "Prompt tone", fr: "Bip" }, "on", {}],
     ["button.air_conditioner_reset_filter_counters", { en: "Reset filter counters", fr: "Réinitialiser le filtre" }, "unknown", {}],
   ]],
+  // An evaporative humidifier (Smartmi style), humidifying, and a dehumidifier (Midea style), off.
+  ["dev_hum", "bedroom", { en: "Bedroom humidifier", fr: "Humidificateur chambre" }, [
+    ["humidifier.bedroom_humidifier", null, "on", {
+      device_class: "humidifier", humidity: 55, current_humidity: 48, min_humidity: 30, max_humidity: 80,
+      available_modes: ["auto", "sleep", "boost"], mode: "auto", action: "humidifying", supported_features: 1 }],
+    ["sensor.bedroom_humidifier_water_level", { en: "Water level", fr: "Niveau d'eau" }, 60, { unit_of_measurement: "%" }],
+    ["sensor.bedroom_humidifier_temperature", { en: "Temperature", fr: "Température" }, 21, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.bedroom_humidifier_filter_life_level", { en: "Filter life level", fr: "Durée de vie du filtre" }, 82, { unit_of_measurement: "%" }],
+    ["switch.bedroom_humidifier_child_lock", { en: "Child lock", fr: "Sécurité enfant" }, "off", {}],
+    ["light.bedroom_humidifier_indicator_light", { en: "Indicator light", fr: "Voyant" }, "on", {}],
+  ]],
+  // A VOCOlinc FlowerBud essential oil diffuser (HomeKit Device), as it shows up: its humidifier entity (a 100 %
+  // target, no action), its mood light (magenta) and its spray quantity (1 to 5).
+  ["dev_diff", "living_room", { en: "Living room diffuser", fr: "Diffuseur séjour" }, [
+    ["humidifier.living_room_diffuser", null, "on", {
+      device_class: "humidifier", humidity: 100, current_humidity: 40, min_humidity: 0, max_humidity: 100,
+      available_modes: ["normal", "auto"], mode: "normal", supported_features: 1 }],
+    ["light.living_room_diffuser_mood_light", { en: "Mood Light", fr: "Mood Light" }, "on", { color_mode: "hs", brightness: 230, hs_color: [292, 75], rgb_color: [224, 64, 251], supported_color_modes: ["color_temp", "hs"] }],
+    ["number.living_room_diffuser_spray_quantity", { en: "Spray quantity", fr: "Spray quantity" }, 3, { min: 1, max: 5, step: 1, mode: "auto" }],
+  ]],
+  ["dev_dehum", "office", { en: "Office dehumidifier", fr: "Déshumidificateur bureau" }, [
+    ["humidifier.office_dehumidifier", null, "off", {
+      device_class: "dehumidifier", humidity: 50, current_humidity: 62, min_humidity: 35, max_humidity: 85,
+      available_modes: ["normal", "boost"], mode: "normal", action: "off", supported_features: 1 }],
+    ["sensor.office_dehumidifier_tank_level", { en: "Tank level", fr: "Niveau du bac" }, 30, { unit_of_measurement: "%" }],
+    ["binary_sensor.office_dehumidifier_tank_full", { en: "Tank full", fr: "Bac plein" }, "off", { device_class: "problem" }],
+  ]],
   // An air-to-water heat pump (Daikin Altherma style): its climate entity, its hot water tank and its three-way valve.
   ["dev_hp", "office", { en: "Heat pump", fr: "Pompe à chaleur" }, [
     ["climate.heat_pump", null, "heat", {
@@ -109,13 +136,13 @@ const LABELS = {
     off: "Off", cool: "Cool", heat: "Heat", dry: "Dry", auto: "Auto", fan_only: "Fan only", heat_cool: "Heat/Cool",
     low: "Low", medium: "Medium", high: "High", none: "None", comfort: "Comfort", eco: "Eco", boost: "Boost", sleep: "Sleep",
     away: "Away", vertical: "Vertical", horizontal: "Horizontal", both: "Both", heating: "Heating", idle: "Idle",
-    heat_pump: "Heat pump", performance: "Performance",
+    heat_pump: "Heat pump", performance: "Performance", normal: "Normal",
   },
   fr: {
     off: "Arrêt", cool: "Froid", heat: "Chaud", dry: "Déshumidification", auto: "Automatique", fan_only: "Ventilation",
     heat_cool: "Chaud/Froid", low: "Faible", medium: "Moyen", high: "Élevé", none: "Aucun", comfort: "Confort", eco: "Éco",
     boost: "Boost", sleep: "Nuit", away: "Absent", vertical: "Vertical", horizontal: "Horizontal", both: "Les deux",
-    heating: "Chauffe", idle: "Inactif", heat_pump: "Pompe à chaleur", performance: "Performance",
+    heating: "Chauffe", idle: "Inactif", heat_pump: "Pompe à chaleur", performance: "Performance", normal: "Normal",
   },
 };
 
