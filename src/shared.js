@@ -3696,7 +3696,11 @@ function caDeviceName(hass, id) {
 // The domain of the entities of a kind of device.
 const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : "fan");
 
-// A climate entity is a heat pump (air to water) when its device has a hot water tank, or when its device says so.
+// A climate entity is a heat pump (air to water) when its device has a hot water tank, when its device says so, or
+// when it comes from an integration that only handles heat pumps (NIBE myUplink, Panasonic Aquarea Smart Cloud,
+// Hitachi Yutaki). The others (MELCloud, ViCare, Daikin Onecta, Overkiz, Cozytouch) also handle air conditioners or
+// boilers: their heat pumps are told apart by their hot water tank or their name.
+const CA_HP_PLATFORMS = ["myuplink", "aquarea", "hitachi_yutaki"];
 const CA_HP_NAME =
   /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|arotherm|geotherm|nibe)/i;
 
@@ -3710,6 +3714,7 @@ function caKindOf(hass, id) {
       const dev = hass.devices?.[caDeviceOf(hass, id)];
       const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
       const own = caDeviceEntities(hass, caDeviceOf(hass, id));
+      if (CA_HP_PLATFORMS.includes(hass.entities?.[id]?.platform)) return "heatpump";
       if (own.some((e) => e.entity_id.startsWith("water_heater.")) || CA_HP_NAME.test(names)) return "heatpump";
       const modes = st.attributes.hvac_modes || [];
       return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
