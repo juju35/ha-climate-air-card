@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.1 - 2026-11-14
+
+### Fixes
+- **Overview**: the heat pump tile's illustration (outdoor unit and tank, wider than tall) covered the start of its name and status; its picture column now widens to fit it.
+
 ## 2.3.0 - 2026-11-14
 
 ### Features
