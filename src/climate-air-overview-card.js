@@ -1,9 +1,10 @@
 /*
- * climate-air-overview-card — every air conditioner, air purifier and fan of the instance at a glance, one tile each,
+ * climate-air-overview-card — every heat pump, air conditioner, air purifier and fan of the instance at a glance, one tile each,
  * like room-overview-card (ha-room-card). The detail button shows every device; tap a tile to unfold its full card,
  * tap its icon to turn it on or off.
  */
-const CA_KINDS = ["aircon", "purifier", "fan"];
+const CA_KINDS = ["heatpump", "aircon", "purifier", "fan"];
+const CA_HP_ICON_ANIM = { heat: "flicker", cool: "twirl", dhw: "bob" };
 const CA_AC_ICON_ANIM = { cool: "twirl", heat: "flicker", dry: "bob", fan_only: "spin", auto: "breathe", heat_cool: "breathe" };
 
 class ClimateAirOverviewCard extends CaElement {
@@ -136,6 +137,22 @@ class ClimateAirOverviewCard extends CaElement {
       return item;
     }
     const fmtAttr = (attr, v) => caValueLabel(lang, v, h.formatEntityAttributeValue?.(st, attr, v));
+    if (kind === "heatpump") {
+      // A heat pump: what it does (heating, hot water…) with its target, or its room temperature once off; the tank in
+      // its illustration. Driven by a select (TOUG), its mode stands for the target.
+      const hp = caHeatPumpState(id, st, roleSt);
+      const unit = h.config?.unit_system?.temperature || "°C";
+      const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
+      const climate = id.startsWith("climate.");
+      const cur = climate ? (a.current_temperature != null ? Number(a.current_temperature) : null) : caNum(roleSt("indoor_temp"));
+      item.on = hp.on;
+      const target = !hp.on ? "" : climate ? (a.temperature != null ? temp(Number(a.temperature)) : "") : caValueLabel(lang, st.state, h.formatEntityState?.(st));
+      item.text = [this._t(hp.statusKey), hp.on ? target : cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
+      item.color = hp.color;
+      item.anim = hp.on ? CA_HP_ICON_ANIM[hp.phase] || "breathe" : "";
+      item.art = { running: hp.on, state: hp.on ? hp.phase : "off", phase: hp.phase, active: hp.active, defrost: hp.defrost, tank: hp.tank, lang: this._intlLang() };
+      return item;
+    }
     if (kind === "aircon") {
       item.on = st.state !== "off";
       const mode = st.state;
@@ -338,6 +355,11 @@ class ClimateAirOverviewCard extends CaElement {
     const st = this._hass.states[id];
     if (!st) return;
     const domain = id.split(".")[0];
+    // A heat pump driven by a select (TOUG) has no on / off service: its card turns it on or off.
+    if (domain === "select") {
+      this._tap(id);
+      return;
+    }
     Promise.resolve(this._hass.callService(domain, st.state === "off" ? "turn_on" : "turn_off", { entity_id: id })).catch(() => {});
   }
 

@@ -1,4 +1,5 @@
-// Mock home for the screenshots (and the unit tests): three air purifiers, two fans and an air conditioner, with the
+// Mock home for the screenshots (and the unit tests): three air purifiers, two fans, an air conditioner and an
+// air-to-water heat pump with its hot water tank, with the
 // entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French (the screenshots
 // use English, the unit tests both), and a heat-only thermostat the cards leave out.
 // mockHass(lang, changes) — changes: { entity_id: { state?, ...attributes } } applied on top.
@@ -83,6 +84,21 @@ const DEVICES = [
     ["switch.air_conditioner_prompt_tone", { en: "Prompt tone", fr: "Bip" }, "on", {}],
     ["button.air_conditioner_reset_filter_counters", { en: "Reset filter counters", fr: "Réinitialiser le filtre" }, "unknown", {}],
   ]],
+  // An air-to-water heat pump (Daikin Altherma style): its climate entity, its hot water tank and its three-way valve.
+  ["dev_hp", "office", { en: "Heat pump", fr: "Pompe à chaleur" }, [
+    ["climate.heat_pump", null, "heat", {
+      hvac_modes: ["off", "heat", "cool", "auto"], hvac_action: "heating", min_temp: 15, max_temp: 28, target_temp_step: 0.5,
+      current_temperature: 20.5, temperature: 21, preset_modes: ["none", "comfort", "eco"], preset_mode: "comfort", supported_features: 401 }],
+    ["water_heater.heat_pump_hot_water", { en: "Hot water", fr: "Eau chaude" }, "heat_pump", {
+      current_temperature: 52, temperature: 55, min_temp: 30, max_temp: 65, target_temp_step: 1,
+      operation_list: ["off", "eco", "heat_pump", "performance"], operation_mode: "heat_pump" }],
+    ["sensor.heat_pump_outdoor_temperature", { en: "Outdoor temperature", fr: "Température extérieure" }, 4, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.heat_pump_three_way_valve", { en: "Three-way valve", fr: "Vanne trois voies" }, "Space heating", {}],
+    ["sensor.heat_pump_power", { en: "Power", fr: "Puissance" }, 1250, { device_class: "power", unit_of_measurement: "W" }],
+    ["sensor.heat_pump_compressor_frequency", { en: "Compressor frequency", fr: "Fréquence compresseur" }, 48, { device_class: "frequency", unit_of_measurement: "Hz" }],
+    ["binary_sensor.heat_pump_defrost", { en: "Defrost", fr: "Dégivrage" }, "off", {}],
+    ["binary_sensor.heat_pump_backup_heater", { en: "Backup heater", fr: "Appoint électrique" }, "off", {}],
+  ]],
 ];
 
 // What Home Assistant itself translates: the climate modes, and the climate fan, swing and preset values it knows.
@@ -93,12 +109,13 @@ const LABELS = {
     off: "Off", cool: "Cool", heat: "Heat", dry: "Dry", auto: "Auto", fan_only: "Fan only", heat_cool: "Heat/Cool",
     low: "Low", medium: "Medium", high: "High", none: "None", comfort: "Comfort", eco: "Eco", boost: "Boost", sleep: "Sleep",
     away: "Away", vertical: "Vertical", horizontal: "Horizontal", both: "Both", heating: "Heating", idle: "Idle",
+    heat_pump: "Heat pump", performance: "Performance",
   },
   fr: {
     off: "Arrêt", cool: "Froid", heat: "Chaud", dry: "Déshumidification", auto: "Automatique", fan_only: "Ventilation",
     heat_cool: "Chaud/Froid", low: "Faible", medium: "Moyen", high: "Élevé", none: "Aucun", comfort: "Confort", eco: "Éco",
     boost: "Boost", sleep: "Nuit", away: "Absent", vertical: "Vertical", horizontal: "Horizontal", both: "Les deux",
-    heating: "Chauffe", idle: "Inactif",
+    heating: "Chauffe", idle: "Inactif", heat_pump: "Pompe à chaleur", performance: "Performance",
   },
 };
 

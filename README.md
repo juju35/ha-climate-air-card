@@ -21,13 +21,15 @@ Lovelace cards for Home Assistant's **air purifiers, fans and air conditioners**
 
 | Card | Type | What it shows |
 |---|---|---|
-| [Overview](#overview) | `custom:climate-air-overview-card` | Every air conditioner, air purifier and fan at a glance: one tile per device, tap a tile to unfold its full card. |
+| [Overview](#overview) | `custom:climate-air-overview-card` | Every heat pump, air conditioner, air purifier and fan at a glance: one tile per device, tap a tile to unfold its full card. |
 | [Air purifier](#air-purifier) | `custom:climate-air-purifier-card` | Air quality, filter life, presets, speed and options of an air purifier. |
 | [Air purifier mini](#mini-cards) | `custom:climate-air-purifier-mini-card` | The same purifier on two lines, with a zoom to the full card. |
 | [Fan](#fan) | `custom:climate-air-fan-card` | Speed, oscillation, presets, angle, timer and options of a fan. |
 | [Fan mini](#mini-cards) | `custom:climate-air-fan-mini-card` | The same fan on two lines, with a zoom to the full card. |
 | [Air conditioner](#air-conditioner) | `custom:climate-air-aircon-card` | Mode, target temperature, fan and swing, measurements and options of an air conditioner. |
 | [Air conditioner mini](#mini-cards) | `custom:climate-air-aircon-mini-card` | The same air conditioner on two lines, with a zoom to the full card. |
+| [Heat pump](#heat-pump) | `custom:climate-air-heatpump-card` | Mode, target temperature, hot water tank and measurements of an air-to-water heat pump, with an animated outdoor unit. |
+| [Heat pump mini](#mini-cards) | `custom:climate-air-heatpump-mini-card` | The same heat pump on two lines, with a zoom to the full card. |
 
 | Overview | Air purifier | Fan | Air conditioner |
 |---|---|---|---|
@@ -81,25 +83,40 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 - Animated illustration while it runs: the air flows out in the mode colour, with snowflakes when cooling, shimmer when heating and droplets when drying; the flap swings with the vertical swing and the airflow sways with the horizontal one; the status light breathes while the compressor runs. Three shapes: a wall split unit, a portable unit with its exhaust hose and a window split (indoor unit, outdoor unit hung outside the window, whose fan turns with the compressor), picked from the device model or set with `illustration`
 - Outdoor temperature, humidity and power draw chips; a *Clean the filter* alert from the device's dust sensor
 
+### Heat pump
+
+`custom:climate-air-heatpump-card` — An air-to-water heat pump: its `climate` entity, or the `select` of its mode when it has none (Aldes T.One through the TOUG gateway), and the entities of its device.
+
+- Found by itself: a `climate` entity whose device has a hot water tank (`water_heater`) or is named as a heat pump (Altherma, Aquarea, Ecodan, Yutaki, Alfea, Vitocal…), and a mode `select` with an *Off* option on a heat pump device without a climate entity (TOUG). It is not listed as an air conditioner, even when it can cool
+- The room temperature in large with the target, and the hot water tank with its target; modes as segmented buttons and − / + for the target. Driven by a select: its modes as buttons (*Off*, *Confort*, *Eco*, *Boost*, *Prog A*…, a dropdown beyond five) and the setpoint slider from its thermostat `number`; the power button goes back to the last mode it ran in
+- A *Hot water* section when the device has a `water_heater`: its target slider and its operation modes
+- What it does in the status pill: *Heating*, *Cooling*, *Hot water* (the three-way valve sends the heat to the tank), *Idle*, *Defrosting*; *Defrosting* and *Backup heater* chips, outdoor temperature and power draw chips
+- Animated illustration: the outdoor unit's fan spins behind its grille while the compressor runs, the water flows in the pipes to the tank, warm air rises above the unit when heating and snowflakes when cooling, heat rises above the tank while it heats the hot water and frost covers the unit while it defrosts; the tank's level follows its temperature and its display shows it
+
+| Heating | Hot water | Defrosting |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card-dark.png"><img alt="Heat pump heating" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw-dark.png"><img alt="Heat pump heating the hot water" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost-dark.png"><img alt="Heat pump defrosting" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost.png" width="400"></picture> |
+
 ### Mini cards
 
-`custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card` — The device on two lines, for a compact dashboard.
+`custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card`, `custom:climate-air-heatpump-mini-card` — The device on two lines, for a compact dashboard.
 
-- The illustration (animated too), the key reading (PM2.5, speed, temperatures) and round buttons: power, plus the preset (purifier), the oscillation (fan) or − / + for the target (air conditioner)
+- The illustration (animated too), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature) and round buttons: power, plus the preset (purifier), the oscillation (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
 - The **detail** button (top right) unfolds the full card, and back, as does a click anywhere else (`zoom: false` removes it)
 
-| Air purifier | Fan | Air conditioner |
-|---|---|---|
-| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini-dark.png"><img alt="Air purifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini-dark.png"><img alt="Fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini-dark.png"><img alt="Air conditioner mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini.png" width="400"></picture> |
+| Air purifier | Fan | Air conditioner | Heat pump |
+|---|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini-dark.png"><img alt="Air purifier mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini-dark.png"><img alt="Fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini-dark.png"><img alt="Air conditioner mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-mini-dark.png"><img alt="Heat pump mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-mini.png" width="400"></picture> |
 
 ## Supported integrations
 
-The cards work with **any integration** that provides air purifiers and fans as `fan` entities and air conditioners as `climate` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson…). Some get a specific treatment:
+The cards work with **any integration** that provides air purifiers and fans as `fan` entities and air conditioners and heat pumps as `climate` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson, Daikin Onecta, Panasonic Aquarea, MELCloud, Overkiz, ViCare, myUplink…). Some get a specific treatment:
 
 | Integration | What the cards add |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="" width="16"> [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
+| [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, its *Thermostat* number as the setpoint, the tank temperature and the *Aiguillage vanne* valve (air or hot water) |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
 
@@ -196,8 +213,8 @@ devices:
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
 | `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
-| `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`aircon`, `purifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
-| `group_by` | ❌ | `type` | `type` (air conditioners, air purifiers, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
+| `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`heatpump`, `aircon`, `purifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
+| `group_by` | ❌ | `type` | `type` (heat pumps, air conditioners, air purifiers, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |
 | `zoom` | ❌ | `true` | Only the devices on or needing attention show, and a detail button shows them all; `false`: every device, always |
 | `show_all` | ❌ | `false` | Every device shows at first, and the detail button keeps only the ones on or needing attention (a click elsewhere brings every device back). In the visual editor: **Show every device** |
@@ -205,7 +222,7 @@ devices:
 | `filter_warning` | ❌ | `20` | Filter life (%) at or below which a tile shows *Replace the filter soon* (orange); at 10 % or below, *Replace the filter* (red) |
 | `exclude` | ❌ | — | Devices left out |
 | `include` | ❌ | — | `climate` or `fan` entities the card would not pick on its own (a hidden entity); a heat-only thermostat stays out unless `devices` gives it a `type` |
-| `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `aircon`, `purifier`, `fan` (they win over `icons` and `illustrations`) |
+| `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `heatpump`, `aircon`, `purifier`, `fan` (they win over `icons` and `illustrations`) |
 
 ### Air purifier
 
@@ -228,6 +245,16 @@ entity: fan.bedroom_fan
 type: custom:climate-air-aircon-card
 entity: climate.air_conditioner
 illustration: window
+```
+
+### Heat pump
+
+```yaml
+type: custom:climate-air-heatpump-card
+entity: climate.heat_pump        # or, with TOUG: select.t_one_mode_air
+entities:                        # only for what discovery misses
+  tank_temp: sensor.t_one_temperature_ballon
+  setpoint: number.t_one_thermostat
 ```
 
 ### Coming from 1.x: thermostats
@@ -267,10 +294,15 @@ The cards find the other entities of the device by their registry translation ke
 | `brightness` | `select` | Fan | Display brightness |
 | `anion` / `child_lock` / `buzzer` | `switch` | Purifier, fan | Option toggles |
 | `light` | `light` | Purifier, fan | Indicator light toggle |
-| `indoor_temp` / `outdoor_temp` | `sensor` | Air conditioner | Room temperature (when the climate entity has none) and outdoor chip |
-| `power` | `sensor` | Air conditioner | Power draw chip |
-| `compressor` | `sensor` | Air conditioner | Compressor frequency: the status light breathes while it runs |
+| `indoor_temp` / `outdoor_temp` | `sensor` | Air conditioner, heat pump | Room temperature (when the climate entity has none) and outdoor chip |
+| `power` | `sensor` | Air conditioner, heat pump | Power draw chip |
+| `compressor` | `sensor` | Air conditioner, heat pump | Compressor frequency: the status light breathes while it runs |
 | `filter_alert` | `binary_sensor` | Air conditioner | *Clean the filter* alert |
+| `dhw` | `water_heater` | Heat pump | Hot water tank: its temperature, target and operation modes |
+| `tank_temp` | `sensor` | Heat pump | Tank temperature, without a `water_heater` |
+| `valve` | `sensor` / `select` | Heat pump | Three-way valve: *Hot water* while it sends the heat to the tank |
+| `setpoint` | `number` | Heat pump | Target temperature of a heat pump driven by a select (TOUG) |
+| `backup` / `defrost` | `binary_sensor` | Heat pump | *Backup heater* and *Defrosting* chips; frost on the illustration |
 
 ```yaml
 entities:
@@ -318,6 +350,24 @@ Drying, droplets fall from the vent instead.
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif" alt="air conditioner drying animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.gif" alt="air conditioner drying animation, dark theme" width="400"> |
 
+The heat pump spins its outdoor fan while the water flows in the pipes and warm air rises above the unit.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump.gif" alt="heat pump animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dark.gif" alt="heat pump animation, dark theme" width="400"> |
+
+Heating the hot water, the valve sends the flow to the tank and heat rises above it.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw.gif" alt="heat pump hot water animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw-dark.gif" alt="heat pump hot water animation, dark theme" width="400"> |
+
+Cooling, snowflakes fall above the unit.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool.gif" alt="heat pump cooling animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool-dark.gif" alt="heat pump cooling animation, dark theme" width="400"> |
+
 The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
 
 | Light | Dark |
@@ -336,6 +386,7 @@ The overview gathers every device: each tile's icon moves to match its appliance
 | Air conditioner, heating | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-heat-dark.png" alt="" width="400"> |
 | Air conditioner, heat / cool range | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-range.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-range-dark.png" alt="" width="400"> |
 | Air conditioner, drying to a target humidity | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.png" alt="" width="400"> |
+| Heat pump, cooling | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool-dark.png" alt="" width="400"> |
 | Air conditioner, portable and window split | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window.png" alt="" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portable-dark.png" alt="" width="400"> <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-dark.png" alt="" width="400"> |
 
 ## Development
@@ -345,7 +396,7 @@ npm install
 npm run build        # bundles src/*.js into dist/ha-climate-air-card.js and stamps the version of package.json
 npm run check        # builds and checks the bundle (run in CI)
 npm test             # unit tests, no browser
-npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon cool, heat and dry/overview, needs ffmpeg) with mock data into screenshots/
+npm run screenshots  # renders every card (and a looping gif per animation: purifier/fan/aircon cool, heat and dry/heat pump heat, hot water and cool/overview, needs ffmpeg) with mock data into screenshots/
 ```
 
 Each card has its own source in `src/`, next to `src/shared.js`; the build wraps each one in its own block and concatenates them into the single file the Marketplace installs. `dist/` is not committed: `npm run build` creates it locally, CI builds it on every push, and the release workflow attaches the built file to the release, which is where the Marketplace installs it from.

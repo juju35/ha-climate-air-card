@@ -41,7 +41,7 @@ export const fakeNode = () => {
   };
 };
 
-export const CARDS = ["climate-air-purifier-card", "climate-air-fan-card", "climate-air-aircon-card", "climate-air-overview-card"];
+export const CARDS = ["climate-air-purifier-card", "climate-air-fan-card", "climate-air-aircon-card", "climate-air-heatpump-card", "climate-air-overview-card"];
 
 export const load = () => {
   const registry = new Map();
@@ -79,7 +79,7 @@ export const load = () => {
   sandbox.window = sandbox;
   const ctx = vm.createContext(sandbox);
   const code = [read("shared"), ...CARDS.map((c) => `{\n${read(c)}}\n`)].join("\n");
-  const tags = [...CARDS, "climate-air-purifier-mini-card", "climate-air-fan-mini-card", "climate-air-aircon-mini-card"];
+  const tags = [...CARDS, "climate-air-purifier-mini-card", "climate-air-fan-mini-card", "climate-air-aircon-mini-card", "climate-air-heatpump-mini-card"];
   return vm.runInContext(
     `${code}
     ({ CA_I18N, CA_VALUES, caPatchAround, caT, caLang, caIntlLang, caFmtNum, caValueLabel, caKindOf, caFindEntities, caFindRole, caRoleOf, caDeviceEntities, caAirQuality, caSpin, caName, caCleanConfig, caVariant, caAdvanced, CA_PRESET_ICON,

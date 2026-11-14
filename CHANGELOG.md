@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.0 - 2026-11-14
+
+### Features
+- **Heat pump card** ([#64](https://github.com/juju35/ha-climate-air-card/issues/64)): new `custom:climate-air-heatpump-card` and `custom:climate-air-heatpump-mini-card` for air-to-water heat pumps (Daikin Altherma, Panasonic Aquarea, Mitsubishi Ecodan, Atlantic, Hitachi Yutaki, Viessmann…). Room temperature and target, hot water tank with its target and operation modes, what it does (*Heating*, *Cooling*, *Hot water* through the three-way valve, *Idle*, *Defrosting*), backup heater, outdoor temperature and power. Animated illustration: the outdoor unit's fan spins, the water flows to the tank, warm air or snowflakes above the unit, heat above the tank, frost while defrosting.
+- **TOUG (Aldes T.One AquaAir)**: a heat pump without a climate entity is found from the mode select of its device; its modes become buttons, its thermostat number the setpoint, and the power button switches to *Off* and back to the last mode.
+- **Overview**: heat pumps get their own group and tiles (`heatpump` in `icons`, `devices` and `group_by`); a heat pump is no longer counted as an air conditioner.
+
 ## 2.1.0 - 2026-11-13
 
 ### Features
