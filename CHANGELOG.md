@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.5.0 - 2026-11-15
+
+### Features
+- **Multi-zone heat pumps** ([#70](https://github.com/juju35/ha-climate-air-card/issues/70)): a *Zones* section on the heat pump card, one row per room with its current temperature and its setpoint slider, when the device exposes a thermostat `number` and a temperature `sensor` per room (Aldes T.One AquaAir: a motorised vent and an independent setpoint per room). The rooms replace the single setpoint; a single-thermostat install is unchanged.
+- **Hot water from sensors**: when the tank is reported as sensors rather than a `water_heater` entity (TOUG), the card shows its temperature, fill percentage and remaining volume under the temperatures and on the mini card, and the fill percentage drives the tank level of the illustration.
+- **Fault chip**: a red chip on the heat pump card when the pump reports a fault, from its fault `sensor` (*Défauts*); hidden when it reports none (*Aucun*, *None*, *OK*…).
+
 ## 2.4.1 - 2026-11-14
 
 ### Documentation

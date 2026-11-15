@@ -12,7 +12,7 @@ const caHpWave = (x, y) => `<path d="M${x} ${y}q-2 3 0 6t0 6"/>`;
 const caHpFlake = (x, y) => `<path d="M${x} ${y}v5M${x - 2.2} ${y + 1.25}l4.4 2.5M${x - 2.2} ${y + 3.75}l4.4-2.5"/>`;
 
 const caHpArt = (s) => {
-  const pct = caHpTankPct(s.tank);
+  const pct = s.tankPct != null ? Math.max(8, Math.min(100, s.tankPct)) : caHpTankPct(s.tank);
   const h = +((72 * pct) / 100).toFixed(1);
   const y = +(84 - h).toFixed(1);
   const label = s.tank != null ? `${caFmtNum(s.lang || "en", s.tank, 0)}°` : "";
@@ -114,7 +114,18 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   }
 
   _roles() {
-    return ["indoor_temp", "outdoor_temp", "dhw", "tank_temp", "valve", "setpoint", "backup", "defrost", "power", "compressor"];
+    return ["indoor_temp", "outdoor_temp", "dhw", "tank_temp", "valve", "setpoint", "backup", "defrost", "power", "compressor", "dhw_pct", "dhw_volume", "faults"];
+  }
+
+  // The rooms of a multi-zone heat pump (a thermostat number and a temperature sensor per room), found on its device.
+  _zones() {
+    return caHeatPumpZones(this._hass, this._r.id);
+  }
+
+  // The zones' entities are not roles, so they are added to the tracked ids: the card redraws when a room's
+  // temperature or setpoint changes.
+  _extraIds(r) {
+    return [...super._extraIds(r), ...caHeatPumpZones(this._hass, r.id).flatMap((z) => [z.setpoint, z.temp].filter(Boolean))];
   }
 
   _isClimate() {
@@ -135,9 +146,14 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       if (hp.on) this._lastOn = st.state;
     }
     const chips = [];
+    const fault = caHpFault(this._st(ent.faults));
+    if (c.show_alerts && fault) chips.push(this._chip("mdi:alert-circle-outline", fault, "alert", this._label(ent.faults), ent.faults));
     if (hp.defrost) chips.push(this._chip("mdi:snowflake-melt", this._t("st_defrost"), "warn", "", ent.defrost));
     if (hp.backup) chips.push(this._chip("mdi:radiator", this._t("backup"), "warn", "", ent.backup));
     if (c.show_sensors) chips.push(...this._sensorChips(ent, ["outdoor_temp", ...(hp.on ? ["power"] : [])]));
+    // The hot water tank's fill as a percentage and its remaining volume, when the device reports them as sensors
+    // instead of a water_heater entity (TOUG); the percentage drives the illustration's level.
+    const dhwPct = this._num(ent.dhw_pct);
     const a = st.attributes;
     const preset = climate && hp.on && a.preset_mode && a.preset_mode !== "none" ? this._fmtAttr(r.id, "preset_mode", a.preset_mode) : "";
     return {
@@ -156,6 +172,10 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       range: hp.on ? base.range : null,
       tank: hp.tank,
       tankTarget: hp.tankTarget,
+      tankPct: dhwPct,
+      dhwPct: this._fmtSensor(ent.dhw_pct),
+      dhwVol: this._fmtSensor(ent.dhw_volume),
+      zones: this._zones(),
       lang: this._intlLang(),
       chips,
     };
@@ -165,11 +185,15 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     return m.running && (m.target != null || m.range != null);
   }
 
-  // Under the temperatures: the tank, and its target.
+  // Under the temperatures: the hot water tank — its temperature and target, its fill as a percentage and its remaining
+  // volume, whichever the device reports.
   _heroLine(m) {
-    if (m.tank == null) return "";
-    const target = m.tankTarget != null ? ` → ${this._temp(m.tankTarget, 0)}` : "";
-    return caLine("mdi:water-boiler", `${this._t("tank")} ${this._temp(m.tank, 0)}${target}`);
+    const parts = [];
+    if (m.tank != null) parts.push(`${this._temp(m.tank, 0)}${m.tankTarget != null ? ` → ${this._temp(m.tankTarget, 0)}` : ""}`);
+    if (m.dhwPct) parts.push(m.dhwPct);
+    if (m.dhwVol) parts.push(m.dhwVol);
+    if (!parts.length) return "";
+    return caLine("mdi:water-boiler", `${this._t("tank")} ${parts.join(" · ")}`);
   }
 
   _controls(m) {
@@ -183,13 +207,34 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       opts.length <= 5
         ? this._segments("hpmode", opts, st.state, (o) => this._fmtState(r.id, o), caHpModeIcon)
         : `<div class="grid">${this._selectEntity(r.id, this._t("mode"))}</div>`;
-    const setpoint = r.ent.setpoint && m.running ? this._numberControl(r.ent.setpoint, this._t("target"), "mdi:thermometer") : "";
+    // A single setpoint when the pump has one thermostat; the per-room zones replace it when there are several.
+    const setpoint = r.ent.setpoint && m.running && m.zones.length < 2 ? this._numberControl(r.ent.setpoint, this._t("target"), "mdi:thermometer") : "";
     const toggles = this._switchToggles(r);
     return this._section("", modes + setpoint) + this._midSections(m) + this._options(toggles);
   }
 
+  // Between the controls and the options: the per-room zones, then the hot water tank.
+  _midSections(m) {
+    return this._zonesSection(m) + this._dhwSection();
+  }
+
+  // One row per room: its name and current temperature, and its setpoint as a slider or dropdown (its thermostat
+  // number). Shown only on a multi-zone pump (a vent and a thermostat per room, Aldes T.One).
+  _zonesSection(m) {
+    const zones = m?.zones || [];
+    if (zones.length < 2) return "";
+    const rows = zones
+      .map((z) => {
+        const cur = z.temp ? this._fmtSensor(z.temp) : null;
+        const label = cur ? `${z.name} · ${cur}` : z.name;
+        return this._numberControl(z.setpoint, label, "mdi:thermometer");
+      })
+      .join("");
+    return this._section(this._t("zones"), rows, "mdi:thermostat");
+  }
+
   // The hot water tank: its target and its operation mode, when the device has a water_heater entity.
-  _midSections() {
+  _dhwSection() {
     const id = this._r.ent.dhw;
     const st = this._st(id);
     if (!st || caUnavailable(st)) return "";
@@ -233,7 +278,10 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
 
   _miniInfo(m) {
     const lines = [this._tempLine(m)];
-    if (m.tank != null) lines.push(caLine("mdi:water-boiler", `${this._t("tank")} ${this._temp(m.tank, 0)}`));
+    if (m.tank != null || m.dhwPct) {
+      const txt = [m.tank != null ? this._temp(m.tank, 0) : null, m.dhwPct].filter(Boolean).join(" · ");
+      lines.push(caLine("mdi:water-boiler", `${this._t("tank")} ${txt}`));
+    }
     const out = this._config.show_sensors ? this._fmtSensor(this._r.ent.outdoor_temp) : null;
     if (out) lines.push(caLine("mdi:home-thermometer-outline", `${this._t("outdoor")} ${out}`));
     return lines.join("");

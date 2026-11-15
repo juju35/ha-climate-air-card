@@ -41,6 +41,7 @@ const CA_I18N = {
     tank: "Tank",
     dhw_target: "Hot water",
     backup: "Backup heater",
+    zones: "Zones",
     st_off: "Off",
     st_on: "On",
     st_unavailable: "Unavailable",
@@ -202,6 +203,7 @@ const CA_I18N = {
     tank: "Ballon",
     dhw_target: "Eau chaude",
     backup: "Appoint électrique",
+    zones: "Zones",
     st_off: "Arrêt",
     st_on: "En marche",
     st_unavailable: "Indisponible",
@@ -364,6 +366,7 @@ const CA_I18N = {
     tank: "Speicher",
     dhw_target: "Warmwasser",
     backup: "Heizstab",
+    zones: "Zonen",
     st_off: "Aus",
     st_on: "An",
     st_unavailable: "Nicht verfügbar",
@@ -525,6 +528,7 @@ const CA_I18N = {
     tank: "Depósito",
     dhw_target: "Agua caliente",
     backup: "Resistencia de apoyo",
+    zones: "Zonas",
     st_off: "Apagado",
     st_on: "Encendido",
     st_unavailable: "No disponible",
@@ -686,6 +690,7 @@ const CA_I18N = {
     tank: "Бојлер",
     dhw_target: "Топла вода",
     backup: "Помоћни грејач",
+    zones: "Зоне",
     st_off: "Искључено",
     st_on: "Укључено",
     st_unavailable: "Недоступно",
@@ -847,6 +852,7 @@ const CA_I18N = {
     tank: "Bojler",
     dhw_target: "Topla voda",
     backup: "Pomoćni grejač",
+    zones: "Zone",
     st_off: "Isključeno",
     st_on: "Uključeno",
     st_unavailable: "Nedostupno",
@@ -1008,6 +1014,7 @@ const CA_I18N = {
     tank: "Accumulo",
     dhw_target: "Acqua calda",
     backup: "Resistenza integrativa",
+    zones: "Zone",
     st_off: "Spento",
     st_on: "Acceso",
     st_unavailable: "Non disponibile",
@@ -1170,6 +1177,7 @@ const CA_I18N = {
     tank: "Boiler",
     dhw_target: "Warm water",
     backup: "Bijverwarming",
+    zones: "Zones",
     st_off: "Uit",
     st_on: "Aan",
     st_unavailable: "Niet beschikbaar",
@@ -1332,6 +1340,7 @@ const CA_I18N = {
     tank: "Depósito",
     dhw_target: "Água quente",
     backup: "Resistência de apoio",
+    zones: "Zonas",
     st_off: "Desligado",
     st_on: "Ligado",
     st_unavailable: "Indisponível",
@@ -1494,6 +1503,7 @@ const CA_I18N = {
     tank: "Zasobnik",
     dhw_target: "Ciepła woda",
     backup: "Grzałka wspomagająca",
+    zones: "Strefy",
     st_off: "Wyłączone",
     st_on: "Włączone",
     st_unavailable: "Niedostępne",
@@ -1656,6 +1666,7 @@ const CA_I18N = {
     tank: "Boiler",
     dhw_target: "Apă caldă",
     backup: "Rezistență de rezervă",
+    zones: "Zone",
     st_off: "Oprit",
     st_on: "Pornit",
     st_unavailable: "Indisponibil",
@@ -1818,6 +1829,7 @@ const CA_I18N = {
     tank: "Beholder",
     dhw_target: "Varmt vand",
     backup: "Elpatron",
+    zones: "Zoner",
     st_off: "Slukket",
     st_on: "Tændt",
     st_unavailable: "Utilgængelig",
@@ -1980,6 +1992,7 @@ const CA_I18N = {
     tank: "Tank",
     dhw_target: "Varmvatten",
     backup: "Elpatron",
+    zones: "Zoner",
     st_off: "Av",
     st_on: "På",
     st_unavailable: "Ej tillgänglig",
@@ -2142,6 +2155,7 @@ const CA_I18N = {
     tank: "Бойлер",
     dhw_target: "Топла вода",
     backup: "Допълнителен нагревател",
+    zones: "Зони",
     st_off: "Изключен",
     st_on: "Включен",
     st_unavailable: "Недостъпен",
@@ -2304,6 +2318,7 @@ const CA_I18N = {
     tank: "Бойлер",
     dhw_target: "Горячая вода",
     backup: "Резервный нагреватель",
+    zones: "Зоны",
     st_off: "Выключено",
     st_on: "Включено",
     st_unavailable: "Недоступно",
@@ -2466,6 +2481,7 @@ const CA_I18N = {
     tank: "Бойлер",
     dhw_target: "Гаряча вода",
     backup: "Резервний нагрівач",
+    zones: "Зони",
     st_off: "Вимкнено",
     st_on: "Увімкнено",
     st_unavailable: "Недоступно",
@@ -2628,6 +2644,7 @@ const CA_I18N = {
     tank: "Tároló",
     dhw_target: "Melegvíz",
     backup: "Kiegészítő fűtőpatron",
+    zones: "Zónák",
     st_off: "Ki",
     st_on: "Be",
     st_unavailable: "Nem elérhető",
@@ -2790,6 +2807,7 @@ const CA_I18N = {
     tank: "Zásobník",
     dhw_target: "Teplá voda",
     backup: "Záložné vykurovacie teleso",
+    zones: "Zóny",
     st_off: "Vypnuté",
     st_on: "Zapnuté",
     st_unavailable: "Nedostupné",
@@ -2952,6 +2970,7 @@ const CA_I18N = {
     tank: "Zásobník",
     dhw_target: "Teplá voda",
     backup: "Záložní topné těleso",
+    zones: "Zóny",
     st_off: "Vypnuto",
     st_on: "Zapnuto",
     st_unavailable: "Nedostupné",
@@ -3114,6 +3133,7 @@ const CA_I18N = {
     tank: "Hranilnik",
     dhw_target: "Topla voda",
     backup: "Dodatni grelnik",
+    zones: "Cone",
     st_off: "Izklopljeno",
     st_on: "Vklopljeno",
     st_unavailable: "Ni na voljo",
@@ -3276,6 +3296,7 @@ const CA_I18N = {
     tank: "Tvertne",
     dhw_target: "Karstais ūdens",
     backup: "Rezerves sildītājs",
+    zones: "Zonas",
     st_off: "Izslēgts",
     st_on: "Ieslēgts",
     st_unavailable: "Nav pieejams",
@@ -3438,6 +3459,7 @@ const CA_I18N = {
     tank: "Δοχείο",
     dhw_target: "Ζεστό νερό",
     backup: "Βοηθητική αντίσταση",
+    zones: "Ζώνες",
     st_off: "Ανενεργό",
     st_on: "Ενεργό",
     st_unavailable: "Μη διαθέσιμο",
@@ -4039,6 +4061,19 @@ const CA_ROLES = {
   bucket_full: { domain: "binary_sensor", id: /(tank_full|bucket_full|water_full|full_water|water_tank_full|bac_plein|reservoir_plein|behalter_voll|tanque_lleno)/ },
   backup: { domain: "binary_sensor", id: /(backup|appoint|booster|resistance|heizstab|electric_heater|aux)/ },
   defrost: { domain: "binary_sensor", id: /(defrost|degivr|abtau|desescarche)/ },
+  // The hot water tank reported as sensors rather than a water_heater entity (Aldes T.One through TOUG): its fill as a
+  // percentage, its remaining volume in litres and its fault messages.
+  dhw_pct: {
+    domain: "sensor",
+    id: /((ecs|dhw|tank|ballon|hot_water|eau_chaude|warmwasser|acs|sanitaire).*(pourcentage|percent|niveau|level|charge|remplissage|fill)|(pourcentage|percent|charge|fill).*(ecs|dhw|tank|ballon|hot_water|eau_chaude|acs|sanitaire))/,
+    test: (st) => st.attributes.unit_of_measurement === "%",
+  },
+  dhw_volume: {
+    domain: "sensor",
+    id: /((volume|litres?|liters?|restant).*(ecs|dhw|tank|ballon|hot_water|eau_chaude|acs|sanitaire)|(ecs|dhw|tank|ballon|hot_water|eau_chaude|acs|sanitaire).*(volume|litres?|liters?|restant))/,
+    test: (st) => /^l$|litre|liter/i.test(st.attributes.unit_of_measurement || ""),
+  },
+  faults: { domain: "sensor", id: /(?<!sans_)(defaut|default|fault|erreur|error|panne|anomal|st[öo]rung|averia|guasto)/ },
 };
 
 // Registry entries grouped by device, built once per `hass.entities` object (it only changes with the registry).
@@ -5230,6 +5265,49 @@ function caHeatPumpState(id, st, roleSt) {
     tankTarget: dhw?.attributes.temperature != null ? Number(dhw.attributes.temperature) : null,
     statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? "st_idle" : cool ? "st_cooling" : "st_heating",
   };
+}
+
+// The zones of a multi-zone air-to-water heat pump reported as a thermostat `number` per room (Aldes T.One AquaAir: one
+// motorised vent and one setpoint per room, 22 °C in one room and 19 in another). A zone is a temperature `number` on
+// the device — its unit is a temperature, or its name says setpoint / thermostat — paired, when one exists, with the
+// `sensor` of the same object id for the room's current temperature. The hot water setpoint is not a zone. Sorted by
+// name, so the rooms keep a stable order between renders.
+const CA_ZONE_STRIP = /\b(r[ée]glages?|consignes?|thermostats?|targets?|setpoints?|sollwerte?|temp[ée]ratures?|temperaturas?|temperaturen?|zones?|zonas?)\b/gi;
+function caHeatPumpZoneName(hass, id) {
+  let name = hass.states[id]?.attributes.friendly_name || id;
+  const dev = caDeviceName(hass, id);
+  if (dev && name.toLowerCase().startsWith(dev.toLowerCase())) name = name.slice(dev.length);
+  name = name
+    .replace(CA_ZONE_STRIP, " ")
+    .replace(/[_·-]+/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+  return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
+}
+
+function caHeatPumpZones(hass, id) {
+  const list = caDeviceEntities(hass, caDeviceOf(hass, id));
+  const zones = [];
+  for (const e of list) {
+    const eid = e.entity_id;
+    if (!eid.startsWith("number.")) continue;
+    const a = hass.states[eid]?.attributes || {};
+    const isTemp = /°|deg|celsius|fahrenheit/i.test(a.unit_of_measurement || "") || a.device_class === "temperature";
+    if (!isTemp && !/thermostat|consigne|setpoint|sollwert|temp[ée]ratur/i.test(eid)) continue;
+    if (CA_HP_DHW.test(eid)) continue;
+    const obj = eid.slice(eid.indexOf(".") + 1);
+    const temp = hass.states[`sensor.${obj}`] ? `sensor.${obj}` : null;
+    zones.push({ key: obj, name: caHeatPumpZoneName(hass, eid) || obj, temp, setpoint: eid });
+  }
+  return zones.sort((x, y) => x.name.localeCompare(y.name));
+}
+
+// A heat pump's fault message, or null when it reports none ("Aucun", "None", "0", "OK", "—").
+const CA_NO_FAULT = /^(aucun|aucune|none|no|non|ok|rien|normal|nominal|0|-|—|n\/a|nan|clear|keine?|ninguno|nessuno)$/i;
+function caHpFault(st) {
+  if (!st || caUnavailable(st)) return null;
+  const s = String(st.state).trim();
+  return s && !CA_NO_FAULT.test(s) ? s : null;
 }
 
 // ── Humidifiers ──────────────────────────────────────────────────────────────
