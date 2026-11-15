@@ -5285,18 +5285,46 @@ function caHeatPumpZoneName(hass, id) {
   return name ? name.charAt(0).toUpperCase() + name.slice(1) : "";
 }
 
-function caHeatPumpZones(hass, id) {
+// A room name reduced to a comparison key: accents dropped, non-letters collapsed ("Chambre parentale" and
+// "chambre_parentale" both become "chambreparentale"), so a setpoint number pairs with its temperature sensor
+// even when the two entities do not share an object id.
+const caZoneKey = (s) =>
+  String(s || "")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+
+// `exclude` hides zones the user does not want (a test setpoint, or a second motorised vent driven by the same
+// thermostat): the entity ids to drop, as set in the card config.
+function caHeatPumpZones(hass, id, exclude) {
+  const skip = new Set(exclude || []);
   const list = caDeviceEntities(hass, caDeviceOf(hass, id));
+  // The device's temperature sensors, keyed by room, to pair with a setpoint whose object id differs from the
+  // sensor's (the real T.One: number.t_one_thermostat_sejour alongside sensor.t_one_temperature_sejour).
+  const temps = [];
+  for (const e of list) {
+    const eid = e.entity_id;
+    if (!eid.startsWith("sensor.")) continue;
+    const a = hass.states[eid]?.attributes || {};
+    if (a.device_class !== "temperature" && !/°|deg|celsius|fahrenheit/i.test(a.unit_of_measurement || "")) continue;
+    if (CA_HP_DHW.test(eid)) continue;
+    temps.push({ eid, obj: eid.slice(eid.indexOf(".") + 1), key: caZoneKey(caHeatPumpZoneName(hass, eid)) });
+  }
   const zones = [];
   for (const e of list) {
     const eid = e.entity_id;
-    if (!eid.startsWith("number.")) continue;
+    if (!eid.startsWith("number.") || skip.has(eid)) continue;
     const a = hass.states[eid]?.attributes || {};
     const isTemp = /°|deg|celsius|fahrenheit/i.test(a.unit_of_measurement || "") || a.device_class === "temperature";
     if (!isTemp && !/thermostat|consigne|setpoint|sollwert|temp[ée]ratur/i.test(eid)) continue;
     if (CA_HP_DHW.test(eid)) continue;
     const obj = eid.slice(eid.indexOf(".") + 1);
-    const temp = hass.states[`sensor.${obj}`] ? `sensor.${obj}` : null;
+    const key = caZoneKey(caHeatPumpZoneName(hass, eid) || obj);
+    // Prefer a sensor of the same object id (the test fixture), then one of the same room, then one whose object
+    // id shares the room suffix — never a shared ECS, ballon or outdoor sensor (those are kept out above).
+    let temp = hass.states[`sensor.${obj}`] ? `sensor.${obj}` : null;
+    if (!temp && key) temp = (temps.find((t) => t.key === key) || temps.find((t) => t.obj.endsWith(`_${obj.split("_").pop()}`)))?.eid || null;
     zones.push({ key: obj, name: caHeatPumpZoneName(hass, eid) || obj, temp, setpoint: eid });
   }
   return zones.sort((x, y) => x.name.localeCompare(y.name));
@@ -5776,8 +5804,20 @@ class CaCardEditor extends HTMLElement {
       ...(CA_NO_FILTER.includes(kind)
         ? []
         : [{ name: "filter_warning", selector: { number: { min: CA_FILTER_REPLACE, max: 50, step: 1, mode: "box", unit_of_measurement: "%" } } }]),
+      // A multi-zone heat pump: let the user hide a room setpoint it finds among its zones (a test number, or a
+      // second motorised vent driven by the same thermostat).
+      ...this._zoneExclude(kind),
       ...caAdvanced(caLang(this._config, this._hass), "language", "entities"),
     ];
+  }
+
+  // The `exclude` field offered for a multi-zone heat pump: every candidate room setpoint, so hidden rooms stay
+  // pickable even once hidden. Empty (and absent) when the device has fewer than two zones.
+  _zoneExclude(kind) {
+    if (kind !== "heatpump" || !this._config?.entity) return [];
+    const zones = caHeatPumpZones(this._hass, this._config.entity);
+    if (zones.length < 2) return [];
+    return [{ name: "exclude", selector: { entity: { multiple: true, include_entities: zones.map((z) => z.setpoint) } } }];
   }
 
   _render() {

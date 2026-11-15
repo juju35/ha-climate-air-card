@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.6.0 - 2026-11-15
+
+### Features
+- **Multi-zone heat pumps — per-room temperature** ([#73](https://github.com/juju35/ha-climate-air-card/issues/73)): a room's current temperature now pairs with its setpoint even when the temperature `sensor` and the thermostat `number` do not share an object id (the real Aldes T.One AquaAir: `sensor.t_one_temperature_sejour` alongside `number.t_one_thermostat_sejour`), matched by room on the device.
+- **Aligned setpoints**: the *Zones* sliders share one scale (the widest min/max of all the rooms), so the same target lands at the same place on every slider.
+- **Hide a zone** (`exclude`): a list of room setpoints to leave out of the *Zones* section — a stray test `number`, or a second motorised vent driven by the same thermostat. Also in the visual editor.
+
 ## 2.5.0 - 2026-11-15
 
 ### Features

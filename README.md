@@ -104,7 +104,7 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 
 - Found by itself: a `climate` entity whose device has a hot water tank (`water_heater`) or is named as a heat pump (Altherma, Aquarea, Ecodan, Yutaki, Alfea, Vitocal…), and a mode `select` with an *Off* option on a heat pump device without a climate entity (TOUG). It is not listed as an air conditioner, even when it can cool
 - The room temperature in large with the target, and the hot water tank with its target; modes as segmented buttons and − / + for the target. Driven by a select: its modes as buttons (*Off*, *Confort*, *Eco*, *Boost*, *Prog A*…, a dropdown beyond five) and the setpoint slider from its thermostat `number`; the power button goes back to the last mode it ran in
-- Multi-zone: a *Zones* section with a row per room — its current temperature and its setpoint slider — when the device exposes a thermostat `number` and a temperature `sensor` per room (Aldes T.One: a motorised vent and an independent setpoint per room, 22 °C in one and 19 in another); the single setpoint gives way to the rooms
+- Multi-zone: a *Zones* section with a row per room — its current temperature and its setpoint slider — when the device exposes a thermostat `number` and a temperature `sensor` per room (Aldes T.One: a motorised vent and an independent setpoint per room, 22 °C in one and 19 in another); the single setpoint gives way to the rooms. A room pairs its temperature sensor with its setpoint by room, even when the two entities do not share an object id, and the sliders share one scale so the same target lands at the same place on every room. `exclude` leaves a setpoint out — a stray test `number`, or a second motorised vent driven by the same thermostat
 - A *Hot water* section when the device has a `water_heater`: its target slider and its operation modes. When the tank is reported as sensors instead (TOUG), its temperature, fill percentage and remaining volume sit under the temperatures, and the fill drives the illustration's level
 - What it does in the status pill: *Heating*, *Cooling*, *Hot water* (the three-way valve sends the heat to the tank), *Idle*, *Defrosting*; a fault chip when the pump reports one, *Defrosting* and *Backup heater* chips, outdoor temperature and power draw chips
 - Animated illustration: the outdoor unit's fan spins behind its grille while the compressor runs, the water flows in the pipes to the tank, warm air rises above the unit when heating and snowflakes when cooling, heat rises above the tank while it heats the hot water and frost covers the unit while it defrosts; the tank's level follows its temperature and its display shows it
@@ -299,6 +299,8 @@ illustration: window
 ```yaml
 type: custom:climate-air-heatpump-card
 entity: climate.heat_pump        # or, with TOUG: select.t_one_mode_air
+exclude:                         # multi-zone: room setpoints to hide
+  - number.t_one_compresseur_test
 entities:                        # only for what discovery misses
   tank_temp: sensor.t_one_temperature_ballon
   setpoint: number.t_one_thermostat

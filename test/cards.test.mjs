@@ -256,6 +256,31 @@ test("heat pump: TOUG multi-zone (T.One, #70) — a thermostat per room, hot wat
   assert.match(out, /class="water" x="89" y="30" width="24" height="54"/);
 });
 
+test("heat pump: multi-zone — per-room sensor pairing, hidden setpoints and aligned scale (#73)", () => {
+  const h = addToug(makeHass("fr"), { zones: true, extra: true });
+  const el = mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, h);
+  const out = html(el);
+  // A room whose setpoint (number.t_one_thermostat_garage) and sensor (sensor.t_one_temperature_garage) have
+  // different object ids still shows the room's current temperature.
+  assert.match(out, /Garage · 18,4 °C/);
+  assert.match(out, /data-number="number\.t_one_thermostat_garage"/);
+  // By default the stray test setpoint and the second Séjour vent are listed among the zones.
+  assert.match(out, /data-number="number\.t_one_compresseur_test"/);
+  assert.match(out, /data-number="number\.t_one_thermostat_sejour_bis"/);
+
+  // Hiding the test setpoint and the duplicate vent leaves the real rooms.
+  const hidden = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air", exclude: ["number.t_one_compresseur_test", "number.t_one_thermostat_sejour_bis"] }, addToug(makeHass("fr"), { zones: true, extra: true })));
+  assert.doesNotMatch(hidden, /data-number="number\.t_one_compresseur_test"/);
+  assert.doesNotMatch(hidden, /data-number="number\.t_one_thermostat_sejour_bis"/);
+  assert.match(hidden, /data-number="number\.t_one_temperature_sejour"/);
+  assert.match(hidden, /Garage · 18,4 °C/);
+  // The remaining setpoints share one scale (the widest min/max, 7–30 here), so a given target lands at the same
+  // place on every slider — the Séjour room (own scale 16–26) is rendered on the shared 7–30 scale.
+  const sejour = hidden.match(/<input[^>]*data-number="number\.t_one_temperature_sejour"[^>]*>/)[0];
+  assert.match(sejour, /min="7"/);
+  assert.match(sejour, /max="30"/);
+});
+
 test("humidifier: humidity, target, tank, modes and controls", () => {
   const h = makeHass("fr");
   const el = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h);
