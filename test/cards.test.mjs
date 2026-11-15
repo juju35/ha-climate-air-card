@@ -230,6 +230,32 @@ test("heat pump mini card: temperature, tank and outdoor temperature; a select-d
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Confort" }]);
 });
 
+test("heat pump: TOUG multi-zone (T.One, #70) — a thermostat per room, hot water from sensors and faults", () => {
+  const h = addToug(makeHass("fr"), { zones: true, fault: "Sonde ECS" });
+  const el = mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, h);
+  const out = html(el);
+  // A Zones section with a row per room, sorted by name, each with its current temperature and its setpoint number.
+  assert.match(out, /Zones/);
+  assert.match(out, /Chambre ami · 20,4 °C/);
+  assert.match(out, /Séjour · 20,6 °C/);
+  assert.match(out, /data-number="number\.t_one_temperature_sejour"/);
+  assert.match(out, /data-number="number\.t_one_temperature_chambre_parentale"/);
+  // The single-thermostat setpoint is gone once the rooms have their own.
+  assert.doesNotMatch(out, /data-number="number\.t_one_thermostat"/);
+  // The hot water tank from its sensors: temperature, fill and remaining volume.
+  assert.match(out, /Ballon 46 °C · 75 % · 160 L/);
+  // The fault as a red chip.
+  assert.match(out, /class="chip alert"[\s\S]*?Sonde ECS/);
+  // Setting a room's setpoint calls number.set_value on that room.
+  el._onChange({ target: { dataset: { number: "number.t_one_temperature_sejour" }, value: "21" } });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["number", "set_value", { entity_id: "number.t_one_temperature_sejour", value: 21 }]);
+  // No fault, no chip.
+  const clean = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, addToug(makeHass("fr"), { zones: true })));
+  assert.doesNotMatch(clean, /class="chip alert"/);
+  // The tank fill (75 %) drives the illustration's water level (height 54), not the tank temperature.
+  assert.match(out, /class="water" x="89" y="30" width="24" height="54"/);
+});
+
 test("humidifier: humidity, target, tank, modes and controls", () => {
   const h = makeHass("fr");
   const el = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h);
