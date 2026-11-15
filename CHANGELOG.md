@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.2 - 2026-11-16
+
+### Fixes
+- Overview tiles keep a neutral background even when a device is active (tile look B); the state reads from the tinted icon badge and the coloured state line. An alert still shows its border.
+
 ## 2.7.1 - 2026-11-15
 
 ### Fixes
