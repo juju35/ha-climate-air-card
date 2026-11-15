@@ -34,6 +34,8 @@ export const addToug = (h, { mode = "Confort", valve = "Air", zones = false, fau
       // thermostat as Séjour.
       add("number.t_one_compresseur_test", 22, { friendly_name: "T.One AquaAir Compresseur Test", min: 0, max: 100, step: 1, unit_of_measurement: "°C" });
       add("number.t_one_thermostat_sejour_bis", 20, { friendly_name: "T.One AquaAir Réglage consigne température Séjour bis", min: 16, max: 26, step: 0.5, unit_of_measurement: "°C" });
+      // A stray switch the user can hide the same way (a UI test toggle) — it would otherwise show as an option.
+      add("switch.t_one_ventilateur_ui_test", "off", { friendly_name: "T.One AquaAir Ventilateur UI Test" });
     }
     add("sensor.t_one_temperature_ecs", 46, { friendly_name: "T.One AquaAir Température ECS", device_class: "temperature", unit_of_measurement: "°C" });
     add("sensor.t_one_pourcentage_ecs", 75, { friendly_name: "T.One AquaAir Pourcentage ECS", unit_of_measurement: "%" });

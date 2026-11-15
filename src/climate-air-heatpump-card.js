@@ -129,6 +129,13 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     return [...super._extraIds(r), ...caHeatPumpZones(this._hass, r.id, this._config.exclude).flatMap((z) => [z.setpoint, z.temp].filter(Boolean))];
   }
 
+  // `exclude` also hides a device switch the user does not want among the options (a test toggle); a hidden
+  // switch is dropped from the toggles and no longer tracked.
+  _switches(r) {
+    const skip = new Set(this._config.exclude || []);
+    return super._switches(r).filter((id) => !skip.has(id));
+  }
+
   _isClimate() {
     return this._r?.id?.startsWith("climate.") ?? String(this._entity() || "").startsWith("climate.");
   }

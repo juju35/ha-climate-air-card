@@ -5811,13 +5811,16 @@ class CaCardEditor extends HTMLElement {
     ];
   }
 
-  // The `exclude` field offered for a multi-zone heat pump: every candidate room setpoint, so hidden rooms stay
-  // pickable even once hidden. Empty (and absent) when the device has fewer than two zones.
+  // The `exclude` field offered for a multi-zone heat pump: every candidate room setpoint and every device switch,
+  // so a hidden entity stays pickable even once hidden. Empty (and absent) when the device has fewer than two zones.
   _zoneExclude(kind) {
     if (kind !== "heatpump" || !this._config?.entity) return [];
     const zones = caHeatPumpZones(this._hass, this._config.entity);
     if (zones.length < 2) return [];
-    return [{ name: "exclude", selector: { entity: { multiple: true, include_entities: zones.map((z) => z.setpoint) } } }];
+    const switches = caDeviceEntities(this._hass, caDeviceOf(this._hass, this._config.entity))
+      .map((e) => e.entity_id)
+      .filter((id) => id.startsWith("switch."));
+    return [{ name: "exclude", selector: { entity: { multiple: true, include_entities: [...zones.map((z) => z.setpoint), ...switches] } } }];
   }
 
   _render() {
