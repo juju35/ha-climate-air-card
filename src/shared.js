@@ -4531,7 +4531,7 @@ class CaCard extends CaElement {
     const ids = [r.id, ...Object.values(r.ent), ...(this._extraIds?.(r) || [])];
     // Home Assistant replaces a `states[id]` object whenever the entity changes: comparing the ids and the state
     // object references is enough to tell a tick apart, with nothing serialized.
-    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
+    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, ...(this._extraSig?.() || []), ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
     // A dropdown open or a slider held in the card is not rebuilt: the card is redrawn around it.
     const active = this.shadowRoot.activeElement;
@@ -5037,15 +5037,19 @@ class CaClimateCard extends CaCard {
   }
 
   // One − / + stepper: `action` is temp (single target), temp_low or temp_high, `hint` names the value in the labels.
-  _stepper(action, value, label, hint) {
+  // `opts.unit` overrides the shown unit and `opts.dataValue(dir)` the button's data-value (so another card can carry
+  // an entity id to its own handler — see the heat-pump setpoints).
+  _stepper(action, value, label, hint, opts = {}) {
+    const unit = opts.unit || this._unit();
+    const dv = opts.dataValue || ((dir) => dir);
     const btn = (dir, key, icon) => {
       const text = hint ? `${this._t(key)} (${hint})` : this._t(key);
-      return `<button class="round" data-action="${action}" data-value="${dir}" title="${caEsc(text)}" aria-label="${caEsc(text)}"><ha-icon icon="${icon}"></ha-icon></button>`;
+      return `<button class="round" data-action="${action}" data-value="${caEsc(String(dv(dir)))}" title="${caEsc(text)}" aria-label="${caEsc(text)}"><ha-icon icon="${icon}"></ha-icon></button>`;
     };
     return (
       '<div class="stepper">' +
       btn("-1", "temp_down", "mdi:minus") +
-      `<div class="tv"><span class="tval">${caFmtNum(this._intlLang(), value)}<small> ${caEsc(this._unit())}</small></span><span class="tl">${caEsc(label)}</span></div>` +
+      `<div class="tv"><span class="tval">${caFmtNum(this._intlLang(), value)}<small> ${caEsc(unit)}</small></span><span class="tl">${caEsc(label)}</span></div>` +
       btn("1", "temp_up", "mdi:plus") +
       "</div>"
     );
