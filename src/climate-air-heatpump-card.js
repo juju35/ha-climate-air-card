@@ -118,14 +118,22 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   }
 
   // The rooms of a multi-zone heat pump (a thermostat number and a temperature sensor per room), found on its device.
+  // `exclude` drops the setpoints the user hid (a test number, a duplicate vent on the same thermostat).
   _zones() {
-    return caHeatPumpZones(this._hass, this._r.id);
+    return caHeatPumpZones(this._hass, this._r.id, this._config.exclude);
   }
 
   // The zones' entities are not roles, so they are added to the tracked ids: the card redraws when a room's
   // temperature or setpoint changes.
   _extraIds(r) {
-    return [...super._extraIds(r), ...caHeatPumpZones(this._hass, r.id).flatMap((z) => [z.setpoint, z.temp].filter(Boolean))];
+    return [...super._extraIds(r), ...caHeatPumpZones(this._hass, r.id, this._config.exclude).flatMap((z) => [z.setpoint, z.temp].filter(Boolean))];
+  }
+
+  // `exclude` also hides a device switch the user does not want among the options (a test toggle); a hidden
+  // switch is dropped from the toggles and no longer tracked.
+  _switches(r) {
+    const skip = new Set(this._config.exclude || []);
+    return super._switches(r).filter((id) => !skip.has(id));
   }
 
   _isClimate() {
@@ -219,15 +227,34 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   }
 
   // One row per room: its name and current temperature, and its setpoint as a slider or dropdown (its thermostat
-  // number). Shown only on a multi-zone pump (a vent and a thermostat per room, Aldes T.One).
+  // number). Shown only on a multi-zone pump (a vent and a thermostat per room, Aldes T.One). The setpoints share
+  // one scale (the widest min/max of all the rooms), so the same target lands at the same place on every slider.
   _zonesSection(m) {
     const zones = m?.zones || [];
     if (zones.length < 2) return "";
+    let min = Number.POSITIVE_INFINITY;
+    let max = Number.NEGATIVE_INFINITY;
+    let step = 0;
+    let slider = true;
+    for (const z of zones) {
+      const a = this._st(z.setpoint)?.attributes || {};
+      const zmin = Number(a.min ?? 0);
+      const zmax = Number(a.max ?? 100);
+      const zstep = Number(a.step ?? 1) || 1;
+      min = Math.min(min, zmin);
+      max = Math.max(max, zmax);
+      step = Math.max(step, zstep);
+      if (Math.floor((zmax - zmin) / zstep) + 1 <= 16) slider = false;
+    }
     const rows = zones
       .map((z) => {
         const cur = z.temp ? this._fmtSensor(z.temp) : null;
         const label = cur ? `${z.name} · ${cur}` : z.name;
-        return this._numberControl(z.setpoint, label, "mdi:thermometer");
+        const st = this._st(z.setpoint);
+        // Few steps (a dropdown) or a stale state: leave the control to _numberControl; a shared scale only helps
+        // the sliders line up.
+        if (!slider || !st || caUnavailable(st)) return this._numberControl(z.setpoint, label, "mdi:thermometer");
+        return this._rangeHtml("number", z.setpoint, "mdi:thermometer", label, min, max, step, Number(st.state));
       })
       .join("");
     return this._section(this._t("zones"), rows, "mdi:thermostat");
