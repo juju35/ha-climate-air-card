@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.1 - 2026-11-15
+
+### Fixes
+- **Diffuser scent stays inside the illustration** ([#78](https://github.com/juju35/ha-climate-air-card/issues/78)): on the full humidifier card with `illustration: diffuser`, the rising scent wisp started so high that its lit phase drew above the illustration, over the header subtitle (the area name). It now rises from lower on the drop, keeping its visible travel within the illustration area. The mini card was unaffected.
+
 ## 2.7.0 - 2026-11-15
 
 ### Features

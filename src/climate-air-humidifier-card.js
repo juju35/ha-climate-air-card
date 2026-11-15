@@ -80,7 +80,9 @@ const CA_HUM_ARTS = {
   // its base (where the light line runs), two touch keys and two feet.
   diffuser: () =>
     '<ellipse class="floor glow" cx="40" cy="91" rx="26" ry="3.6" fill="url(#ca-uf)"/>' +
-    caHumMist([39, 40.5, 42], 3) +
+    // The scent rises from the top of the drop; it starts low enough that its lit phase stays inside the
+    // illustration (the svg overflows visibly for the drop shadow, so a high start drew over the header). #78
+    caHumMist([39, 40.5, 42], 22) +
     '<rect x="22" y="85" width="5" height="3.6" rx="1.2" fill="#b6bfc9"/><rect x="53" y="85" width="5" height="3.6" rx="1.2" fill="#b6bfc9"/>' +
     '<path d="M36.6 4.6 Q40 3.6 43.4 4.6 C46 22 56 38 63 50 C67.5 58 68.2 66 67.2 72 C66.2 80 62 86 54 86.6 H26 C18 86 13.8 80 12.8 72 C11.8 66 12.5 58 17 50 C24 38 34 22 36.6 4.6 Z" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.1"/>' +
     '<path class="bud" d="M36.6 4.6 Q40 3.6 43.4 4.6 C45 18 50 30 55 38 C57.4 42 56.4 46.2 52.4 48.4 C47 51.2 33 51.2 27.6 48.4 C23.6 46.2 22.6 42 25 38 C30 30 35 18 36.6 4.6 Z"/>' +
