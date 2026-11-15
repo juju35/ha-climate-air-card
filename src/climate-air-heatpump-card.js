@@ -216,7 +216,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
         ? this._segments("hpmode", opts, st.state, (o) => this._fmtState(r.id, o), caHpModeIcon)
         : `<div class="grid">${this._selectEntity(r.id, this._t("mode"))}</div>`;
     // A single setpoint when the pump has one thermostat; the per-room zones replace it when there are several.
-    const setpoint = r.ent.setpoint && m.running && m.zones.length < 2 ? this._numberControl(r.ent.setpoint, this._t("target"), "mdi:thermometer") : "";
+    const setpoint = r.ent.setpoint && m.running && m.zones.length < 2 ? this._setpointControl(r.ent.setpoint, this._t("target")) : "";
     const toggles = this._switchToggles(r);
     return this._section("", modes + setpoint) + this._midSections(m) + this._options(toggles);
   }
@@ -226,35 +226,17 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     return this._zonesSection(m) + this._dhwSection();
   }
 
-  // One row per room: its name and current temperature, and its setpoint as a slider or dropdown (its thermostat
-  // number). Shown only on a multi-zone pump (a vent and a thermostat per room, Aldes T.One). The setpoints share
-  // one scale (the widest min/max of all the rooms), so the same target lands at the same place on every slider.
+  // One row per room: its name and current temperature, and its setpoint as a − / + stepper (its thermostat number),
+  // or a dropdown for a coarse thermostat. Shown only on a multi-zone pump (a vent and a thermostat per room, Aldes
+  // T.One). Steppers stay centred under one another where sliders drifted apart (issue #76).
   _zonesSection(m) {
     const zones = m?.zones || [];
     if (zones.length < 2) return "";
-    let min = Number.POSITIVE_INFINITY;
-    let max = Number.NEGATIVE_INFINITY;
-    let step = 0;
-    let slider = true;
-    for (const z of zones) {
-      const a = this._st(z.setpoint)?.attributes || {};
-      const zmin = Number(a.min ?? 0);
-      const zmax = Number(a.max ?? 100);
-      const zstep = Number(a.step ?? 1) || 1;
-      min = Math.min(min, zmin);
-      max = Math.max(max, zmax);
-      step = Math.max(step, zstep);
-      if (Math.floor((zmax - zmin) / zstep) + 1 <= 16) slider = false;
-    }
     const rows = zones
       .map((z) => {
         const cur = z.temp ? this._fmtSensor(z.temp) : null;
         const label = cur ? `${z.name} · ${cur}` : z.name;
-        const st = this._st(z.setpoint);
-        // Few steps (a dropdown) or a stale state: leave the control to _numberControl; a shared scale only helps
-        // the sliders line up.
-        if (!slider || !st || caUnavailable(st)) return this._numberControl(z.setpoint, label, "mdi:thermometer");
-        return this._rangeHtml("number", z.setpoint, "mdi:thermometer", label, min, max, step, Number(st.state));
+        return this._setpointControl(z.setpoint, label);
       })
       .join("");
     return this._section(this._t("zones"), rows, "mdi:thermostat");
@@ -267,10 +249,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     if (!st || caUnavailable(st)) return "";
     const a = st.attributes;
     let body = "";
-    if (a.temperature != null) {
-      const step = Number(a.target_temp_step) || 1;
-      body += this._rangeHtml("dhw", id, "mdi:thermometer-water", this._t("target"), Number(a.min_temp ?? 30), Number(a.max_temp ?? 65), step, Number(a.temperature));
-    }
+    if (a.temperature != null) body += this._setpointStepper(id, this._t("target"), "mdi:thermometer-water");
     const ops = a.operation_list || [];
     if (ops.length > 1) {
       body += this._segments("dhwop", ops, a.operation_mode ?? st.state, (o) => this._fmtState(id, o), null);
@@ -278,20 +257,116 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     return this._section(this._t("dhw_target"), body, "mdi:water-boiler");
   }
 
-  _rangeText(d, v) {
-    if (d.dhw) return this._temp(v, 0);
-    return super._rangeText(d, v);
+  // A setpoint control: a dropdown for a coarse `number` (few steps) or a `select`, a − / + stepper otherwise —
+  // replacing the sliders whose fills no longer lined up across rows (issue #76).
+  _setpointControl(id, label) {
+    const st = this._st(id);
+    if (!st || caUnavailable(st)) return "";
+    if (id.startsWith("select.")) return this._numberControl(id, label, "mdi:thermometer");
+    const a = st.attributes;
+    const min = Number(a.min ?? 0);
+    const max = Number(a.max ?? 100);
+    const step = Number(a.step ?? 1) || 1;
+    if (Math.floor((max - min) / step) + 1 <= 16) return this._numberControl(id, label, "mdi:thermometer");
+    return this._setpointStepper(id, label);
   }
 
-  // The water heater's target, sent like any other slider (see CaCard._onChange).
-  _extraSend(d, value) {
-    if (d.dhw) return () => this._call("water_heater", "set_temperature", { entity_id: d.dhw, temperature: Number(value) });
-    return null;
+  // A − / + stepper for a `number` or `water_heater` setpoint, built like the climate target: each tap moves the
+  // value by one step on screen and the service is called once the taps stop (CA_TEMP_DEBOUNCE), the tapped value
+  // held until the entity reports it.
+  _setpointStepper(id, label, icon = "mdi:thermometer") {
+    const st = this._st(id);
+    if (!st || caUnavailable(st)) return "";
+    const dhw = id.startsWith("water_heater.");
+    const a = st.attributes;
+    const value = this._spValue(id, Number(dhw ? a.temperature : st.state));
+    if (!Number.isFinite(value)) return this._numberControl(id, label, icon);
+    const unit = dhw ? this._unit() : a.unit_of_measurement || this._unit();
+    return this._stepper("setstep", value, label, null, { unit, dataValue: (dir) => `${id}|${dir}` });
+  }
+
+  // The value a setpoint stepper shows: the tapped value while it waits to be reported, else the entity's own.
+  _spValue(id, fallback) {
+    return this._sp?.[id] ? this._sp[id].val : fallback;
+  }
+
+  // One tap: clamp to the entity's range, show it at once, call the service once the taps stop.
+  _stepSetpoint(id, dir) {
+    const st = this._st(id);
+    if (!st || caUnavailable(st)) return;
+    const dhw = id.startsWith("water_heater.");
+    const a = st.attributes;
+    const step = Number(dhw ? a.target_temp_step : a.step) || (this._unit() === "°F" ? 1 : 0.5);
+    const min = Number((dhw ? a.min_temp : a.min) ?? (dhw ? 30 : 7));
+    const max = Number((dhw ? a.max_temp : a.max) ?? (dhw ? 65 : 35));
+    const cur = this._spValue(id, Number(dhw ? a.temperature : st.state));
+    if (!Number.isFinite(cur)) return;
+    const val = +Math.min(max, Math.max(min, Math.round((cur + dir * step) / step) * step)).toFixed(2);
+    this._sp = { ...(this._sp || {}), [id]: { val, sent: false } };
+    this._spTimers = this._spTimers || {};
+    clearTimeout(this._spTimers[id]);
+    this._update();
+    this._spTimers[id] = setTimeout(() => this._sendSetpoint(id), CA_TEMP_DEBOUNCE);
+  }
+
+  async _sendSetpoint(id) {
+    const p = this._sp?.[id];
+    if (!p) return;
+    const ok = id.startsWith("water_heater.")
+      ? await this._call("water_heater", "set_temperature", { entity_id: id, temperature: p.val })
+      : await this._call("number", "set_value", { entity_id: id, value: p.val });
+    // Tapped again meanwhile: a newer value is the one waiting.
+    if (this._sp?.[id] !== p) return;
+    if (!ok) this._clearSetpoint(id);
+    else p.sent = true;
+    this._update();
+  }
+
+  _clearSetpoint(id) {
+    if (!this._sp?.[id]) return;
+    const { [id]: _drop, ...rest } = this._sp;
+    this._sp = rest;
+    clearTimeout(this._spTimers?.[id]);
+  }
+
+  // Once the entity reports a sent value, the entity's own value takes over again.
+  _settleSetpoints() {
+    if (!this._sp) return;
+    for (const [id, p] of Object.entries(this._sp)) {
+      if (!p.sent) continue;
+      const st = this._st(id);
+      if (!st) continue;
+      const cur = id.startsWith("water_heater.") ? Number(st.attributes?.temperature) : Number(st.state);
+      if (Number.isFinite(cur) && Math.abs(cur - p.val) < 1e-6) this._clearSetpoint(id);
+    }
+  }
+
+  // The tapped setpoints join the redraw signature, so an optimistic tap redraws the card (CaCard._update).
+  _extraSig() {
+    return this._sp ? Object.entries(this._sp).flatMap(([id, p]) => [id, p.val]) : [];
+  }
+
+  _update() {
+    this._settleSetpoints();
+    super._update();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    // Detached mid-debounce: send any tap not yet sent, so it is not lost (resending a sent value is harmless).
+    if (!this._sp) return;
+    for (const [id, p] of Object.entries(this._sp)) {
+      clearTimeout(this._spTimers?.[id]);
+      if (!p.sent) this._sendSetpoint(id);
+    }
   }
 
   _action(action, value) {
     const id = this._r.id;
-    if (action === "hpmode") this._call("select", "select_option", { entity_id: id, option: value });
+    if (action === "setstep") {
+      const i = value.lastIndexOf("|");
+      this._stepSetpoint(value.slice(0, i), Number(value.slice(i + 1)));
+    } else if (action === "hpmode") this._call("select", "select_option", { entity_id: id, option: value });
     else if (action === "dhwop") this._call("water_heater", "set_operation_mode", { entity_id: this._r.ent.dhw, operation_mode: value });
     else if (action === "power" && !id.startsWith("climate.")) {
       // A select has no on / off: off is its « Off » option, and on goes back to the last mode it ran in.

@@ -129,7 +129,8 @@ test("air conditioner: a pending target is sent right away when the card is deta
   assert.equal(h.calls.length, 1); // the debounce timer was cancelled, nothing is sent twice
 });
 
-test("heat pump: found by its hot water tank, with its temperatures, tank, modes and hot water controls", () => {
+test("heat pump: found by its hot water tank, with its temperatures, tank, modes and hot water controls", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
   const h = makeHass("fr");
   const el = mount(lib, "climate-air-heatpump-card", {}, h);
   const out = html(el);
@@ -139,8 +140,13 @@ test("heat pump: found by its hot water tank, with its temperatures, tank, modes
   assert.match(out, /Ballon 52 °C → 55 °C/);
   assert.match(out, /Extérieur 4 °C/);
   assert.match(out, /<span class="stt">Chauffe</);
-  assert.match(out, /data-dhw="water_heater\.heat_pump_hot_water"/);
+  // The hot water target is a centred − / + stepper (issue #76), sent once the taps stop.
+  assert.match(out, /data-action="setstep" data-value="water_heater\.heat_pump_hot_water\|1"/);
   assert.match(out, /class="seg on" data-action="dhwop" data-value="heat_pump"/);
+  el._action("setstep", "water_heater.heat_pump_hot_water|1");
+  t.mock.timers.tick(1000);
+  await Promise.resolve();
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["water_heater", "set_temperature", { entity_id: "water_heater.heat_pump_hot_water", temperature: 56 }]);
   el._action("dhwop", "eco");
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["water_heater", "set_operation_mode", { entity_id: "water_heater.heat_pump_hot_water", operation_mode: "eco" }]);
   // Not an air conditioner, even though it can cool.
@@ -200,7 +206,7 @@ test("heat pump: TOUG (T.One) driven by the select of its mode, found without a 
   assert.match(out, /20,8<small> °C/);
   assert.match(out, /Ballon 48 °C/);
   assert.match(out, /class="seg on" data-action="hpmode" data-value="Confort"/);
-  assert.match(out, /data-number="number\.t_one_thermostat"/);
+  assert.match(out, /data-action="setstep" data-value="number\.t_one_thermostat\|1"/);
   el._action("hpmode", "Boost");
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Boost" }]);
   // Off is its « Off » option; on goes back to the last mode it ran in.
@@ -230,25 +236,28 @@ test("heat pump mini card: temperature, tank and outdoor temperature; a select-d
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.t_one_mode_air", option: "Confort" }]);
 });
 
-test("heat pump: TOUG multi-zone (T.One, #70) — a thermostat per room, hot water from sensors and faults", () => {
+test("heat pump: TOUG multi-zone (T.One, #70) — a thermostat per room, hot water from sensors and faults", async (t) => {
+  t.mock.timers.enable({ apis: ["setTimeout"] });
   const h = addToug(makeHass("fr"), { zones: true, fault: "Sonde ECS" });
   const el = mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, h);
   const out = html(el);
-  // A Zones section with a row per room, sorted by name, each with its current temperature and its setpoint number.
+  // A Zones section with a row per room, sorted by name, each with its current temperature and its setpoint stepper.
   assert.match(out, /Zones/);
   assert.match(out, /Chambre ami · 20,4 °C/);
   assert.match(out, /Séjour · 20,6 °C/);
-  assert.match(out, /data-number="number\.t_one_temperature_sejour"/);
-  assert.match(out, /data-number="number\.t_one_temperature_chambre_parentale"/);
+  assert.match(out, /data-action="setstep" data-value="number\.t_one_temperature_sejour\|1"/);
+  assert.match(out, /data-action="setstep" data-value="number\.t_one_temperature_chambre_parentale\|1"/);
   // The single-thermostat setpoint is gone once the rooms have their own.
-  assert.doesNotMatch(out, /data-number="number\.t_one_thermostat"/);
+  assert.doesNotMatch(out, /number\.t_one_thermostat\b/);
   // The hot water tank from its sensors: temperature, fill and remaining volume.
   assert.match(out, /Ballon 46 °C · 75 % · 160 L/);
   // The fault as a red chip.
   assert.match(out, /class="chip alert"[\s\S]*?Sonde ECS/);
-  // Setting a room's setpoint calls number.set_value on that room.
-  el._onChange({ target: { dataset: { number: "number.t_one_temperature_sejour" }, value: "21" } });
-  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["number", "set_value", { entity_id: "number.t_one_temperature_sejour", value: 21 }]);
+  // Tapping a room's + sends number.set_value on that room once the taps stop.
+  el._action("setstep", "number.t_one_temperature_sejour|1");
+  t.mock.timers.tick(1000);
+  await Promise.resolve();
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["number", "set_value", { entity_id: "number.t_one_temperature_sejour", value: 20.5 }]);
   // No fault, no chip.
   const clean = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, addToug(makeHass("fr"), { zones: true })));
   assert.doesNotMatch(clean, /class="chip alert"/);
@@ -256,31 +265,26 @@ test("heat pump: TOUG multi-zone (T.One, #70) — a thermostat per room, hot wat
   assert.match(out, /class="water" x="89" y="30" width="24" height="54"/);
 });
 
-test("heat pump: multi-zone — per-room sensor pairing, hidden setpoints and aligned scale (#73)", () => {
+test("heat pump: multi-zone — per-room sensor pairing and hidden setpoints (#73)", () => {
   const h = addToug(makeHass("fr"), { zones: true, extra: true });
   const el = mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, h);
   const out = html(el);
   // A room whose setpoint (number.t_one_thermostat_garage) and sensor (sensor.t_one_temperature_garage) have
   // different object ids still shows the room's current temperature.
   assert.match(out, /Garage · 18,4 °C/);
-  assert.match(out, /data-number="number\.t_one_thermostat_garage"/);
+  assert.match(out, /data-action="setstep" data-value="number\.t_one_thermostat_garage\|1"/);
   // By default the stray test setpoint, the second Séjour vent and the test switch are on the card.
-  assert.match(out, /data-number="number\.t_one_compresseur_test"/);
-  assert.match(out, /data-number="number\.t_one_thermostat_sejour_bis"/);
+  assert.match(out, /data-action="setstep" data-value="number\.t_one_compresseur_test\|1"/);
+  assert.match(out, /data-action="setstep" data-value="number\.t_one_thermostat_sejour_bis\|1"/);
   assert.match(out, /data-toggle="switch\.t_one_ventilateur_ui_test"/);
 
   // Hiding the test setpoint, the duplicate vent and the test switch leaves the real rooms.
   const hidden = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air", exclude: ["number.t_one_compresseur_test", "number.t_one_thermostat_sejour_bis", "switch.t_one_ventilateur_ui_test"] }, addToug(makeHass("fr"), { zones: true, extra: true })));
-  assert.doesNotMatch(hidden, /data-number="number\.t_one_compresseur_test"/);
-  assert.doesNotMatch(hidden, /data-number="number\.t_one_thermostat_sejour_bis"/);
+  assert.doesNotMatch(hidden, /t_one_compresseur_test/);
+  assert.doesNotMatch(hidden, /t_one_thermostat_sejour_bis/);
   assert.doesNotMatch(hidden, /switch\.t_one_ventilateur_ui_test/);
-  assert.match(hidden, /data-number="number\.t_one_temperature_sejour"/);
+  assert.match(hidden, /data-action="setstep" data-value="number\.t_one_temperature_sejour\|1"/);
   assert.match(hidden, /Garage · 18,4 °C/);
-  // The remaining setpoints share one scale (the widest min/max, 7–30 here), so a given target lands at the same
-  // place on every slider — the Séjour room (own scale 16–26) is rendered on the shared 7–30 scale.
-  const sejour = hidden.match(/<input[^>]*data-number="number\.t_one_temperature_sejour"[^>]*>/)[0];
-  assert.match(sejour, /min="7"/);
-  assert.match(sejour, /max="30"/);
 });
 
 test("humidifier: humidity, target, tank, modes and controls", () => {

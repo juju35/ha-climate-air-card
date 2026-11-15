@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.0 - 2026-11-15
+
+### Features
+- **Centred setpoints** ([#76](https://github.com/juju35/ha-climate-air-card/issues/76)): the heat pump setpoints — the single thermostat, each room of the *Zones*, and the *Hot water* target — are now − / + steppers instead of sliders, like the air conditioner's target, so they stay centred under one another (the slider fills drifted apart from row to row). A coarse `number` still falls back to a dropdown.
+
 ## 2.6.0 - 2026-11-15
 
 ### Features
