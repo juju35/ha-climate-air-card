@@ -475,7 +475,7 @@ const CA_OVERVIEW_STYLES = `
          grid-template-areas: "ic name" "ic state"; column-gap: 7px; align-items: center; align-content: center;
          padding: 6px 7px; border-radius: 10px; background: var(--secondary-background-color, transparent); border: 1px solid transparent;
          transition: background .2s, border-color .2s; outline: none; }
-  .dev.on { background: color-mix(in srgb, var(--t) 9%, var(--secondary-background-color, transparent)); border-color: color-mix(in srgb, var(--t) 24%, transparent); }
+  /* Tile B look: an active device keeps a neutral background — its state reads from the tinted icon badge and the coloured state line (an alert still shows its border). */
   .dev:has(.chips) { grid-template-areas: "ic name" "ic state" "ic chips"; }
   .dev.alert { border-color: color-mix(in srgb, var(--ca-warn) 45%, transparent); }
   .dev.na { opacity: .6; }
