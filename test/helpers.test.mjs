@@ -31,6 +31,20 @@ test("a climate entity that only heats is no air conditioner: the cards leave it
   }
 });
 
+test("a fridge or freezer exposed as a climate entity is no air conditioner", () => {
+  // A cooling-only climate entity that is really a refrigeration appliance (fridge, freezer, wine cooler) must not
+  // be listed as an air conditioner (issue #80: Liebherr exposes each compartment as a `climate` with hvac_modes [cool]).
+  const fridge = (attrs) => lib.caKindOf(makeHass("en", { "climate.bathroom_thermostat": { state: "cool", hvac_modes: ["off", "cool"], ...attrs } }), "climate.bathroom_thermostat");
+  // Setpoint range below comfort cooling gives it away, whatever its name or icon.
+  assert.equal(fridge({ max_temp: 9 }), null, "fridge by max_temp");
+  assert.equal(fridge({ hvac_modes: ["cool"], min_temp: -28, max_temp: -14 }), null, "freezer by max_temp");
+  // A fridge/freezer icon or name gives it away even when the range looks ordinary.
+  assert.equal(fridge({ max_temp: 30, icon: "mdi:fridge-industrial-outline" }), null, "fridge by icon");
+  assert.equal(fridge({ max_temp: 30, friendly_name: "Kühlschrank" }), null, "fridge by name");
+  // A real cooling-only air conditioner is still an air conditioner.
+  assert.equal(fridge({ max_temp: 30 }), "aircon", "cool-only air conditioner");
+});
+
 test("every device of a kind is found, sorted by name", () => {
   const h = makeHass();
   assert.deepEqual(json(lib.caFindEntities(h, "purifier")), ["fan.bedroom_purifier", "fan.dyson_pure_cool", "fan.living_room_purifier_air_purifier"]);

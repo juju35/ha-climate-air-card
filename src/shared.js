@@ -4193,6 +4193,22 @@ const CA_HP_NAME =
   /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|arotherm|geotherm|nibe)/i;
 
 const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
+
+// Refrigeration appliances (fridge, freezer, wine cooler) are exposed as climate entities by some integrations
+// (e.g. Liebherr), and can cool, but are not air conditioners: their setpoint range sits well below comfort
+// temperature. Tell them apart by a fridge/freezer icon or name, or by a maximum setpoint below comfort cooling
+// (unit-aware: 15 °C, or 60 °F).
+const CA_FRIDGE_ICON = /fridge|freezer|snowflake-thermometer/i;
+const CA_FRIDGE_NAME =
+  /fridge|freezer|refrigerat|r[ée]frig[eé]r|cong[eé]lat|frigo|k[üu]hlschrank|gefrier|nevera|congelador|frigorif|koelkast|vriezer|lod[óo]wka|zamra[zż]|chladni[čc]|mrazni|hladnjak|zamrziva|[хx]олодильник|[мm]орозильник|frys|k[øo]leskab|fryseskab|ψυγε[ίi]|κατ[άa]ψυξ|wine.?(cooler|cellar|fridge)|cave.?[àa].?vin|cantinetta|vinoth[eè]que/i;
+function caIsFridge(hass, id, st) {
+  if (CA_FRIDGE_ICON.test(st.attributes.icon || "")) return true;
+  const dev = hass.devices?.[caDeviceOf(hass, id)];
+  if (CA_FRIDGE_NAME.test([st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" "))) return true;
+  const maxT = Number(st.attributes.max_temp);
+  const limit = (hass?.config?.unit_system?.temperature || "").includes("F") ? 60 : 15;
+  return Number.isFinite(maxT) && maxT < limit;
+}
 function caKindOf(hass, id) {
   const st = hass?.states?.[id];
   if (!st) return null;
@@ -4205,7 +4221,10 @@ function caKindOf(hass, id) {
       if (CA_HP_PLATFORMS.includes(hass.entities?.[id]?.platform)) return "heatpump";
       if (own.some((e) => e.entity_id.startsWith("water_heater.")) || CA_HP_NAME.test(names)) return "heatpump";
       const modes = st.attributes.hvac_modes || [];
-      return modes.some((m) => m === "cool" || m === "dry" || m === "fan_only") ? "aircon" : null;
+      if (!modes.some((m) => m === "cool" || m === "dry" || m === "fan_only")) return null;
+      // A fridge, freezer or wine cooler cools but is not an air conditioner.
+      if (caIsFridge(hass, id, st)) return null;
+      return "aircon";
     }
     // Humidifiers, dehumidifiers and diffusers: every humidifier entity (its device_class picks the illustration).
     if (domain === "humidifier") return "humidifier";
