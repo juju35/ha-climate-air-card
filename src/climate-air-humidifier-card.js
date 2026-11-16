@@ -70,7 +70,9 @@ const caRitualsArt = (finish) => {
     `<clipPath id="ca-rit"><path d="${CA_RITUALS_PATH}"/></clipPath>` +
     "</defs>" +
     '<ellipse class="floor" cx="40" cy="90" rx="25" ry="3.6" fill="url(#ca-uf)"/>' +
-    caHumMist([38.5, 40, 41.5], 16) +
+    // The scent rises from the tip of the neck; it starts low enough that its lit phase stays inside the
+    // illustration (the svg overflows visibly for the floor shadow, so a higher start grazed the header). #78
+    caHumMist([38.5, 40, 41.5], 22) +
     '<g clip-path="url(#ca-rit)">' +
     '<rect x="11" y="16" width="58" height="72" fill="url(#ca-rmetal)"/>' +
     '<rect x="11" y="16" width="58" height="72" fill="url(#ca-rdome)"/>' +

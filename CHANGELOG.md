@@ -5,6 +5,9 @@
 ### Features
 - Humidifier: a **Rituals Perfume Genie on a localised install** is now fully recognised. Its roles — the perfume amount, room size, cartridge fill, fragrance, cartridge sensor and Wi-Fi — are matched by their registry `translation_key` as well as the entity id, so a translated entity id (German, …) no longer leaves the card falling back to a plain humidifier, and the brass/black illustration is now guessed from the device **manufacturer** too, so a Genie whose model and name are localised is still drawn as a diffuser.
 
+### Fixes
+- Humidifier: on the Rituals (brass/black) illustration, the scent wisp no longer grazes the subtitle line at the top of its rise — it now starts low enough to stay inside the illustration, like the VOCOlinc diffuser (#78).
+
 ## 2.11.0 - 2026-11-16
 
 ### Features
