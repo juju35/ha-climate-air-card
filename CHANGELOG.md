@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.9.2 - 2026-11-16
+
+### Fixes
+- The overview no longer shows a (de)humidifier or air conditioner twice: a `fan` entity that a device exposes alongside its `humidifier` or `climate` entity is that device's own blower (e.g. a dehumidifier's WDH-930EEW fan), so it is no longer discovered as a standalone comfort fan.
+
 ## 2.9.1 - 2026-11-16
 
 ### Fixes
