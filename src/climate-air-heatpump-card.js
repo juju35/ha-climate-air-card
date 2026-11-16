@@ -234,7 +234,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     if (zones.length < 2) return "";
     const rows = zones
       .map((z) => {
-        const cur = z.temp ? this._fmtSensor(z.temp) : null;
+        const cur = z.temp ? this._fmtSensor(z.temp, 1) : null;
         const label = cur ? `${z.name} · ${cur}` : z.name;
         return this._setpointControl(z.setpoint, label);
       })

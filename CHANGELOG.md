@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.9.3 - 2026-11-16
+
+### Fixes
+- Heat pump: the per-room temperature in the zones section now always shows one decimal (e.g. `20.0 °C` instead of `20`), so a reading can be checked against the room sensor at a glance.
+
 ## 2.9.2 - 2026-11-16
 
 ### Fixes
