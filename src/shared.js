@@ -32,6 +32,15 @@ const CA_I18N = {
     ill_evaporative: "Evaporative",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Essential oil diffuser",
+    ill_rituals: "Rituals Perfume Genie (brass)",
+    ill_rituals_black: "Rituals Perfume Genie (black)",
+    cartridge: "Cartridge",
+    cartridge_empty: "Cartridge empty",
+    perfume: "Perfume",
+    intensity: "Intensity",
+    battery: "Battery",
+    wifi: "Wi-Fi",
+    room_size: "Room size",
     ill_dehumidifier: "Dehumidifier",
     st_dhw: "Hot water",
     st_heating: "Heating",
@@ -194,6 +203,15 @@ const CA_I18N = {
     ill_evaporative: "Évaporatif",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Diffuseur d'huiles essentielles",
+    ill_rituals: "Rituals Perfume Genie (laiton)",
+    ill_rituals_black: "Rituals Perfume Genie (noir)",
+    cartridge: "Cartouche",
+    cartridge_empty: "Cartouche vide",
+    perfume: "Parfum",
+    intensity: "Intensité",
+    battery: "Batterie",
+    wifi: "Wi-Fi",
+    room_size: "Taille de la pièce",
     ill_dehumidifier: "Déshumidificateur",
     st_dhw: "Eau chaude",
     st_heating: "Chauffe",
@@ -357,6 +375,15 @@ const CA_I18N = {
     ill_evaporative: "Verdunster",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Aromadiffusor",
+    ill_rituals: "Rituals Perfume Genie (Messing)",
+    ill_rituals_black: "Rituals Perfume Genie (Schwarz)",
+    cartridge: "Kartusche",
+    cartridge_empty: "Kartusche leer",
+    perfume: "Duft",
+    intensity: "Intensität",
+    battery: "Batterie",
+    wifi: "WLAN",
+    room_size: "Raumgröße",
     ill_dehumidifier: "Luftentfeuchter",
     st_dhw: "Warmwasser",
     st_heating: "Heizt",
@@ -519,6 +546,15 @@ const CA_I18N = {
     ill_evaporative: "Evaporativo",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Difusor de aceites esenciales",
+    ill_rituals: "Rituals Perfume Genie (latón)",
+    ill_rituals_black: "Rituals Perfume Genie (negro)",
+    cartridge: "Cartucho",
+    cartridge_empty: "Cartucho vacío",
+    perfume: "Perfume",
+    intensity: "Intensidad",
+    battery: "Batería",
+    wifi: "Wi-Fi",
+    room_size: "Tamaño de la habitación",
     ill_dehumidifier: "Deshumidificador",
     st_dhw: "Agua caliente",
     st_heating: "Calentando",
@@ -681,6 +717,15 @@ const CA_I18N = {
     ill_evaporative: "Испаривачки",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Дифузер етеричних уља",
+    ill_rituals: "Rituals Perfume Genie (месинг)",
+    ill_rituals_black: "Rituals Perfume Genie (црна)",
+    cartridge: "Уложак",
+    cartridge_empty: "Уложак је празан",
+    perfume: "Мирис",
+    intensity: "Интензитет",
+    battery: "Батерија",
+    wifi: "Wi-Fi",
+    room_size: "Величина собе",
     ill_dehumidifier: "Одвлаживач ваздуха",
     st_dhw: "Топла вода",
     st_heating: "Греје",
@@ -843,6 +888,15 @@ const CA_I18N = {
     ill_evaporative: "Isparivački",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Difuzer eteričnih ulja",
+    ill_rituals: "Rituals Perfume Genie (mesing)",
+    ill_rituals_black: "Rituals Perfume Genie (crna)",
+    cartridge: "Uložak",
+    cartridge_empty: "Uložak je prazan",
+    perfume: "Miris",
+    intensity: "Intenzitet",
+    battery: "Baterija",
+    wifi: "Wi-Fi",
+    room_size: "Veličina sobe",
     ill_dehumidifier: "Odvlaživač vazduha",
     st_dhw: "Topla voda",
     st_heating: "Greje",
@@ -1005,6 +1059,15 @@ const CA_I18N = {
     ill_evaporative: "Evaporativo",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Diffusore di oli essenziali",
+    ill_rituals: "Rituals Perfume Genie (ottone)",
+    ill_rituals_black: "Rituals Perfume Genie (nero)",
+    cartridge: "Cartuccia",
+    cartridge_empty: "Cartuccia vuota",
+    perfume: "Profumo",
+    intensity: "Intensità",
+    battery: "Batteria",
+    wifi: "Wi-Fi",
+    room_size: "Dimensione della stanza",
     ill_dehumidifier: "Deumidificatore",
     st_dhw: "Acqua calda",
     st_heating: "Riscalda",
@@ -1168,6 +1231,15 @@ const CA_I18N = {
     ill_evaporative: "Verdamper",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Aromadiffuser",
+    ill_rituals: "Rituals Perfume Genie (messing)",
+    ill_rituals_black: "Rituals Perfume Genie (zwart)",
+    cartridge: "Cartridge",
+    cartridge_empty: "Cartridge leeg",
+    perfume: "Parfum",
+    intensity: "Intensiteit",
+    battery: "Batterij",
+    wifi: "Wifi",
+    room_size: "Kamergrootte",
     ill_dehumidifier: "Luchtontvochtiger",
     st_dhw: "Warm water",
     st_heating: "Verwarmt",
@@ -1331,6 +1403,15 @@ const CA_I18N = {
     ill_evaporative: "Evaporativo",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Difusor de óleos essenciais",
+    ill_rituals: "Rituals Perfume Genie (latão)",
+    ill_rituals_black: "Rituals Perfume Genie (preto)",
+    cartridge: "Cartucho",
+    cartridge_empty: "Cartucho vazio",
+    perfume: "Perfume",
+    intensity: "Intensidade",
+    battery: "Bateria",
+    wifi: "Wi-Fi",
+    room_size: "Tamanho da divisão",
     ill_dehumidifier: "Desumidificador",
     st_dhw: "Água quente",
     st_heating: "A aquecer",
@@ -1494,6 +1575,15 @@ const CA_I18N = {
     ill_evaporative: "Ewaporacyjny",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Dyfuzor olejków eterycznych",
+    ill_rituals: "Rituals Perfume Genie (mosiądz)",
+    ill_rituals_black: "Rituals Perfume Genie (czarny)",
+    cartridge: "Wkład",
+    cartridge_empty: "Pusty wkład",
+    perfume: "Zapach",
+    intensity: "Intensywność",
+    battery: "Bateria",
+    wifi: "Wi-Fi",
+    room_size: "Wielkość pomieszczenia",
     ill_dehumidifier: "Osuszacz",
     st_dhw: "Ciepła woda",
     st_heating: "Grzeje",
@@ -1657,6 +1747,15 @@ const CA_I18N = {
     ill_evaporative: "Evaporativ",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Difuzor de uleiuri esențiale",
+    ill_rituals: "Rituals Perfume Genie (alamă)",
+    ill_rituals_black: "Rituals Perfume Genie (negru)",
+    cartridge: "Cartuș",
+    cartridge_empty: "Cartuș gol",
+    perfume: "Parfum",
+    intensity: "Intensitate",
+    battery: "Baterie",
+    wifi: "Wi-Fi",
+    room_size: "Dimensiunea camerei",
     ill_dehumidifier: "Dezumidificator",
     st_dhw: "Apă caldă",
     st_heating: "Încălzește",
@@ -1820,6 +1919,15 @@ const CA_I18N = {
     ill_evaporative: "Fordampning",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Aromadiffuser",
+    ill_rituals: "Rituals Perfume Genie (messing)",
+    ill_rituals_black: "Rituals Perfume Genie (sort)",
+    cartridge: "Patron",
+    cartridge_empty: "Patron tom",
+    perfume: "Duft",
+    intensity: "Intensitet",
+    battery: "Batteri",
+    wifi: "Wi-Fi",
+    room_size: "Rumstørrelse",
     ill_dehumidifier: "Affugter",
     st_dhw: "Varmt vand",
     st_heating: "Varmer",
@@ -1983,6 +2091,15 @@ const CA_I18N = {
     ill_evaporative: "Avdunstning",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Doftspridare",
+    ill_rituals: "Rituals Perfume Genie (mässing)",
+    ill_rituals_black: "Rituals Perfume Genie (svart)",
+    cartridge: "Patron",
+    cartridge_empty: "Patron tom",
+    perfume: "Doft",
+    intensity: "Intensitet",
+    battery: "Batteri",
+    wifi: "Wi-Fi",
+    room_size: "Rumsstorlek",
     ill_dehumidifier: "Avfuktare",
     st_dhw: "Varmvatten",
     st_heating: "Värmer",
@@ -2146,6 +2263,15 @@ const CA_I18N = {
     ill_evaporative: "Изпарителен",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Дифузер за етерични масла",
+    ill_rituals: "Rituals Perfume Genie (месинг)",
+    ill_rituals_black: "Rituals Perfume Genie (черен)",
+    cartridge: "Патрон",
+    cartridge_empty: "Празен патрон",
+    perfume: "Аромат",
+    intensity: "Интензитет",
+    battery: "Батерия",
+    wifi: "Wi-Fi",
+    room_size: "Размер на стаята",
     ill_dehumidifier: "Изсушител",
     st_dhw: "Топла вода",
     st_heating: "Отоплява",
@@ -2309,6 +2435,15 @@ const CA_I18N = {
     ill_evaporative: "Испарительный",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Аромадиффузор",
+    ill_rituals: "Rituals Perfume Genie (латунь)",
+    ill_rituals_black: "Rituals Perfume Genie (чёрный)",
+    cartridge: "Картридж",
+    cartridge_empty: "Картридж пуст",
+    perfume: "Аромат",
+    intensity: "Интенсивность",
+    battery: "Батарея",
+    wifi: "Wi-Fi",
+    room_size: "Размер комнаты",
     ill_dehumidifier: "Осушитель",
     st_dhw: "Горячая вода",
     st_heating: "Нагрев",
@@ -2472,6 +2607,15 @@ const CA_I18N = {
     ill_evaporative: "Випарний",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Аромадифузор",
+    ill_rituals: "Rituals Perfume Genie (латунь)",
+    ill_rituals_black: "Rituals Perfume Genie (чорний)",
+    cartridge: "Картридж",
+    cartridge_empty: "Картридж порожній",
+    perfume: "Аромат",
+    intensity: "Інтенсивність",
+    battery: "Батарея",
+    wifi: "Wi-Fi",
+    room_size: "Розмір кімнати",
     ill_dehumidifier: "Осушувач",
     st_dhw: "Гаряча вода",
     st_heating: "Нагрів",
@@ -2635,6 +2779,15 @@ const CA_I18N = {
     ill_evaporative: "Párologtató",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Aromadiffúzor",
+    ill_rituals: "Rituals Perfume Genie (sárgaréz)",
+    ill_rituals_black: "Rituals Perfume Genie (fekete)",
+    cartridge: "Patron",
+    cartridge_empty: "Patron üres",
+    perfume: "Illat",
+    intensity: "Intenzitás",
+    battery: "Akkumulátor",
+    wifi: "Wi-Fi",
+    room_size: "Szoba mérete",
     ill_dehumidifier: "Párátlanító",
     st_dhw: "Melegvíz",
     st_heating: "Fűt",
@@ -2798,6 +2951,15 @@ const CA_I18N = {
     ill_evaporative: "Odparovací",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Aróma difuzér",
+    ill_rituals: "Rituals Perfume Genie (mosadz)",
+    ill_rituals_black: "Rituals Perfume Genie (čierna)",
+    cartridge: "Náplň",
+    cartridge_empty: "Prázdna náplň",
+    perfume: "Vôňa",
+    intensity: "Intenzita",
+    battery: "Batéria",
+    wifi: "Wi-Fi",
+    room_size: "Veľkosť miestnosti",
     ill_dehumidifier: "Odvlhčovač",
     st_dhw: "Teplá voda",
     st_heating: "Kúri",
@@ -2961,6 +3123,15 @@ const CA_I18N = {
     ill_evaporative: "Odpařovací",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Aroma difuzér",
+    ill_rituals: "Rituals Perfume Genie (mosaz)",
+    ill_rituals_black: "Rituals Perfume Genie (černá)",
+    cartridge: "Náplň",
+    cartridge_empty: "Prázdná náplň",
+    perfume: "Vůně",
+    intensity: "Intenzita",
+    battery: "Baterie",
+    wifi: "Wi-Fi",
+    room_size: "Velikost místnosti",
     ill_dehumidifier: "Odvlhčovač",
     st_dhw: "Teplá voda",
     st_heating: "Topí",
@@ -3124,6 +3295,15 @@ const CA_I18N = {
     ill_evaporative: "Izparilni",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Difuzor eteričnih olj",
+    ill_rituals: "Rituals Perfume Genie (medenina)",
+    ill_rituals_black: "Rituals Perfume Genie (črna)",
+    cartridge: "Vložek",
+    cartridge_empty: "Vložek prazen",
+    perfume: "Vonj",
+    intensity: "Intenzivnost",
+    battery: "Baterija",
+    wifi: "Wi-Fi",
+    room_size: "Velikost sobe",
     ill_dehumidifier: "Razvlažilnik",
     st_dhw: "Topla voda",
     st_heating: "Greje",
@@ -3287,6 +3467,15 @@ const CA_I18N = {
     ill_evaporative: "Iztvaicēšanas",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Ēterisko eļļu difuzors",
+    ill_rituals: "Rituals Perfume Genie (misiņš)",
+    ill_rituals_black: "Rituals Perfume Genie (melns)",
+    cartridge: "Kārtridžs",
+    cartridge_empty: "Kārtridžs tukšs",
+    perfume: "Aromāts",
+    intensity: "Intensitāte",
+    battery: "Baterija",
+    wifi: "Wi-Fi",
+    room_size: "Telpas izmērs",
     ill_dehumidifier: "Sausinātājs",
     st_dhw: "Karstais ūdens",
     st_heating: "Silda",
@@ -3450,6 +3639,15 @@ const CA_I18N = {
     ill_evaporative: "Εξατμιστικός",
     ill_vocolinc: "VOCOlinc MistFlow",
     ill_diffuser: "Διαχυτής αιθέριων ελαίων",
+    ill_rituals: "Rituals Perfume Genie (ορείχαλκος)",
+    ill_rituals_black: "Rituals Perfume Genie (μαύρο)",
+    cartridge: "Φύσιγγα",
+    cartridge_empty: "Κενή φύσιγγα",
+    perfume: "Άρωμα",
+    intensity: "Ένταση",
+    battery: "Μπαταρία",
+    wifi: "Wi-Fi",
+    room_size: "Μέγεθος δωματίου",
     ill_dehumidifier: "Αφυγραντήρας",
     st_dhw: "Ζεστό νερό",
     st_heating: "Θερμαίνει",
@@ -4050,13 +4248,23 @@ const CA_ROLES = {
   // full bucket of a dehumidifier.
   water_level: {
     domain: "sensor",
-    id: /(water_level|tank_level|water_tank|water_remain|niveau_(d_)?eau|niveau_reservoir|reservoir|wasserstand|nivel_de_agua|depth)/,
+    id: /(water_level|tank_level|water_tank|water_remain|niveau_(d_)?eau|niveau_reservoir|reservoir|wasserstand|nivel_de_agua|depth|fill|cartridge|cartouche)/,
     avoid: /(full|plein|voll)/,
   },
   // Any light of a humidifier or a diffuser (the VOCOlinc ambient light), toggled from its options.
   lamp: { domain: "light", test: () => true },
-  // The mist intensity of a diffuser (VOCOlinc's « Spray quantity », 1 to 5).
-  spray: { domain: "number", id: /(spray|mist_level|mist_quantity|mist_intensity|intensite|nebul)/ },
+  // The mist intensity of a diffuser (VOCOlinc's « Spray quantity », 1 to 5; the Rituals « Perfume amount », 1 to 3).
+  // The device slug may itself contain "perfume", so match the amount anchored, not the bare word.
+  spray: { domain: "number", id: /(spray|mist_level|mist_quantity|mist_intensity|intensite|nebul|perfume_amount)/ },
+  // The Rituals Perfume Genie's extras: its room size (m²), fragrance name, battery and charge, wifi, and the
+  // "cartridge inserted" binary sensor (off = no cartridge), used as a low-cartridge alert. The fragrance sensor is
+  // anchored to the end so the "perfume" in the device slug (its fill, battery…) is not taken for it.
+  room_size: { domain: "select", id: /room_?size/ },
+  perfume: { domain: "sensor", id: /(perfume$|parfum$|fragrance|duft$|profumo$)/ },
+  battery: { domain: "sensor", test: caDc("battery") },
+  charging: { domain: "binary_sensor", test: caDc("battery_charging") },
+  wifi: { domain: "sensor", id: /(wifi|signal_strength|rssi)/ },
+  cartridge: { domain: "binary_sensor", id: /(cartridge|cartouche)/ },
   tank_empty: { domain: "binary_sensor", id: /(water_shortage|no_water|tank_empty|water_empty|lack_of_water|manque_d?_?eau|reservoir_vide|wassermangel|tank_leer)/ },
   bucket_full: { domain: "binary_sensor", id: /(tank_full|bucket_full|water_full|full_water|water_tank_full|bac_plein|reservoir_plein|behalter_voll|tanque_lleno)/ },
   backup: { domain: "binary_sensor", id: /(backup|appoint|booster|resistance|heizstab|electric_heater|aux)/ },
@@ -4182,7 +4390,7 @@ function caDeviceName(hass, id) {
 // thermostat, a radiator, a radiator valve) is not, and is left to ha-heating-card.
 // A fan entity is an air purifier when its name says so or its device measures particles or has a filter.
 // The domain of the entities of a kind of device.
-const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : kind === "humidifier" ? "humidifier" : "fan");
+const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : kind === "humidifier" ? ["humidifier", "switch"] : "fan");
 
 // A climate entity is a heat pump (air to water) when its device has a hot water tank, when its device says so, or
 // when it comes from an integration that only handles heat pumps (NIBE myUplink, Panasonic Aquarea Smart Cloud,
@@ -4193,6 +4401,10 @@ const CA_HP_NAME =
   /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|arotherm|geotherm|nibe)/i;
 
 const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
+
+// The Rituals Perfume Genie: an essential oil diffuser exposed as a `switch` (no humidifier entity), with its perfume
+// amount, room size, cartridge fill and battery as separate entities. The humidifier card adopts its switch.
+const CA_RITUALS_NAME = /rituals|perfume.?genie/i;
 
 // Refrigeration appliances (fridge, freezer, wine cooler) are exposed as climate entities by some integrations
 // (e.g. Liebherr), and can cool, but are not air conditioners: their setpoint range sits well below comfort
@@ -4237,6 +4449,15 @@ function caKindOf(hass, id) {
       const names = [dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
       if (!devId || !CA_HP_NAME.test(names)) return null;
       return caDeviceEntities(hass, devId).some((e) => e.entity_id.startsWith("climate.")) ? null : "heatpump";
+    }
+    if (domain === "switch") {
+      // A diffuser driven by a switch (Rituals Perfume Genie): its device has no humidifier entity, so the humidifier
+      // card adopts the switch, the way a heat pump without a climate entity is driven by a select. Match the
+      // integration first, else the device or entity name.
+      if (hass.entities?.[id]?.platform === "rituals_perfume_genie") return "humidifier";
+      const dev = hass.devices?.[caDeviceOf(hass, id)];
+      const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
+      return CA_RITUALS_NAME.test(names) ? "humidifier" : null;
     }
     if (domain !== "fan") return null;
     const dev = hass.devices?.[caDeviceOf(hass, id)];
@@ -5367,6 +5588,10 @@ function caHpFault(st) {
 const CA_HUM_COLOR = "var(--state-humidifier-on-color, #26a69a)";
 const CA_DEHUM_COLOR = "#f9a825";
 const CA_DIFFUSER_COLOR = "#9575cd";
+// The illustration variants that are essential oil diffusers (no humidity target, a « Diffusing » status): the VOCOlinc
+// FlowerBud and the Rituals Perfume Genie in either finish.
+const CA_DIFFUSERS = ["diffuser", "rituals", "rituals_black"];
+const caIsDiffuser = (v) => CA_DIFFUSERS.includes(v);
 // A tank at 10 % or less shows its water red.
 const CA_HUM_LOW = 10;
 
@@ -5374,13 +5599,15 @@ function caHumidifierState(st, roleSt, variant) {
   const a = st.attributes;
   const on = st.state === "on";
   const dehum = a.device_class === "dehumidifier" || variant === "dehumidifier";
+  const diffuser = caIsDiffuser(variant);
   const level = caNum(roleSt("water_level"));
-  const empty = !dehum && (roleSt("tank_empty")?.state === "on" || (level != null && level <= 0));
+  // A diffuser's cartridge is empty when its « cartridge » sensor reads off (not inserted) or its fill drops to 0.
+  const empty = !dehum && (roleSt("tank_empty")?.state === "on" || roleSt("cartridge")?.state === "off" || (level != null && level <= 0));
   const full = dehum && (roleSt("bucket_full")?.state === "on" || (level != null && level >= 100));
   const blocked = empty || full;
   const action = a.action;
   const active = on && !blocked && (action ? action === "humidifying" || action === "drying" : true);
-  const alertKey = empty ? "tank_empty" : full ? "bucket_full" : "";
+  const alertKey = empty ? (diffuser ? "cartridge_empty" : "tank_empty") : full ? "bucket_full" : "";
   return {
     on,
     dehum,
@@ -5388,8 +5615,8 @@ function caHumidifierState(st, roleSt, variant) {
     active,
     alertKey,
     low: !dehum && level != null && level <= CA_HUM_LOW,
-    color: !on ? CA_IDLE : dehum ? CA_DEHUM_COLOR : variant === "diffuser" ? CA_DIFFUSER_COLOR : CA_HUM_COLOR,
-    statusKey: !on ? "st_off" : alertKey || (!active ? "st_idle" : dehum ? "st_drying" : variant === "diffuser" ? "st_diffusing" : "st_humidifying"),
+    color: !on ? CA_IDLE : dehum ? CA_DEHUM_COLOR : diffuser ? CA_DIFFUSER_COLOR : CA_HUM_COLOR,
+    statusKey: !on ? "st_off" : alertKey || (!active ? "st_idle" : dehum ? "st_drying" : diffuser ? "st_diffusing" : "st_humidifying"),
   };
 }
 

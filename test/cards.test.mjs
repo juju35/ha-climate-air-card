@@ -569,7 +569,7 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /8 on/);
+  assert.match(head, /9 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
@@ -712,9 +712,10 @@ test("overview editor: device types and devices as sections, written back as ill
     ["humidifier.office_dehumidifier", "Déshumidificateur bureau"],
     ["humidifier.living_room_diffuser", "Diffuseur séjour"],
     ["humidifier.bedroom_humidifier", "Humidificateur chambre"],
+    ["switch.perfume_genie_diffuser", "Perfume Genie"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
   ]);
-  assert.deepEqual(json(devs.schema[8].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[9].schema.map((f) => f.name)), ["name", "type", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;

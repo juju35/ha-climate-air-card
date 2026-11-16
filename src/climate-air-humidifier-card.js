@@ -32,6 +32,56 @@ const CA_HUM_DEFS =
   '<linearGradient id="ca-ub" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e6eaef"/><stop offset=".45" stop-color="#ffffff"/><stop offset="1" stop-color="#d3d9e0"/></linearGradient>' +
   '<radialGradient id="ca-uf" cx=".5" cy=".5" r=".5"><stop offset="0" class="c-stop" stop-opacity=".45"/><stop offset="1" class="c-stop" stop-opacity="0"/></radialGradient>';
 
+// The Rituals Perfume Genie: a bulb with a long tapered neck, traced from the device. Scent rises from the tip, the
+// control slot sits at the foot; the metal is lit as a soft satin (a dome highlight, a foot shadow), brass or black.
+// The body is opaque, so the cartridge level shows as a bar, not inside the illustration.
+const CA_RITUALS_PATH =
+  "M41.89 18 C41.9 18.04 41.91 18.08 41.96 18.22 C42.01 18.36 42.12 18.62 42.18 18.87 C42.24 19.12 42.32 19.41 42.35 19.74 C42.38 20.07 42.34 20.47 42.35 20.83 C42.36 21.19 42.39 21.52 42.4 21.92 C42.41 22.32 42.38 22.79 42.4 23.23 C42.42 23.67 42.51 24.07 42.52 24.54 C42.53 25.01 42.46 25.56 42.47 26.07 C42.48 26.58 42.56 27.08 42.59 27.59 C42.62 28.1 42.6 28.58 42.64 29.12 C42.68 29.66 42.76 30.24 42.81 30.86 C42.86 31.48 42.87 32.21 42.91 32.83 C42.95 33.45 43.03 33.95 43.05 34.57 C43.07 35.19 43.02 35.84 43.05 36.53 C43.08 37.22 43.16 38.02 43.2 38.71 C43.24 39.4 43.19 39.99 43.29 40.68 C43.39 41.37 43.62 42.1 43.8 42.86 C43.97 43.62 44.11 44.5 44.34 45.26 C44.57 46.02 44.81 46.68 45.18 47.44 C45.55 48.2 45.93 49.03 46.57 49.83 C47.21 50.63 47.98 51.39 49.01 52.23 C50.04 53.07 51.38 54.01 52.72 54.85 C54.06 55.69 55.61 56.42 57.06 57.25 C58.51 58.08 60.12 58.95 61.42 59.86 C62.72 60.77 63.88 61.79 64.83 62.7 C65.78 63.61 66.48 64.41 67.09 65.32 C67.7 66.23 68.2 67.21 68.52 68.15 C68.84 69.09 68.93 70.04 69 70.98 C69.07 71.92 69.14 72.88 68.93 73.82 C68.72 74.76 68.37 75.67 67.76 76.65 C67.15 77.63 66.4 78.73 65.27 79.71 C64.14 80.69 63.66 81.52 60.98 82.54 C58.29 83.56 54.19 85.26 49.16 85.81 C44.12 86.36 35.83 86.36 30.77 85.81 C25.72 85.26 21.58 83.56 18.83 82.54 C16.08 81.52 15.36 80.69 14.27 79.71 C13.18 78.73 12.78 77.63 12.28 76.65 C11.77 75.67 11.45 74.76 11.24 73.82 C11.03 72.88 10.94 71.92 11 70.98 C11.06 70.04 11.26 69.09 11.58 68.15 C11.9 67.21 12.29 66.23 12.89 65.32 C13.49 64.41 14.21 63.61 15.19 62.7 C16.17 61.79 17.49 60.77 18.75 59.86 C20.01 58.95 21.35 58.08 22.75 57.25 C24.15 56.42 25.74 55.69 27.14 54.85 C28.54 54.01 30.12 53.07 31.18 52.23 C32.24 51.39 32.88 50.63 33.51 49.83 C34.14 49.03 34.58 48.2 34.94 47.44 C35.3 46.68 35.48 46.02 35.69 45.26 C35.9 44.5 36.06 43.62 36.22 42.86 C36.38 42.1 36.53 41.37 36.63 40.68 C36.73 39.99 36.75 39.4 36.8 38.71 C36.85 38.02 36.9 37.22 36.95 36.53 C37 35.84 37.05 35.19 37.09 34.57 C37.13 33.95 37.15 33.45 37.17 32.83 C37.19 32.21 37.15 31.48 37.19 30.86 C37.23 30.24 37.35 29.66 37.43 29.12 C37.51 28.58 37.61 28.1 37.67 27.59 C37.74 27.08 37.8 26.58 37.82 26.07 C37.84 25.56 37.82 25.01 37.82 24.54 C37.82 24.07 37.82 23.67 37.82 23.23 C37.82 22.79 37.82 22.32 37.82 21.92 C37.82 21.52 37.82 21.19 37.82 20.83 C37.82 20.47 37.8 20.07 37.82 19.74 C37.84 19.41 37.86 19.12 37.92 18.87 C37.98 18.62 38.15 18.36 38.21 18.22 C38.27 18.08 38.28 18.04 38.3 18 Z";
+
+// The two finishes of the Rituals diffuser: the metal gradient, the soft dome highlight, the foot shadow, the control
+// slot, the status dot and the outline.
+const CA_RITUALS_FINISH = {
+  brass: {
+    metal: ["#9b8452", "#bba86f", "#c6b27b", "#b29a61", "#937b48"],
+    dome: ["#eee2c4", ".3"],
+    foot: ["#5a4318", ".2"],
+    vent: "#2a2113",
+    led: "#e7dcc0",
+    edge: "#6b4e18",
+  },
+  black: {
+    metal: ["#2f2b2d", "#403c3c", "#474342", "#363233", "#2a2729"],
+    dome: ["#827e7f", ".28"],
+    foot: ["#000000", ".28"],
+    vent: "#000000",
+    led: "#827e7f",
+    edge: "#000000",
+  },
+};
+
+const caRitualsArt = (finish) => {
+  const f = CA_RITUALS_FINISH[finish] || CA_RITUALS_FINISH.brass;
+  const stops = ["0", ".32", ".5", ".7", "1"].map((o, i) => `<stop offset="${o}" stop-color="${f.metal[i]}"/>`).join("");
+  return (
+    "<defs>" +
+    `<linearGradient id="ca-rmetal" x1="0" y1="0" x2="1" y2="0">${stops}</linearGradient>` +
+    `<radialGradient id="ca-rdome" cx=".4" cy=".32" r=".52"><stop offset="0" stop-color="${f.dome[0]}" stop-opacity="${f.dome[1]}"/><stop offset="1" stop-color="${f.dome[0]}" stop-opacity="0"/></radialGradient>` +
+    `<radialGradient id="ca-rfoot" cx=".5" cy=".96" r=".55"><stop offset="0" stop-color="${f.foot[0]}" stop-opacity="${f.foot[1]}"/><stop offset="1" stop-color="${f.foot[0]}" stop-opacity="0"/></radialGradient>` +
+    `<clipPath id="ca-rit"><path d="${CA_RITUALS_PATH}"/></clipPath>` +
+    "</defs>" +
+    '<ellipse class="floor" cx="40" cy="90" rx="25" ry="3.6" fill="url(#ca-uf)"/>' +
+    caHumMist([38.5, 40, 41.5], 16) +
+    '<g clip-path="url(#ca-rit)">' +
+    '<rect x="11" y="16" width="58" height="72" fill="url(#ca-rmetal)"/>' +
+    '<rect x="11" y="16" width="58" height="72" fill="url(#ca-rdome)"/>' +
+    '<rect x="11" y="16" width="58" height="72" fill="url(#ca-rfoot)"/>' +
+    `<rect x="30" y="80.2" width="20" height="2.6" rx="1.3" fill="${f.vent}" opacity=".5"/>` +
+    `<circle cx="40" cy="78.8" r=".7" fill="${f.led}"/>` +
+    "</g>" +
+    `<path d="${CA_RITUALS_PATH}" fill="none" stroke="${f.edge}" stroke-width=".4" opacity=".3"/>`
+  );
+};
+
 const CA_HUM_ARTS = {
   column: (s) =>
     '<ellipse class="floor" cx="40" cy="90" rx="22" ry="3.5" fill="url(#ca-uf)"/>' +
@@ -103,11 +153,14 @@ const CA_HUM_ARTS = {
     '<rect x="20" y="58" width="40" height="26" rx="4" fill="#ffffff" fill-opacity=".15" stroke="#b6bfc9" stroke-width="1"/>' +
     '<g class="drip"><path d="M40 60q-1.6 2.6 0 4t0-4Z"/><path d="M36 60q-1.6 2.6 0 4t0-4Z"/></g>' +
     '<rect x="34" y="55.5" width="12" height="3" rx="1.5" fill="#9aa5b1"/>',
+  rituals: () => caRitualsArt("brass"),
+  rituals_black: () => caRitualsArt("black"),
 };
 
 const caHumidifierVariant = (text) => {
   const t = String(text || "");
   if (/dehumid|d[ée]shumid|entfeucht|deshumid|deumid|ontvocht|osusz|dehumidifier/i.test(t)) return "dehumidifier";
+  if (/rituals|perfume.?genie/i.test(t)) return /black|noir|graphit|anthracit|\bdark\b/i.test(t) ? "rituals_black" : "rituals";
   if (/flower.?bud|diffus|aroma|essential|huile|vocolinc.*(fb|vf|ad)/i.test(t)) return "diffuser";
   if (/vocolinc|mistflow|vh1/i.test(t)) return "vocolinc";
   if (/evapor|wick|cjxjsq|smartmi|zhimi|levoit.*(oasis|ev)|venta|stadler/i.test(t)) return "evaporative";
@@ -123,7 +176,7 @@ const CA_LIGHT_COLORS = ["255,64,64", "255,140,0", "255,214,0", "64,220,96", "0,
 const caLightLevel = (st) => (st?.state === "on" && st.attributes.brightness != null ? Math.max(0.25, Number(st.attributes.brightness) / 255) : 1);
 
 CA_ART.humidifier = {
-  variants: ["column", "tank", "evaporative", "vocolinc", "diffuser", "dehumidifier"],
+  variants: ["column", "tank", "evaporative", "vocolinc", "diffuser", "rituals", "rituals_black", "dehumidifier"],
   guess: caHumidifierVariant,
   render: (variant, s) => ({
     svg: `<svg viewBox="0 0 80 94" aria-hidden="true"><defs>${CA_HUM_DEFS}</defs>${(CA_HUM_ARTS[variant] || CA_HUM_ARTS.column)(s)}</svg>`,
@@ -185,12 +238,15 @@ class ClimateAirHumidifierCard extends CaCard {
   }
 
   _roles() {
-    return ["humidity", "temperature", "water_level", "tank_empty", "bucket_full", "filter", "filter_alert", "filter_reset", "lamp", "spray", "child_lock", "buzzer"];
+    return [
+      "humidity", "temperature", "water_level", "tank_empty", "bucket_full", "filter", "filter_alert", "filter_reset",
+      "lamp", "spray", "child_lock", "buzzer", "room_size", "perfume", "battery", "charging", "wifi", "cartridge",
+    ];
   }
 
   // A diffuser shows a scent icon.
   _kindIcon(r) {
-    return caVariant(this._hass, "humidifier", r.id, this._config.illustration) === "diffuser" ? "mdi:scent" : null;
+    return caIsDiffuser(caVariant(this._hass, "humidifier", r.id, this._config.illustration)) ? "mdi:scent" : null;
   }
 
   _extraIds(r) {
@@ -203,15 +259,29 @@ class ClimateAirHumidifierCard extends CaCard {
     const st = this._st(r.id);
     const a = st.attributes;
     const variant = caVariant(this._hass, "humidifier", r.id, c.illustration);
+    const diffuser = caIsDiffuser(variant);
     const hs = caHumidifierState(st, (role) => this._st(ent[role]), variant);
     const cur = a.current_humidity != null ? Number(a.current_humidity) : this._num(ent.humidity);
     const target = a.humidity != null ? Number(a.humidity) : null;
     const filterState = this._filterState(ent);
     const chips = [];
-    if (hs.alertKey) chips.push(this._chip(hs.dehum ? "mdi:bucket" : "mdi:water-off", this._t(hs.alertKey), "alert", "", ent[hs.dehum ? "bucket_full" : "tank_empty"] || ent.water_level));
+    if (hs.alertKey) {
+      const alertIcon = diffuser ? "mdi:bottle-tonic-outline" : hs.dehum ? "mdi:bucket" : "mdi:water-off";
+      const alertEnt = (diffuser ? ent.cartridge : ent[hs.dehum ? "bucket_full" : "tank_empty"]) || ent.water_level;
+      chips.push(this._chip(alertIcon, this._t(hs.alertKey), "alert", "", alertEnt));
+    }
     const filterChip = this._filterChip(filterState);
     if (filterChip) chips.push(filterChip);
-    if (c.show_sensors) chips.push(...this._sensorChips(ent, ["temperature", ...(a.current_humidity != null ? ["humidity"] : [])]));
+    // The Rituals diffuser's fragrance, and its battery with a charging icon (battery model only).
+    if (this._avail(ent.perfume)) chips.push(this._chip("mdi:flower-outline", this._fmtState(ent.perfume), "", this._t("perfume"), ent.perfume));
+    if (this._avail(ent.battery)) {
+      const charging = this._val(ent.charging) === "on";
+      chips.push(this._chip(charging ? "mdi:battery-charging" : "mdi:battery", this._fmtSensor(ent.battery), "", this._t("battery"), ent.battery));
+    }
+    if (c.show_sensors) {
+      chips.push(...this._sensorChips(ent, ["temperature", ...(a.current_humidity != null ? ["humidity"] : [])]));
+      if (this._avail(ent.wifi)) chips.push(this._chip("mdi:wifi", this._fmtSensor(ent.wifi), "", this._t("wifi"), ent.wifi));
+    }
     const mode = hs.on && a.mode ? this._fmtAttr(r.id, "mode", a.mode) : "";
     return {
       state: hs.on ? "on" : "off",
@@ -220,7 +290,7 @@ class ClimateAirHumidifierCard extends CaCard {
       low: hs.low,
       level: hs.level,
       dehum: hs.dehum,
-      diffuser: variant === "diffuser",
+      diffuser,
       glow: caLightGlow(this._st(ent.lamp)),
       glowLevel: caLightLevel(this._st(ent.lamp)),
       spray: this._num(ent.spray),
@@ -229,7 +299,7 @@ class ClimateAirHumidifierCard extends CaCard {
       sub: mode,
       cur,
       // A diffuser has no humidity to aim at (HomeKit reports 100 %).
-      target: variant === "diffuser" ? null : target,
+      target: diffuser ? null : target,
       filterState,
       chips,
       display: cur != null ? `${caFmtNum(this._intlLang(), cur, 0)}%` : "",
@@ -251,8 +321,9 @@ class ClimateAirHumidifierCard extends CaCard {
 
   _tankLine(m) {
     if (m.level == null) return "";
-    const label = this._t(m.dehum ? "bucket" : "tank_level");
-    return caBar(m.level, `${label} ${this._pct(m.level)}`, m.dehum ? "mdi:bucket-outline" : "mdi:cup-water");
+    const label = this._t(m.dehum ? "bucket" : m.diffuser ? "cartridge" : "tank_level");
+    const icon = m.dehum ? "mdi:bucket-outline" : m.diffuser ? "mdi:bottle-tonic-outline" : "mdi:cup-water";
+    return caBar(m.level, `${label} ${this._pct(m.level)}`, icon);
   }
 
   _controls(m) {
@@ -260,6 +331,12 @@ class ClimateAirHumidifierCard extends CaCard {
     const st = this._st(r.id);
     const a = st.attributes;
     const modes = (a.available_modes || []).length > 1 ? this._segments("hmode", a.available_modes, a.mode, (o) => this._fmtAttr(r.id, "mode", o), CA_PRESET_ICON) : "";
+    // The Rituals room size (m²) as segmented buttons (the select's options).
+    const rs = this._st(r.ent.room_size);
+    const roomSize =
+      rs && !caUnavailable(rs) && (rs.attributes.options || []).length > 1
+        ? this._section(this._t("room_size"), this._segments("rsize", rs.attributes.options, rs.state, (o) => `${o} m²`), "mdi:ruler-square")
+        : "";
     const target =
       // A diffuser has no humidity to aim at: no target slider.
       m.running && a.humidity != null && !m.diffuser
@@ -272,13 +349,13 @@ class ClimateAirHumidifierCard extends CaCard {
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
     ]);
     const reset = this._toggles([this._filterResetButton(m.filterState, r.ent.filter_reset)]);
-    // The mist intensity as a slider (a 1–5 number would otherwise become a dropdown).
+    // The mist intensity as a slider (a 1–5 number would otherwise become a dropdown); a diffuser shows it as « Intensity » (the Rituals « Perfume amount », 1 to 3).
     const sp = this._st(r.ent.spray);
     const spray =
       sp && !caUnavailable(sp) && this._num(r.ent.spray) != null
-        ? this._rangeHtml("number", r.ent.spray, "mdi:spray", this._t("spray"), Number(sp.attributes.min ?? 1), Number(sp.attributes.max ?? 5), Number(sp.attributes.step ?? 1), this._num(r.ent.spray))
+        ? this._rangeHtml("number", r.ent.spray, m.diffuser ? "mdi:scent" : "mdi:spray", this._t(m.diffuser ? "intensity" : "spray"), Number(sp.attributes.min ?? 1), Number(sp.attributes.max ?? 5), Number(sp.attributes.step ?? 1), this._num(r.ent.spray))
         : "";
-    return this._section("", modes + target + spray) + light + this._options(toggles + this._switchToggles(r) + reset);
+    return this._section("", modes + target + spray) + roomSize + light + this._options(toggles + this._switchToggles(r) + reset);
   }
 
   // A light whose brightness or colour can change (the VOCOlinc mood light) gets its own section, usable while the
@@ -322,6 +399,7 @@ class ClimateAirHumidifierCard extends CaCard {
   _action(action, value) {
     const id = this._r.id;
     if (action === "hmode") this._call("humidifier", "set_mode", { entity_id: id, mode: value });
+    else if (action === "rsize") this._call("select", "select_option", { entity_id: this._r.ent.room_size, option: value });
     else if (action === "lcolor") {
       const data = value === "ct" ? { color_temp_kelvin: 2700 } : { rgb_color: value.split(",").map(Number) };
       this._call("light", "turn_on", { entity_id: this._r.ent.lamp, ...data });
@@ -338,7 +416,7 @@ class ClimateAirHumidifierCard extends CaCard {
     const target = m.running && m.target != null ? ` → ${this._pct(m.target)}` : "";
     const hum = m.cur != null ? `<div class="line tline"><ha-icon icon="mdi:water-percent"></ha-icon><span><b>${caEsc(this._pct(m.cur))}</b>${caEsc(target)}</span></div>` : "";
     const mode = m.running && m.sub ? caLine(CA_PRESET_ICON(this._st(this._r.id).attributes.mode) || "mdi:tune-variant", m.sub) : "";
-    const spray = m.spray != null ? caLine("mdi:spray", `${this._t("spray")} ${caFmtNum(this._intlLang(), m.spray, 0)}`) : "";
+    const spray = m.spray != null ? caLine(m.diffuser ? "mdi:scent" : "mdi:spray", `${this._t(m.diffuser ? "intensity" : "spray")} ${caFmtNum(this._intlLang(), m.spray, 0)}`) : "";
     return [hum, mode, spray, this._tankLine(m), this._filterLine(m.filterState)].join("");
   }
 

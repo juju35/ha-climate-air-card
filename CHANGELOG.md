@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.8.0 - 2026-11-16
+
+### Features
+- **Rituals Perfume Genie support** on the humidifier card: the diffuser is exposed as a `switch` (no `humidifier` entity), so the card now adopts it like a heat pump driven by a select. A traced brass / black illustration (`rituals`, `rituals_black`), picked from the device or set with `illustration`, with the scent rising from the neck. The `Perfume amount` (1–3) as an *Intensity* slider, the `Room size` (m²) as segmented buttons, the cartridge fill as a bar with a *Cartridge empty* alert when no cartridge is inserted, and the fragrance, battery (with charging) and Wi-Fi as chips. Status reads *Diffusing* / *Idle* / *Off*.
+
 ## 2.7.3 - 2026-11-16
 
 ### Fixes

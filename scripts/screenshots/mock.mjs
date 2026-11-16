@@ -104,6 +104,19 @@ const DEVICES = [
     ["light.living_room_diffuser_mood_light", { en: "Mood Light", fr: "Mood Light" }, "on", { color_mode: "hs", brightness: 230, hs_color: [292, 75], rgb_color: [224, 64, 251], supported_color_modes: ["color_temp", "hs"] }],
     ["number.living_room_diffuser_spray_quantity", { en: "Spray quantity", fr: "Spray quantity" }, 3, { min: 1, max: 5, step: 1, mode: "auto" }],
   ]],
+  // A Rituals Perfume Genie: an essential oil diffuser exposed as a switch, with its perfume amount (1 to 3), its room
+  // size (m²), its cartridge fill, the fragrance, the battery and the charging and cartridge binary sensors.
+  ["dev_rituals", "living_room", { en: "Perfume Genie", fr: "Perfume Genie" }, [
+    ["switch.perfume_genie_diffuser", { en: "Diffuser", fr: "Diffuseur" }, "on", {}],
+    ["number.perfume_genie_perfume_amount", { en: "Perfume amount", fr: "Quantité de parfum" }, 2, { min: 1, max: 3, step: 1, mode: "auto" }],
+    ["select.perfume_genie_room_size_square_meter", { en: "Room size", fr: "Taille de la pièce" }, "30", { options: ["15", "30", "60", "100"] }],
+    ["sensor.perfume_genie_fill", { en: "Fill", fr: "Remplissage" }, 72, { unit_of_measurement: "%" }],
+    ["sensor.perfume_genie_perfume", { en: "Perfume", fr: "Parfum" }, "Jasmine", {}],
+    ["sensor.perfume_genie_battery", { en: "Battery", fr: "Batterie" }, 86, { device_class: "battery", unit_of_measurement: "%" }],
+    ["binary_sensor.perfume_genie_charging", { en: "Charging", fr: "En charge" }, "off", { device_class: "battery_charging" }],
+    ["binary_sensor.perfume_genie_cartridge", { en: "Cartridge", fr: "Cartouche" }, "on", {}],
+    ["sensor.perfume_genie_wifi", { en: "Wi-Fi", fr: "Wi-Fi" }, 80, { unit_of_measurement: "%" }],
+  ]],
   ["dev_dehum", "office", { en: "Office dehumidifier", fr: "Déshumidificateur bureau" }, [
     ["humidifier.office_dehumidifier", null, "off", {
       device_class: "dehumidifier", humidity: 50, current_humidity: 62, min_humidity: 35, max_humidity: 85,
