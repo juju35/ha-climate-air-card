@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.9.1 - 2026-11-16
+
+### Fixes
+- The illustration dropdown in the device and mini card visual editors now lists every variant (the air conditioner `portasplit` and the humidifier `rituals` / `rituals_black` were missing): the editor reads the illustrations straight from each card's own variants instead of a separate hand-kept list that had drifted. The overview editor already listed them.
+
 ## 2.9.0 - 2026-11-16
 
 ### Features
