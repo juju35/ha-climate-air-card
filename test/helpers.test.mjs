@@ -249,7 +249,7 @@ test("the editor offers every language, once, each under its own name", () => {
 
 test("Serbian: no Latin letter in sr, no Cyrillic one in sr-Latn, but for names, units and entity IDs", () => {
   // Brand and unit names, placeholders and entity ID examples stay in Latin script in both.
-  const strip = (s) => s.replace(/\{\w+\}|Home Assistant|VOCOlinc MistFlow|Rituals Perfume Genie|Wi-Fi|VOC|NO₂|pm25|sensor\.\w+|\bh\b/g, "");
+  const strip = (s) => s.replace(/\{\w+\}|Home Assistant|VOCOlinc MistFlow|Rituals Perfume Genie|Wi-Fi|VOC|NO₂|SCOP|COP|ΔT|pm25|sensor\.\w+|\bh\b|\bW\b/g, "");
   for (const table of [lib.CA_I18N, lib.CA_VALUES]) {
     for (const [k, v] of Object.entries(table.sr)) assert.doesNotMatch(strip(v), /[A-Za-z]/, `sr.${k}`);
     for (const [k, v] of Object.entries(table["sr-Latn"])) assert.doesNotMatch(v, /[Ѐ-ӿ]/, `sr-Latn.${k}`);
@@ -320,4 +320,35 @@ test("a role a device lacks is kept as a miss until one of its entities changes"
     },
   };
   assert.equal(lib.caRoleOf(back, "fan.bedroom_fan_fan", "voc"), "sensor.bedroom_fan_air");
+});
+
+test("heat pump monitoring roles: found on the device, the heat output never mistaken for the electrical power", () => {
+  const h = makeHass();
+  const add = (id, attributes = {}) => {
+    h.states[id] = { entity_id: id, state: "1", attributes };
+    h.entities[id] = { entity_id: id, device_id: "dev_geo", platform: "modbus" };
+  };
+  add("sensor.geo_elec_power", { device_class: "power", unit_of_measurement: "W" });
+  add("sensor.geo_heat_output", { device_class: "power", unit_of_measurement: "kW" });
+  add("sensor.geo_instantaneous_cop");
+  add("sensor.geo_cop_today");
+  add("sensor.geo_seasonal_cop_scop");
+  add("sensor.geo_flow_temperature", { device_class: "temperature" });
+  add("sensor.geo_return_temperature", { device_class: "temperature" });
+  add("sensor.geo_flow_rate", { unit_of_measurement: "l/h" });
+  add("sensor.geo_elec_energy", { device_class: "energy" });
+  add("sensor.geo_heat_mwhlifetime", { device_class: "energy" });
+  const list = lib.caDeviceEntities(h, "dev_geo");
+  const role = (r) => lib.caFindRole(h, list, r);
+  assert.equal(role("power"), "sensor.geo_elec_power");
+  assert.equal(role("heat_power"), "sensor.geo_heat_output");
+  assert.notEqual(role("heat_power"), role("power"));
+  assert.equal(role("cop"), "sensor.geo_instantaneous_cop");
+  assert.equal(role("cop_today"), "sensor.geo_cop_today");
+  assert.equal(role("scop"), "sensor.geo_seasonal_cop_scop");
+  assert.equal(role("flow_temp"), "sensor.geo_flow_temperature");
+  assert.equal(role("return_temp"), "sensor.geo_return_temperature");
+  assert.equal(role("flow_rate"), "sensor.geo_flow_rate");
+  assert.equal(role("energy"), "sensor.geo_elec_energy");
+  assert.equal(role("heat_energy"), "sensor.geo_heat_mwhlifetime");
 });

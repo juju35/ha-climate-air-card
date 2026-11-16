@@ -42,7 +42,7 @@ Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifier
 | [Fan mini](#mini-cards) | `custom:climate-air-fan-mini-card` | The same fan on two lines, with a zoom to the full card. |
 | [Air conditioner](#air-conditioner) | `custom:climate-air-aircon-card` | Mode, target temperature, fan and swing, measurements and options of an air conditioner. |
 | [Air conditioner mini](#mini-cards) | `custom:climate-air-aircon-mini-card` | The same air conditioner on two lines, with a zoom to the full card. |
-| [Heat pump](#heat-pump) | `custom:climate-air-heatpump-card` | Mode, target temperature, hot water tank and measurements of an air-to-water heat pump, with an animated outdoor unit. |
+| [Heat pump](#heat-pump) | `custom:climate-air-heatpump-card` | Mode, target temperature, hot water tank, COP and measurements of an air-, ground- or water-source heat pump (controlled or metered), with an animated source illustration. |
 | [Heat pump mini](#mini-cards) | `custom:climate-air-heatpump-mini-card` | The same heat pump on two lines, with a zoom to the full card. |
 | [Humidifier](#humidifier) | `custom:climate-air-humidifier-card` | Humidity, target, modes and water tank of a humidifier, a dehumidifier or an essential oil diffuser, with a large animated illustration. |
 | [Humidifier mini](#mini-cards) | `custom:climate-air-humidifier-mini-card` | The same device on two lines, with a zoom to the full card. |
@@ -101,9 +101,12 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 
 ### Heat pump
 
-`custom:climate-air-heatpump-card` — An air-to-water heat pump: its `climate` entity, or the `select` of its mode when it has none (Aldes T.One through the TOUG gateway), and the entities of its device.
+`custom:climate-air-heatpump-card` — A heat pump: its `climate` entity, the `select` of its mode when it has none (Aldes T.One through the TOUG gateway), or — when it is measured but not controlled — a **power sensor** as `entity`, and the entities of its device.
 
 - Found by itself: a `climate` entity whose device has a hot water tank (`water_heater`) or is named as a heat pump (Altherma, Aquarea, Ecodan, Yutaki, Alfea, Vitocal…), and a mode `select` with an *Off* option on a heat pump device without a climate entity (TOUG). It is not listed as an air conditioner, even when it can cool
+- **Measured but not controlled**: when the heat pump has no `climate` entity and no mode `select` — only meters over Modbus (a ground- or water-source unit read through an electrical meter and a heat meter, whatever its controller) — point `entity` at its electrical **power sensor** (W or kW). The card is then **read-only** (no mode buttons, no setpoint, no power button) and counts the pump as running while the power is above `power_threshold` (default 100 W); that drives the illustration's animation
+- **Monitoring roles** (set in `entities`, and found on the device when it has one): `heat_power` (heat output), `cop` (instantaneous COP — the headline figure — with `cop_today` and `scop` as chips), `flow_temp` / `return_temp` (water temperatures, with their ΔT), `flow_rate`, and `energy` / `heat_energy` (electrical and heat energy). When no `cop` sensor is given but `heat_power` and the electrical power are both present, the card computes the instantaneous COP itself (heat ÷ electrical), only while running
+- **Source side**, set with `source` (the `outdoor_temp` chip stays in every source): `air` (an outdoor fan unit, the default), `ground` (a geothermal loop — a horizontal `collector` by default or a vertical `borehole` via `ground_type`) and `water` (an open loop — a single `well` by default, a two-well `doublet` or a submerged `lake` loop via `water_type`). Ground and water sources draw an indoor module in place of the outdoor unit, with the brine / water flowing in the buried loop or well while the pump runs
 - The room temperature in large with the target, and the hot water tank with its target; modes as segmented buttons and − / + for the target. Driven by a select: its modes as buttons (*Off*, *Confort*, *Eco*, *Boost*, *Prog A*…, a dropdown beyond five) and the setpoint as − / + steppers from its thermostat `number` (a dropdown for a coarse one); the power button goes back to the last mode it ran in
 - Multi-zone: a *Zones* section with a row per room — its current temperature and its setpoint as − / + steppers — when the device exposes a thermostat `number` and a temperature `sensor` per room (Aldes T.One: a motorised vent and an independent setpoint per room, 22 °C in one and 19 in another); the single setpoint gives way to the rooms. A room pairs its temperature sensor with its setpoint by room, even when the two entities do not share an object id, and the steppers stay centred under one another. `exclude` leaves an entity off the card — a room setpoint (a stray test `number`, or a second motorised vent driven by the same thermostat) or a device `switch` among the options (a test toggle)
 - A *Hot water* section when the device has a `water_heater`: its target as − / + steppers and its operation modes. When the tank is reported as sensors instead (TOUG), its temperature, fill percentage and remaining volume sit under the temperatures, and the fill drives the illustration's level
@@ -113,6 +116,16 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 | Heating | Hot water | Defrosting |
 |---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card-dark.png"><img alt="Heat pump heating" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw-dark.png"><img alt="Heat pump heating the hot water" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost-dark.png"><img alt="Heat pump defrosting" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost.png" width="400"></picture> |
+
+The source side changes with `source` (and its `ground_type` / `water_type` variant), and a power sensor as `entity` gives a read-only metered card with its COP and readings:
+
+| Ground source (horizontal collector) | Ground source (vertical borehole) | Water source (single well) |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-dark.png"><img alt="Ground-source heat pump, horizontal collector" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole-dark.png"><img alt="Ground-source heat pump, vertical borehole" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-dark.png"><img alt="Water-source heat pump, single well" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water.png" width="400"></picture> |
+
+| Water source (two-well doublet) | Water source (lake / pond loop) | Metered (power sensor, read-only) |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet-dark.png"><img alt="Water-source heat pump, two-well doublet" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake-dark.png"><img alt="Water-source heat pump, lake loop" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-metered-dark.png"><img alt="Metered heat pump with COP and monitoring readings" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-metered.png" width="400"></picture> |
 
 ### Humidifier
 
@@ -163,11 +176,12 @@ The cards work with **any integration** that provides air purifiers and fans as 
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="" width="16"> [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/daikin_onecta.png" alt="" width="16"> [Daikin Onecta](https://github.com/jwillemsen/daikin_onecta) (Marketplace) | Altherma heat pumps: the heat pump card, with the hot water tank (`water_heater`) of the same device |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/melcloud.png" alt="" width="16"> [MELCloud](https://www.home-assistant.io/integrations/melcloud/) (built in) | Ecodan air-to-water heat pumps (climate zones and hot water tank) on the heat pump card; the air conditioners stay on the air conditioner card |
-| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vicare.png" alt="" width="16"> [Viessmann ViCare](https://www.home-assistant.io/integrations/vicare/) (built in) | Vitocal heat pumps: heating circuits and hot water tank on the heat pump card |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vicare.png" alt="" width="16"> [Viessmann ViCare](https://www.home-assistant.io/integrations/vicare/) (built in) | Vitocal heat pumps, including the ground-source Vitocal 2xx-G: heating circuits and hot water tank on the heat pump card |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/myuplink.png" alt="" width="16"> [myUplink](https://www.home-assistant.io/integrations/myuplink/) (built in) | NIBE heat pumps: always on the heat pump card |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/panasonic.png" alt="" width="16"> [Panasonic Aquarea Smart Cloud](https://github.com/cjaliaga/home-assistant-aquarea) (Marketplace) | Aquarea heat pumps: always on the heat pump card, with their zones and hot water tank |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="" width="16"> [Atlantic Cozytouch](https://www.home-assistant.io/integrations/cozytouch/) (built in, Overkiz) and [Cozytouch](https://github.com/gduteil/cozytouch) (Marketplace) | Alfea and other Atlantic heat pumps: recognised by their hot water tank or their name |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/hitachi_yutaki.png" alt="" width="16"> [Hitachi Yutaki](https://github.com/alepee/hass-hitachi_yutaki) (Marketplace, Modbus) | Yutaki heat pumps: always on the heat pump card, with the hot water tank, defrost and compressor |
+| [Modbus](https://www.home-assistant.io/integrations/modbus/) (built in) and other meter integrations | Ground- and water-source heat pumps measured but not controlled (Stiebel Eltron WPF / WPC, NIBE F1x55, Vaillant flexoTHERM, or any unit read through an electrical meter and a heat meter): point `entity` at the power sensor, pick `source: ground` or `water`, and map the heat output, COP, flow / return and energy sensors in `entities` |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vocolinc.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in), VOCOlinc | The VOCOlinc MistFlow humidifier and FlowerBud essential oil diffuser (no dedicated integration: pair them with HomeKit Device) with their own illustrations, lit in the colour of their light; the FlowerBud's *Spray quantity* as a *Mist intensity* slider and its *Mood Light* as an option |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/rituals.png" alt="" width="16"> [Rituals Perfume Genie](https://www.home-assistant.io/integrations/rituals_perfume_genie/) (built in) | The diffuser (a `switch`, no `humidifier` entity) with its own brass / black illustration: the *Perfume amount* as an *Intensity* slider, the *Room size* (m²) as segments, the cartridge fill as a bar with a *Cartridge empty* alert, and the perfume, battery and Wi-Fi as chips |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="" width="16"> [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, the *Aiguillage vanne* valve (air or hot water), and — on a multi-zone install — a thermostat `number` and a temperature `sensor` per room as the *Zones*, the hot water tank from its temperature, fill percentage and remaining volume sensors, and the fault sensor as a chip; a single-thermostat install keeps its *Thermostat* number as the setpoint |
@@ -314,6 +328,30 @@ entities:                        # only for what discovery misses
   setpoint: number.t_one_thermostat
 ```
 
+Measured but not controlled (a ground- or water-source heat pump read through Modbus meters, e.g. a Stiebel Eltron WPF 16): point `entity` at the power sensor, pick the `source`, and set the monitoring roles in `entities`.
+
+```yaml
+type: custom:climate-air-heatpump-card
+entity: sensor.heatpump_elec_power   # a power sensor (W or kW): read-only, running above power_threshold
+source: water                        # air (default), ground or water
+water_type: well                     # well (default), doublet or lake — for source: water
+# ground_type: collector             # collector (default) or borehole — for source: ground
+power_threshold: 100                 # W above which the pump counts as running (default 100)
+outdoor_temp: weather.home           # a sensor or a weather entity for the outdoor chip
+entities:                            # monitoring roles (YAML only)
+  heat_power: sensor.heatpump_heat_output
+  cop: sensor.heat_pump_instantaneous_cop      # omit to compute heat ÷ electrical
+  cop_today: sensor.heat_pump_cop_today
+  scop: sensor.heat_pump_seasonal_cop_scop
+  flow_temp: sensor.heatpump_flow_temperature
+  return_temp: sensor.heatpump_return_temperature
+  flow_rate: sensor.heatpump_flow_rate
+  energy: sensor.heatpump_electrical_energy
+  heat_energy: sensor.heatpump_heat_energy
+```
+
+`source`, `ground_type`, `water_type`, `power_threshold` and `outdoor_temp` are in the visual editor; the `entities` monitoring role map is **YAML only**.
+
 ### Humidifier
 
 ```yaml
@@ -372,6 +410,11 @@ The cards find the other entities of the device by their registry translation ke
 | `lamp` | `light` | Humidifier | The device's light (VOCOlinc mood light) as an option toggle; its colour lights the VOCOlinc illustrations |
 | `spray` | `number` | Humidifier | Mist intensity of a diffuser (VOCOlinc *Spray quantity*) |
 | `backup` / `defrost` | `binary_sensor` | Heat pump | *Backup heater* and *Defrosting* chips; frost on the illustration |
+| `heat_power` | `sensor` | Heat pump | Heat output; with the electrical power, the auto-computed COP (YAML only) |
+| `cop` / `cop_today` / `scop` | `sensor` | Heat pump | Instantaneous COP (the headline figure), today's and the seasonal figures (YAML only) |
+| `flow_temp` / `return_temp` | `sensor` | Heat pump | Flow and return water temperatures, with their ΔT (YAML only) |
+| `flow_rate` | `sensor` | Heat pump | Water flow rate (YAML only) |
+| `energy` / `heat_energy` | `sensor` | Heat pump | Electrical and heat energy (YAML only) |
 
 ```yaml
 entities:
@@ -442,6 +485,36 @@ Cooling, snowflakes fall above the unit.
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool.gif" alt="heat pump cooling animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool-dark.gif" alt="heat pump cooling animation, dark theme" width="400"> |
+
+With `source: ground`, the outdoor unit gives way to an indoor module and the brine flows in the buried horizontal collector.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground.gif" alt="ground-source heat pump collector animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-dark.gif" alt="ground-source heat pump collector animation, dark theme" width="400"> |
+
+With `ground_type: borehole`, the brine flows down one leg of the vertical U-probe and up the other.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole.gif" alt="ground-source heat pump borehole animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole-dark.gif" alt="ground-source heat pump borehole animation, dark theme" width="400"> |
+
+With `source: water`, the water is drawn from the water table through the well while it runs.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water.gif" alt="water-source heat pump well animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-dark.gif" alt="water-source heat pump well animation, dark theme" width="400"> |
+
+With `water_type: doublet`, the water flows up the extraction well and down the reinjection well.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet.gif" alt="water-source heat pump doublet animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet-dark.gif" alt="water-source heat pump doublet animation, dark theme" width="400"> |
+
+With `water_type: lake`, the water flows in the loop sunk in the lake or pond.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake.gif" alt="water-source heat pump lake loop animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake-dark.gif" alt="water-source heat pump lake loop animation, dark theme" width="400"> |
 
 The humidifier humidifies: mist rises from its top and the water waves in its tank.
 

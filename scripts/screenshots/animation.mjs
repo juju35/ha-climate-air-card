@@ -91,6 +91,41 @@ await animate({
   }),
 });
 
+// Ground source, horizontal collector (issue #90): no outdoor fan, the brine flows in the buried serpentine loop.
+await animate({
+  file: "heatpump-ground",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.heat_pump", source: "ground", ground_type: "collector" } }),
+});
+
+// Ground source, vertical borehole: the brine flows down one leg of the U-probe and up the other.
+await animate({
+  file: "heatpump-ground-borehole",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.heat_pump", source: "ground", ground_type: "borehole" } }),
+});
+
+// Water source, single well: the water is drawn from the water table through the well and returned.
+await animate({
+  file: "heatpump-water",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.heat_pump", source: "water", water_type: "well" } }),
+});
+
+// Water source, two-well doublet: the water flows up the extraction well and down the reinjection well.
+await animate({
+  file: "heatpump-water-doublet",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.heat_pump", source: "water", water_type: "doublet" } }),
+});
+
+// Water source, submerged lake / pond loop: the water flows in the loop sunk in the water body.
+await animate({
+  file: "heatpump-water-lake",
+  tag: "climate-air-heatpump-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.heat_pump", source: "water", water_type: "lake" } }),
+});
+
 // The humidifier humidifying: mist rises from its top and the water in its tank waves.
 await animate({
   file: "humidifier",

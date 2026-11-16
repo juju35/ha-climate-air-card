@@ -11,6 +11,69 @@
 const caHpWave = (x, y) => `<path d="M${x} ${y}q-2 3 0 6t0 6"/>`;
 const caHpFlake = (x, y) => `<path d="M${x} ${y}v5M${x - 2.2} ${y + 1.25}l4.4 2.5M${x - 2.2} ${y + 3.75}l4.4-2.5"/>`;
 
+// The outdoor unit of an air-source pump: body, fan behind its grille, side grille, status light, feet, and the
+// frost that covers it while it defrosts. Its two water pipes leave at x66, y42 (flow) and y66 (return).
+const caHpAirArt =
+  '<rect x="8" y="82" width="10" height="5" rx="1.5" fill="#9aa5b1"/><rect x="50" y="82" width="10" height="5" rx="1.5" fill="#9aa5b1"/>' +
+  '<rect x="2" y="24" width="64" height="59" rx="6" fill="url(#ca-hb)" stroke="#c3cad2" stroke-width="1.2"/>' +
+  '<path d="M8 29H60" stroke="#dfe4ea" stroke-width="1.1"/>' +
+  '<circle cx="27" cy="55" r="20" fill="#3a434e"/>' +
+  `<g class="hfan">${[0, 120, 240]
+    .map((a) => `<path transform="rotate(${a} 27 55)" d="M27 55C28.5 48 32.5 40.5 39 40C41.5 45.5 36.5 52.5 27 55Z"/>`)
+    .join("")}<circle cx="27" cy="55" r="3" fill="#d5dbe2"/></g>` +
+  '<g fill="none" stroke="#c3cad2"><circle cx="27" cy="55" r="20" stroke-width="1"/><circle cx="27" cy="55" r="14" stroke-width=".6" stroke-opacity=".7"/>' +
+  '<circle cx="27" cy="55" r="8" stroke-width=".5" stroke-opacity=".5"/><path d="M7 55H47M27 35V75" stroke-width=".5" stroke-opacity=".5"/></g>' +
+  `<path d="${[38, 43, 48, 53, 58, 63, 68, 73].map((yy) => `M51 ${yy}H61`).join("")}" stroke="#d5dbe2" stroke-width="1.6" stroke-linecap="round"/>` +
+  '<circle class="led" cx="56" cy="32" r="1.5"/>' +
+  `<g class="ice">${caHpFlake(10, 30)}${caHpFlake(43, 31)}${caHpFlake(56, 76)}</g>`;
+
+// The indoor module of a ground- or water-source pump, in place of the outdoor unit: a wall box with two vent lines
+// and the status light, and the two pipes that carry the water on to the tank (x46 → x66, drawn like the air unit's).
+const caHpModule =
+  '<rect x="4" y="18" width="42" height="34" rx="5" fill="url(#ca-hb)" stroke="#c3cad2" stroke-width="1.2"/>' +
+  '<path d="M11 27H39M11 33H39" stroke="#dfe4ea" stroke-width="1.4" stroke-linecap="round"/>' +
+  '<circle class="led" cx="40" cy="46" r="1.5"/>' +
+  '<path d="M46 42H66M46 66H66" stroke="#b6bfc9" stroke-width="3.6" stroke-linecap="round" fill="none"/>' +
+  '<path class="flow" d="M46 42H66"/><path class="flow ret" d="M46 66H66"/>';
+
+// The brine / water loop as a static casing and the fluid flowing in it while the pump runs.
+const caHpBrine = (d) => `<path class="loopbg" d="${d}"/><path class="brine" d="${d}"/>`;
+// A wavy water surface along y.
+const caHpWaves = (y) => `<path class="wsurf" d="M0 ${y}q4-2 8 0t8 0 8 0 8 0 8 0 8 0 8 0 8 0"/>`;
+
+// The source side of the illustration, chosen by `s.source` (and its ground / water variant). Everything to the
+// right — the pipes to the tank, the tank and its level, the running / phase animation — is the same for every
+// source; only this left-hand part changes, and air keeps the outdoor fan unit.
+const caHpSourceArt = (s) => {
+  if (s.source === "ground") {
+    const borehole = s.groundType === "borehole";
+    const soil = borehole
+      ? '<rect x="0" y="50" width="66" height="38" rx="3" class="soil"/><path d="M0 62H66M0 74H66" class="strata"/>'
+      : '<rect x="0" y="56" width="66" height="32" rx="3" class="soil"/><path d="M0 57H66" class="grass"/>';
+    const loop = borehole ? "M19 52V80q0 3 3 3h6q3 0 3-3V52" : "M14 52V66H56q4 0 4 4t-4 4H12q-4 0-4 4t4 4H40V52";
+    return soil + caHpModule + caHpBrine(loop);
+  }
+  if (s.source === "water") {
+    const lake = s.waterType === "lake";
+    const body = lake
+      ? '<rect x="0" y="56" width="66" height="32" rx="4" class="wbody"/>' + caHpWaves(56)
+      : '<rect x="0" y="56" width="66" height="32" rx="3" class="soil"/><rect x="0" y="72" width="66" height="16" class="wtable"/>' + caHpWaves(72);
+    const well = (x, w) => `<rect x="${x}" y="56" width="${w}" height="30" rx="2" class="casing"/>`;
+    let casing = "";
+    let loop = "";
+    if (lake) loop = "M14 52V64H56q4 0 4 4t-4 4H12q-4 0-4 4t4 4H40V52";
+    else if (s.waterType === "doublet") {
+      casing = well(7, 10) + well(33, 10);
+      loop = "M12 52V82M38 52V80";
+    } else {
+      casing = well(15, 11);
+      loop = "M19 52V82M24 52V78";
+    }
+    return body + casing + caHpModule + caHpBrine(loop);
+  }
+  return caHpAirArt;
+};
+
 const caHpArt = (s) => {
   const pct = s.tankPct != null ? Math.max(8, Math.min(100, s.tankPct)) : caHpTankPct(s.tank);
   const h = +((72 * pct) / 100).toFixed(1);
@@ -29,19 +92,8 @@ const caHpArt = (s) => {
     // Pipes: the flow to the tank and the return.
     '<path d="M66 42H88M66 66H88" stroke="#b6bfc9" stroke-width="3.6" stroke-linecap="round" fill="none"/>' +
     '<path class="flow" d="M66 42H88"/><path class="flow ret" d="M66 66H88"/>' +
-    // The outdoor unit: body, fan behind its grille, side grille, status light, feet.
-    '<rect x="8" y="82" width="10" height="5" rx="1.5" fill="#9aa5b1"/><rect x="50" y="82" width="10" height="5" rx="1.5" fill="#9aa5b1"/>' +
-    '<rect x="2" y="24" width="64" height="59" rx="6" fill="url(#ca-hb)" stroke="#c3cad2" stroke-width="1.2"/>' +
-    '<path d="M8 29H60" stroke="#dfe4ea" stroke-width="1.1"/>' +
-    '<circle cx="27" cy="55" r="20" fill="#3a434e"/>' +
-    `<g class="hfan">${[0, 120, 240]
-      .map((a) => `<path transform="rotate(${a} 27 55)" d="M27 55C28.5 48 32.5 40.5 39 40C41.5 45.5 36.5 52.5 27 55Z"/>`)
-      .join("")}<circle cx="27" cy="55" r="3" fill="#d5dbe2"/></g>` +
-    '<g fill="none" stroke="#c3cad2"><circle cx="27" cy="55" r="20" stroke-width="1"/><circle cx="27" cy="55" r="14" stroke-width=".6" stroke-opacity=".7"/>' +
-    '<circle cx="27" cy="55" r="8" stroke-width=".5" stroke-opacity=".5"/><path d="M7 55H47M27 35V75" stroke-width=".5" stroke-opacity=".5"/></g>' +
-    `<path d="${[38, 43, 48, 53, 58, 63, 68, 73].map((yy) => `M51 ${yy}H61`).join("")}" stroke="#d5dbe2" stroke-width="1.6" stroke-linecap="round"/>` +
-    '<circle class="led" cx="56" cy="32" r="1.5"/>' +
-    `<g class="ice">${caHpFlake(10, 30)}${caHpFlake(43, 31)}${caHpFlake(56, 76)}</g>` +
+    // The source side: an air outdoor unit, a geothermal loop or a well.
+    caHpSourceArt(s) +
     // The hot water tank, its water level and the heat rising above it.
     `<g class="twave">${caHpWave(97, 0)}${caHpWave(107, -3)}</g>` +
     '<rect x="86" y="6" width="30" height="82" rx="15" fill="url(#ca-ht)" stroke="#c3cad2" stroke-width="1.2"/>' +
@@ -92,6 +144,18 @@ CA_ART.heatpump = {
     .k-heatpump .hwave path:nth-child(2), .k-heatpump .hflake path:nth-child(2), .k-heatpump .twave path:nth-child(2) { animation-delay: .9s; }
     .k-heatpump .hwave path:nth-child(3), .k-heatpump .hflake path:nth-child(3) { animation-delay: 1.8s; }
     .k-heatpump.defrost .ice { animation: ca-blink 2.4s ease-in-out infinite; }
+    /* Ground- and water-source illustrations: a neutral soil band, the grass line or the strata, the water body
+       and table, and the well casing. The brine / water flows like the heating pipes while the pump runs. */
+    .k-heatpump .soil { fill: #d8c4a6; }
+    .k-heatpump .grass { stroke: #8bbf6a; stroke-width: 2; fill: none; }
+    .k-heatpump .strata { stroke: #c3a985; stroke-width: 1; stroke-opacity: .55; fill: none; }
+    .k-heatpump .wbody, .k-heatpump .wtable { fill: #9fcdf0; }
+    .k-heatpump .wtable { opacity: .7; }
+    .k-heatpump .wsurf { fill: none; stroke: #85b7eb; stroke-width: 1.4; stroke-linecap: round; }
+    .k-heatpump .casing { fill: #eef1f4; stroke: #c3cad2; stroke-width: 1; }
+    .k-heatpump .loopbg { fill: none; stroke: #b6bfc9; stroke-width: 3.2; stroke-linecap: round; }
+    .k-heatpump .brine { fill: none; stroke: var(--ca-color); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1.5 5; opacity: 0; transition: opacity .6s; }
+    .k-heatpump.running.active .brine { opacity: .95; animation: ca-hp-flow .9s linear infinite; }
     @keyframes ca-hp-flow { to { stroke-dashoffset: -13; } }
   `,
 };
@@ -114,7 +178,39 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   }
 
   _roles() {
-    return ["indoor_temp", "outdoor_temp", "dhw", "tank_temp", "valve", "setpoint", "backup", "defrost", "power", "compressor", "dhw_pct", "dhw_volume", "faults"];
+    return [
+      "indoor_temp", "outdoor_temp", "dhw", "tank_temp", "valve", "setpoint", "backup", "defrost", "power", "compressor", "dhw_pct", "dhw_volume", "faults",
+      // Measured-but-not-controlled pumps (ground / water source over Modbus meters): the monitoring roles.
+      "heat_power", "cop", "cop_today", "scop", "flow_temp", "return_temp", "flow_rate", "energy", "heat_energy",
+    ];
+  }
+
+  // Measured but not controlled: the card's entity is a power sensor (no climate entity, no mode select), so the
+  // card is read-only (no mode buttons, no setpoint, no power button) and runs on the power threshold.
+  _metered() {
+    const id = this._r?.id || this._entity() || "";
+    return !id.startsWith("climate.") && !id.startsWith("select.");
+  }
+
+  _showPower() {
+    return !this._metered();
+  }
+
+  // The outdoor temperature entity the user set at the top level (a sensor or a weather entity), overriding the
+  // discovered `outdoor_temp` role.
+  _outdoorId() {
+    return this._config.outdoor_temp || this._r?.ent?.outdoor_temp;
+  }
+
+  // The running threshold (watts) of a metered pump, for caHeatPumpState and the COP auto-compute.
+  _threshold() {
+    return this._config.power_threshold;
+  }
+
+  // The source side (air / ground / water) and its ground / water variant: from the config, else guessed from the
+  // device name.
+  _source() {
+    return caHpSource(this._config, this._hass, this._r?.id);
   }
 
   // The rooms of a multi-zone heat pump (a thermostat number and a temperature sensor per room), found on its device.
@@ -126,7 +222,12 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   // The zones' entities are not roles, so they are added to the tracked ids: the card redraws when a room's
   // temperature or setpoint changes.
   _extraIds(r) {
-    return [...super._extraIds(r), ...caHeatPumpZones(this._hass, r.id, this._config.exclude).flatMap((z) => [z.setpoint, z.temp].filter(Boolean))];
+    return [
+      ...super._extraIds(r),
+      ...caHeatPumpZones(this._hass, r.id, this._config.exclude).flatMap((z) => [z.setpoint, z.temp].filter(Boolean)),
+      // A top-level outdoor_temp entity (often a weather entity) is not a role, so track it for the redraw.
+      ...(this._config.outdoor_temp ? [this._config.outdoor_temp] : []),
+    ];
   }
 
   // `exclude` also hides a device switch the user does not want among the options (a test toggle); a hidden
@@ -145,10 +246,14 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     const ent = r.ent;
     const st = this._st(r.id);
     const climate = r.id.startsWith("climate.");
-    const hp = caHeatPumpState(r.id, st, (role) => this._st(ent[role]));
+    const metered = this._metered();
+    const hp = caHeatPumpState(r.id, st, (role) => this._st(ent[role]), { powerThreshold: this._threshold() });
     let base;
     if (climate) base = this._climate(r);
-    else {
+    else if (metered) {
+      // Measured, not controlled: no setpoint; the room temperature only if a sensor gives one.
+      base = { mode: st.state, on: hp.on, cur: this._num(ent.indoor_temp), range: null, target: null };
+    } else {
       // Without a climate entity: the room temperature and the setpoint come from the device's sensors.
       base = { mode: st.state, on: hp.on, cur: this._num(ent.indoor_temp), range: null, target: this._num(ent.setpoint) };
       if (hp.on) this._lastOn = st.state;
@@ -158,12 +263,28 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     if (c.show_alerts && fault) chips.push(this._chip("mdi:alert-circle-outline", fault, "alert", this._label(ent.faults), ent.faults));
     if (hp.defrost) chips.push(this._chip("mdi:snowflake-melt", this._t("st_defrost"), "warn", "", ent.defrost));
     if (hp.backup) chips.push(this._chip("mdi:radiator", this._t("backup"), "warn", "", ent.backup));
-    if (c.show_sensors) chips.push(...this._sensorChips(ent, ["outdoor_temp", ...(hp.on ? ["power"] : [])]));
+    // COP first — the figure people look at first on a heat pump — then today's and the seasonal figures.
+    const cop = hp.on ? this._cop(ent, metered) : null;
+    if (cop != null) chips.push(this._chip("mdi:gauge", `${this._t("cop")} ${caFmtNum(this._intlLang(), cop, 1)}`, "", this._t("cop"), ent.cop));
+    const copToday = this._fmtSensor(ent.cop_today);
+    if (copToday) chips.push(this._chip("mdi:sigma", `${this._t("cop_today")} ${copToday}`, "", this._label(ent.cop_today), ent.cop_today));
+    const scop = this._fmtSensor(ent.scop);
+    if (scop) chips.push(this._chip("mdi:calendar-sync", `SCOP ${scop}`, "", this._label(ent.scop), ent.scop));
+    if (c.show_sensors) {
+      chips.push(...this._outdoorChips());
+      // The electrical power draw while running: the device's power role, or the metered entity itself.
+      if (hp.on) {
+        const pid = metered ? r.id : ent.power;
+        const p = this._fmtSensor(pid);
+        if (p) chips.push(this._chip("mdi:flash", p, "", this._label(pid), pid));
+      }
+    }
     // The hot water tank's fill as a percentage and its remaining volume, when the device reports them as sensors
     // instead of a water_heater entity (TOUG); the percentage drives the illustration's level.
     const dhwPct = this._num(ent.dhw_pct);
     const a = st.attributes;
     const preset = climate && hp.on && a.preset_mode && a.preset_mode !== "none" ? this._fmtAttr(r.id, "preset_mode", a.preset_mode) : "";
+    const src = this._source();
     return {
       state: hp.on ? hp.phase : "off",
       mode: base.mode,
@@ -173,8 +294,15 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       defrost: hp.defrost,
       color: hp.color,
       statusText: this._t(hp.statusKey),
-      // The mode next to the area: the climate's preset, or the selected mode of a select (« Confort »).
-      sub: climate ? preset : hp.on ? this._fmtState(r.id) : "",
+      // The source side of the illustration (air outdoor unit, geothermal loop, well).
+      source: src.source,
+      groundType: src.groundType,
+      waterType: src.waterType,
+      metered,
+      cop,
+      // The mode next to the area: the climate's preset, or the selected mode of a select (« Confort »); nothing
+      // for a metered pump (its entity's state is a raw power reading).
+      sub: climate ? preset : metered ? "" : hp.on ? this._fmtState(r.id) : "",
       cur: base.cur,
       target: hp.on ? base.target : null,
       range: hp.on ? base.range : null,
@@ -189,6 +317,71 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     };
   }
 
+  // The instantaneous COP: a provided `cop` sensor always wins; otherwise the heat output divided by the electrical
+  // power, computed only while running (the caller guards `hp.on`), with a guard against idle noise and divide-by-zero.
+  _cop(ent, metered) {
+    const given = this._num(ent.cop);
+    if (given != null) return given;
+    const heat = this._kw(ent.heat_power);
+    const elec = this._kw(metered ? this._r.id : ent.power);
+    if (heat == null || elec == null || elec <= 0.05) return null;
+    return heat / elec;
+  }
+
+  // A power sensor's reading in kilowatts, whatever unit it reports.
+  _kw(id) {
+    const w = caPowerW(this._st(id));
+    return w == null ? null : w / 1000;
+  }
+
+  // The outdoor temperature as text: a top-level `outdoor_temp` sensor or weather entity, else the discovered role.
+  _outdoorText() {
+    const id = this._outdoorId();
+    const st = this._st(id);
+    if (!id || caUnavailable(st)) return null;
+    if (id.startsWith("weather.")) {
+      const t = Number(st.attributes?.temperature);
+      if (!Number.isFinite(t)) return null;
+      return `${caFmtNum(this._intlLang(), t, 1)} ${st.attributes?.temperature_unit || this._unit()}`;
+    }
+    return this._fmtSensor(id);
+  }
+
+  _outdoorChips() {
+    const id = this._outdoorId();
+    const txt = this._outdoorText();
+    return id && txt != null ? [this._chip("mdi:home-thermometer-outline", `${this._t("outdoor")} ${txt}`, "", this._label(id), id)] : [];
+  }
+
+  // The monitoring lines under the hero: heat output, flow / return temperatures and their ΔT, flow rate, and the
+  // electrical and heat energy. Each shows only when its role resolves.
+  _monitorLines() {
+    const ent = this._r.ent;
+    const lines = [];
+    const heat = this._fmtSensor(ent.heat_power);
+    if (heat) lines.push(caLine("mdi:fire", `${this._t("heat_power")} ${heat}`));
+    const flow = this._num(ent.flow_temp);
+    const ret = this._num(ent.return_temp);
+    if (flow != null || ret != null) {
+      const parts = [];
+      if (flow != null) parts.push(`${this._t("flow_temp")} ${this._temp(flow, 1)}`);
+      if (ret != null) parts.push(`${this._t("return_temp")} ${this._temp(ret, 1)}`);
+      if (flow != null && ret != null) parts.push(`${this._t("delta_t")} ${caFmtNum(this._intlLang(), Math.abs(flow - ret), 1)}`);
+      lines.push(caLine("mdi:swap-vertical", parts.join(" · ")));
+    }
+    const rate = this._fmtSensor(ent.flow_rate);
+    if (rate) lines.push(caLine("mdi:pump", `${this._t("flow_rate")} ${rate}`));
+    const elec = this._fmtSensor(ent.energy);
+    const heatE = this._fmtSensor(ent.heat_energy);
+    if (elec || heatE) {
+      const parts = [];
+      if (elec) parts.push(`${this._t("elec_energy")} ${elec}`);
+      if (heatE) parts.push(`${this._t("heat_energy")} ${heatE}`);
+      lines.push(caLine("mdi:lightning-bolt", parts.join(" · ")));
+    }
+    return lines.join("");
+  }
+
   _showTarget(m) {
     return m.running && (m.target != null || m.range != null);
   }
@@ -200,11 +393,13 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     if (m.tank != null) parts.push(`${this._temp(m.tank, 0)}${m.tankTarget != null ? ` → ${this._temp(m.tankTarget, 0)}` : ""}`);
     if (m.dhwPct) parts.push(m.dhwPct);
     if (m.dhwVol) parts.push(m.dhwVol);
-    if (!parts.length) return "";
-    return caLine("mdi:water-boiler", `${this._t("tank")} ${parts.join(" · ")}`);
+    const tank = parts.length ? caLine("mdi:water-boiler", `${this._t("tank")} ${parts.join(" · ")}`) : "";
+    return tank + this._monitorLines();
   }
 
   _controls(m) {
+    // Measured but not controlled: read-only, no controls at all.
+    if (this._metered()) return "";
     if (this._isClimate()) return super._controls(m);
     // Driven by a select (TOUG): its modes as buttons (a dropdown when there are many), the setpoint, then the hot
     // water and the device's switches.
@@ -379,12 +574,13 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   }
 
   _miniInfo(m) {
-    const lines = [this._tempLine(m)];
+    // A metered pump has no room temperature to lead with: show its COP (its headline figure) instead.
+    const lines = [m.metered ? (m.cop != null ? caLine("mdi:gauge", `${this._t("cop")} ${caFmtNum(this._intlLang(), m.cop, 1)}`) : "") : this._tempLine(m)].filter(Boolean);
     if (m.tank != null || m.dhwPct) {
       const txt = [m.tank != null ? this._temp(m.tank, 0) : null, m.dhwPct].filter(Boolean).join(" · ");
       lines.push(caLine("mdi:water-boiler", `${this._t("tank")} ${txt}`));
     }
-    const out = this._config.show_sensors ? this._fmtSensor(this._r.ent.outdoor_temp) : null;
+    const out = this._config.show_sensors ? this._outdoorText() : null;
     if (out) lines.push(caLine("mdi:home-thermometer-outline", `${this._t("outdoor")} ${out}`));
     return lines.join("");
   }

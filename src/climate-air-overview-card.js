@@ -140,17 +140,20 @@ class ClimateAirOverviewCard extends CaElement {
     if (kind === "heatpump") {
       // A heat pump: what it does (heating, hot water…) with its target, or its room temperature once off; the tank in
       // its illustration. Driven by a select (TOUG), its mode stands for the target.
-      const hp = caHeatPumpState(id, st, roleSt);
+      const hp = caHeatPumpState(id, st, roleSt, { powerThreshold: o.power_threshold });
       const unit = h.config?.unit_system?.temperature || "°C";
       const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       const climate = id.startsWith("climate.");
+      const metered = !climate && !id.startsWith("select.");
       const cur = climate ? (a.current_temperature != null ? Number(a.current_temperature) : null) : caNum(roleSt("indoor_temp"));
       item.on = hp.on;
-      const target = !hp.on ? "" : climate ? (a.temperature != null ? temp(Number(a.temperature)) : "") : caValueLabel(lang, st.state, h.formatEntityState?.(st));
+      // A metered pump's state is a raw power reading, so it only shows its status, not its "target".
+      const target = !hp.on || metered ? "" : climate ? (a.temperature != null ? temp(Number(a.temperature)) : "") : caValueLabel(lang, st.state, h.formatEntityState?.(st));
       item.text = [this._t(hp.statusKey), hp.on ? target : cur != null ? temp(cur) : ""].filter(Boolean).join(" · ");
       item.color = hp.color;
       item.anim = hp.on ? CA_HP_ICON_ANIM[hp.phase] || "breathe" : "";
-      item.art = { running: hp.on, state: hp.on ? hp.phase : "off", phase: hp.phase, active: hp.active, defrost: hp.defrost, tank: hp.tank, lang: this._intlLang() };
+      const src = caHpSource(o, h, id);
+      item.art = { running: hp.on, state: hp.on ? hp.phase : "off", phase: hp.phase, active: hp.active, defrost: hp.defrost, tank: hp.tank, source: src.source, groundType: src.groundType, waterType: src.waterType, lang: this._intlLang() };
       return item;
     }
     if (kind === "humidifier") {
