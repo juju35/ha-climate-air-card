@@ -179,6 +179,32 @@ const CA_I18N = {
     ed_exclude: "Devices to exclude",
     ed_include: "Devices to add",
     ed_include_helper: "Climate or fan entities the card would not pick on its own (a hidden entity, say)",
+    src_air: "Air (outdoor unit)",
+    src_ground: "Ground source",
+    src_water: "Water source",
+    gt_collector: "Horizontal collector",
+    gt_borehole: "Vertical borehole",
+    wt_well: "Single well",
+    wt_doublet: "Two-well doublet",
+    wt_lake: "Lake / pond loop",
+    heat_power: "Heat output",
+    cop: "COP",
+    cop_today: "COP today",
+    scop: "SCOP",
+    flow_temp: "Flow",
+    return_temp: "Return",
+    delta_t: "ΔT",
+    flow_rate: "Flow rate",
+    elec_energy: "Electrical energy",
+    heat_energy: "Heat energy",
+    ed_source: "Source",
+    ed_source_helper: "The heat pump's source side and its illustration",
+    ed_ground_type: "Ground loop",
+    ed_water_type: "Water loop",
+    ed_power_threshold: "Running threshold (W)",
+    ed_power_threshold_helper: "Power above which a metered heat pump counts as running",
+    ed_outdoor_temp: "Outdoor temperature",
+    ed_outdoor_temp_helper: "A sensor or weather entity for the outdoor chip",
   },
   fr: {
     purifier: "Purificateur",
@@ -352,6 +378,32 @@ const CA_I18N = {
     ed_exclude: "Appareils à exclure",
     ed_include: "Appareils à ajouter",
     ed_include_helper: "Entités climate ou fan que la carte ne prendrait pas d'elle-même (une entité masquée, par exemple)",
+    src_air: "Air (unité extérieure)",
+    src_ground: "Géothermie (sol)",
+    src_water: "Sur nappe (eau)",
+    gt_collector: "Capteur horizontal",
+    gt_borehole: "Sonde verticale",
+    wt_well: "Puits unique",
+    wt_doublet: "Doublet de puits",
+    wt_lake: "Boucle en lac / étang",
+    heat_power: "Puissance thermique",
+    cop: "COP",
+    cop_today: "COP du jour",
+    scop: "SCOP",
+    flow_temp: "Départ",
+    return_temp: "Retour",
+    delta_t: "ΔT",
+    flow_rate: "Débit",
+    elec_energy: "Énergie électrique",
+    heat_energy: "Énergie thermique",
+    ed_source: "Source",
+    ed_source_helper: "Le côté source de la pompe à chaleur et son illustration",
+    ed_ground_type: "Boucle géothermique",
+    ed_water_type: "Boucle sur eau",
+    ed_power_threshold: "Seuil de marche (W)",
+    ed_power_threshold_helper: "Puissance au-dessus de laquelle une pompe à chaleur mesurée est considérée en marche",
+    ed_outdoor_temp: "Température extérieure",
+    ed_outdoor_temp_helper: "Un capteur ou une entité météo pour la puce extérieure",
   },
   de: {
     purifier: "Luftreiniger",
@@ -524,6 +576,32 @@ const CA_I18N = {
     ed_exclude: "Auszuschließende Geräte",
     ed_include: "Hinzuzufügende Geräte",
     ed_include_helper: "Climate- oder Fan-Entitäten, die die Karte nicht von selbst übernehmen würde (z. B. eine ausgeblendete Entität)",
+    src_air: "Luft (Außeneinheit)",
+    src_ground: "Erdwärme (Sole)",
+    src_water: "Grundwasser (Wasser)",
+    gt_collector: "Horizontaler Kollektor",
+    gt_borehole: "Vertikale Erdsonde",
+    wt_well: "Einzelner Brunnen",
+    wt_doublet: "Brunnendublette",
+    wt_lake: "See-/Teichschleife",
+    heat_power: "Wärmeleistung",
+    cop: "COP",
+    cop_today: "COP heute",
+    scop: "SCOP",
+    flow_temp: "Vorlauf",
+    return_temp: "Rücklauf",
+    delta_t: "ΔT",
+    flow_rate: "Durchfluss",
+    elec_energy: "Elektrische Energie",
+    heat_energy: "Wärmemenge",
+    ed_source: "Quelle",
+    ed_source_helper: "Die Quellenseite der Wärmepumpe und ihre Darstellung",
+    ed_ground_type: "Erdschleife",
+    ed_water_type: "Wasserschleife",
+    ed_power_threshold: "Laufschwelle (W)",
+    ed_power_threshold_helper: "Leistung, ab der eine gemessene Wärmepumpe als laufend gilt",
+    ed_outdoor_temp: "Außentemperatur",
+    ed_outdoor_temp_helper: "Ein Sensor oder eine Wetter-Entität für den Außen-Chip",
   },
   es: {
     purifier: "Purificador de aire",
@@ -696,6 +774,32 @@ const CA_I18N = {
     ed_exclude: "Dispositivos que excluir",
     ed_include: "Dispositivos que añadir",
     ed_include_helper: "Entidades climate o fan que la tarjeta no elegiría por sí sola (una entidad oculta, por ejemplo)",
+    src_air: "Aire (unidad exterior)",
+    src_ground: "Geotérmica (suelo)",
+    src_water: "Agua (acuífero)",
+    gt_collector: "Captador horizontal",
+    gt_borehole: "Sonda vertical",
+    wt_well: "Pozo único",
+    wt_doublet: "Doblete de pozos",
+    wt_lake: "Bucle en lago / estanque",
+    heat_power: "Potencia térmica",
+    cop: "COP",
+    cop_today: "COP de hoy",
+    scop: "SCOP",
+    flow_temp: "Impulsión",
+    return_temp: "Retorno",
+    delta_t: "ΔT",
+    flow_rate: "Caudal",
+    elec_energy: "Energía eléctrica",
+    heat_energy: "Energía térmica",
+    ed_source: "Fuente",
+    ed_source_helper: "El lado de la fuente de la bomba de calor y su ilustración",
+    ed_ground_type: "Bucle geotérmico",
+    ed_water_type: "Bucle de agua",
+    ed_power_threshold: "Umbral de marcha (W)",
+    ed_power_threshold_helper: "Potencia por encima de la cual una bomba de calor medida cuenta como en marcha",
+    ed_outdoor_temp: "Temperatura exterior",
+    ed_outdoor_temp_helper: "Un sensor o entidad meteorológica para el chip exterior",
   },
   sr: {
     purifier: "Пречишћивач ваздуха",
@@ -868,6 +972,32 @@ const CA_I18N = {
     ed_exclude: "Уређаји за искључивање",
     ed_include: "Уређаји за додавање",
     ed_include_helper: "Ентитети климе или вентилатора које картица не би сама препознала (нпр. скривени ентитет)",
+    src_air: "Ваздух (спољна јединица)",
+    src_ground: "Геотермална (тло)",
+    src_water: "Вода (подземна)",
+    gt_collector: "Хоризонтални колектор",
+    gt_borehole: "Вертикална сонда",
+    wt_well: "Један бунар",
+    wt_doublet: "Дублет бунара",
+    wt_lake: "Петља у језеру",
+    heat_power: "Топлотна снага",
+    cop: "COP",
+    cop_today: "COP данас",
+    scop: "SCOP",
+    flow_temp: "Полаз",
+    return_temp: "Поврат",
+    delta_t: "ΔT",
+    flow_rate: "Проток",
+    elec_energy: "Електрична енергија",
+    heat_energy: "Топлотна енергија",
+    ed_source: "Извор",
+    ed_source_helper: "Страна извора топлотне пумпе и њена илустрација",
+    ed_ground_type: "Геотермална петља",
+    ed_water_type: "Водена петља",
+    ed_power_threshold: "Праг рада (W)",
+    ed_power_threshold_helper: "Снага изнад које се мерена топлотна пумпа сматра да ради",
+    ed_outdoor_temp: "Спољна температура",
+    ed_outdoor_temp_helper: "Сензор или временски ентитет за спољни чип",
   },
   "sr-Latn": {
     purifier: "Prečišćivač vazduha",
@@ -1040,6 +1170,32 @@ const CA_I18N = {
     ed_exclude: "Uređaji za isključivanje",
     ed_include: "Uređaji za dodavanje",
     ed_include_helper: "Entiteti klime ili ventilatora koje kartica ne bi sama prepoznala (npr. skriveni entitet)",
+    src_air: "Vazduh (spoljna jedinica)",
+    src_ground: "Geotermalna (tlo)",
+    src_water: "Voda (podzemna)",
+    gt_collector: "Horizontalni kolektor",
+    gt_borehole: "Vertikalna sonda",
+    wt_well: "Jedan bunar",
+    wt_doublet: "Dublet bunara",
+    wt_lake: "Petlja u jezeru",
+    heat_power: "Toplotna snaga",
+    cop: "COP",
+    cop_today: "COP danas",
+    scop: "SCOP",
+    flow_temp: "Polaz",
+    return_temp: "Povrat",
+    delta_t: "ΔT",
+    flow_rate: "Protok",
+    elec_energy: "Električna energija",
+    heat_energy: "Toplotna energija",
+    ed_source: "Izvor",
+    ed_source_helper: "Strana izvora toplotne pumpe i njena ilustracija",
+    ed_ground_type: "Geotermalna petlja",
+    ed_water_type: "Vodena petlja",
+    ed_power_threshold: "Prag rada (W)",
+    ed_power_threshold_helper: "Snaga iznad koje se merena toplotna pumpa smatra da radi",
+    ed_outdoor_temp: "Spoljna temperatura",
+    ed_outdoor_temp_helper: "Senzor ili vremenski entitet za spoljni čip",
   },
   it: {
     purifier: "Purificatore d'aria",
@@ -1213,6 +1369,32 @@ const CA_I18N = {
     ed_exclude: "Dispositivi da escludere",
     ed_include: "Dispositivi da aggiungere",
     ed_include_helper: "Entità climate o fan che la scheda non sceglierebbe da sola (ad esempio un'entità nascosta)",
+    src_air: "Aria (unità esterna)",
+    src_ground: "Geotermica (terreno)",
+    src_water: "Acqua (falda)",
+    gt_collector: "Collettore orizzontale",
+    gt_borehole: "Sonda verticale",
+    wt_well: "Pozzo singolo",
+    wt_doublet: "Doppietta di pozzi",
+    wt_lake: "Anello in lago / stagno",
+    heat_power: "Potenza termica",
+    cop: "COP",
+    cop_today: "COP oggi",
+    scop: "SCOP",
+    flow_temp: "Mandata",
+    return_temp: "Ritorno",
+    delta_t: "ΔT",
+    flow_rate: "Portata",
+    elec_energy: "Energia elettrica",
+    heat_energy: "Energia termica",
+    ed_source: "Sorgente",
+    ed_source_helper: "Il lato sorgente della pompa di calore e la sua illustrazione",
+    ed_ground_type: "Anello geotermico",
+    ed_water_type: "Anello ad acqua",
+    ed_power_threshold: "Soglia di funzionamento (W)",
+    ed_power_threshold_helper: "Potenza oltre la quale una pompa di calore misurata è considerata in funzione",
+    ed_outdoor_temp: "Temperatura esterna",
+    ed_outdoor_temp_helper: "Un sensore o un'entità meteo per il chip esterno",
   },
   nl: {
     purifier: "Luchtreiniger",
@@ -1386,6 +1568,32 @@ const CA_I18N = {
     ed_exclude: "Uit te sluiten apparaten",
     ed_include: "Toe te voegen apparaten",
     ed_include_helper: "Climate- of fan-entiteiten die de kaart niet uit zichzelf zou kiezen (bijvoorbeeld een verborgen entiteit)",
+    src_air: "Lucht (buitenunit)",
+    src_ground: "Bodem (aardwarmte)",
+    src_water: "Water (grondwater)",
+    gt_collector: "Horizontale collector",
+    gt_borehole: "Verticale boring",
+    wt_well: "Enkele put",
+    wt_doublet: "Bronnendoublet",
+    wt_lake: "Lus in meer / vijver",
+    heat_power: "Warmtevermogen",
+    cop: "COP",
+    cop_today: "COP vandaag",
+    scop: "SCOP",
+    flow_temp: "Aanvoer",
+    return_temp: "Retour",
+    delta_t: "ΔT",
+    flow_rate: "Debiet",
+    elec_energy: "Elektrische energie",
+    heat_energy: "Warmte-energie",
+    ed_source: "Bron",
+    ed_source_helper: "De bronzijde van de warmtepomp en de illustratie ervan",
+    ed_ground_type: "Bodemlus",
+    ed_water_type: "Waterlus",
+    ed_power_threshold: "Draaidrempel (W)",
+    ed_power_threshold_helper: "Vermogen waarboven een gemeten warmtepomp als draaiend geldt",
+    ed_outdoor_temp: "Buitentemperatuur",
+    ed_outdoor_temp_helper: "Een sensor of weer-entiteit voor de buitenchip",
   },
   pt: {
     purifier: "Purificador de ar",
@@ -1559,6 +1767,32 @@ const CA_I18N = {
     ed_exclude: "Dispositivos a excluir",
     ed_include: "Dispositivos a adicionar",
     ed_include_helper: "Entidades climate ou fan que o cartão não escolheria sozinho (por exemplo, uma entidade oculta)",
+    src_air: "Ar (unidade exterior)",
+    src_ground: "Geotérmica (solo)",
+    src_water: "Água (aquífero)",
+    gt_collector: "Coletor horizontal",
+    gt_borehole: "Sonda vertical",
+    wt_well: "Poço único",
+    wt_doublet: "Dupla de poços",
+    wt_lake: "Circuito em lago / lagoa",
+    heat_power: "Potência térmica",
+    cop: "COP",
+    cop_today: "COP hoje",
+    scop: "SCOP",
+    flow_temp: "Ida",
+    return_temp: "Retorno",
+    delta_t: "ΔT",
+    flow_rate: "Caudal",
+    elec_energy: "Energia elétrica",
+    heat_energy: "Energia térmica",
+    ed_source: "Fonte",
+    ed_source_helper: "O lado da fonte da bomba de calor e a sua ilustração",
+    ed_ground_type: "Circuito geotérmico",
+    ed_water_type: "Circuito de água",
+    ed_power_threshold: "Limiar de funcionamento (W)",
+    ed_power_threshold_helper: "Potência acima da qual uma bomba de calor medida conta como em funcionamento",
+    ed_outdoor_temp: "Temperatura exterior",
+    ed_outdoor_temp_helper: "Um sensor ou entidade meteorológica para o chip exterior",
   },
   pl: {
     purifier: "Oczyszczacz powietrza",
@@ -1732,6 +1966,32 @@ const CA_I18N = {
     ed_exclude: "Urządzenia do wykluczenia",
     ed_include: "Urządzenia do dodania",
     ed_include_helper: "Encje climate lub fan, których karta nie wybrałaby sama (np. ukryta encja)",
+    src_air: "Powietrze (jednostka zewnętrzna)",
+    src_ground: "Gruntowa (ziemia)",
+    src_water: "Wodna (woda gruntowa)",
+    gt_collector: "Kolektor poziomy",
+    gt_borehole: "Sonda pionowa",
+    wt_well: "Pojedyncza studnia",
+    wt_doublet: "Dublet studni",
+    wt_lake: "Pętla w jeziorze / stawie",
+    heat_power: "Moc cieplna",
+    cop: "COP",
+    cop_today: "COP dziś",
+    scop: "SCOP",
+    flow_temp: "Zasilanie",
+    return_temp: "Powrót",
+    delta_t: "ΔT",
+    flow_rate: "Przepływ",
+    elec_energy: "Energia elektryczna",
+    heat_energy: "Energia cieplna",
+    ed_source: "Źródło",
+    ed_source_helper: "Strona źródła pompy ciepła i jej ilustracja",
+    ed_ground_type: "Pętla gruntowa",
+    ed_water_type: "Pętla wodna",
+    ed_power_threshold: "Próg pracy (W)",
+    ed_power_threshold_helper: "Moc, powyżej której mierzona pompa ciepła jest uznawana za pracującą",
+    ed_outdoor_temp: "Temperatura zewnętrzna",
+    ed_outdoor_temp_helper: "Czujnik lub encja pogodowa dla chipu zewnętrznego",
   },
   ro: {
     purifier: "Purificator de aer",
@@ -1905,6 +2165,32 @@ const CA_I18N = {
     ed_exclude: "Dispozitive de exclus",
     ed_include: "Dispozitive de adăugat",
     ed_include_helper: "Entități climate sau fan pe care cardul nu le-ar alege singur (de ex. o entitate ascunsă)",
+    src_air: "Aer (unitate exterioară)",
+    src_ground: "Sol (geotermală)",
+    src_water: "Apă (pânză freatică)",
+    gt_collector: "Colector orizontal",
+    gt_borehole: "Sondă verticală",
+    wt_well: "Puț unic",
+    wt_doublet: "Dublet de puțuri",
+    wt_lake: "Buclă în lac / iaz",
+    heat_power: "Putere termică",
+    cop: "COP",
+    cop_today: "COP azi",
+    scop: "SCOP",
+    flow_temp: "Tur",
+    return_temp: "Retur",
+    delta_t: "ΔT",
+    flow_rate: "Debit",
+    elec_energy: "Energie electrică",
+    heat_energy: "Energie termică",
+    ed_source: "Sursă",
+    ed_source_helper: "Partea de sursă a pompei de căldură și ilustrația sa",
+    ed_ground_type: "Buclă în sol",
+    ed_water_type: "Buclă pe apă",
+    ed_power_threshold: "Prag de funcționare (W)",
+    ed_power_threshold_helper: "Puterea peste care o pompă de căldură măsurată este considerată în funcțiune",
+    ed_outdoor_temp: "Temperatură exterioară",
+    ed_outdoor_temp_helper: "Un senzor sau o entitate meteo pentru cipul exterior",
   },
   da: {
     purifier: "Luftrenser",
@@ -2078,6 +2364,32 @@ const CA_I18N = {
     ed_exclude: "Enheder, der udelades",
     ed_include: "Enheder, der tilføjes",
     ed_include_helper: "Climate- eller fan-entiteter, som kortet ikke selv ville vælge (f.eks. en skjult entitet)",
+    src_air: "Luft (udendørsenhed)",
+    src_ground: "Jord (geotermisk)",
+    src_water: "Vand (grundvand)",
+    gt_collector: "Vandret jordslange",
+    gt_borehole: "Lodret boring",
+    wt_well: "Enkelt brønd",
+    wt_doublet: "Brøndpar",
+    wt_lake: "Sløjfe i sø / dam",
+    heat_power: "Varmeeffekt",
+    cop: "COP",
+    cop_today: "COP i dag",
+    scop: "SCOP",
+    flow_temp: "Fremløb",
+    return_temp: "Returløb",
+    delta_t: "ΔT",
+    flow_rate: "Flow",
+    elec_energy: "Elektrisk energi",
+    heat_energy: "Varmeenergi",
+    ed_source: "Kilde",
+    ed_source_helper: "Varmepumpens kildeside og dens illustration",
+    ed_ground_type: "Jordsløjfe",
+    ed_water_type: "Vandsløjfe",
+    ed_power_threshold: "Driftsgrænse (W)",
+    ed_power_threshold_helper: "Effekt, over hvilken en målt varmepumpe tæller som kørende",
+    ed_outdoor_temp: "Udetemperatur",
+    ed_outdoor_temp_helper: "En sensor eller vejr-entitet til udendørschippen",
   },
   sv: {
     purifier: "Luftrenare",
@@ -2251,6 +2563,32 @@ const CA_I18N = {
     ed_exclude: "Enheter att utesluta",
     ed_include: "Enheter att lägga till",
     ed_include_helper: "Climate- eller fan-entiteter som kortet inte skulle välja självt (t.ex. en dold entitet)",
+    src_air: "Luft (utomhusenhet)",
+    src_ground: "Mark (bergvärme)",
+    src_water: "Vatten (grundvatten)",
+    gt_collector: "Horisontell kollektor",
+    gt_borehole: "Vertikalt borrhål",
+    wt_well: "Enskild brunn",
+    wt_doublet: "Brunnspar",
+    wt_lake: "Slinga i sjö / damm",
+    heat_power: "Värmeeffekt",
+    cop: "COP",
+    cop_today: "COP idag",
+    scop: "SCOP",
+    flow_temp: "Framledning",
+    return_temp: "Retur",
+    delta_t: "ΔT",
+    flow_rate: "Flöde",
+    elec_energy: "Elektrisk energi",
+    heat_energy: "Värmeenergi",
+    ed_source: "Källa",
+    ed_source_helper: "Värmepumpens källsida och dess illustration",
+    ed_ground_type: "Markslinga",
+    ed_water_type: "Vattenslinga",
+    ed_power_threshold: "Driftgräns (W)",
+    ed_power_threshold_helper: "Effekt över vilken en mätt värmepump räknas som igång",
+    ed_outdoor_temp: "Utomhustemperatur",
+    ed_outdoor_temp_helper: "En sensor eller väderentitet för utomhuschippet",
   },
   bg: {
     purifier: "Пречиствател на въздух",
@@ -2424,6 +2762,32 @@ const CA_I18N = {
     ed_exclude: "Устройства за изключване",
     ed_include: "Устройства за добавяне",
     ed_include_helper: "Обекти climate или fan, които картата не би избрала сама (напр. скрит обект)",
+    src_air: "Въздух (външно тяло)",
+    src_ground: "Геотермална (почва)",
+    src_water: "Вода (подпочвена)",
+    gt_collector: "Хоризонтален колектор",
+    gt_borehole: "Вертикална сонда",
+    wt_well: "Единичен кладенец",
+    wt_doublet: "Двойка кладенци",
+    wt_lake: "Контур в езеро",
+    heat_power: "Топлинна мощност",
+    cop: "COP",
+    cop_today: "COP днес",
+    scop: "SCOP",
+    flow_temp: "Подаване",
+    return_temp: "Връщане",
+    delta_t: "ΔT",
+    flow_rate: "Дебит",
+    elec_energy: "Електрическа енергия",
+    heat_energy: "Топлинна енергия",
+    ed_source: "Източник",
+    ed_source_helper: "Страната на източника на термопомпата и нейната илюстрация",
+    ed_ground_type: "Почвен контур",
+    ed_water_type: "Воден контур",
+    ed_power_threshold: "Праг на работа (W)",
+    ed_power_threshold_helper: "Мощност, над която измервана термопомпа се счита за работеща",
+    ed_outdoor_temp: "Външна температура",
+    ed_outdoor_temp_helper: "Сензор или метеорологичен обект за външния чип",
   },
   ru: {
     purifier: "Очиститель воздуха",
@@ -2597,6 +2961,32 @@ const CA_I18N = {
     ed_exclude: "Исключить устройства",
     ed_include: "Добавить устройства",
     ed_include_helper: "Объекты climate или fan, которые карточка не выбрала бы сама (например, скрытый объект)",
+    src_air: "Воздух (наружный блок)",
+    src_ground: "Грунт (геотермальный)",
+    src_water: "Вода (грунтовая)",
+    gt_collector: "Горизонтальный коллектор",
+    gt_borehole: "Вертикальный зонд",
+    wt_well: "Одиночная скважина",
+    wt_doublet: "Дублет скважин",
+    wt_lake: "Контур в озере / пруду",
+    heat_power: "Тепловая мощность",
+    cop: "COP",
+    cop_today: "COP за сегодня",
+    scop: "SCOP",
+    flow_temp: "Подача",
+    return_temp: "Обратка",
+    delta_t: "ΔT",
+    flow_rate: "Расход",
+    elec_energy: "Электрическая энергия",
+    heat_energy: "Тепловая энергия",
+    ed_source: "Источник",
+    ed_source_helper: "Сторона источника теплового насоса и его иллюстрация",
+    ed_ground_type: "Грунтовый контур",
+    ed_water_type: "Водяной контур",
+    ed_power_threshold: "Порог работы (Вт)",
+    ed_power_threshold_helper: "Мощность, выше которой измеряемый тепловой насос считается работающим",
+    ed_outdoor_temp: "Наружная температура",
+    ed_outdoor_temp_helper: "Датчик или объект погоды для наружного чипа",
   },
   uk: {
     purifier: "Очищувач повітря",
@@ -2770,6 +3160,32 @@ const CA_I18N = {
     ed_exclude: "Виключити пристрої",
     ed_include: "Додати пристрої",
     ed_include_helper: "Сутності climate або fan, які картка не вибрала б сама (наприклад, прихована сутність)",
+    src_air: "Повітря (зовнішній блок)",
+    src_ground: "Ґрунт (геотермальний)",
+    src_water: "Вода (ґрунтова)",
+    gt_collector: "Горизонтальний колектор",
+    gt_borehole: "Вертикальний зонд",
+    wt_well: "Одна свердловина",
+    wt_doublet: "Дублет свердловин",
+    wt_lake: "Контур в озері / ставку",
+    heat_power: "Теплова потужність",
+    cop: "COP",
+    cop_today: "COP сьогодні",
+    scop: "SCOP",
+    flow_temp: "Подача",
+    return_temp: "Зворотка",
+    delta_t: "ΔT",
+    flow_rate: "Витрата",
+    elec_energy: "Електрична енергія",
+    heat_energy: "Теплова енергія",
+    ed_source: "Джерело",
+    ed_source_helper: "Сторона джерела теплового насоса та його ілюстрація",
+    ed_ground_type: "Ґрунтовий контур",
+    ed_water_type: "Водяний контур",
+    ed_power_threshold: "Поріг роботи (Вт)",
+    ed_power_threshold_helper: "Потужність, вище якої вимірюваний тепловий насос вважається працюючим",
+    ed_outdoor_temp: "Зовнішня температура",
+    ed_outdoor_temp_helper: "Датчик або об'єкт погоди для зовнішнього чипа",
   },
   hu: {
     purifier: "Légtisztító",
@@ -2943,6 +3359,32 @@ const CA_I18N = {
     ed_exclude: "Kizárandó eszközök",
     ed_include: "Hozzáadandó eszközök",
     ed_include_helper: "Climate vagy fan entitások, amelyeket a kártya magától nem választana (pl. egy rejtett entitás)",
+    src_air: "Levegő (kültéri egység)",
+    src_ground: "Talaj (geotermikus)",
+    src_water: "Víz (talajvíz)",
+    gt_collector: "Vízszintes kollektor",
+    gt_borehole: "Függőleges szonda",
+    wt_well: "Egyetlen kút",
+    wt_doublet: "Kútpár",
+    wt_lake: "Tavi / tó hurok",
+    heat_power: "Hőteljesítmény",
+    cop: "COP",
+    cop_today: "COP ma",
+    scop: "SCOP",
+    flow_temp: "Előremenő",
+    return_temp: "Visszatérő",
+    delta_t: "ΔT",
+    flow_rate: "Áramlás",
+    elec_energy: "Elektromos energia",
+    heat_energy: "Hőenergia",
+    ed_source: "Forrás",
+    ed_source_helper: "A hőszivattyú forrásoldala és illusztrációja",
+    ed_ground_type: "Talajhurok",
+    ed_water_type: "Vízhurok",
+    ed_power_threshold: "Működési küszöb (W)",
+    ed_power_threshold_helper: "Teljesítmény, amely felett a mért hőszivattyú működőnek számít",
+    ed_outdoor_temp: "Külső hőmérséklet",
+    ed_outdoor_temp_helper: "Érzékelő vagy időjárás-entitás a külső chiphez",
   },
   sk: {
     purifier: "Čistička vzduchu",
@@ -3116,6 +3558,32 @@ const CA_I18N = {
     ed_exclude: "Vylúčené zariadenia",
     ed_include: "Pridané zariadenia",
     ed_include_helper: "Entity climate alebo fan, ktoré by karta sama nevybrala (napr. skrytá entita)",
+    src_air: "Vzduch (vonkajšia jednotka)",
+    src_ground: "Zem (geotermálna)",
+    src_water: "Voda (podzemná)",
+    gt_collector: "Horizontálny kolektor",
+    gt_borehole: "Vertikálny vrt",
+    wt_well: "Jedna studňa",
+    wt_doublet: "Dvojica studní",
+    wt_lake: "Slučka v jazere",
+    heat_power: "Tepelný výkon",
+    cop: "COP",
+    cop_today: "COP dnes",
+    scop: "SCOP",
+    flow_temp: "Výstup",
+    return_temp: "Spiatočka",
+    delta_t: "ΔT",
+    flow_rate: "Prietok",
+    elec_energy: "Elektrická energia",
+    heat_energy: "Tepelná energia",
+    ed_source: "Zdroj",
+    ed_source_helper: "Zdrojová strana tepelného čerpadla a jeho ilustrácia",
+    ed_ground_type: "Zemná slučka",
+    ed_water_type: "Vodná slučka",
+    ed_power_threshold: "Prah chodu (W)",
+    ed_power_threshold_helper: "Výkon, nad ktorým sa merané tepelné čerpadlo považuje za bežiace",
+    ed_outdoor_temp: "Vonkajšia teplota",
+    ed_outdoor_temp_helper: "Senzor alebo entita počasia pre vonkajší čip",
   },
   cs: {
     purifier: "Čistička vzduchu",
@@ -3289,6 +3757,32 @@ const CA_I18N = {
     ed_exclude: "Vyloučená zařízení",
     ed_include: "Přidaná zařízení",
     ed_include_helper: "Entity climate nebo fan, které by karta sama nevybrala (např. skrytá entita)",
+    src_air: "Vzduch (venkovní jednotka)",
+    src_ground: "Země (geotermální)",
+    src_water: "Voda (podzemní)",
+    gt_collector: "Horizontální kolektor",
+    gt_borehole: "Vertikální vrt",
+    wt_well: "Jedna studna",
+    wt_doublet: "Dvojice studní",
+    wt_lake: "Smyčka v jezeře",
+    heat_power: "Tepelný výkon",
+    cop: "COP",
+    cop_today: "COP dnes",
+    scop: "SCOP",
+    flow_temp: "Výstup",
+    return_temp: "Zpátečka",
+    delta_t: "ΔT",
+    flow_rate: "Průtok",
+    elec_energy: "Elektrická energie",
+    heat_energy: "Tepelná energie",
+    ed_source: "Zdroj",
+    ed_source_helper: "Zdrojová strana tepelného čerpadla a jeho ilustrace",
+    ed_ground_type: "Zemní smyčka",
+    ed_water_type: "Vodní smyčka",
+    ed_power_threshold: "Práh chodu (W)",
+    ed_power_threshold_helper: "Výkon, nad kterým se měřené tepelné čerpadlo považuje za běžící",
+    ed_outdoor_temp: "Venkovní teplota",
+    ed_outdoor_temp_helper: "Senzor nebo entita počasí pro venkovní čip",
   },
   sl: {
     purifier: "Čistilnik zraka",
@@ -3462,6 +3956,32 @@ const CA_I18N = {
     ed_exclude: "Izključene naprave",
     ed_include: "Dodane naprave",
     ed_include_helper: "Entitete climate ali fan, ki jih kartica sama ne bi izbrala (npr. skrita entiteta)",
+    src_air: "Zrak (zunanja enota)",
+    src_ground: "Zemlja (geotermalna)",
+    src_water: "Voda (podtalnica)",
+    gt_collector: "Vodoravni kolektor",
+    gt_borehole: "Navpična sonda",
+    wt_well: "En vodnjak",
+    wt_doublet: "Dvojica vodnjakov",
+    wt_lake: "Zanka v jezeru",
+    heat_power: "Toplotna moč",
+    cop: "COP",
+    cop_today: "COP danes",
+    scop: "SCOP",
+    flow_temp: "Dvižni vod",
+    return_temp: "Povratni vod",
+    delta_t: "ΔT",
+    flow_rate: "Pretok",
+    elec_energy: "Električna energija",
+    heat_energy: "Toplotna energija",
+    ed_source: "Vir",
+    ed_source_helper: "Vir toplotne črpalke in njena ilustracija",
+    ed_ground_type: "Zemeljska zanka",
+    ed_water_type: "Vodna zanka",
+    ed_power_threshold: "Prag delovanja (W)",
+    ed_power_threshold_helper: "Moč, nad katero se merjena toplotna črpalka šteje za delujočo",
+    ed_outdoor_temp: "Zunanja temperatura",
+    ed_outdoor_temp_helper: "Senzor ali vremenska entiteta za zunanji čip",
   },
   lv: {
     purifier: "Gaisa attīrītājs",
@@ -3635,6 +4155,32 @@ const CA_I18N = {
     ed_exclude: "Izslēdzamās ierīces",
     ed_include: "Pievienojamās ierīces",
     ed_include_helper: "Climate vai fan vienības, kuras karte pati neizvēlētos (piem., paslēpta vienība)",
+    src_air: "Gaiss (āra bloks)",
+    src_ground: "Grunts (ģeotermālā)",
+    src_water: "Ūdens (gruntsūdens)",
+    gt_collector: "Horizontāls kolektors",
+    gt_borehole: "Vertikāla zonde",
+    wt_well: "Viena aka",
+    wt_doublet: "Aku pāris",
+    wt_lake: "Cilpa ezerā",
+    heat_power: "Siltuma jauda",
+    cop: "COP",
+    cop_today: "COP šodien",
+    scop: "SCOP",
+    flow_temp: "Turpgaita",
+    return_temp: "Atpakaļgaita",
+    delta_t: "ΔT",
+    flow_rate: "Plūsma",
+    elec_energy: "Elektroenerģija",
+    heat_energy: "Siltuma enerģija",
+    ed_source: "Avots",
+    ed_source_helper: "Siltumsūkņa avota puse un tā attēls",
+    ed_ground_type: "Grunts cilpa",
+    ed_water_type: "Ūdens cilpa",
+    ed_power_threshold: "Darbības slieksnis (W)",
+    ed_power_threshold_helper: "Jauda, virs kuras mērīts siltumsūknis tiek uzskatīts par darbojošos",
+    ed_outdoor_temp: "Āra temperatūra",
+    ed_outdoor_temp_helper: "Sensors vai laikapstākļu entītija āra čipam",
   },
   el: {
     purifier: "Καθαριστής αέρα",
@@ -3808,6 +4354,32 @@ const CA_I18N = {
     ed_exclude: "Συσκευές προς εξαίρεση",
     ed_include: "Συσκευές προς προσθήκη",
     ed_include_helper: "Οντότητες climate ή fan που η κάρτα δεν θα επέλεγε μόνη της (π.χ. μια κρυφή οντότητα)",
+    src_air: "Αέρας (εξωτερική μονάδα)",
+    src_ground: "Γεωθερμία (έδαφος)",
+    src_water: "Νερό (υπόγειο)",
+    gt_collector: "Οριζόντιος συλλέκτης",
+    gt_borehole: "Κατακόρυφη γεώτρηση",
+    wt_well: "Ένα πηγάδι",
+    wt_doublet: "Ζεύγος πηγαδιών",
+    wt_lake: "Βρόχος σε λίμνη",
+    heat_power: "Θερμική ισχύς",
+    cop: "COP",
+    cop_today: "COP σήμερα",
+    scop: "SCOP",
+    flow_temp: "Προσαγωγή",
+    return_temp: "Επιστροφή",
+    delta_t: "ΔT",
+    flow_rate: "Παροχή",
+    elec_energy: "Ηλεκτρική ενέργεια",
+    heat_energy: "Θερμική ενέργεια",
+    ed_source: "Πηγή",
+    ed_source_helper: "Η πλευρά πηγής της αντλίας θερμότητας και η απεικόνισή της",
+    ed_ground_type: "Βρόχος εδάφους",
+    ed_water_type: "Βρόχος νερού",
+    ed_power_threshold: "Όριο λειτουργίας (W)",
+    ed_power_threshold_helper: "Ισχύς πάνω από την οποία μια μετρούμενη αντλία θερμότητας θεωρείται σε λειτουργία",
+    ed_outdoor_temp: "Εξωτερική θερμοκρασία",
+    ed_outdoor_temp_helper: "Αισθητήρας ή οντότητα καιρού για το εξωτερικό τσιπ",
   },
 };
 
@@ -4291,6 +4863,24 @@ const CA_ROLES = {
   bucket_full: { domain: "binary_sensor", id: /(tank_full|bucket_full|water_full|full_water|water_tank_full|bac_plein|reservoir_plein|behalter_voll|tanque_lleno)/ },
   backup: { domain: "binary_sensor", id: /(backup|appoint|booster|resistance|heizstab|electric_heater|aux)/ },
   defrost: { domain: "binary_sensor", id: /(defrost|degivr|abtau|desescarche)/ },
+  // Heat pumps measured but not controlled — a ground- or water-source unit read through Modbus meters (Stiebel
+  // Eltron WPF, NIBE F1x55, Viessmann Vitocal 2xx-G, a plain electrical + heat meter…): the monitoring roles, set
+  // in `entities` and found on the device when it has one. Matched by entity id only, so a heat pump's electrical
+  // `power` role (its compressor draw) is never taken for the thermal `heat_power`, nor the outdoor / room sensors
+  // for the flow and return water temperatures.
+  heat_power: { domain: "sensor", id: /(heat_output|heat_power|thermal_power|thermal_output|heat_kw|heat_production|puissance_thermique|w[aä]rmeleistung|potenza_termica|heatpower|kwnow)/ },
+  cop: {
+    domain: "sensor",
+    id: /(instantaneous_cop|current_cop|\bcop\b|_cop$|coefficient_of_perform|leistungszahl)/,
+    avoid: /(today|day|daily|journ|jour|seasonal|saison|scop|annual|annuel|month|mois)/,
+  },
+  cop_today: { domain: "sensor", id: /(cop_today|today_cop|daily_cop|cop_jour|cop_du_jour)/ },
+  scop: { domain: "sensor", id: /(scop|seasonal_cop|cop_seasonal|cop_saisonnier|cop_saison|jahresarbeitszahl|\bjaz\b)/ },
+  flow_temp: { domain: "sensor", id: /(flow_temp|flow_t$|flowt$|supply_temp|departure_temp|(d[ée]part|vorlauf|mandata|aanvoer|impulsion).*temp|temp.*(d[ée]part|flow|vorlauf))/ },
+  return_temp: { domain: "sensor", id: /(return_temp|return_t$|returnt$|(retour|r[uü]cklauf|ritorno|retorno).*temp|temp.*(retour|return|r[uü]cklauf))/ },
+  flow_rate: { domain: "sensor", id: /(flow_rate|flowrate|volume_flow|d[ée]bit|durchfluss|portata|caudal)/ },
+  energy: { domain: "sensor", id: /(elec.*energy|energy.*elec|electrical_energy|energie_pac|energie_[ée]lectrique|stromverbrauch|energia_elettrica)/ },
+  heat_energy: { domain: "sensor", id: /(heat_energy|thermal_energy|heat_mwh|heat_kwh|w[aä]rmemenge|energia_termica|energie_thermique|mwhlifetime|heat_lifetime)/ },
   // The hot water tank reported as sensors rather than a water_heater entity (Aldes T.One through TOUG): its fill as a
   // percentage, its remaining volume in litres and its fault messages.
   dhw_pct: {
@@ -4858,9 +5448,10 @@ class CaCard extends CaElement {
     m.chips = m.chips || [];
     if (!m.online) m.chips.push(this._chip("mdi:cloud-off-outline", this._t("offline"), "", "", r.id));
     m.variant = caVariant(this._hass, kind, r.id, c.illustration);
-    m.powerBtn = m.online
-      ? `<button class="power${m.running ? " on" : ""}" data-action="power" title="${caEsc(this._t("power"))}" aria-label="${caEsc(this._t("power"))}"><ha-icon icon="mdi:power"></ha-icon></button>`
-      : "";
+    m.powerBtn =
+      m.online && this._showPower(m)
+        ? `<button class="power${m.running ? " on" : ""}" data-action="power" title="${caEsc(this._t("power"))}" aria-label="${caEsc(this._t("power"))}"><ha-icon icon="mdi:power"></ha-icon></button>`
+        : "";
     m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon></div>`;
 
     if (this._compact()) {
@@ -4875,6 +5466,11 @@ class CaCard extends CaElement {
       `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : ""}</div></div>` +
       (c.show_controls && m.online ? this._controls(m) : "") +
       "</ha-card>";
+  }
+
+  // Whether the header's on / off button shows. A metered heat pump (its entity is a power sensor) is read-only.
+  _showPower() {
+    return true;
   }
 
   _picture(m) {
@@ -5506,21 +6102,65 @@ const CA_HP_OFF = /^(off|arr[eê]t|stop|aus|apagado|spento)$/i;
 const CA_HP_IDLE = /(standby|veille|idle|repos|attente|^off$)/i;
 const caHpIsOn = (id, state) => (id.startsWith("climate.") ? state !== "off" : !CA_HP_OFF.test(String(state ?? "").trim()));
 
-function caHeatPumpState(id, st, roleSt) {
+// A power sensor's reading in watts, whatever unit it reports (W by default, kW or MW scaled up). Drives the
+// "running" state of a metered heat pump and, when no COP sensor is given, the instantaneous COP.
+const caPowerW = (st) => {
+  const v = caNum(st);
+  if (v == null) return null;
+  const u = String(st?.attributes?.unit_of_measurement || "").toLowerCase();
+  return u === "kw" ? v * 1000 : u === "mw" ? v * 1e6 : v;
+};
+// The default power above which a metered heat pump counts as running (watts): well under the few kW the compressor
+// draws, well above the tens of watts it idles at (the reporter's WPF 16: 39 W idle, ~5 kW running).
+const CA_HP_POWER_ON = 100;
+
+// The source side of a heat pump, for the illustration: `air` (an outdoor fan unit, the default), `ground` (a
+// geothermal loop — a horizontal `collector` or a vertical `borehole`) or `water` (an open loop — a single `well`,
+// a two-well `doublet` or a submerged `lake` loop). Taken from the config, else guessed from the device's name.
+const CA_HP_SOURCES = ["air", "ground", "water"];
+const CA_HP_GROUND_TYPES = ["collector", "borehole"];
+const CA_HP_WATER_TYPES = ["well", "doublet", "lake"];
+const CA_HP_WATER_NAME = /(water.?source|water.?to.?water|eau.?glycol|eau.?nappe|nappe.?phr[ée]at|grundwasser|wasser.?wasser|\bwell\b|\bpuits\b|aquif)/i;
+const CA_HP_GROUND_NAME = /(ground.?source|geothermal|g[ée]othermi|erdw[aä]rme|sol.?eau|\bbrine\b|saumure|\bsole\b|borehole|sonde.?g[ée]o|capteur.?enterr)/i;
+function caHpSource(config, hass, id) {
+  const c = config || {};
+  const text = hass && id ? caVariantText(hass, id) : "";
+  const source = CA_HP_SOURCES.includes(c.source)
+    ? c.source
+    : CA_HP_WATER_NAME.test(text)
+      ? "water"
+      : CA_HP_GROUND_NAME.test(text)
+        ? "ground"
+        : "air";
+  const groundType = CA_HP_GROUND_TYPES.includes(c.ground_type) ? c.ground_type : "collector";
+  const waterType = CA_HP_WATER_TYPES.includes(c.water_type) ? c.water_type : "well";
+  return { source, groundType, waterType };
+}
+
+function caHeatPumpState(id, st, roleSt, opts = {}) {
   const a = st.attributes;
   const climate = id.startsWith("climate.");
+  const select = id.startsWith("select.");
+  // Measured but not controlled: the entity is an electrical power sensor (no climate entity, no mode select).
+  const metered = !climate && !select;
   const mode = st.state;
-  const on = caHpIsOn(id, mode);
   const valve = String(roleSt("valve")?.state ?? "");
   const dhw = roleSt("dhw");
+  let on;
+  if (metered) {
+    const powerW = caPowerW(st);
+    const threshold = Number.isFinite(Number(opts.powerThreshold)) ? Number(opts.powerThreshold) : CA_HP_POWER_ON;
+    on = powerW != null && powerW > threshold;
+  } else on = caHpIsOn(id, mode);
   const defrost = on && roleSt("defrost")?.state === "on";
   const backup = on && roleSt("backup")?.state === "on";
   const freq = caNum(roleSt("compressor"));
   const action = climate ? a.hvac_action : undefined;
   const toTank = on && CA_HP_DHW.test(valve);
-  const cool = climate ? (action ? action === "cooling" : mode === "cool") : CA_HP_COOL.test(String(mode));
+  const cool = metered ? false : climate ? (action ? action === "cooling" : mode === "cool") : CA_HP_COOL.test(String(mode));
   const idle = action ? ["idle", "off"].includes(action) : !toTank && CA_HP_IDLE.test(valve);
-  const active = on && (freq != null ? freq > 0 : toTank || !idle);
+  // Metered: the pump runs whenever it draws power, so running means active (the compressor is on).
+  const active = on && (metered || (freq != null ? freq > 0 : toTank || !idle));
   const phase = !on ? "off" : toTank ? "dhw" : cool ? "cool" : "heat";
   const tankSt = dhw?.attributes.current_temperature != null ? Number(dhw.attributes.current_temperature) : caNum(roleSt("tank_temp"));
   return {
@@ -6036,12 +6676,14 @@ class CaCardEditor extends HTMLElement {
       // The fan and heat pump cards show no filter alert: no toggle for them.
       ...(CA_NO_FILTER.includes(this.constructor.kind) ? {} : { show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING }),
       ...(CA_ART[this.constructor.kind]?.variants ? { illustration: "auto" } : {}),
+      // Heat pump: the defaults caCleanConfig drops, so the YAML only carries a source once it differs from air.
+      ...(this.constructor.kind === "heatpump" ? { source: "air", ground_type: "collector", water_type: "well" } : {}),
       ...(this.constructor.mini ? { zoom: true } : {}),
     };
   }
 
   _helpers() {
-    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities"];
+    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "power_threshold", "outdoor_temp"];
   }
 
   _schema() {
@@ -6079,10 +6721,32 @@ class CaCardEditor extends HTMLElement {
       ...(CA_NO_FILTER.includes(kind)
         ? []
         : [{ name: "filter_warning", selector: { number: { min: CA_FILTER_REPLACE, max: 50, step: 1, mode: "box", unit_of_measurement: "%" } } }]),
+      // A heat pump: its source side (the illustration), the metered running threshold and the outdoor sensor.
+      ...this._heatpumpOptions(kind),
       // A multi-zone heat pump: let the user hide a room setpoint it finds among its zones (a test number, or a
       // second motorised vent driven by the same thermostat).
       ...this._zoneExclude(kind),
       ...caAdvanced(caLang(this._config, this._hass), "language", "entities"),
+    ];
+  }
+
+  // The heat-pump-only options in the editor: the source illustration and its ground / water variant, the metered
+  // running threshold (watts) and the outdoor temperature entity (a sensor or a weather entity). The `entities`
+  // monitoring role map stays YAML-only (it is an object), in the Advanced section like the other cards.
+  _heatpumpOptions(kind) {
+    if (kind !== "heatpump") return [];
+    const lang = caLang(this._config, this._hass);
+    const source = CA_HP_SOURCES.includes(this._config?.source) ? this._config.source : "air";
+    const sel = (name, values) => ({
+      name,
+      selector: { select: { mode: "dropdown", options: values.map((v) => ({ value: v, label: caT(lang, `${name === "source" ? "src" : name === "ground_type" ? "gt" : "wt"}_${v}`) })) } },
+    });
+    return [
+      sel("source", CA_HP_SOURCES),
+      ...(source === "ground" ? [sel("ground_type", CA_HP_GROUND_TYPES)] : []),
+      ...(source === "water" ? [sel("water_type", CA_HP_WATER_TYPES)] : []),
+      { name: "power_threshold", selector: { number: { min: 0, step: 10, mode: "box", unit_of_measurement: "W" } } },
+      { name: "outdoor_temp", selector: { entity: { domain: ["sensor", "weather"] } } },
     ];
   }
 

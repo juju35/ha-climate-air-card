@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.10.0 - 2026-11-16
+
+### Features
+- Heat pump: support heat pumps that are **measured but not controlled** (a ground- or water-source unit read through Modbus meters, whatever its controller) — point `entity` at an electrical **power sensor** and the card is read-only (no mode buttons, no setpoint, no power button), counting the pump as running while the power is above `power_threshold` (default 100 W).
+- Heat pump: **monitoring roles** set in `entities` — `heat_power` (heat output), `cop` / `cop_today` / `scop`, `flow_temp` / `return_temp` (with their ΔT), `flow_rate`, and `energy` / `heat_energy` — shown as chips and lines. When no `cop` sensor is given but the heat output and the electrical power are both present, the instantaneous COP is computed from them, only while running.
+- Heat pump: a `source` option for the illustration — `air` (an outdoor fan unit, the default), `ground` (a geothermal loop: `ground_type: collector` or `borehole`) and `water` (an open loop: `water_type: well`, `doublet` or `lake`) — drawing an indoor module and a buried loop or well in place of the outdoor unit, with the brine / water flowing while the pump runs. The `outdoor_temp` chip (a sensor or a weather entity) stays in every source. `source`, `ground_type`, `water_type`, `power_threshold` and `outdoor_temp` are in the visual editor.
+
 ## 2.9.3 - 2026-11-16
 
 ### Fixes

@@ -1340,3 +1340,114 @@ test("overview: a filter to replace soon is flagged in orange, one to replace in
   assert.match(body, /class="chip warn" data-more-info="sensor\.living_room_purifier_filter_life_level"[^>]*><ha-icon icon="mdi:air-filter"><\/ha-icon><span>Replace the filter soon/);
   assert.match(body, /class="chip alert" data-more-info="sensor\.bedroom_purifier_filter_lifetime"/);
 });
+
+// A heat pump measured but not controlled (ground/water source over Modbus meters, issue #90): the entity is a
+// power sensor with no device, and every monitoring entity is set in `entities`.
+const meteredHass = (power, over = {}) => {
+  const h = makeHass("en");
+  const add = (id, state, attributes = {}) => {
+    h.states[id] = { entity_id: id, state: String(state), attributes };
+    h.entities[id] = { entity_id: id, platform: "modbus" }; // no device_id: Modbus platform sensors
+  };
+  add("sensor.hp_power", power, { device_class: "power", unit_of_measurement: "W", friendly_name: "Heat pump power" });
+  add("sensor.hp_heat", 20, { device_class: "power", unit_of_measurement: "kW" });
+  add("sensor.hp_cop", 4.1, {});
+  add("sensor.hp_cop_today", 3.4, {});
+  add("sensor.hp_scop", 3.5, {});
+  add("sensor.hp_flow", 35, { device_class: "temperature", unit_of_measurement: "°C" });
+  add("sensor.hp_return", 30, { device_class: "temperature", unit_of_measurement: "°C" });
+  add("sensor.hp_rate", 900, { unit_of_measurement: "l/h" });
+  add("sensor.hp_energy", 4930, { device_class: "energy", unit_of_measurement: "Wh" });
+  add("sensor.hp_heat_energy", 26, { device_class: "energy", unit_of_measurement: "MWh" });
+  h.states["weather.home"] = { entity_id: "weather.home", state: "sunny", attributes: { temperature: 7, temperature_unit: "°C" } };
+  h.entities["weather.home"] = { entity_id: "weather.home", platform: "met" };
+  Object.assign(h.states, over);
+  return h;
+};
+const METERED = {
+  entity: "sensor.hp_power",
+  source: "water",
+  water_type: "doublet",
+  outdoor_temp: "weather.home",
+  entities: {
+    heat_power: "sensor.hp_heat", cop: "sensor.hp_cop", cop_today: "sensor.hp_cop_today", scop: "sensor.hp_scop",
+    flow_temp: "sensor.hp_flow", return_temp: "sensor.hp_return", flow_rate: "sensor.hp_rate",
+    energy: "sensor.hp_energy", heat_energy: "sensor.hp_heat_energy",
+  },
+};
+
+test("heat pump metered: running from the power threshold, read-only, with its monitoring roles and water source", () => {
+  const out = html(mount(lib, "climate-air-heatpump-card", METERED, meteredHass(5100)));
+  // Running (5.1 kW > the default 100 W threshold), active, heating; a two-well doublet, no outdoor fan.
+  assert.match(out, /class="picture k-heatpump st-heat running ph-heat active"/);
+  assert.match(out, /class="brine"/);
+  assert.doesNotMatch(out, /class="hfan"/);
+  assert.match(out, /class="casing"/);
+  assert.match(out, /M12 52V82M38 52V80/);
+  // Read-only: no power button, no mode buttons, no setpoint stepper.
+  assert.doesNotMatch(out, /data-action="power"/);
+  assert.doesNotMatch(out, /data-action="hpmode"/);
+  assert.doesNotMatch(out, /data-action="setstep"/);
+  // COP is the headline (a provided sensor wins), with today's and the seasonal figures.
+  assert.match(out, /mdi:gauge[\s\S]*?COP 4\.1/);
+  assert.match(out, /COP today 3\.4/);
+  assert.match(out, /SCOP 3\.5/);
+  // The monitoring lines: heat output, flow / return with ΔT, flow rate, electrical and heat energy.
+  assert.match(out, /Heat output 20 kW/);
+  assert.match(out, /Flow 35 °C · Return 30 °C · ΔT 5/);
+  assert.match(out, /Flow rate 900 l\/h/);
+  assert.match(out, /Electrical energy 4,930 Wh/);
+  assert.match(out, /Heat energy 26 MWh/);
+  // The outdoor chip reads a weather entity's temperature; the running power draw shows.
+  assert.match(out, /Outdoor 7 °C/);
+  assert.match(out, /5,100 W/);
+});
+
+test("heat pump metered: idle below the threshold shows no instantaneous COP and does not animate", () => {
+  const out = html(mount(lib, "climate-air-heatpump-card", { ...METERED, power_threshold: 100 }, meteredHass(39)));
+  assert.match(out, /class="picture k-heatpump st-off ph-off"/);
+  assert.doesNotMatch(out, /mdi:gauge/); // no instantaneous COP chip while idle
+  // A custom threshold is honoured: 39 W counts as running once the threshold drops below it.
+  const on = html(mount(lib, "climate-air-heatpump-card", { ...METERED, power_threshold: 20 }, meteredHass(39)));
+  assert.match(on, /class="picture k-heatpump st-heat running ph-heat active"/);
+});
+
+test("heat pump metered: COP is computed from heat output ÷ electrical power when no COP sensor is given", () => {
+  const cfg = (entities) => ({ entity: "sensor.hp_power", source: "ground", entities });
+  // Running: 20 kW heat / 5.1 kW electrical ≈ 3.9.
+  const auto = html(mount(lib, "climate-air-heatpump-card", cfg({ heat_power: "sensor.hp_heat" }), meteredHass(5100)));
+  assert.match(auto, /mdi:gauge[\s\S]*?COP 3\.9/);
+  // No heat output sensor: nothing to compute from, so no COP.
+  const none = html(mount(lib, "climate-air-heatpump-card", cfg({}), meteredHass(5100)));
+  assert.doesNotMatch(none, /mdi:gauge/);
+  // Idle: the pump is not running, so no instantaneous COP even with both sensors.
+  const idle = html(mount(lib, "climate-air-heatpump-card", cfg({ heat_power: "sensor.hp_heat" }), meteredHass(39)));
+  assert.doesNotMatch(idle, /mdi:gauge/);
+});
+
+test("heat pump source illustrations: each source and variant draws its own left-hand side, no fan for ground/water", () => {
+  const draw = (extra) => html(mount(lib, "climate-air-heatpump-card", { entity: "sensor.hp_power", ...extra }, meteredHass(5100)));
+  // Air (default): the outdoor fan unit, no buried loop.
+  const air = draw({ source: "air" });
+  assert.match(air, /class="hfan"/);
+  assert.doesNotMatch(air, /class="brine"/);
+  // Ground, horizontal collector: a grass line and the serpentine loop; no fan.
+  const collector = draw({ source: "ground", ground_type: "collector" });
+  assert.doesNotMatch(collector, /class="hfan"/);
+  assert.match(collector, /class="grass"/);
+  assert.match(collector, /M14 52V66H56q4 0 4 4t-4 4H12q-4 0-4 4t4 4H40V52/);
+  // Ground, vertical borehole: faint strata and the U-tube.
+  const borehole = draw({ source: "ground", ground_type: "borehole" });
+  assert.match(borehole, /class="strata"/);
+  assert.match(borehole, /M19 52V80q0 3 3 3h6q3 0 3-3V52/);
+  // Water, single well: a well casing, a water table and the intake / return pipes.
+  const well = draw({ source: "water", water_type: "well" });
+  assert.doesNotMatch(well, /class="hfan"/);
+  assert.match(well, /class="wtable"/);
+  assert.match(well, /class="casing"/);
+  assert.match(well, /M19 52V82M24 52V78/);
+  // Water, submerged lake / pond loop: a water body and the submerged serpentine.
+  const lake = draw({ source: "water", water_type: "lake" });
+  assert.match(lake, /class="wbody"/);
+  assert.match(lake, /M14 52V64H56q4 0 4 4t-4 4H12q-4 0-4 4t4 4H40V52/);
+});
