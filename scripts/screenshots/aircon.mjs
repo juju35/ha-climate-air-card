@@ -40,7 +40,7 @@ await shoot({
 await shoot({
   prefix: "aircon",
   tag: "climate-air-aircon-mini-card",
-  // The three illustrations: the wall split unit (mini), a portable unit and a window split.
-  shots: [...pair("mini"), ...pair("portable", { illustration: "portable" }), ...pair("window", { illustration: "window" })],
+  // The illustrations: the wall split unit (mini), a portable unit, a window split and a portasplit.
+  shots: [...pair("mini"), ...pair("portable", { illustration: "portable" }), ...pair("window", { illustration: "window" }), ...pair("portasplit", { illustration: "portasplit" })],
   setup: (s, lang) => ({ hass: mockHass(lang), config: { entity, ...(s.illustration ? { illustration: s.illustration } : {}) } }),
 });

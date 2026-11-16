@@ -6,8 +6,9 @@
 
 // Illustrations: the display shows the target, the flap swings with the swing mode, and the air flowing out takes the
 // mode color, with snowflakes when cooling, shimmer when heating and droplets when drying. While the compressor runs
-// the status light breathes (and the outdoor fan of a window split turns). Three shapes: a wall split unit, a portable
-// unit with its exhaust hose, and a window split (indoor tower, outdoor unit hung outside the window);
+// the status light breathes (and the outdoor fan of a window split turns). Four shapes: a wall split unit, a portable
+// unit with its exhaust hose, a window split (indoor tower, outdoor unit hung outside the window), and a portasplit
+// (Midea PortaSplit: an indoor console and an outdoor condenser side by side, joined by a looping flexible hose);
 // `illustration: auto` picks one from the device model and name.
 const caSnow = (x, y) => `<path d="M${x} ${y}v5M${x - 2.2} ${y + 1.25}l4.4 2.5M${x - 2.2} ${y + 3.75}l4.4-2.5"/>`;
 const caDrop = (x, y) => `<path d="M${x} ${y}q-2 3 0 4.5t0-4.5Z"/>`;
@@ -71,10 +72,13 @@ const CA_AIRCON_ARTS = {
     '<path d="M16 29V21Q16 15 22 15H48Q53 15 53 21V30" fill="none" stroke="#b6bfc9" stroke-width="3.2" stroke-linecap="round"/>' +
     '<rect x="3" y="28" width="27" height="27" rx="3.5" fill="url(#ca-ab)" stroke="#c3cad2" stroke-width="1.1"/>' +
     '<circle cx="16.5" cy="41.5" r="9.5" fill="#3a434e"/>' +
-    '<g class="ofan" fill="#aab3bd">' +
+    '<g class="ofan" fill="#aab3bd"><circle cx="16.5" cy="41.5" r="10" fill="none"/>' +
     [0, 120, 240].map((a) => `<path transform="rotate(${a} 16.5 41.5)" d="M16.5 41.5C18 37 21 34.5 24 35.5C24.5 38.5 21 41 16.5 41.5Z"/>`).join("") +
     '<circle cx="16.5" cy="41.5" r="1.8" fill="#d5dbe2"/></g>' +
-    '<circle cx="16.5" cy="41.5" r="9.5" fill="none" stroke="#c3cad2" stroke-width=".8"/><circle cx="16.5" cy="41.5" r="6" fill="none" stroke="#c3cad2" stroke-opacity=".6" stroke-width=".5"/>' +
+    '<g fill="none" stroke="#c3cad2" stroke-width=".7">' +
+    '<circle cx="16.5" cy="41.5" r="9.5"/><circle cx="16.5" cy="41.5" r="6.5" stroke-opacity=".7"/><circle cx="16.5" cy="41.5" r="3.5" stroke-opacity=".55"/>' +
+    [0, 45, 90, 135].map((a) => `<path transform="rotate(${a} 16.5 41.5)" d="M7 41.5H26" stroke-opacity=".4"/>`).join("") +
+    "</g>" +
     caAirFx([50, 57, 64], 26, true) +
     '<rect x="42" y="28" width="30" height="58" rx="7" fill="url(#ca-ab2)" stroke="#c3cad2" stroke-width="1.2"/>' +
     '<rect x="46" y="31" width="22" height="7" rx="2.5" fill="#3a434e"/>' +
@@ -82,6 +86,36 @@ const CA_AIRCON_ARTS = {
     caDisplay(48, 42, 18, display) +
     '<circle class="led" cx="57" cy="55" r="1.3"/>' +
     caGrille(47, 67, 61, 80, 3.2),
+  portasplit: (display) =>
+    '<ellipse class="floor" cx="40" cy="89" rx="34" ry="4" fill="url(#ca-af)"/>' +
+    // the looping flexible hose joining the indoor console to the top-left of the outdoor condenser (white, ribbed)
+    '<path d="M31 33C33 15 52 16 50 46" fill="none" stroke="#b6bfc9" stroke-width="6" stroke-linecap="round"/>' +
+    '<path d="M31 33C33 15 52 16 50 46" fill="none" stroke="#f1f4f7" stroke-width="4.2" stroke-linecap="round"/>' +
+    '<path d="M31 33C33 15 52 16 50 46" fill="none" stroke="#b6bfc9" stroke-width="4.2" stroke-dasharray=".8 2.4" stroke-linecap="butt" opacity=".65"/>' +
+    // conditioned air rising from the indoor console top
+    caAirFx([13, 20, 27], 33, true) +
+    // --- indoor console (left): grey upper band, white body, casters ---
+    '<rect x="4" y="33" width="32" height="53" rx="7" fill="url(#ca-ab2)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<path d="M4 40Q4 33 11 33H29Q36 33 36 40V51H4Z" fill="#c9d0d8"/>' +
+    '<rect x="8" y="33.3" width="24" height="3" rx="1.5" fill="#3a434e"/>' +
+    '<g class="flap"><rect x="9" y="34" width="22" height="1.4" rx=".6" fill="#eef1f4"/></g>' +
+    '<circle cx="11" cy="44" r="1.3" fill="#9aa5b1"/>' +
+    caDisplay(17, 40, 15, display) +
+    '<circle class="led" cx="33" cy="44" r="1.1"/>' +
+    '<circle cx="10" cy="87" r="2.3" fill="#5d6874"/><circle cx="30" cy="87" r="2.3" fill="#5d6874"/>' +
+    // --- outdoor condenser (right): fan behind a round guard (concentric rings + spokes) ---
+    '<rect x="42" y="45" width="34" height="37" rx="5" fill="url(#ca-ab)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="45.5" y="48" width="11" height="3" rx="1.2" fill="none" stroke="#c3cad2" stroke-width=".7"/>' +
+    '<circle cx="60" cy="64.5" r="14" fill="#2b333d"/>' +
+    // the invisible circle centred on (60,64.5) forces the group's bbox symmetric, so `transform-origin: center` spins true (no wobble)
+    '<g class="ofan" fill="#6b7682"><circle cx="60" cy="64.5" r="13" fill="none"/>' +
+    [0, 72, 144, 216, 288].map((a) => `<path transform="rotate(${a} 60 64.5)" d="M60 64.5C63 58 68 56 71 58.5C70 62.5 65 64.5 60 64.5Z"/>`).join("") +
+    '<circle cx="60" cy="64.5" r="2" fill="#aab3bd"/></g>' +
+    '<g fill="none" stroke="#c3cad2" stroke-width=".8">' +
+    '<circle cx="60" cy="64.5" r="14"/><circle cx="60" cy="64.5" r="9.7" stroke-opacity=".7"/><circle cx="60" cy="64.5" r="5.4" stroke-opacity=".55"/>' +
+    [0, 45, 90, 135].map((a) => `<path transform="rotate(${a} 60 64.5)" d="M46 64.5H74" stroke-opacity=".45"/>`).join("") +
+    "</g>" +
+    '<rect x="45" y="82" width="3.5" height="3" rx="1" fill="#5d6874"/><rect x="69.5" y="82" width="3.5" height="3" rx="1" fill="#5d6874"/>',
 };
 
 const caAirconArt = (variant, display) =>
@@ -95,13 +129,14 @@ const caAirconArt = (variant, display) =>
 // The shape that looks most like the device, from its model and name.
 const caAirconVariant = (text) => {
   const s = String(text).toLowerCase();
-  if (/porta.?split|window|fen[eê]tre|saddle/.test(s)) return "window";
+  if (/porta.?split/.test(s)) return "portasplit";
+  if (/window|fen[eê]tre|saddle/.test(s)) return "window";
   if (/portable|mobile|monobloc|move/.test(s)) return "portable";
   return "split";
 };
 
 CA_ART.aircon = {
-  variants: ["split", "portable", "window"],
+  variants: ["split", "portable", "window", "portasplit"],
   guess: caAirconVariant,
   render: (variant, s) => {
     const swing = String(s.swing || "off").toLowerCase();
