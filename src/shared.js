@@ -4056,9 +4056,9 @@ function caHumanize(v) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function caFmtNum(lang, v, digits = 1) {
+function caFmtNum(lang, v, digits = 1, minDigits = 0) {
   if (v == null || !Number.isFinite(v)) return "—";
-  return v.toLocaleString(lang, { maximumFractionDigits: digits });
+  return v.toLocaleString(lang, { maximumFractionDigits: digits, minimumFractionDigits: minDigits });
 }
 
 // ── Colors ───────────────────────────────────────────────────────────────────
@@ -4769,13 +4769,13 @@ class CaCard extends CaElement {
     return caValueLabel(this._lang(), value, st && this._hass.formatEntityAttributeValue?.(st, attr, value));
   }
 
-  _fmtSensor(id) {
+  _fmtSensor(id, minDigits = 0) {
     const st = this._st(id);
     if (caUnavailable(st)) return null;
     const v = Number(st.state);
     if (!Number.isFinite(v)) return this._fmtState(id);
     const unit = st.attributes.unit_of_measurement || "";
-    return `${caFmtNum(this._intlLang(), v)}${unit ? (unit === "%" ? " %" : ` ${unit}`) : ""}`;
+    return `${caFmtNum(this._intlLang(), v, 1, minDigits)}${unit ? (unit === "%" ? " %" : ` ${unit}`) : ""}`;
   }
 
   // An entity's name without the device name in front ("Air conditioner Anion" → "Anion").
