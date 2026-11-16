@@ -117,6 +117,16 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 |---|---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card-dark.png"><img alt="Heat pump heating" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw-dark.png"><img alt="Heat pump heating the hot water" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-dhw.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost-dark.png"><img alt="Heat pump defrosting" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-defrost.png" width="400"></picture> |
 
+The source side changes with `source` (and its `ground_type` / `water_type` variant), and a power sensor as `entity` gives a read-only metered card with its COP and readings:
+
+| Ground source (horizontal collector) | Ground source (vertical borehole) | Water source (single well) |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-dark.png"><img alt="Ground-source heat pump, horizontal collector" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole-dark.png"><img alt="Ground-source heat pump, vertical borehole" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-dark.png"><img alt="Water-source heat pump, single well" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water.png" width="400"></picture> |
+
+| Water source (two-well doublet) | Water source (lake / pond loop) | Metered (power sensor, read-only) |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet-dark.png"><img alt="Water-source heat pump, two-well doublet" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake-dark.png"><img alt="Water-source heat pump, lake loop" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-metered-dark.png"><img alt="Metered heat pump with COP and monitoring readings" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-metered.png" width="400"></picture> |
+
 ### Humidifier
 
 `custom:climate-air-humidifier-card` — A humidifier, a dehumidifier or an essential oil diffuser (a `humidifier` entity, or the `switch` of a Rituals Perfume Genie) and the sensors of its device.
@@ -475,6 +485,36 @@ Cooling, snowflakes fall above the unit.
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool.gif" alt="heat pump cooling animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-cool-dark.gif" alt="heat pump cooling animation, dark theme" width="400"> |
+
+With `source: ground`, the outdoor unit gives way to an indoor module and the brine flows in the buried horizontal collector.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground.gif" alt="ground-source heat pump collector animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-dark.gif" alt="ground-source heat pump collector animation, dark theme" width="400"> |
+
+With `ground_type: borehole`, the brine flows down one leg of the vertical U-probe and up the other.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole.gif" alt="ground-source heat pump borehole animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-ground-borehole-dark.gif" alt="ground-source heat pump borehole animation, dark theme" width="400"> |
+
+With `source: water`, the water is drawn from the water table through the well while it runs.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water.gif" alt="water-source heat pump well animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-dark.gif" alt="water-source heat pump well animation, dark theme" width="400"> |
+
+With `water_type: doublet`, the water flows up the extraction well and down the reinjection well.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet.gif" alt="water-source heat pump doublet animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-doublet-dark.gif" alt="water-source heat pump doublet animation, dark theme" width="400"> |
+
+With `water_type: lake`, the water flows in the loop sunk in the lake or pond.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake.gif" alt="water-source heat pump lake loop animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/heatpump-water-lake-dark.gif" alt="water-source heat pump lake loop animation, dark theme" width="400"> |
 
 The humidifier humidifies: mist rises from its top and the water waves in its tank.
 
