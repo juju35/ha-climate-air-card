@@ -96,7 +96,7 @@ On narrow cards (6 columns of a Sections view), the status pill keeps only its c
 - The room temperature in large and the target next to it; modes as segmented buttons (only the selected one keeps its label when there are many); − / + buttons for the target, sent once the taps stop and kept on screen until the device reports it. In *Heat/Cool* or *Auto* with a low / high range (`target_temp_low` / `target_temp_high`), both ends show with their own − / + (*Heat to*, *Cool to*); the mini card shows the range and leaves its buttons to the full card
 - A *Target humidity* slider when the entity supports it (`climate.set_humidity`, within `min_humidity` / `max_humidity`)
 - Fan mode, swing mode, horizontal swing mode (when the entity supports it, `climate.set_swing_horizontal_mode`) and preset; the device's other switches (eco, display, self clean, sound…) as option toggles
-- Animated illustration while it runs: the air flows out in the mode colour, with snowflakes when cooling, shimmer when heating and droplets when drying; the flap swings with the vertical swing and the airflow sways with the horizontal one; the status light breathes while the compressor runs. Three shapes: a wall split unit, a portable unit with its exhaust hose and a window split (indoor unit, outdoor unit hung outside the window, whose fan turns with the compressor), picked from the device model or set with `illustration`
+- Animated illustration while it runs: the air flows out in the mode colour, with snowflakes when cooling, shimmer when heating and droplets when drying; the flap swings with the vertical swing and the airflow sways with the horizontal one; the status light breathes while the compressor runs. Four shapes: a wall split unit, a portable unit with its exhaust hose, a window split (indoor unit, outdoor unit hung outside the window, whose fan turns with the compressor) and a portasplit (Midea PortaSplit: an indoor console beside its outdoor condenser, joined by a looping hose), picked from the device model or set with `illustration`
 - Outdoor temperature, humidity and power draw chips; a *Clean the filter* alert from the device's dust sensor
 
 ### Heat pump
@@ -218,7 +218,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `show_subtitle` | ❌ | `true` | Show the subtitle under the title |
 | `icon` | ❌ | Illustration | Replaces the illustration with an icon |
-| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable` or `window`. `auto` picks one from the device model and name |
+| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable`, `window` or `portasplit`. `auto` picks one from the device model and name |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
 | `show_alerts` | ❌ | `true` | Purifier and air conditioner cards only: show the filter alerts (the fan cards have none) |
@@ -266,7 +266,7 @@ devices:
 | `title` | ❌ | Climate & air | Card title |
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
-| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`, `humidifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable` or `window`; humidifier `column`, `tank`, `evaporative`, `vocolinc`, `diffuser` or `dehumidifier`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
+| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`, `humidifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable`, `window` or `portasplit`; humidifier `column`, `tank`, `evaporative`, `vocolinc`, `diffuser` or `dehumidifier`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
 | `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`heatpump`, `aircon`, `purifier`, `humidifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
 | `group_by` | ❌ | `type` | `type` (heat pumps, air conditioners, air purifiers, humidity, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |

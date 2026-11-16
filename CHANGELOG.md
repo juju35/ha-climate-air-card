@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.9.0 - 2026-11-16
+
+### Features
+- **New air conditioner illustration `portasplit`** (Midea PortaSplit): an indoor console (grey band, target display, casters, top louvre that blows the mode-coloured air) beside its outdoor condenser (fan spinning behind a round guard while the compressor runs), joined by a looping ribbed hose. Picked automatically for devices whose model or name matches *PortaSplit*, or set with `illustration: portasplit`; available on the device card, its mini card and the overview tiles.
+
+### Fixes
+- The outdoor fan of the `window` air conditioner illustration no longer wobbles while spinning (its rotation axis is pinned to the fan centre) and now sits behind the same ring-and-spoke guard as the other outdoor units.
+
 ## 2.8.0 - 2026-11-16
 
 ### Features
