@@ -6206,11 +6206,12 @@ const caZoneKey = (s) =>
 
 // `exclude` hides zones the user does not want (a test setpoint, or a second motorised vent driven by the same
 // thermostat): the entity ids to drop, as set in the card config.
-function caHeatPumpZones(hass, id, exclude) {
+function caHeatPumpZones(hass, id, exclude, map) {
   const skip = new Set(exclude || []);
+  const override = map || {};
   const list = caDeviceEntities(hass, caDeviceOf(hass, id));
-  // The device's temperature sensors, keyed by room, to pair with a setpoint whose object id differs from the
-  // sensor's (the real T.One: number.t_one_thermostat_sejour alongside sensor.t_one_temperature_sejour).
+  // The device's room temperature sensors (never a shared ECS, ballon or outdoor sensor), each with its object id
+  // and its room key, to pair with the setpoints.
   const temps = [];
   for (const e of list) {
     const eid = e.entity_id;
@@ -6220,7 +6221,8 @@ function caHeatPumpZones(hass, id, exclude) {
     if (CA_HP_DHW.test(eid)) continue;
     temps.push({ eid, obj: eid.slice(eid.indexOf(".") + 1), key: caZoneKey(caHeatPumpZoneName(hass, eid)) });
   }
-  const zones = [];
+  // The setpoints: a thermostat number per room.
+  const setpoints = [];
   for (const e of list) {
     const eid = e.entity_id;
     if (!eid.startsWith("number.") || skip.has(eid)) continue;
@@ -6229,13 +6231,47 @@ function caHeatPumpZones(hass, id, exclude) {
     if (!isTemp && !/thermostat|consigne|setpoint|sollwert|temp[ée]ratur/i.test(eid)) continue;
     if (CA_HP_DHW.test(eid)) continue;
     const obj = eid.slice(eid.indexOf(".") + 1);
-    const key = caZoneKey(caHeatPumpZoneName(hass, eid) || obj);
-    // Prefer a sensor of the same object id (the test fixture), then one of the same room, then one whose object
-    // id shares the room suffix — never a shared ECS, ballon or outdoor sensor (those are kept out above).
-    let temp = hass.states[`sensor.${obj}`] ? `sensor.${obj}` : null;
-    if (!temp && key) temp = (temps.find((t) => t.key === key) || temps.find((t) => t.obj.endsWith(`_${obj.split("_").pop()}`)))?.eid || null;
-    zones.push({ key: obj, name: caHeatPumpZoneName(hass, eid) || obj, temp, setpoint: eid });
+    const name = caHeatPumpZoneName(hass, eid) || obj;
+    setpoints.push({ eid, obj, name, key: caZoneKey(name) });
   }
+  // Pair each setpoint with its room's temperature sensor as a one-to-one assignment, so a sensor is never shown on
+  // two rooms and an unrelated sensor (a second motorised vent, the outdoor probe) is never paired at all. A pair is
+  // scored by how strongly the two belong to the same room — the same object id (the test fixture), the same room
+  // name, one room name contained in the other, or a shared trailing id segment (number.t_one_thermostat_sejour with
+  // sensor.t_one_temperature_sejour) — and the strongest pairs are assigned first. An explicit `zone_temps` mapping
+  // (setpoint → sensor) wins over all of it, for a device whose names and ids give the matcher nothing to go on.
+  const paired = new Map();
+  const taken = new Set();
+  for (const sp of setpoints) {
+    const ov = override[sp.eid];
+    if (ov && hass.states[ov]) {
+      paired.set(sp.eid, ov);
+      taken.add(ov);
+    }
+  }
+  const seg = (o) => o.split("_").pop();
+  const score = (sp, t) => {
+    if (`sensor.${sp.obj}` === t.eid) return 5;
+    if (sp.key && t.key && sp.key === t.key) return 4;
+    if (sp.key.length >= 3 && t.key.length >= 3 && (sp.key.includes(t.key) || t.key.includes(sp.key))) return 3;
+    const a = seg(sp.obj);
+    const b = seg(t.obj);
+    if (a && b && (a === b || sp.obj.endsWith(`_${b}`) || t.obj.endsWith(`_${a}`))) return 2;
+    return 0;
+  };
+  const pairs = [];
+  for (const sp of setpoints) for (const t of temps) {
+    const s = score(sp, t);
+    if (s) pairs.push({ sp, t, s });
+  }
+  // Strongest first; ties resolved by name and id so the assignment is deterministic.
+  pairs.sort((x, y) => y.s - x.s || x.sp.name.localeCompare(y.sp.name) || x.t.obj.localeCompare(y.t.obj));
+  for (const { sp, t } of pairs) {
+    if (paired.has(sp.eid) || taken.has(t.eid)) continue;
+    paired.set(sp.eid, t.eid);
+    taken.add(t.eid);
+  }
+  const zones = setpoints.map((sp) => ({ key: sp.obj, name: sp.name, temp: paired.get(sp.eid) || null, setpoint: sp.eid }));
   return zones.sort((x, y) => x.name.localeCompare(y.name));
 }
 
