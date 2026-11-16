@@ -57,6 +57,13 @@ await animate({
   }),
 });
 
+// The portasplit illustration cooling: the outdoor condenser's fan spins and the chilled air falls from the console.
+await animate({
+  file: "aircon-portasplit",
+  tag: "climate-air-aircon-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.air_conditioner", illustration: "portasplit" } }),
+});
+
 // The heat pump heating: the fan spins behind its grille, the water flows to the house and warm air rises.
 await animate({
   file: "heatpump",

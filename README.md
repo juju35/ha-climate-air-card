@@ -419,6 +419,12 @@ Drying, droplets fall from the vent instead.
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry.gif" alt="air conditioner drying animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-dry-dark.gif" alt="air conditioner drying animation, dark theme" width="400"> |
 
+With the `portasplit` illustration, the outdoor condenser's fan spins while the chilled air falls from the console.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portasplit.gif" alt="portasplit air conditioner animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portasplit-dark.gif" alt="portasplit air conditioner animation, dark theme" width="400"> |
+
 The heat pump spins its outdoor fan while the water flows in the pipes and warm air rises above the unit.
 
 | Light | Dark |
