@@ -4484,8 +4484,11 @@ function caKindOf(hass, id) {
     if (domain !== "fan") return null;
     const dev = hass.devices?.[caDeviceOf(hass, id)];
     const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
-    if (CA_PURIFIER_NAME.test(names)) return "purifier";
     const list = caDeviceEntities(hass, caDeviceOf(hass, id));
+    // A fan on a device that is really a (de)humidifier or an air conditioner is that device's own blower, shown by
+    // its humidifier / air-conditioner card — not a standalone comfort fan, which would duplicate the device.
+    if (list.some((e) => e.entity_id.startsWith("humidifier.") || e.entity_id.startsWith("climate."))) return null;
+    if (CA_PURIFIER_NAME.test(names)) return "purifier";
     if (caFindRole(hass, list, "pm25") || caFindRole(hass, list, "aqi") || caFindRole(hass, list, "filter")) return "purifier";
     return "fan";
   });

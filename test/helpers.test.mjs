@@ -17,6 +17,19 @@ test("devices are sorted into air conditioners, purifiers and fans", () => {
   assert.equal(lib.caKindOf(h, "fan.bedroom_fan_fan"), "fan");
 });
 
+test("a (de)humidifier's own fan is its blower, not a comfort fan", () => {
+  // A dehumidifier (or humidifier) may expose a `fan` entity for its blower on the same device as its `humidifier`
+  // entity (e.g. the WDH-930EEW). It must not be listed as a standalone fan — that duplicates the device, which is
+  // already shown by the humidifier card.
+  const h = makeHass();
+  h.states["fan.office_dehumidifier"] = { entity_id: "fan.office_dehumidifier", state: "on", attributes: {} };
+  h.entities["fan.office_dehumidifier"] = { entity_id: "fan.office_dehumidifier", device_id: "dev_dehum", area_id: null, platform: "mock" };
+  assert.equal(lib.caKindOf(h, "fan.office_dehumidifier"), null);
+  assert.ok(!json(lib.caFindEntities(h, "fan")).includes("fan.office_dehumidifier"));
+  // The dehumidifier itself is still found, once, as a humidifier.
+  assert.ok(json(lib.caFindEntities(h, "humidifier")).includes("humidifier.office_dehumidifier"));
+});
+
 test("a climate entity that only heats is no air conditioner: the cards leave it to ha-heating-card", () => {
   const h = makeHass();
   assert.equal(lib.caKindOf(h, "climate.bathroom_thermostat"), null);
