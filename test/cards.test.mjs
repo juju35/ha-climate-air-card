@@ -362,6 +362,37 @@ test("dehumidifier and diffuser: illustration, status and label from device_clas
   for (const n of ["Humidifier", "Dehumidifier", "Essential oil diffuser"]) assert.ok(names.includes(n), n);
 });
 
+test("rituals: a localised (German) Perfume Genie is recognised from its platform, translation keys and manufacturer", () => {
+  // A Rituals Perfume Genie on a German install: the entity ids are translated and the device name carries neither
+  // "Rituals" nor "Perfume Genie", so the roles must be found by their registry translation_key and the illustration
+  // by the device manufacturer. All entities come from the rituals_perfume_genie platform, so the switch is adopted.
+  const hass = makeHass("en");
+  const dev = "dev_genie_de";
+  hass.devices[dev] = { id: dev, name: "Genie", name_by_user: null, model: "Genie 3.0", manufacturer: "Rituals Cosmetics", area_id: "living_room" };
+  const add = (entity_id, translation_key, state, attributes = {}) => {
+    hass.entities[entity_id] = { entity_id, device_id: dev, area_id: null, platform: "rituals_perfume_genie", translation_key };
+    hass.states[entity_id] = { entity_id, state: String(state), attributes: { friendly_name: entity_id, ...attributes }, last_changed: "" };
+  };
+  add("switch.genie", "fan", "on");
+  add("number.genie_parfum_menge", "perfume_amount", 2, { min: 1, max: 3, step: 1, mode: "auto" });
+  add("select.genie_raumgrosse", "room_size_square_meter", "30", { options: ["15", "30", "60", "100"] });
+  add("sensor.genie_fullen", "fill", 40, { unit_of_measurement: "%" });
+  add("binary_sensor.bad_genie_kartusche", "cartridge", "on");
+  add("sensor.genie_wlan_signal", "wifi_percentage", 80, { unit_of_measurement: "%" });
+  add("sensor.genie_parfum", "perfume", "Jasmine");
+  const out = html(mount(lib, "climate-air-humidifier-card", { entity: "switch.genie" }, hass));
+  // The brass illustration and the diffuser status, from the manufacturer and the platform.
+  assert.match(out, /v-rituals/);
+  assert.match(out, /<span class="stt">Diffusing</);
+  // The fill sensor drives the cartridge bar (not a water tank), found by translation_key "fill".
+  assert.match(out, /Cartridge 40 %/);
+  // The perfume amount slider, room size segments, fragrance and Wi-Fi chips, all found by translation_key.
+  assert.match(out, /data-number="number\.genie_parfum_menge"/);
+  assert.match(out, /data-action="rsize" data-value="15"[^>]*title="15 m²"/);
+  assert.match(out, /Jasmine/);
+  assert.match(out, /mdi:wifi/);
+});
+
 test("overview: a heat-only thermostat is left out, found or added under include; a type set under devices keeps it", () => {
   const { body } = overview({ zoom: false });
   assert.doesNotMatch(body, /climate\.bathroom_thermostat/);

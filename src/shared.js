@@ -4842,6 +4842,7 @@ const CA_ROLES = {
   // full bucket of a dehumidifier.
   water_level: {
     domain: "sensor",
+    keys: ["fill"],
     id: /(water_level|tank_level|water_tank|water_remain|niveau_(d_)?eau|niveau_reservoir|reservoir|wasserstand|nivel_de_agua|depth|fill|cartridge|cartouche)/,
     avoid: /(full|plein|voll)/,
   },
@@ -4849,16 +4850,16 @@ const CA_ROLES = {
   lamp: { domain: "light", test: () => true },
   // The mist intensity of a diffuser (VOCOlinc's « Spray quantity », 1 to 5; the Rituals « Perfume amount », 1 to 3).
   // The device slug may itself contain "perfume", so match the amount anchored, not the bare word.
-  spray: { domain: "number", id: /(spray|mist_level|mist_quantity|mist_intensity|intensite|nebul|perfume_amount)/ },
+  spray: { domain: "number", keys: ["perfume_amount"], id: /(spray|mist_level|mist_quantity|mist_intensity|intensite|nebul|perfume_amount)/ },
   // The Rituals Perfume Genie's extras: its room size (m²), fragrance name, battery and charge, wifi, and the
   // "cartridge inserted" binary sensor (off = no cartridge), used as a low-cartridge alert. The fragrance sensor is
   // anchored to the end so the "perfume" in the device slug (its fill, battery…) is not taken for it.
-  room_size: { domain: "select", id: /room_?size/ },
-  perfume: { domain: "sensor", id: /(perfume$|parfum$|fragrance|duft$|profumo$)/ },
+  room_size: { domain: "select", keys: ["room_size_square_meter"], id: /room_?size/ },
+  perfume: { domain: "sensor", keys: ["perfume"], id: /(perfume$|parfum$|fragrance|duft$|profumo$)/ },
   battery: { domain: "sensor", test: caDc("battery") },
   charging: { domain: "binary_sensor", test: caDc("battery_charging") },
-  wifi: { domain: "sensor", id: /(wifi|signal_strength|rssi)/ },
-  cartridge: { domain: "binary_sensor", id: /(cartridge|cartouche)/ },
+  wifi: { domain: "sensor", keys: ["wifi_percentage"], id: /(wifi|signal_strength|rssi)/ },
+  cartridge: { domain: "binary_sensor", keys: ["cartridge"], id: /(cartridge|cartouche)/ },
   tank_empty: { domain: "binary_sensor", id: /(water_shortage|no_water|tank_empty|water_empty|lack_of_water|manque_d?_?eau|reservoir_vide|wassermangel|tank_leer)/ },
   bucket_full: { domain: "binary_sensor", id: /(tank_full|bucket_full|water_full|full_water|water_tank_full|bac_plein|reservoir_plein|behalter_voll|tanque_lleno)/ },
   backup: { domain: "binary_sensor", id: /(backup|appoint|booster|resistance|heizstab|electric_heater|aux)/ },
@@ -6478,11 +6479,13 @@ const caLine = (icon, text) => `<div class="line"><ha-icon icon="${icon}"></ha-i
 // `s` is the device's state as the illustration needs it: running, pct, color, osc, natural, mode, active, swing, display.
 const CA_ART = {};
 
-// The text an illustration variant is guessed from: the device model and names.
+// The text an illustration variant is guessed from: the device model, manufacturer and names. The manufacturer is
+// included so a device named in another language (a Rituals Perfume Genie whose model and name are localised, say)
+// is still recognised from its brand.
 function caVariantText(hass, id) {
   const dev = hass.devices?.[caDeviceOf(hass, id)];
   const a = hass.states[id]?.attributes || {};
-  return [dev?.model, dev?.name, dev?.name_by_user, id, a.friendly_name, a.device_class].filter(Boolean).join(" ");
+  return [dev?.model, dev?.manufacturer, dev?.name, dev?.name_by_user, id, a.friendly_name, a.device_class].filter(Boolean).join(" ");
 }
 
 // The variant of `kind` to draw for `id`: the one asked for (`illustration`), or the one guessed from the device.
