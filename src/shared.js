@@ -6032,7 +6032,7 @@ class CaCardEditor extends HTMLElement {
       show_sensors: true,
       // The fan and heat pump cards show no filter alert: no toggle for them.
       ...(CA_NO_FILTER.includes(this.constructor.kind) ? {} : { show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING }),
-      ...(CA_ILLUSTRATIONS[this.constructor.kind] ? { illustration: "auto" } : {}),
+      ...(CA_ART[this.constructor.kind]?.variants ? { illustration: "auto" } : {}),
       ...(this.constructor.mini ? { zoom: true } : {}),
     };
   }
@@ -6046,7 +6046,7 @@ class CaCardEditor extends HTMLElement {
     const ids = caFindEntities(this._hass, kind);
     const domain = caDomain(kind);
     const lang = caLang(this._config, this._hass);
-    const variants = CA_ILLUSTRATIONS[kind] || [];
+    const variants = CA_ART[kind]?.variants || [];
     return [
       // A heat pump without a climate entity is driven by the select of its mode (TOUG): both domains are offered.
       { name: "entity", selector: { entity: kind === "heatpump" ? { domain: ["climate", "select"] } : ids.length ? { include_entities: ids } : { domain } } },
@@ -6133,12 +6133,6 @@ class CaCardEditor extends HTMLElement {
 const CA_NO_FILTER = ["fan", "heatpump"];
 
 // Illustration variants of each kind of device (the first is the fallback).
-const CA_ILLUSTRATIONS = {
-  purifier: ["tower", "cylinder", "box", "dyson"],
-  aircon: ["split", "portable", "window"],
-  humidifier: ["column", "tank", "evaporative", "vocolinc", "diffuser", "dehumidifier"],
-};
-
 // The folded Advanced section: the language, and the other `names` edited as YAML.
 const caAdvanced = (lang, ...names) => [
   {
