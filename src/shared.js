@@ -6205,6 +6205,16 @@ const caZoneKey = (s) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "");
 
+// An object id with its role words dropped (number.t_one_thermostat_chambre_ami and
+// sensor.t_one_temperature_chambre_ami both become "t_one_chambre_ami"), so a setpoint pairs with its room's sensor
+// from the entity ids alone, whatever their friendly names say (#96).
+const CA_ZONE_ROLE = /^(r[ée]glages?|consignes?|thermostats?|targets?|setpoints?|sollwerte?|temp[ée]ratures?|temperaturas?|temperaturen?|temp)$/i;
+const caZoneBase = (obj) =>
+  obj
+    .split("_")
+    .filter((p) => p && !CA_ZONE_ROLE.test(p))
+    .join("_");
+
 // `exclude` hides zones the user does not want (a test setpoint, or a second motorised vent driven by the same
 // thermostat): the entity ids to drop, as set in the card config.
 function caHeatPumpZones(hass, id, exclude, map) {
@@ -6220,7 +6230,8 @@ function caHeatPumpZones(hass, id, exclude, map) {
     const a = hass.states[eid]?.attributes || {};
     if (a.device_class !== "temperature" && !/°|deg|celsius|fahrenheit/i.test(a.unit_of_measurement || "")) continue;
     if (CA_HP_DHW.test(eid)) continue;
-    temps.push({ eid, obj: eid.slice(eid.indexOf(".") + 1), key: caZoneKey(caHeatPumpZoneName(hass, eid)) });
+    const obj = eid.slice(eid.indexOf(".") + 1);
+    temps.push({ eid, obj, base: caZoneBase(obj), key: caZoneKey(caHeatPumpZoneName(hass, eid)) });
   }
   // The setpoints: a thermostat number per room.
   const setpoints = [];
@@ -6233,13 +6244,14 @@ function caHeatPumpZones(hass, id, exclude, map) {
     if (CA_HP_DHW.test(eid)) continue;
     const obj = eid.slice(eid.indexOf(".") + 1);
     const name = caHeatPumpZoneName(hass, eid) || obj;
-    setpoints.push({ eid, obj, name, key: caZoneKey(name) });
+    setpoints.push({ eid, obj, base: caZoneBase(obj), name, key: caZoneKey(name) });
   }
   // Pair each setpoint with its room's temperature sensor as a one-to-one assignment, so a sensor is never shown on
   // two rooms and an unrelated sensor (a second motorised vent, the outdoor probe) is never paired at all. A pair is
-  // scored by how strongly the two belong to the same room — the same object id (the test fixture), the same room
-  // name, one room name contained in the other, or a shared trailing id segment (number.t_one_thermostat_sejour with
-  // sensor.t_one_temperature_sejour) — and the strongest pairs are assigned first. An explicit `zone_temps` mapping
+  // scored by how strongly the two belong to the same room — the same object id (the test fixture) or the same id
+  // once the role words are dropped (number.t_one_thermostat_sejour with sensor.t_one_temperature_sejour), the same room
+  // name, one room name contained in the other, or a shared trailing id segment — and the strongest pairs are
+  // assigned first. An explicit `zone_temps` mapping
   // (setpoint → sensor) wins over all of it, for a device whose names and ids give the matcher nothing to go on.
   const paired = new Map();
   const taken = new Set();
@@ -6252,7 +6264,7 @@ function caHeatPumpZones(hass, id, exclude, map) {
   }
   const seg = (o) => o.split("_").pop();
   const score = (sp, t) => {
-    if (`sensor.${sp.obj}` === t.eid) return 5;
+    if (`sensor.${sp.obj}` === t.eid || (sp.base && sp.base === t.base)) return 5;
     if (sp.key && t.key && sp.key === t.key) return 4;
     if (sp.key.length >= 3 && t.key.length >= 3 && (sp.key.includes(t.key) || t.key.includes(sp.key))) return 3;
     const a = seg(sp.obj);
