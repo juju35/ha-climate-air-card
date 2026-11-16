@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.3 - 2026-11-16
+
+### Fixes
+- **Fridge and freezer climate entities are no longer listed as air conditioners** ([#80](https://github.com/juju35/ha-climate-air-card/issues/80)): some integrations (e.g. Liebherr) expose each compartment as a cooling-only `climate` entity, which the overview picked up as an air conditioner and counted as active. A refrigeration appliance (fridge, freezer, wine cooler) is now told apart — by its fridge/freezer icon or name, or by a maximum setpoint below comfort cooling (15 °C / 60 °F) — and left out of the air-conditioner list, so the `exclude` workaround is no longer needed.
+
 ## 2.7.2 - 2026-11-16
 
 ### Fixes
