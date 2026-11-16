@@ -300,6 +300,44 @@ test("heat pump: multi-zone — a room sensor with no setpoint stays off the roo
   assert.match(mapped, /Séjour · 17,7 °C/);
 });
 
+test("heat pump: multi-zone — setpoints pair with their sensors from the entity ids alone (#96)", () => {
+  // The real T.One ids: number.t_one_thermostat_<room> with sensor.t_one_temperature_<room>. The friendly names are
+  // made unhelpful on purpose (the sensors all read « Température Chambre », which the room names contain), so only
+  // the ids, once the role words are dropped, can pair them — no zone_temps needed.
+  const h = makeHass("fr");
+  const dev = "dev_tone";
+  h.devices[dev] = { id: dev, name: "T.One AquaAir", name_by_user: null, area_id: "living_room", model: "TOUG" };
+  const add = (entity_id, state, attributes = {}) => {
+    h.entities[entity_id] = { entity_id, device_id: dev, area_id: null, platform: "esphome" };
+    h.states[entity_id] = { entity_id, state: String(state), attributes, last_changed: "" };
+  };
+  add("select.t_one_mode_air", "Confort", { friendly_name: "T.One AquaAir Mode air", options: ["Off", "Confort", "Eco"] });
+  const rooms = [
+    ["sejour", "Séjour", 21.1],
+    ["chambre_parentale", "Chambre parentale", 19.2],
+    ["chambre_ami", "Chambre ami", 18.3],
+    ["chambre_nathan", "Chambre Nathan", 20.7],
+    ["chambre_james", "Chambre James", 19.6],
+  ];
+  // Sensors added in reverse so a first-found match would land on the wrong room.
+  for (const [key, , temp] of [...rooms].reverse()) {
+    add(`sensor.t_one_temperature_${key}`, temp, { friendly_name: "T.One AquaAir Température Chambre", device_class: "temperature", unit_of_measurement: "°C" });
+  }
+  // A second vent's probe sharing Séjour's thermostat: no setpoint of its own.
+  add("sensor.t_one_temperature_sejour_bis", 17.4, { friendly_name: "T.One AquaAir Température Séjour bis", device_class: "temperature", unit_of_measurement: "°C" });
+  for (const [key, name] of rooms) {
+    add(`number.t_one_thermostat_${key}`, 20, { friendly_name: `T.One AquaAir Thermostat ${name}`, min: 16, max: 26, step: 0.5, unit_of_measurement: "°C" });
+  }
+  const zones = lib.caHeatPumpZones(h, "select.t_one_mode_air");
+  for (const [key] of rooms) {
+    assert.equal(zones.find((z) => z.setpoint === `number.t_one_thermostat_${key}`)?.temp, `sensor.t_one_temperature_${key}`, key);
+  }
+  const out = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, h));
+  assert.match(out, /Séjour · 21,1 °C/);
+  assert.match(out, /Chambre Nathan · 20,7 °C/);
+  assert.doesNotMatch(out, /17,4 °C/);
+});
+
 test("humidifier: humidity, target, tank, modes and controls", () => {
   const h = makeHass("fr");
   const el = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h);

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.12.1 - 2026-11-16
+
+### Fixes
+- Heat pump: in the multi-zone *Zones* section, a room's setpoint now pairs with its temperature sensor from the **entity ids alone** once the role words are dropped (`number.t_one_thermostat_sejour` with `sensor.t_one_temperature_sejour`, Aldes T.One), whatever the friendly names say — so the rooms are matched without a `zone_temps` map, and a second vent's probe (`…_sejour_bis`) is no longer preferred over the room's own sensor (#96).
+
 ## 2.12.0 - 2026-11-16
 
 ### Features
