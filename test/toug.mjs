@@ -2,7 +2,7 @@
 // the thermostat number and the tank temperature, as the tests add them to the mock home. With `zones`, the real
 // multi-zone device of issue #70: one temperature sensor and one setpoint number per room, the hot water tank as its
 // percentage, remaining volume and temperature, and the fault sensor, instead of the single thermostat.
-export const addToug = (h, { mode = "Confort", valve = "Air", zones = false, fault = "Aucun", extra = false } = {}) => {
+export const addToug = (h, { mode = "Confort", valve = "Air", zones = false, fault = "Aucun", extra = false, stray = false } = {}) => {
   const dev = "dev_toug";
   h.devices[dev] = { id: dev, name: "T.One AquaAir", name_by_user: null, area_id: "living_room", model: "TOUG" };
   const add = (entity_id, state, attributes = {}) => {
@@ -36,6 +36,11 @@ export const addToug = (h, { mode = "Confort", valve = "Air", zones = false, fau
       add("number.t_one_thermostat_sejour_bis", 20, { friendly_name: "T.One AquaAir Réglage consigne température Séjour bis", min: 16, max: 26, step: 0.5, unit_of_measurement: "°C" });
       // A stray switch the user can hide the same way (a UI test toggle) — it would otherwise show as an option.
       add("switch.t_one_ventilateur_ui_test", "off", { friendly_name: "T.One AquaAir Ventilateur UI Test" });
+    }
+    if (stray) {
+      // A room temperature sensor whose motorised vent shares another room's thermostat, so it has no setpoint of
+      // its own (issue #92): it must never be shown as some other room's temperature.
+      add("sensor.t_one_temperature_sejour_bis", 17.7, { friendly_name: "T.One AquaAir Température Séjour bis", device_class: "temperature", unit_of_measurement: "°C" });
     }
     add("sensor.t_one_temperature_ecs", 46, { friendly_name: "T.One AquaAir Température ECS", device_class: "temperature", unit_of_measurement: "°C" });
     add("sensor.t_one_pourcentage_ecs", 75, { friendly_name: "T.One AquaAir Pourcentage ECS", unit_of_measurement: "%" });

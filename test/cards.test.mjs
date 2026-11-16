@@ -287,6 +287,19 @@ test("heat pump: multi-zone — per-room sensor pairing and hidden setpoints (#7
   assert.match(hidden, /Garage · 18,4 °C/);
 });
 
+test("heat pump: multi-zone — a room sensor with no setpoint stays off the rooms, zone_temps overrides (#92)", () => {
+  // A stray room probe (Séjour bis, 17,7 °C) shares Séjour's thermostat, so it has no setpoint of its own: it must
+  // never be shown as any room's temperature, and every room keeps its own sensor (one-to-one pairing).
+  const out = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air" }, addToug(makeHass("fr"), { zones: true, stray: true })));
+  assert.match(out, /Séjour · 20,6 °C/);
+  assert.match(out, /Chambre ami · 20,4 °C/);
+  assert.match(out, /Chambre James · 20,3 °C/);
+  assert.doesNotMatch(out, /17,7 °C/);
+  // An explicit zone_temps map pairs a setpoint with a chosen sensor when discovery cannot (here, onto the stray one).
+  const mapped = html(mount(lib, "climate-air-heatpump-card", { entity: "select.t_one_mode_air", zone_temps: { "number.t_one_temperature_sejour": "sensor.t_one_temperature_sejour_bis" } }, addToug(makeHass("fr"), { zones: true, stray: true })));
+  assert.match(mapped, /Séjour · 17,7 °C/);
+});
+
 test("humidifier: humidity, target, tank, modes and controls", () => {
   const h = makeHass("fr");
   const el = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h);

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.11.0 - 2026-11-16
+
+### Features
+- Heat pump: a `zone_temps` option maps a room's setpoint to its temperature sensor by hand (`number.…: sensor.…`, YAML only), for a multi-zone device whose names and ids give the automatic pairing nothing to match on.
+
+### Fixes
+- Heat pump: the multi-zone *Zones* section now pairs each room's setpoint with its temperature sensor **one-to-one** — a sensor is never shown on two rooms, and a probe with no setpoint of its own (a second motorised vent sharing another room's thermostat, Aldes T.One) is no longer picked up as a room's temperature (#92).
+
 ## 2.10.0 - 2026-11-16
 
 ### Features

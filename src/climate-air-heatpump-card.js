@@ -214,9 +214,10 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   }
 
   // The rooms of a multi-zone heat pump (a thermostat number and a temperature sensor per room), found on its device.
-  // `exclude` drops the setpoints the user hid (a test number, a duplicate vent on the same thermostat).
+  // `exclude` drops the setpoints the user hid (a test number, a duplicate vent on the same thermostat); `zone_temps`
+  // maps a setpoint to its temperature sensor when the names and ids leave the pairing ambiguous.
   _zones() {
-    return caHeatPumpZones(this._hass, this._r.id, this._config.exclude);
+    return caHeatPumpZones(this._hass, this._r.id, this._config.exclude, this._config.zone_temps);
   }
 
   // The zones' entities are not roles, so they are added to the tracked ids: the card redraws when a room's
@@ -224,7 +225,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
   _extraIds(r) {
     return [
       ...super._extraIds(r),
-      ...caHeatPumpZones(this._hass, r.id, this._config.exclude).flatMap((z) => [z.setpoint, z.temp].filter(Boolean)),
+      ...caHeatPumpZones(this._hass, r.id, this._config.exclude, this._config.zone_temps).flatMap((z) => [z.setpoint, z.temp].filter(Boolean)),
       // A top-level outdoor_temp entity (often a weather entity) is not a role, so track it for the redraw.
       ...(this._config.outdoor_temp ? [this._config.outdoor_temp] : []),
     ];
