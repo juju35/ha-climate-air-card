@@ -349,11 +349,11 @@ class ClimateAirHumidifierCard extends CaCard {
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
     ]);
     const reset = this._toggles([this._filterResetButton(m.filterState, r.ent.filter_reset)]);
-    // The mist intensity as a slider (a 1–5 number would otherwise become a dropdown); the Rituals « Perfume amount ».
+    // The mist intensity as a slider (a 1–5 number would otherwise become a dropdown); a diffuser shows it as « Intensity » (the Rituals « Perfume amount », 1 to 3).
     const sp = this._st(r.ent.spray);
     const spray =
       sp && !caUnavailable(sp) && this._num(r.ent.spray) != null
-        ? this._rangeHtml("number", r.ent.spray, m.diffuser ? "mdi:scent" : "mdi:spray", this._t(m.diffuser ? "perfume_amount" : "spray"), Number(sp.attributes.min ?? 1), Number(sp.attributes.max ?? 5), Number(sp.attributes.step ?? 1), this._num(r.ent.spray))
+        ? this._rangeHtml("number", r.ent.spray, m.diffuser ? "mdi:scent" : "mdi:spray", this._t(m.diffuser ? "intensity" : "spray"), Number(sp.attributes.min ?? 1), Number(sp.attributes.max ?? 5), Number(sp.attributes.step ?? 1), this._num(r.ent.spray))
         : "";
     return this._section("", modes + target + spray) + roomSize + light + this._options(toggles + this._switchToggles(r) + reset);
   }
@@ -416,7 +416,7 @@ class ClimateAirHumidifierCard extends CaCard {
     const target = m.running && m.target != null ? ` → ${this._pct(m.target)}` : "";
     const hum = m.cur != null ? `<div class="line tline"><ha-icon icon="mdi:water-percent"></ha-icon><span><b>${caEsc(this._pct(m.cur))}</b>${caEsc(target)}</span></div>` : "";
     const mode = m.running && m.sub ? caLine(CA_PRESET_ICON(this._st(this._r.id).attributes.mode) || "mdi:tune-variant", m.sub) : "";
-    const spray = m.spray != null ? caLine(m.diffuser ? "mdi:scent" : "mdi:spray", `${this._t(m.diffuser ? "perfume_amount" : "spray")} ${caFmtNum(this._intlLang(), m.spray, 0)}`) : "";
+    const spray = m.spray != null ? caLine(m.diffuser ? "mdi:scent" : "mdi:spray", `${this._t(m.diffuser ? "intensity" : "spray")} ${caFmtNum(this._intlLang(), m.spray, 0)}`) : "";
     return [hum, mode, spray, this._tankLine(m), this._filterLine(m.filterState)].join("");
   }
 
