@@ -67,7 +67,8 @@ On narrow cards (6 columns of a Sections view), the status pill moves under the 
 - Grouped by kind of device, by area, or not at all (`group_by`)
 - **Tap** the icon of a tile to turn the device on or off; **tap** the tile to unfold its full card at the top of the overview, tap it again or anywhere else to fold it back
 - Only the devices that are on or need attention show; the **detail** button (top right) shows every device, and back, as does a click anywhere else. `show_all: true` starts on every device instead, the button then keeping only the devices on or needing attention (`zoom: false`: every device, always, no button)
-- Header with how many devices are on and how many filters need care
+- **Illustrated header**, like the device cards: a 90 px banner with the round icon (its colour tells the status), the title, the status pill (the alerts by name, else how many devices are on) and a chip counting the devices on, and on the right a room with one device of each kind — the one running or needing attention first, up to three on the floor and a wall air conditioner above them — animated as on the device cards (cold air, dust drawn into a purifier, a fan's breeze, mist), standing on the floor strip. Heat pumps alone get the garden. Night picture after sunset or with the dark theme, or forced with `illustration_theme`
+- Calm tiles: a neutral background whatever the state, the coloured state line and a status dot in each tile's corner (red alert, amber warning, the device's colour while on, grey at rest)
 - The illustration of every device of a kind or of each device (`illustrations`, guessed from the device model otherwise), or an icon instead (`icons`); a name and a type per device (`devices`); the header icon (`icon`). In the visual editor, the **Device types** and **Devices** sections set all of them, without YAML
 
 ### Air purifier
@@ -264,6 +265,7 @@ Full options:
 type: custom:climate-air-overview-card
 title: Climate & air
 icon: mdi:home-thermometer
+illustration_theme: auto
 group_by: type
 columns: 2
 zoom: true
@@ -288,6 +290,7 @@ devices:
 | `title` | ❌ | Climate & air | Card title |
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
+| `illustration_theme` | ❌ | `auto` | The header's room by day or by night: `auto` (night after sunset, from `sun.sun`, or with Home Assistant's dark theme), `day` or `night` |
 | `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`, `humidifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable`, `window` or `portasplit`; humidifier `column`, `tank`, `evaporative`, `vocolinc`, `diffuser` or `dehumidifier`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
 | `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`heatpump`, `aircon`, `purifier`, `humidifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
 | `group_by` | ❌ | `type` | `type` (heat pumps, air conditioners, air purifiers, humidity, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
@@ -550,7 +553,7 @@ The dehumidifier blows dry air out of its top while drops fall into its bucket.
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/dehumidifier.gif" alt="dehumidifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/dehumidifier-dark.gif" alt="dehumidifier animation, dark theme" width="400"> |
 
-The overview gathers every device: each tile's icon moves to match its appliance and its status ring breathes around it.
+The overview gathers every device: its header's room comes alive with the devices running, and each tile's illustration moves with its device.
 
 | Light | Dark |
 |---|---|
