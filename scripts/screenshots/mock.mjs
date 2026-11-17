@@ -159,17 +159,33 @@ const LABELS = {
   },
 };
 
+// The integration (and maker) of each mock device, for the brand badge on the header icon.
+const BRANDS = {
+  dev_p1: ["xiaomi_home"],
+  dev_p2: ["xiaomi_miio"],
+  dev_dyson: ["dyson_local"],
+  dev_f1: ["xiaomi_home"],
+  dev_f2: ["xiaomi_miio"],
+  dev_ac: ["midea_ac_lan"],
+  dev_hum: ["xiaomi_home"],
+  dev_diff: ["homekit_controller", "VOCOlinc"],
+  dev_rituals: ["rituals_perfume_genie", "Rituals"],
+  dev_dehum: ["midea_ac_lan"],
+  dev_hp: ["daikin_onecta"],
+};
+
 export const mockHass = (lang = "en", changes = {}) => {
   const states = {};
   const entities = {};
   const devices = {};
   const areas = Object.fromEntries(Object.entries(AREAS).map(([area_id, n]) => [area_id, { area_id, name: n[lang], icon: n.icon || null }]));
   for (const [dev, area_id, names, items] of DEVICES) {
-    devices[dev] = { id: dev, name: names[lang], name_by_user: null, area_id };
+    const [platform = "mock", manufacturer] = BRANDS[dev] || [];
+    devices[dev] = { id: dev, name: names[lang], name_by_user: null, area_id, ...(manufacturer ? { manufacturer } : {}) };
     for (const [entity_id, n, state, attributes] of items) {
       const friendly_name = n ? `${names[lang]} ${n[lang]}` : names[lang];
       const { state: s = state, ...attrs } = changes[entity_id] || {};
-      entities[entity_id] = { entity_id, device_id: dev, area_id: null, platform: "mock" };
+      entities[entity_id] = { entity_id, device_id: dev, area_id: null, platform };
       states[entity_id] = { entity_id, state: String(s), attributes: { friendly_name, ...attributes, ...attrs }, last_changed: "" };
     }
   }

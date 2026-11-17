@@ -22,14 +22,15 @@ const UNAVAILABLE = {
   "fan.bedroom_fan_fan": { state: "unavailable" },
   "climate.air_conditioner": { state: "unavailable" },
 };
+// The status pill is the classic header's (`illustration: false`): the illustrated banner shows the status as its subtitle.
 const CARDS = [
-  ["climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" }],
-  ["climate-air-purifier-card", { entity: "fan.bedroom_purifier" }],
-  ["climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier" }],
-  ["climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }],
-  ["climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan" }],
-  ["climate-air-aircon-card", { entity: "climate.air_conditioner" }],
-  ["climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }],
+  ["climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier", illustration: false }],
+  ["climate-air-purifier-card", { entity: "fan.bedroom_purifier", illustration: false }],
+  ["climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier", illustration: false }],
+  ["climate-air-fan-card", { entity: "fan.bedroom_fan_fan", illustration: false }],
+  ["climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan", illustration: false }],
+  ["climate-air-aircon-card", { entity: "climate.air_conditioner", illustration: false }],
+  ["climate-air-aircon-mini-card", { entity: "climate.air_conditioner", illustration: false }],
   ["climate-air-overview-card", {}],
 ];
 const STUBS = `customElements.define("ha-card", class extends HTMLElement { constructor() { super();
@@ -137,6 +138,48 @@ test("status pills: the whole label, or only the dot when the label really does 
   await page.close();
   assert.deepEqual(bad, []);
   assert.ok(labelAt245.shown > 0, `at 245 px some pills show their label (${labelAt245.shown}/${labelAt245.total})`);
+});
+
+// The illustrated banner: 90 px high on the full and mini cards, its floor strip edge to edge at the bottom, the
+// title and status kept left of the room (truncated, never under the device), at every width and in every language.
+const BANNER_CARDS = [
+  ["climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" }],
+  ["climate-air-purifier-mini-card", { entity: "fan.bedroom_purifier" }],
+  ["climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan" }],
+  ["climate-air-aircon-card", { entity: "climate.air_conditioner" }],
+  ["climate-air-heatpump-mini-card", { entity: "climate.heat_pump" }],
+  ["climate-air-humidifier-card", { entity: "humidifier.living_room_diffuser" }],
+];
+test("banner: 90 px, floor strip edge to edge, the text left of the room", { skip: !browser && "no browser" }, async () => {
+  const page = await open();
+  const bad = [];
+  for (const [tag, config] of BANNER_CARDS)
+    for (const lang of ["en", "el"])
+      for (const width of [245, 320, 460]) {
+        await mount(page, tag, { ...config, language: lang }, mockHass("en"), width, width === 320);
+        const r = await page.evaluate(() => {
+          const sr = window.__el.shadowRoot;
+          const box = (sel) => sr.querySelector(sel)?.getBoundingClientRect();
+          const card = sr.querySelector("ha-card").getBoundingClientRect();
+          const b = box(".banner");
+          const g = box(".ground");
+          const sc = box(".bscene");
+          const name = sr.querySelector(".banner .name");
+          return {
+            height: b && Math.round(b.height),
+            ground: g && [Math.round(g.left - card.left), Math.round(card.right - g.right), Math.round(b.bottom - g.bottom), Math.round(g.height)],
+            overlap: sc && sc.width > 0 ? Math.round(box(".banner .titles").right - (sc.left + sc.width * 0.25)) : -1,
+            nameFits: name.scrollWidth <= name.clientWidth + 0.5 || getComputedStyle(name).textOverflow === "ellipsis",
+          };
+        });
+        const where = `${tag} ${lang} ${width}px`;
+        if (r.height !== 90) bad.push(`${where}: banner ${r.height}px`);
+        if (!r.ground || r.ground.some((v, i) => (i === 3 ? v !== 10 : Math.abs(v) > 1.5))) bad.push(`${where}: ground ${r.ground}`);
+        if (r.overlap > 0) bad.push(`${where}: title under the device (${r.overlap}px)`);
+        if (!r.nameFits) bad.push(`${where}: name overflows`);
+      }
+  await page.close();
+  assert.deepEqual(bad, []);
 });
 
 test.after(() => browser?.close());

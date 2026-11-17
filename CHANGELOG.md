@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.13.0 - 2026-11-17
+
+### Features
+- **Illustrated header** on every device card and mini card: a 90 px banner with the round icon, the name and the status on the left, and the device's own animated illustration in its room on the right, standing on a floor strip edge to edge. The room follows the kind of device and comes alive while it runs — cold air under the wall unit and the sun at the window (air conditioner), dust drawn into the purifier and clean air leaving it, a fan's breeze, mist above a humidifier, a heat pump's outdoor unit against the façade on the lawn — with a night picture after sunset (`sun.sun`, else the dark theme), forced with the new `illustration_theme: day | night`. `illustration: false` (*No illustration* in the visual editor, now offered on every device card) keeps the classic header. Animations honour *reduce motion*.
+- The round header icon's colour now always tells the status: the state's colour while running, grey when off or offline, amber for a warning, red for an alert.
+- A **brand badge** on the header icon: the logo of the device's maker or integration (Xiaomi, Dyson, Daikin, Midea, VOCOlinc, Rituals, HomeKit, Matter…), embedded in the bundle; `brand` (YAML) picks another one or `none`.
+
 ## 2.12.1 - 2026-11-16
 
 ### Fixes

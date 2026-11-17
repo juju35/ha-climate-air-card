@@ -137,6 +137,11 @@ const CA_I18N = {
     ed_illustration: "Illustration",
     ed_illustration_helper: "Automatic: picked from the device model and name",
     ill_auto: "Automatic",
+    ill_none: "No illustration (classic header)",
+    ed_illustration_theme: "Illustration theme",
+    theme_auto: "Automatic (sun, dark theme)",
+    theme_day: "Day",
+    theme_night: "Night",
     ill_tower: "Tower",
     ill_cylinder: "Round",
     ill_box: "Square box",
@@ -335,6 +340,11 @@ const CA_I18N = {
     ed_illustration: "Illustration",
     ed_illustration_helper: "Automatique : choisie d'après le modèle et le nom de l'appareil",
     ill_auto: "Automatique",
+    ill_none: "Sans illustration (en-tête classique)",
+    ed_illustration_theme: "Thème de l'illustration",
+    theme_auto: "Automatique (soleil, thème sombre)",
+    theme_day: "Jour",
+    theme_night: "Nuit",
     ill_tower: "Tour",
     ill_cylinder: "Ronde",
     ill_box: "Boîte carrée",
@@ -534,6 +544,11 @@ const CA_I18N = {
     ed_illustration: "Illustration",
     ed_illustration_helper: "Automatisch: anhand von Modell und Name des Geräts gewählt",
     ill_auto: "Automatisch",
+    ill_none: "Keine Illustration (klassische Kopfzeile)",
+    ed_illustration_theme: "Illustrationsthema",
+    theme_auto: "Automatisch (Sonne, dunkles Design)",
+    theme_day: "Tag",
+    theme_night: "Nacht",
     ill_tower: "Turm",
     ill_cylinder: "Rund",
     ill_box: "Quadratisches Gehäuse",
@@ -732,6 +747,11 @@ const CA_I18N = {
     ed_illustration: "Ilustración",
     ed_illustration_helper: "Automático: se elige según el modelo y el nombre del dispositivo",
     ill_auto: "Automático",
+    ill_none: "Sin ilustración (encabezado clásico)",
+    ed_illustration_theme: "Tema de la ilustración",
+    theme_auto: "Automático (sol, tema oscuro)",
+    theme_day: "Día",
+    theme_night: "Noche",
     ill_tower: "Torre",
     ill_cylinder: "Redondo",
     ill_box: "Caja cuadrada",
@@ -930,6 +950,11 @@ const CA_I18N = {
     ed_illustration: "Илустрација",
     ed_illustration_helper: "Аутоматски: бира се на основу модела и назива уређаја",
     ill_auto: "Аутоматски",
+    ill_none: "Без илустрације (класично заглавље)",
+    ed_illustration_theme: "Тема илустрације",
+    theme_auto: "Аутоматски (сунце, тамна тема)",
+    theme_day: "Дан",
+    theme_night: "Ноћ",
     ill_tower: "Стубни",
     ill_cylinder: "Округли",
     ill_box: "Квадратни",
@@ -1128,6 +1153,11 @@ const CA_I18N = {
     ed_illustration: "Ilustracija",
     ed_illustration_helper: "Automatski: bira se na osnovu modela i naziva uređaja",
     ill_auto: "Automatski",
+    ill_none: "Bez ilustracije (klasično zaglavlje)",
+    ed_illustration_theme: "Tema ilustracije",
+    theme_auto: "Automatski (sunce, tamna tema)",
+    theme_day: "Dan",
+    theme_night: "Noć",
     ill_tower: "Stubni",
     ill_cylinder: "Okrugli",
     ill_box: "Kvadratni",
@@ -1326,6 +1356,11 @@ const CA_I18N = {
     ed_illustration: "Illustrazione",
     ed_illustration_helper: "Automatica: scelta in base al modello e al nome del dispositivo",
     ill_auto: "Automatica",
+    ill_none: "Nessuna illustrazione (intestazione classica)",
+    ed_illustration_theme: "Tema dell'illustrazione",
+    theme_auto: "Automatico (sole, tema scuro)",
+    theme_day: "Giorno",
+    theme_night: "Notte",
     ill_tower: "Torre",
     ill_cylinder: "Rotondo",
     ill_box: "Scatola quadrata",
@@ -1525,6 +1560,11 @@ const CA_I18N = {
     ed_illustration: "Illustratie",
     ed_illustration_helper: "Automatisch: gekozen op basis van het model en de naam van het apparaat",
     ill_auto: "Automatisch",
+    ill_none: "Geen illustratie (klassieke koptekst)",
+    ed_illustration_theme: "Illustratiethema",
+    theme_auto: "Automatisch (zon, donker thema)",
+    theme_day: "Dag",
+    theme_night: "Nacht",
     ill_tower: "Toren",
     ill_cylinder: "Rond",
     ill_box: "Vierkante kast",
@@ -1724,6 +1764,11 @@ const CA_I18N = {
     ed_illustration: "Ilustração",
     ed_illustration_helper: "Automática: escolhida a partir do modelo e do nome do dispositivo",
     ill_auto: "Automática",
+    ill_none: "Sem ilustração (cabeçalho clássico)",
+    ed_illustration_theme: "Tema da ilustração",
+    theme_auto: "Automático (sol, tema escuro)",
+    theme_day: "Dia",
+    theme_night: "Noite",
     ill_tower: "Torre",
     ill_cylinder: "Redondo",
     ill_box: "Caixa quadrada",
@@ -1923,6 +1968,11 @@ const CA_I18N = {
     ed_illustration: "Ilustracja",
     ed_illustration_helper: "Automatycznie: wybierana na podstawie modelu i nazwy urządzenia",
     ill_auto: "Automatycznie",
+    ill_none: "Bez ilustracji (klasyczny nagłówek)",
+    ed_illustration_theme: "Motyw ilustracji",
+    theme_auto: "Automatyczny (słońce, ciemny motyw)",
+    theme_day: "Dzień",
+    theme_night: "Noc",
     ill_tower: "Wieża",
     ill_cylinder: "Okrągły",
     ill_box: "Kwadratowa obudowa",
@@ -2122,6 +2172,11 @@ const CA_I18N = {
     ed_illustration: "Ilustrație",
     ed_illustration_helper: "Automat: aleasă după modelul și numele dispozitivului",
     ill_auto: "Automat",
+    ill_none: "Fără ilustrație (antet clasic)",
+    ed_illustration_theme: "Tema ilustrației",
+    theme_auto: "Automat (soare, temă întunecată)",
+    theme_day: "Zi",
+    theme_night: "Noapte",
     ill_tower: "Turn",
     ill_cylinder: "Rotund",
     ill_box: "Carcasă pătrată",
@@ -2321,6 +2376,11 @@ const CA_I18N = {
     ed_illustration: "Illustration",
     ed_illustration_helper: "Automatisk: valgt ud fra enhedens model og navn",
     ill_auto: "Automatisk",
+    ill_none: "Ingen illustration (klassisk overskrift)",
+    ed_illustration_theme: "Illustrationstema",
+    theme_auto: "Automatisk (sol, mørkt tema)",
+    theme_day: "Dag",
+    theme_night: "Nat",
     ill_tower: "Tårn",
     ill_cylinder: "Rund",
     ill_box: "Firkantet kabinet",
@@ -2520,6 +2580,11 @@ const CA_I18N = {
     ed_illustration: "Illustration",
     ed_illustration_helper: "Automatisk: väljs utifrån enhetens modell och namn",
     ill_auto: "Automatisk",
+    ill_none: "Ingen illustration (klassisk rubrik)",
+    ed_illustration_theme: "Illustrationstema",
+    theme_auto: "Automatiskt (sol, mörkt tema)",
+    theme_day: "Dag",
+    theme_night: "Natt",
     ill_tower: "Torn",
     ill_cylinder: "Rund",
     ill_box: "Fyrkantig låda",
@@ -2719,6 +2784,11 @@ const CA_I18N = {
     ed_illustration: "Илюстрация",
     ed_illustration_helper: "Автоматично: избира се според модела и името на устройството",
     ill_auto: "Автоматично",
+    ill_none: "Без илюстрация (класическа заглавка)",
+    ed_illustration_theme: "Тема на илюстрацията",
+    theme_auto: "Автоматично (слънце, тъмна тема)",
+    theme_day: "Ден",
+    theme_night: "Нощ",
     ill_tower: "Колона",
     ill_cylinder: "Кръгъл",
     ill_box: "Квадратна кутия",
@@ -2918,6 +2988,11 @@ const CA_I18N = {
     ed_illustration: "Иллюстрация",
     ed_illustration_helper: "Автоматически: по модели и названию устройства",
     ill_auto: "Автоматически",
+    ill_none: "Без иллюстрации (классический заголовок)",
+    ed_illustration_theme: "Тема иллюстрации",
+    theme_auto: "Автоматически (солнце, тёмная тема)",
+    theme_day: "День",
+    theme_night: "Ночь",
     ill_tower: "Колонна",
     ill_cylinder: "Круглый",
     ill_box: "Квадратный корпус",
@@ -3117,6 +3192,11 @@ const CA_I18N = {
     ed_illustration: "Ілюстрація",
     ed_illustration_helper: "Автоматично: за моделлю та назвою пристрою",
     ill_auto: "Автоматично",
+    ill_none: "Без ілюстрації (класичний заголовок)",
+    ed_illustration_theme: "Тема ілюстрації",
+    theme_auto: "Автоматично (сонце, темна тема)",
+    theme_day: "День",
+    theme_night: "Ніч",
     ill_tower: "Колона",
     ill_cylinder: "Круглий",
     ill_box: "Квадратний корпус",
@@ -3316,6 +3396,11 @@ const CA_I18N = {
     ed_illustration: "Illusztráció",
     ed_illustration_helper: "Automatikus: az eszköz modellje és neve alapján",
     ill_auto: "Automatikus",
+    ill_none: "Nincs illusztráció (klasszikus fejléc)",
+    ed_illustration_theme: "Illusztráció témája",
+    theme_auto: "Automatikus (nap, sötét téma)",
+    theme_day: "Nappal",
+    theme_night: "Éjszaka",
     ill_tower: "Torony",
     ill_cylinder: "Kerek",
     ill_box: "Szögletes doboz",
@@ -3515,6 +3600,11 @@ const CA_I18N = {
     ed_illustration: "Ilustrácia",
     ed_illustration_helper: "Automaticky: podľa modelu a názvu zariadenia",
     ill_auto: "Automaticky",
+    ill_none: "Bez ilustrácie (klasická hlavička)",
+    ed_illustration_theme: "Téma ilustrácie",
+    theme_auto: "Automaticky (slnko, tmavá téma)",
+    theme_day: "Deň",
+    theme_night: "Noc",
     ill_tower: "Veža",
     ill_cylinder: "Okrúhla",
     ill_box: "Hranatá skrinka",
@@ -3714,6 +3804,11 @@ const CA_I18N = {
     ed_illustration: "Ilustrace",
     ed_illustration_helper: "Automaticky: podle modelu a názvu zařízení",
     ill_auto: "Automaticky",
+    ill_none: "Bez ilustrace (klasická hlavička)",
+    ed_illustration_theme: "Motiv ilustrace",
+    theme_auto: "Automaticky (slunce, tmavý motiv)",
+    theme_day: "Den",
+    theme_night: "Noc",
     ill_tower: "Věž",
     ill_cylinder: "Kulatá",
     ill_box: "Hranatá skříňka",
@@ -3913,6 +4008,11 @@ const CA_I18N = {
     ed_illustration: "Ilustracija",
     ed_illustration_helper: "Samodejno: izbrana glede na model in ime naprave",
     ill_auto: "Samodejno",
+    ill_none: "Brez ilustracije (klasična glava)",
+    ed_illustration_theme: "Tema ilustracije",
+    theme_auto: "Samodejno (sonce, temna tema)",
+    theme_day: "Dan",
+    theme_night: "Noč",
     ill_tower: "Stolp",
     ill_cylinder: "Okrogla",
     ill_box: "Kvadratno ohišje",
@@ -4112,6 +4212,11 @@ const CA_I18N = {
     ed_illustration: "Ilustrācija",
     ed_illustration_helper: "Automātiski: izvēlēta pēc ierīces modeļa un nosaukuma",
     ill_auto: "Automātiski",
+    ill_none: "Bez ilustrācijas (klasiska galvene)",
+    ed_illustration_theme: "Ilustrācijas tēma",
+    theme_auto: "Automātiski (saule, tumšā tēma)",
+    theme_day: "Diena",
+    theme_night: "Nakts",
     ill_tower: "Tornis",
     ill_cylinder: "Apaļš",
     ill_box: "Kvadrātveida korpuss",
@@ -4311,6 +4416,11 @@ const CA_I18N = {
     ed_illustration: "Εικονογράφηση",
     ed_illustration_helper: "Αυτόματα: επιλέγεται με βάση το μοντέλο και το όνομα της συσκευής",
     ill_auto: "Αυτόματα",
+    ill_none: "Χωρίς εικονογράφηση (κλασική κεφαλίδα)",
+    ed_illustration_theme: "Θέμα εικονογράφησης",
+    theme_auto: "Αυτόματο (ήλιος, σκούρο θέμα)",
+    theme_day: "Ημέρα",
+    theme_night: "Νύχτα",
     ill_tower: "Πύργος",
     ill_cylinder: "Στρογγυλός",
     ill_box: "Τετράγωνο κουτί",
@@ -5387,7 +5497,7 @@ class CaCard extends CaElement {
     const ids = [r.id, ...Object.values(r.ent), ...(this._extraIds?.(r) || [])];
     // Home Assistant replaces a `states[id]` object whenever the entity changes: comparing the ids and the state
     // object references is enough to tell a tick apart, with nothing serialized.
-    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, ...(this._extraSig?.() || []), ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
+    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, hass.states["sun.sun"], hass.themes?.darkMode, ...(this._extraSig?.() || []), ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
     // A dropdown open or a slider held in the card is not rebuilt: the card is redrawn around it.
     const active = this.shadowRoot.activeElement;
@@ -5453,20 +5563,55 @@ class CaCard extends CaElement {
       m.online && this._showPower(m)
         ? `<button class="power${m.running ? " on" : ""}" data-action="power" title="${caEsc(this._t("power"))}" aria-label="${caEsc(this._t("power"))}"><ha-icon icon="mdi:power"></ha-icon></button>`
         : "";
-    m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon></div>`;
+    // The round icon's colour tells the status: an alert in red, a warning in amber, else the state's colour (grey
+    // when off or offline).
+    m.badgeColor = !m.online
+      ? CA_IDLE
+      : m.chips.some((x) => x.includes("chip alert"))
+        ? "var(--error-color, #db4437)"
+        : m.chips.some((x) => x.includes("chip warn"))
+          ? "var(--warning-color, #ffa600)"
+          : m.color;
+    m.illustrated = this._illustrated();
+    const brand = m.illustrated ? caBrandBadge(caBrand(this._hass, r.id, c)) : "";
+    m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon>${brand}</div>`;
 
     if (this._compact()) {
       target.innerHTML = this._miniHtml(m);
       return;
     }
     const sub = [caAreaName(this._hass, r.id), m.sub].filter(Boolean).join(" · ");
-    target.innerHTML =
-      `${this._styles(m.color)}<ha-card>` +
-      `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>` +
-      `${caPill(m.statusText)}${m.powerBtn}${this._zoomButton()}</div>` +
-      `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : ""}</div></div>` +
-      (c.show_controls && m.online ? this._controls(m) : "") +
-      "</ha-card>";
+    const chips = m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : "";
+    const head = m.illustrated
+      ? this._banner(m, [m.statusText, sub].filter(Boolean).join(" · "))
+      : `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>` +
+        `${caPill(m.statusText)}${m.powerBtn}${this._zoomButton()}</div>`;
+    // Under the banner, the device is in the picture above: the measurements, and the on / off button at their right.
+    const hero = m.illustrated
+      ? `<div class="hero"><div class="info">${this._heroInfo(m)}${chips}</div>${m.powerBtn}</div>`
+      : `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${chips}</div></div>`;
+    target.innerHTML = `${this._styles(m.color, m.badgeColor)}<ha-card>${head}${hero}${c.show_controls && m.online ? this._controls(m) : ""}</ha-card>`;
+  }
+
+  // Whether the header is the illustrated banner (the default) or the classic one (`illustration: false`, or a
+  // custom `icon` in place of the illustration).
+  _illustrated() {
+    return this._config.illustration !== false && this._config.illustration !== "none" && !this._config.icon && !!CA_ART[this.constructor.kind];
+  }
+
+  // The illustrated header: the round icon, the name and `sub` on the left, the device in its room on the right.
+  _banner(m, sub) {
+    const kind = this.constructor.kind;
+    this._uid ??= ++caUidSeq;
+    const night = caIsNight(this._hass, this._config);
+    const wall = CA_BANNER_WALL[kind]?.[night ? 1 : 0];
+    const cls = ["banner", `k-${kind}-banner`, night ? "night" : "", m.running ? "running" : ""].filter(Boolean).join(" ");
+    return (
+      `<div class="${cls}"${wall ? ` style="--ca-wall:${wall};--ca-wall-fill:${wall}"` : ""}>` +
+      `${caBannerScene(kind, m.variant, m, night, this._uid)}<div class="ground"></div>` +
+      `<div class="bhead">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div></div>` +
+      `${this._zoomButton()}</div>`
+    );
   }
 
   // Whether the header's on / off button shows. A metered heat pump (its entity is a power sensor) is read-only.
@@ -5778,8 +5923,8 @@ class CaCard extends CaElement {
   }
 
   // ── Styles ──
-  _styles(color) {
-    return `<style>${CA_STYLES}${CA_ART[this.constructor.kind]?.styles || ""}${this.constructor.styles || ""}</style><style>:host{--ca-color:${color || CA_IDLE};}</style>`;
+  _styles(color, badge) {
+    return `<style>${CA_STYLES}${CA_ART[this.constructor.kind]?.styles || ""}${this.constructor.styles || ""}</style><style>:host{--ca-color:${color || CA_IDLE};--ca-badge:${badge || color || CA_IDLE};}</style>`;
   }
 
   // The device's other switches (eco, display, self clean, child lock…) are listed as options.
@@ -6452,11 +6597,12 @@ const caMini = (Base) =>
     _miniHtml(m) {
       const btns = [...(m.online && this._config.show_controls ? this._miniButtons(m) : []), m.powerBtn].filter(Boolean);
       const chips = m.chips.filter((x) => x.includes("chip warn") || x.includes("chip alert") || !m.online);
+      const head = m.illustrated
+        ? this._banner(m, [m.statusText, m.sub].filter(Boolean).join(" · "))
+        : `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div></div>${caPill(m.statusText)}${this._zoomButton()}</div>`;
       return (
-        `${this._styles(m.color)}<ha-card class="mini">` +
-        `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div></div>` +
-        `${caPill(m.statusText)}${this._zoomButton()}</div>` +
-        `<div class="content">${this._picture(m)}<div class="info">${this._miniInfo(m)}${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div>` +
+        `${this._styles(m.color, m.badgeColor)}<ha-card class="mini">${head}` +
+        `<div class="content">${m.illustrated ? "" : this._picture(m)}<div class="info">${this._miniInfo(m)}${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div>` +
         `${btns.length ? `<div class="mcontrols">${btns.join("")}</div>` : ""}</div></ha-card>`
       );
     }
@@ -6531,6 +6677,238 @@ const CA_ART_STYLES = `
   @media (prefers-reduced-motion: reduce) { .picture, .picture * { animation: none !important; } }
 `;
 
+// ── Illustrated header ───────────────────────────────────────────────────────
+// The header of the device cards (full and mini): a 90 px banner, the round icon, the name and the status on the
+// left, and on the right the room the device stands in, drawn by the kind of device, with the card's own illustration
+// of the device in front of it and a 10 px floor strip edge to edge at the bottom. The room shows what the device does
+// while it runs: cold air under the wall unit and the sun at the window (air conditioner), particles drawn into the
+// purifier and clean air leaving it, the breeze of a fan, mist above a humidifier; a heat pump stands outdoors,
+// against the façade, on the lawn. Night (sun.sun below the horizon, else Home Assistant's dark theme, unless
+// `illustration_theme` forces day or night) dims the room. `illustration: false` keeps the classic header.
+
+// The brand logos, by slug, embedded by the build from images/badge/<slug>.png (scripts/build.mjs).
+const CA_BRAND_LOGOS = {} /* __BRAND_LOGOS__ */;
+
+// A number per card instance, for the ids of its banner's SVG.
+let caUidSeq = 0;
+
+// The brand of a device: its manufacturer first (a VOCOlinc diffuser through HomeKit shows VOCOlinc), else the
+// integration it comes from. `brand` in YAML picks a slug, or hides the badge with `none`.
+const CA_BRAND_MAKERS = [
+  [/vocolinc/i, "vocolinc"],
+  [/rituals/i, "rituals"],
+  [/dyson/i, "dyson_local"],
+  [/daikin/i, "daikin_onecta"],
+  [/midea/i, "midea_ac_lan"],
+  [/panasonic/i, "panasonic"],
+  [/mitsubishi/i, "melcloud"],
+  [/viessmann/i, "vicare"],
+  [/\bnibe\b/i, "myuplink"],
+  [/hitachi/i, "hitachi_yutaki"],
+  [/atlantic/i, "cozytouch"],
+  [/xiaomi|smartmi|zhimi|deerma|mijia/i, "xiaomi_home"],
+];
+const CA_BRAND_PLATFORMS = { homekit_controller: "homekit", aquarea: "panasonic", overkiz: "cozytouch", rituals_perfume_genie: "rituals" };
+function caBrand(hass, id, config) {
+  if (config.brand) return config.brand === "none" ? "" : String(config.brand);
+  const maker = hass.devices?.[caDeviceOf(hass, id)]?.manufacturer || "";
+  const hit = CA_BRAND_MAKERS.find(([re]) => re.test(maker));
+  if (hit) return hit[1];
+  const platform = hass.entities?.[id]?.platform || "";
+  return CA_BRAND_PLATFORMS[platform] || platform;
+}
+const caBrandBadge = (slug) => {
+  const logo = slug && CA_BRAND_LOGOS[slug];
+  return logo ? `<span class="brand"><img src="${caEsc(logo)}" alt=""></span>` : "";
+};
+
+// Night picture: forced by illustration_theme, else the sun below the horizon, else Home Assistant's dark mode.
+function caIsNight(hass, config) {
+  if (config.illustration_theme === "night") return true;
+  if (config.illustration_theme === "day") return false;
+  const sun = hass?.states?.["sun.sun"];
+  if (sun && !caUnavailable(sun)) return sun.state === "below_horizon";
+  return !!hass?.themes?.darkMode;
+}
+
+// The device's outline in its own picture (viewBox units: x, y, width, height), measured once from each drawing: the
+// banner crops the picture to it, so the device stands on the floor strip and fills the room's height. Its effects
+// (air, mist, breeze) still draw outside it.
+const CA_BANNER_BOX = {
+  aircon: { split: [2.4, 13.4, 75.2, 32.2], portable: [1.5, 2.5, 61.1, 87.1], window: [1, 3.6, 71.6, 84.8], portasplit: [3.4, 18.1, 73.2, 71.2] },
+  purifier: { tower: [17.9, 6.4, 44.2, 82.2], cylinder: [20.4, 7.9, 39.2, 82.3], box: [11.4, 16.4, 57.2, 72.2], dyson: [23.9, 1.3, 32.2, 87.3] },
+  fan: { fan: [13.2, 5.2, 53.6, 86.5] },
+  humidifier: {
+    column: [23.4, 21.4, 33.2, 67.2],
+    tank: [7.4, 11.5, 65.2, 75.1],
+    evaporative: [11.4, 13.4, 57.2, 75.2],
+    vocolinc: [27.9, 16.9, 24.2, 71.7],
+    diffuser: [11.8, 3.5, 56.4, 85.1],
+    rituals: [10.8, 17.8, 58.5, 68.6],
+    rituals_black: [10.8, 17.8, 58.5, 68.6],
+    dehumidifier: [15.4, 9.4, 49.2, 79.2],
+  },
+  heatpump: { air: [0, 5.4, 116.7, 83.2] },
+};
+
+// Where the device stands in the 200 × 80 room: a wall unit high on the wall, everything else on the floor (y 80),
+// as big as the room allows. Returns its box { x, y, w, h } and the crop of its picture.
+function caBannerPlace(kind, variant) {
+  const boxes = CA_BANNER_BOX[kind] || {};
+  const vb = boxes[variant] || Object.values(boxes)[0] || [0, 0, 80, 94];
+  const wall = kind === "aircon" && (variant || "split") === "split";
+  const [maxW, maxH, cx] = wall ? [66, 40, 160] : kind === "heatpump" ? [86, 70, 154] : [76, 72, 160];
+  const k = Math.min(maxW / vb[2], maxH / vb[3]);
+  const w = vb[2] * k;
+  const h = vb[3] * k;
+  return { vb, wall, x: cx - w / 2, y: wall ? 10 : 80 - h, w, h, k };
+}
+
+const caF = (n) => +n.toFixed(1);
+
+// The room behind the device (200 × 80, the device at x ≈ 122–198): the wall and its window, and the effects of the
+// running device around it (drawn only while it runs, animated by CA_BANNER_STYLES).
+function caBannerRoom(kind, variant, n, p) {
+  const top = p.y;
+  const cx = p.x + p.w / 2;
+  if (kind === "heatpump") {
+    const sky = n
+      ? `<g class="b-star">${[[96, 10], [110, 22], [74, 16], [120, 6], [88, 30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".7"/>`).join("")}</g><path class="b-moon" d="M106 8a6 6 0 1 0 5.2 9 4.8 4.8 0 1 1-5.2-9Z"/>`
+      : '<circle class="b-sun" cx="106" cy="14" r="6"/><path class="b-cloud" d="M64 22a4 4 0 0 1 6-3.4 5 5 0 0 1 9.4 1.4 3 3 0 0 1 .6 6H66a3 3 0 0 1-2-4Z"/>';
+    const bricks = Array.from({ length: 8 }, (_, i) => `M128 ${i * 10 + 6}H200`).join("");
+    const exhaust = [38, 50].map((y, i) => `<path class="bz b${i}" d="M${caF(p.x - 2)} ${y} q-8 -4 -16 0"/>`).join("");
+    return (
+      `${sky}<rect class="b-facade" x="128" y="0" width="72" height="80"/><path class="b-joint" d="${bricks}"/>` +
+      `<path class="b-hill" d="M0 80C40 72 90 70 132 72V80Z"/><g class="bfx exhaust">${exhaust}</g>`
+    );
+  }
+  const sunny = kind === "aircon" || kind === "fan";
+  const win =
+    `<rect class="b-win${sunny ? " sunny" : ""}" x="88" y="12" width="30" height="34" rx="1.5"/>` +
+    (sunny && !n ? '<circle class="b-sun" cx="110" cy="22" r="5"/>' : "") +
+    (n ? '<circle class="b-wstar" cx="96" cy="20" r=".7"/><circle class="b-wstar" cx="111" cy="34" r=".6"/>' : "") +
+    '<path class="b-frame" d="M103 12V46"/>';
+  let fx = "";
+  if (kind === "aircon" && p.wall) {
+    // Cold (or warm) air falling from the wall unit into the room.
+    fx = [-18, -6, 6, 18].map((dx, i) => `<path class="ca c${i % 3}" d="M${caF(cx + dx)} ${caF(top + 36)} q3 8 -2 16 q-4 8 0 16"/>`).join("");
+  } else if (kind === "purifier") {
+    // Dust drawn into the purifier from the room, clean air leaving its top.
+    const tx = cx;
+    const ty = top + p.h * 0.45;
+    fx =
+      Array.from({ length: 12 }, (_, i) => {
+        const x = 92 + ((i * 23) % 40);
+        const y = 8 + ((i * 17) % 60);
+        return `<circle class="suck s${i % 4}" cx="${x}" cy="${y}" r="1.4" style="--dx:${caF(tx - x)}px;--dy:${caF(ty - y)}px"/>`;
+      }).join("") +
+      `<g class="clean">${[-5, 0, 5].map((dx, i) => `<path class="cl l${i}" d="M${caF(cx + dx)} ${caF(top - 1)} q-3 -3 0 -6"/>`).join("")}</g>`;
+  } else if (kind === "fan") {
+    // The breeze blowing from the fan's head into the room.
+    const hy = top + (32 - 5.2) * p.k;
+    fx = [-12, 0, 12].map((dy, i) => `<path class="bz b${i}" d="M${caF(p.x - 2)} ${caF(hy + dy)} q-10 -5 -20 0 t-20 0"/>`).join("");
+  } else if (kind === "humidifier") {
+    if (variant === "dehumidifier") {
+      fx = `<g class="clean dry">${[-6, 0, 6].map((dx, i) => `<path class="cl l${i}" d="M${caF(cx + dx)} ${caF(top - 1)} q-3 -3 0 -6"/>`).join("")}</g>`;
+    } else {
+      fx = [[0, 4, 6], [-7, 8, 4], [7, 9, 5], [-1, 14, 3.5]]
+        .map(([dx, dy, r], i) => `<circle class="puff p${i}" cx="${caF(cx + dx)}" cy="${caF(Math.max(r, top - dy))}" r="${r}"/>`)
+        .join("");
+    }
+  }
+  return `<rect class="b-wall" width="200" height="80"/>${win}<g class="bfx">${fx}</g>`;
+}
+
+// The banner's picture: the room and, in front of it, the card's illustration of the device (same drawing, classes
+// and animations as the classic header's picture), cropped to the device. `uid` keeps the SVG ids of each card apart.
+function caBannerScene(kind, variant, s, n, uid) {
+  const art = CA_ART[kind];
+  if (!art) return "";
+  const p = caBannerPlace(kind, variant);
+  const r = art.render(variant, s);
+  const svg = r.svg
+    .replace(/(id="|url\(#)(ca-[a-z0-9]+)/g, `$1$2-b${uid}`)
+    .replace(/^<svg\b[^>]*>/, `<svg x="${caF(p.x)}" y="${caF(p.y)}" width="${caF(p.w)}" height="${caF(p.h)}" viewBox="${p.vb.join(" ")}" overflow="visible" aria-hidden="true">`);
+  const cls = ["bdev", `k-${kind}`, `st-${s.state || (s.running ? "on" : "off")}`, s.running ? "running" : "", ...(r.cls || []), p.wall ? "wall" : ""];
+  return (
+    `<svg class="bscene" viewBox="0 0 200 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">` +
+    `${caBannerRoom(kind, variant, n, p)}<g class="${cls.filter(Boolean).join(" ")}"${r.style ? ` style="${r.style}"` : ""}>${svg}</g></svg>`
+  );
+}
+
+// The banner's colours per kind of device (the room's wall, day / night); a heat pump has the sky.
+const CA_BANNER_WALL = { aircon: ["#e9f3fb", "#1f2a38"], purifier: ["#eef4f2", "#22302c"], fan: ["#fbf1e2", "#2e2a26"], humidifier: ["#eef0f8", "#262a3a"] };
+
+const CA_BANNER_STYLES = `
+  .banner { position: relative; overflow: hidden; height: 90px; flex: none; margin: -12px -12px 0; color: #10283f;
+            border-radius: var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px) 0 0;
+            background: var(--ca-wall, linear-gradient(90deg, #f3f9ff 0%, #e2f0fc 38%, #c4e1f7 100%)); }
+  .banner.night { color: #fff; background: var(--ca-wall, linear-gradient(90deg, #2c4068 0%, #1b2b4e 42%, #0f1a34 100%)); }
+  .bscene { position: absolute; right: 0; bottom: 10px; height: 80px; width: min(200px, 58%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14%); mask-image: linear-gradient(90deg, transparent 0, #000 14%); }
+  .bhead { position: absolute; z-index: 1; left: 12px; top: 0; bottom: 10px; right: calc(min(200px, 58%) - 20px);
+           display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .banner .titles { flex: 1 1 auto; min-width: 0; }
+  .banner .name { color: inherit; }
+  .banner .sub { color: #3d5670; }
+  .banner.night .sub { color: rgba(255,255,255,.8); }
+  .banner .badge { position: relative; background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px rgba(13,42,69,.12); }
+  .banner.night .badge { background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .badge .brand { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 5px; padding: 2px; box-sizing: border-box;
+                  display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 1px rgba(13,42,69,.16), 0 1px 3px rgba(13,42,69,.18); }
+  .badge .brand img { width: 100%; height: 100%; object-fit: contain; }
+  .banner .zoom { position: absolute; z-index: 2; top: 6px; right: 6px; margin: 0; color: #10283f; background: rgba(255,255,255,.55); }
+  .banner.night .zoom { color: #fff; background: rgba(10,20,40,.45); }
+  .banner .zoom:hover { background: rgba(255,255,255,.8); color: #10283f; }
+  /* The floor strip, edge to edge under the room: parquet indoors, lawn outdoors (heat pump). */
+  .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 10px;
+            background: repeating-linear-gradient(90deg, #c99a6b 0 38px, #b98a5c 38px 40px); box-shadow: inset 0 2px 0 #a97c50; }
+  .night .ground { background: repeating-linear-gradient(90deg, #4a3a2c 0 38px, #3e3024 38px 40px); box-shadow: inset 0 2px 0 #35291f; }
+  .k-heatpump-banner .ground { background: repeating-linear-gradient(90deg, #5aa83d 0 22px, #6cbb4c 22px 44px); box-shadow: none; }
+  .night.k-heatpump-banner .ground { background: repeating-linear-gradient(90deg, #1f4a2a 0 22px, #245433 22px 44px); }
+  /* The room. */
+  .b-wall { fill: var(--ca-wall-fill); }
+  .b-win { fill: #cfe8f8; stroke: #fff; stroke-width: 2; } .b-win.sunny { fill: #ffe6b0; }
+  .night .b-win { fill: #1b2f52; stroke: #4a5568; }
+  .b-frame { stroke: #fff; stroke-width: 1.2; } .night .b-frame { stroke: #4a5568; }
+  .b-sun { fill: #ffb02e; } .k-heatpump-banner .b-sun { fill: #ffd65a; }
+  .b-wstar, .b-star { fill: #fff; opacity: .85; } .b-moon { fill: #f4f1dc; }
+  .b-cloud { fill: #fff; opacity: .9; }
+  .b-facade { fill: #efe3cf; } .night .b-facade { fill: #3a3530; }
+  .b-joint { stroke: #e2d3b8; stroke-width: .8; } .night .b-joint { stroke: #4a443c; }
+  .b-hill { fill: #86c27f; } .night .b-hill { fill: #17303d; }
+  .bdev { filter: drop-shadow(0 2px 3px rgba(0,0,0,.16)); }
+  .bdev.wall .floor { display: none; }
+  /* The effects of the running device. */
+  .bfx { display: none; }
+  .banner.running .bfx { display: inline; }
+  .bfx .ca { fill: none; stroke: var(--ca-color); stroke-width: 1.8; stroke-linecap: round; opacity: 0; animation: ca-b-fall 2.4s ease-in infinite; }
+  .bfx .c1 { animation-delay: -.8s; } .bfx .c2 { animation-delay: -1.6s; }
+  .bfx .suck { fill: #a39e94; opacity: 0; animation: ca-b-suck 3s ease-in infinite; }
+  .night .bfx .suck { fill: #8a8f9a; }
+  .bfx .s1 { animation-delay: -.75s; } .bfx .s2 { animation-delay: -1.5s; } .bfx .s3 { animation-delay: -2.25s; }
+  .bfx .cl { fill: none; stroke: #5dcaa5; stroke-width: 1.4; stroke-linecap: round; opacity: 0; animation: ca-b-rise 2.2s ease-out infinite; }
+  .bfx .dry .cl { stroke: var(--ca-color); }
+  .bfx .l1 { animation-delay: -.7s; } .bfx .l2 { animation-delay: -1.4s; }
+  .bfx .bz { fill: none; stroke: #d9b896; stroke-width: 1.6; stroke-linecap: round; opacity: 0; animation: ca-b-blow 2s linear infinite; }
+  .night .bfx .bz { stroke: #7d8793; }
+  .exhaust .bz { stroke: #b9c4cc; stroke-width: 1.4; animation-duration: 2.4s; }
+  .bfx .b1 { animation-delay: -.6s; } .bfx .b2 { animation-delay: -1.2s; }
+  .bfx .puff { fill: #cfe3f4; opacity: 0; animation: ca-b-puff 3s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .night .bfx .puff { fill: #5c6e8a; }
+  .bfx .p1 { animation-delay: -.7s; } .bfx .p2 { animation-delay: -1.4s; } .bfx .p3 { animation-delay: -2.1s; }
+  @keyframes ca-b-fall { from { transform: translateY(-6px); opacity: 0; } 30% { opacity: .7; } to { transform: translateY(10px); opacity: 0; } }
+  @keyframes ca-b-suck { from { transform: translate(0, 0); opacity: .8; } to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
+  @keyframes ca-b-rise { from { transform: translateY(2px); opacity: 0; } 30% { opacity: .9; } to { transform: translateY(-6px); opacity: 0; } }
+  @keyframes ca-b-blow { from { transform: translateX(0); opacity: .9; } to { transform: translateX(-30px); opacity: 0; } }
+  @keyframes ca-b-puff { from { transform: translateY(10px) scale(.6); opacity: 0; } 40% { opacity: .8; } to { transform: translateY(-8px) scale(1.2); opacity: 0; } }
+  /* Narrow cards (the Sections view's 6 columns): a smaller room, the text gets more of the width. */
+  @container (max-width: 300px) { .bscene { width: 48%; } .bhead { right: calc(48% - 26px); gap: 8px; } }
+  /* Narrowest cards: the sky alone, the text gets the width. */
+  @container (max-width: 200px) { .bscene { display: none; } .bhead { right: 36px; } }
+  @media (prefers-reduced-motion: reduce) { .banner, .banner * { animation: none !important; } .bfx .suck, .bfx .cl, .bfx .bz, .bfx .puff, .bfx .ca { opacity: .6; } }
+`;
+
 // ── Styles ───────────────────────────────────────────────────────────────────
 const CA_STYLES = `${CA_ART_STYLES}
   /* ha-card is a size container, so its content gives it no width: in a shrink-to-fit parent (inline-block, a grid's
@@ -6545,7 +6923,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   .header { display: flex; align-items: center; gap: 10px; margin-bottom: -2px; }
   ha-card.mini .header { margin-bottom: 0; }
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
-           background: color-mix(in srgb, var(--ca-color) 16%, transparent); color: var(--ca-color); transition: background .4s, color .4s; }
+           background: color-mix(in srgb, var(--ca-badge, var(--ca-color)) 16%, transparent); color: var(--ca-badge, var(--ca-color)); transition: background .4s, color .4s; }
   .badge ha-icon { --mdc-icon-size: 24px; }
   /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
      characters: the pill is only truncated when even that does not fit. */
@@ -6697,6 +7075,7 @@ const CA_STYLES = `${CA_ART_STYLES}
   @media (prefers-reduced-motion: reduce) {
     .dot, .iconart ha-icon { animation: none !important; }
   }
+${CA_BANNER_STYLES}
 `;
 
 // ── Editor (built on Home Assistant's ha-form) ───────────────────────────────
@@ -6726,7 +7105,7 @@ class CaCardEditor extends HTMLElement {
       show_sensors: true,
       // The fan and heat pump cards show no filter alert: no toggle for them.
       ...(CA_NO_FILTER.includes(this.constructor.kind) ? {} : { show_alerts: true, show_filter: true, filter_warning: CA_FILTER_WARNING }),
-      ...(CA_ART[this.constructor.kind]?.variants ? { illustration: "auto" } : {}),
+      ...(CA_ART[this.constructor.kind] ? { illustration: "auto", illustration_theme: "auto" } : {}),
       // Heat pump: the defaults caCleanConfig drops, so the YAML only carries a source once it differs from air.
       ...(this.constructor.kind === "heatpump" ? { source: "air", ground_type: "collector", water_type: "well" } : {}),
       ...(this.constructor.mini ? { zoom: true } : {}),
@@ -6747,13 +7126,25 @@ class CaCardEditor extends HTMLElement {
       // A heat pump without a climate entity is driven by the select of its mode (TOUG): both domains are offered.
       { name: "entity", selector: { entity: kind === "heatpump" ? { domain: ["climate", "select"] } : ids.length ? { include_entities: ids } : { domain } } },
       { type: "grid", name: "", schema: [{ name: "name", selector: { text: {} } }, { name: "icon", selector: { icon: {} } }] },
-      ...(variants.length
+      // The illustration: guessed, a shape picked, or none (the classic header, `illustration: false`); and the
+      // banner's day / night theme.
+      ...(CA_ART[kind]
         ? [
             {
-              name: "illustration",
-              selector: {
-                select: { mode: "dropdown", options: ["auto", ...variants].map((v) => ({ value: v, label: caT(lang, `ill_${v}`) })) },
-              },
+              type: "grid",
+              name: "",
+              schema: [
+                {
+                  name: "illustration",
+                  selector: {
+                    select: { mode: "dropdown", options: ["auto", ...variants, "none"].map((v) => ({ value: v, label: caT(lang, `ill_${v}`) })) },
+                  },
+                },
+                {
+                  name: "illustration_theme",
+                  selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: caT(lang, `theme_${v}`) })) } },
+                },
+              ],
             },
           ]
         : []),
@@ -6831,11 +7222,13 @@ class CaCardEditor extends HTMLElement {
 
   // The form's data from the config, and the config from the form's data (the overview edits its lists as sections).
   _data() {
-    return { ...this._defaults(), ...this._config };
+    const data = { ...this._defaults(), ...this._config };
+    if (data.illustration === false) data.illustration = "none";
+    return data;
   }
 
   _fromForm(value) {
-    return value;
+    return value.illustration === "none" ? { ...value, illustration: false } : value;
   }
 
   _valueChanged(ev) {
