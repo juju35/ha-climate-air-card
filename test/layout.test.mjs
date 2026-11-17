@@ -155,14 +155,14 @@ test("unavailable device: the narrow pill still carries the translated status", 
   }
 });
 
-test("illustrated banner: the status as subtitle, a grey icon when offline, the classic header with illustration: false", () => {
+test("illustrated banner: the status pill right after the title, a grey icon when offline, the classic header with illustration: false", () => {
   const off = { "fan.living_room_purifier_air_purifier": { state: "unavailable" }, "fan.bedroom_fan_fan": { state: "unavailable" }, "climate.air_conditioner": { state: "unavailable" } };
   for (const [tag, el] of cards("pl", off)) {
     const out = el.shadowRoot.innerHTML;
     assert.match(out, /<div class="banner [^"]*"/, `${tag}: banner`);
-    assert.match(out, /<div class="sub">Niedostępne/, `${tag}: status in the subtitle`);
+    assert.match(out, /<div class="trow"><div class="name">[^<]+<\/div><span class="st" title="Niedostępne"><span class="dot"><\/span><span class="stt">Niedostępne<\/span><\/span><\/div>/, `${tag}: pill on the title line`);
+    assert.doesNotMatch(out, /<div class="sub">Niedostępne/, `${tag}: the status not repeated in the subtitle`);
     assert.match(out, /--ca-badge:var\(--disabled-text-color/, `${tag}: grey icon`);
-    assert.doesNotMatch(out, /class="st"/, `${tag}: no pill`);
     assert.doesNotMatch(out, /data-action="power"/, `${tag}: no power button`);
   }
   for (const [tag, el] of cards("en", {}, { illustration: false })) {

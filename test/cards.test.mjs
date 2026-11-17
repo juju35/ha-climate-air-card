@@ -139,7 +139,7 @@ test("heat pump: found by its hot water tank, with its temperatures, tank, modes
   assert.match(out, /20,5<small> °C/);
   assert.match(out, /Ballon 52 °C → 55 °C/);
   assert.match(out, /Extérieur 4 °C/);
-  assert.match(out, /<div class="sub">Chauffe(?: ·|<)/);
+  assert.match(out, /<span class="stt">Chauffe</);
   // The hot water target is a centred − / + stepper (issue #76), sent once the taps stop.
   assert.match(out, /data-action="setstep" data-value="water_heater\.heat_pump_hot_water\|1"/);
   assert.match(out, /class="seg on" data-action="dhwop" data-value="heat_pump"/);
@@ -191,7 +191,7 @@ test("heat pump: hot water through the valve, defrost and the backup heater", ()
   });
   const out = html(mount(lib, "climate-air-heatpump-card", { entity: "climate.heat_pump" }, h));
   assert.match(out, /class="bdev k-heatpump st-dhw running ph-dhw active defrost"/);
-  assert.match(out, /<div class="sub">Defrosting(?: ·|<)/);
+  assert.match(out, /<span class="stt">Defrosting</);
   assert.match(out, /Backup heater/);
   const off = html(mount(lib, "climate-air-heatpump-card", { entity: "climate.heat_pump" }, makeHass("en", { "climate.heat_pump": { state: "off", hvac_action: "off" } })));
   assert.match(off, /class="bdev k-heatpump st-off ph-off"/);
@@ -346,7 +346,7 @@ test("humidifier: humidity, target, tank, modes and controls", () => {
   assert.match(out, /48<small> %/);
   assert.match(out, /→ 55 %/);
   assert.match(out, /Réservoir 60 %/);
-  assert.match(out, /<div class="sub">Humidifie(?: ·|<)/);
+  assert.match(out, /<span class="stt">Humidifie</);
   assert.match(out, /class="seg on" data-action="hmode" data-value="auto"/);
   assert.match(out, /data-hum="humidifier\.bedroom_humidifier"/);
   assert.match(out, /data-toggle="light\.bedroom_humidifier_indicator_light"/);
@@ -360,7 +360,7 @@ test("humidifier: humidity, target, tank, modes and controls", () => {
 test("humidifier: an empty tank stops it and flags it, on the card and the overview", () => {
   const h = makeHass("en", { "sensor.bedroom_humidifier_water_level": { state: 0 } });
   const out = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h));
-  assert.match(out, /<div class="sub">Water tank empty(?: ·|<)/);
+  assert.match(out, /<span class="stt">Water tank empty</);
   assert.match(out, /class="bdev k-humidifier st-on running v-column low"/);
   assert.match(overview({ zoom: false }, h).body, /mdi:water-off"><\/ha-icon><span>Water tank empty/);
 });
@@ -369,13 +369,13 @@ test("dehumidifier and diffuser: illustration, status and label from device_clas
   const dry = makeHass("en", { "humidifier.office_dehumidifier": { state: "on", action: "drying" }, "binary_sensor.office_dehumidifier_tank_full": { state: "on" } });
   const out = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.office_dehumidifier" }, dry));
   assert.match(out, /v-dehumidifier/);
-  assert.match(out, /<div class="sub">Bucket full(?: ·|<)/);
+  assert.match(out, /<span class="stt">Bucket full</);
   assert.match(out, /Bucket 30 %/);
   const ok = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.office_dehumidifier" }, makeHass("en", { "humidifier.office_dehumidifier": { state: "on", action: "drying" } })));
-  assert.match(ok, /<div class="sub">Drying(?: ·|<)/);
+  assert.match(ok, /<span class="stt">Drying</);
   const diff = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.living_room_diffuser" }, makeHass("fr"));
   assert.match(html(diff), /v-diffuser/);
-  assert.match(html(diff), /<div class="sub">Diffuse(?: ·|<)/);
+  assert.match(html(diff), /<span class="stt">Diffuse</);
   assert.match(html(diff), /icon="mdi:scent"/);
   // Its cone takes the colour of its mood light, and its spray quantity is a slider.
   assert.match(html(diff), /v-diffuser active lit" style="--ca-glow:rgb\(224,64,251\);--ca-glow-o:0\.9\d*"/);
@@ -421,7 +421,7 @@ test("rituals: a localised (German) Perfume Genie is recognised from its platfor
   const out = html(mount(lib, "climate-air-humidifier-card", { entity: "switch.genie" }, hass));
   // The brass illustration and the diffuser status, from the manufacturer and the platform.
   assert.match(out, /v-rituals/);
-  assert.match(out, /<div class="sub">Diffusing(?: ·|<)/);
+  assert.match(out, /<span class="stt">Diffusing</);
   // The fill sensor drives the cartridge bar (not a water tank), found by translation_key "fill".
   assert.match(out, /Cartridge 40 %/);
   // The perfume amount slider, room size segments, fragrance and Wi-Fi chips, all found by translation_key.

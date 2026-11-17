@@ -14,7 +14,7 @@ try {
   ({ mockHass } = await import("../scripts/screenshots/mock.mjs"));
 } catch {}
 let browser = null;
-if (chromium && existsSync(dist)) browser = await chromium.launch().catch(() => null);
+if (chromium && existsSync(dist)) browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}).catch(() => null);
 
 const CARDS = [
   ["climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" }],

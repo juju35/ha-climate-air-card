@@ -13,7 +13,7 @@ try {
   ({ mockHass } = await import("../scripts/screenshots/mock.mjs"));
 } catch {}
 let browser = null;
-if (chromium && existsSync(dist)) browser = await chromium.launch().catch(() => null);
+if (chromium && existsSync(dist)) browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {}).catch(() => null);
 
 const LANGS = ["en", "pl", "sr-Latn", "bg", "el", "ru"];
 const UNAVAILABLE = {
@@ -22,7 +22,7 @@ const UNAVAILABLE = {
   "fan.bedroom_fan_fan": { state: "unavailable" },
   "climate.air_conditioner": { state: "unavailable" },
 };
-// The status pill is the classic header's (`illustration: false`): the illustrated banner shows the status as its subtitle.
+// The status pill of the classic header (`illustration: false`), of the illustrated banner and of the overview.
 const CARDS = [
   ["climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier", illustration: false }],
   ["climate-air-purifier-card", { entity: "fan.bedroom_purifier", illustration: false }],
@@ -32,6 +32,12 @@ const CARDS = [
   ["climate-air-aircon-card", { entity: "climate.air_conditioner", illustration: false }],
   ["climate-air-aircon-mini-card", { entity: "climate.air_conditioner", illustration: false }],
   ["climate-air-overview-card", {}],
+  // The illustrated banner: the pill right after the title, or on its own line under the subtitle.
+  ["climate-air-purifier-card", { entity: "fan.bedroom_purifier" }],
+  ["climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier" }],
+  ["climate-air-fan-mini-card", { entity: "fan.bedroom_fan_fan" }],
+  ["climate-air-aircon-card", { entity: "climate.air_conditioner" }],
+  ["climate-air-aircon-mini-card", { entity: "climate.air_conditioner" }],
 ];
 const STUBS = `customElements.define("ha-card", class extends HTMLElement { constructor() { super();
   this.attachShadow({ mode: "open" }).innerHTML = "<style>:host{display:block;border:1px solid #ccc;overflow:hidden}</style><slot></slot>"; } });

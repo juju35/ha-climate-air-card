@@ -53,7 +53,7 @@ Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifier
 
 All the cards share the same look (an illustrated header on the device cards — see [Illustrated header](#illustrated-header) — a power button next to the state, mini cards with a detail button that size to their content in a Sections view), chips that open their entity's more-info on a click, a visual editor in the dashboard UI covering every option (the device cards' entity overrides in its folded **Advanced** section, as YAML), English, French, German, Spanish, Serbian (Cyrillic and Latin), Italian, Dutch, European Portuguese, Polish, Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek labels following the Home Assistant language, light and dark themes, and come in a single Marketplace install with no dependency.
 
-On narrow cards (6 columns of a Sections view), the status pill keeps only its coloured dot (the status stays in its tooltip), the title keeps its first characters, and the mini cards move their buttons under the device's info.
+On narrow cards (6 columns of a Sections view), the status pill moves under the subtitle, and keeps only its coloured dot when its label does not fit (the status stays in its tooltip); the title keeps its first characters, and the mini cards move their buttons under the device's info.
 
 ## Features
 

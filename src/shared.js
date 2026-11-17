@@ -5583,7 +5583,7 @@ class CaCard extends CaElement {
     const sub = [caAreaName(this._hass, r.id), m.sub].filter(Boolean).join(" · ");
     const chips = m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : "";
     const head = m.illustrated
-      ? this._banner(m, [m.statusText, sub].filter(Boolean).join(" · "))
+      ? this._banner(m, sub)
       : `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>` +
         `${caPill(m.statusText)}${m.powerBtn}${this._zoomButton()}</div>`;
     // Under the banner, the device is in the picture above: the measurements, and the on / off button at their right.
@@ -5599,7 +5599,8 @@ class CaCard extends CaElement {
     return this._config.illustration !== false && this._config.illustration !== "none" && !this._config.icon && !!CA_ART[this.constructor.kind];
   }
 
-  // The illustrated header: the round icon, the name and `sub` on the left, the device in its room on the right.
+  // The illustrated header: the round icon, the name with the status pill right after it and `sub` under them on the
+  // left, the device in its room on the right.
   _banner(m, sub) {
     const kind = this.constructor.kind;
     this._uid ??= ++caUidSeq;
@@ -5609,7 +5610,7 @@ class CaCard extends CaElement {
     return (
       `<div class="${cls}"${wall ? ` style="--ca-wall:${wall};--ca-wall-fill:${wall}"` : ""}>` +
       `${caBannerScene(kind, m.variant, m, night, this._uid)}<div class="ground"></div>` +
-      `<div class="bhead">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div></div>` +
+      `<div class="bhead">${m.badge}<div class="titles"><div class="trow"><div class="name">${caEsc(m.name)}</div>${caPill(m.statusText)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div></div>` +
       `${this._zoomButton()}</div>`
     );
   }
@@ -6598,7 +6599,7 @@ const caMini = (Base) =>
       const btns = [...(m.online && this._config.show_controls ? this._miniButtons(m) : []), m.powerBtn].filter(Boolean);
       const chips = m.chips.filter((x) => x.includes("chip warn") || x.includes("chip alert") || !m.online);
       const head = m.illustrated
-        ? this._banner(m, [m.statusText, m.sub].filter(Boolean).join(" · "))
+        ? this._banner(m, m.sub)
         : `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div></div>${caPill(m.statusText)}${this._zoomButton()}</div>`;
       return (
         `${this._styles(m.color, m.badgeColor)}<ha-card class="mini">${head}` +
@@ -6857,9 +6858,26 @@ const CA_BANNER_STYLES = `
   .badge .brand { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 5px; padding: 2px; box-sizing: border-box;
                   display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 1px rgba(13,42,69,.16), 0 1px 3px rgba(13,42,69,.18); }
   .badge .brand img { width: 100%; height: 100%; object-fit: contain; }
-  .banner .zoom { position: absolute; z-index: 2; top: 6px; right: 6px; margin: 0; color: #10283f; background: rgba(255,255,255,.55); }
-  .banner.night .zoom { color: #fff; background: rgba(10,20,40,.45); }
-  .banner .zoom:hover { background: rgba(255,255,255,.8); color: #10283f; }
+  /* The status pill sits on the title line, right after the title (the title ellipsises first, keeping a few
+     characters); without room for both, it goes on its own line under the subtitle. It keeps its whole label, or
+     only its dot when that label really does not fit (caFitPills). Its colour is the round icon's. */
+  .banner .titles { container: ca-titles / inline-size; display: flex; flex-direction: column; align-items: flex-start; }
+  .banner .titles > * { max-width: 100%; }
+  .banner .trow { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; }
+  .banner .trow .name { flex: 0 1 auto; min-width: 4ch; }
+  .banner .trow .st { flex: none; max-width: 50%; }
+  @container ca-titles (max-width: 170px) {
+    .banner .trow { display: contents; }
+    .banner .trow .name, .banner .trow .st { max-width: 100%; }
+    .banner .trow .st { order: 3; margin-top: 3px; }
+  }
+  .banner .st { line-height: 16px; background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
+  .banner.night .st { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
+  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; width: 24px; height: 24px; color: #33506b;
+                  background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); backdrop-filter: blur(4px); }
+  .banner.night .zoom { color: #fff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #fff; }
   /* The floor strip, edge to edge under the room: parquet indoors, lawn outdoors (heat pump). */
   .ground { position: absolute; left: 0; right: 0; bottom: 0; height: 10px;
             background: repeating-linear-gradient(90deg, #c99a6b 0 38px, #b98a5c 38px 40px); box-shadow: inset 0 2px 0 #a97c50; }
@@ -6928,12 +6946,13 @@ const CA_STYLES = `${CA_ART_STYLES}
   /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
      characters: the pill is only truncated when even that does not fit. */
   .titles { flex: 1 1 0; min-width: 5ch; font-size: 16px; }
-  :host([hide-title]) .titles > .name, :host([hide-subtitle]) .titles > .sub { display: none; }
+  :host([hide-title]) .titles .name, :host([hide-subtitle]) .titles > .sub { display: none; }
   .name { font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .sub { font-size: 12px; color: var(--secondary-text-color); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .st { display: inline-flex; align-items: center; gap: 4px; flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative;
         padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
-        white-space: nowrap; background: color-mix(in srgb, var(--ca-color) 15%, transparent); color: var(--ca-color); }
+        white-space: nowrap; --c: var(--ca-badge, var(--ca-color)); background: color-mix(in srgb, var(--c) 15%, transparent); color: var(--c); }
+  .st .dot { background: var(--c); }
   .stt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--ca-color); }
   ha-card:has(.running) .dot { animation: ca-blink 1.6s ease-in-out infinite; }
