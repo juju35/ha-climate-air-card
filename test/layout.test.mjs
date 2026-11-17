@@ -55,10 +55,11 @@ const DEVICES = [
   ["climate-air-aircon", "climate.air_conditioner"],
 ];
 // The mock home has English and French labels: other languages are forced with the cards' `language` option.
-const cards = (language = "en", changes = {}) =>
+// `extra`: more options, e.g. `illustration: false` for the classic header and its status pill.
+const cards = (language = "en", changes = {}, extra = {}) =>
   DEVICES.flatMap(([kind, entity]) => [
-    [`${kind}-card`, mount(lib, `${kind}-card`, { entity, language }, makeHass("en", changes))],
-    [`${kind}-mini-card`, mount(lib, `${kind}-mini-card`, { entity, language }, makeHass("en", changes))],
+    [`${kind}-card`, mount(lib, `${kind}-card`, { entity, language, ...extra }, makeHass("en", changes))],
+    [`${kind}-mini-card`, mount(lib, `${kind}-mini-card`, { entity, language, ...extra }, makeHass("en", changes))],
   ]);
 const overview = (language = "en") => mount(lib, "climate-air-overview-card", { language }, makeHass("en"));
 
@@ -82,6 +83,13 @@ test("device cards: the status pill shrinks and truncates instead of crushing th
   }
 });
 
+test("classic header: the status pill sits right after the title, like on the banner", () => {
+  for (const [tag, el] of cards("en", {}, { illustration: false })) {
+    const out = el.shadowRoot.innerHTML;
+    assert.match(out, /<div class="header">[\s\S]*?<div class="titles"><div class="trow"><div class="name">[^<]*<\/div><span class="st"/, `${tag}: pill after the title`);
+  }
+});
+
 test("mini cards: the header badge keeps the full card's size", () => {
   for (const [kind, entity] of DEVICES) {
     const full = rules(mount(lib, `${kind}-card`, { entity }, makeHass()));
@@ -98,17 +106,15 @@ test("mini cards: the header badge keeps the full card's size", () => {
   }
 });
 
-test("overview: the pill shrinks and truncates instead of crushing the title, buttons never shrink", () => {
+test("overview: the pill right after the title, under it when both do not fit whole, buttons never shrink", () => {
   const rs = rules(overview());
-  const pill = decl(rs, ".pill");
-  assert.equal(pill.flex, "0 1 auto");
-  assert.equal(pill["min-width"], "0");
-  assert.equal(pill["max-width"], "50%");
-  assert.equal(pill.overflow, "hidden");
+  assert.equal(decl(rs, ".trow .pill").flex, "none", "the pill keeps its whole label beside the title");
+  assert.equal(decl(rs, ".trow .pill")["max-width"], "none");
+  assert.equal(decl(rs, ".pill").overflow, "hidden");
   assert.equal(decl(rs, ".pill .stt")["text-overflow"], "ellipsis");
   const title = decl(rs, ".title");
-  assert.equal(title.flex, "1 1 0");
-  assert.match(title["min-width"], /^\d+(\.\d+)?ch$/);
+  assert.equal(title.flex, "0 1 auto", "the pill sits right after the title, not at the far right");
+  assert.equal(decl(rs, ".titles.pill-below .trow").display, "contents", "measured (caFitPills): its own line under the title");
   for (const btn of [".badge", ".zoom"]) assert.equal(decl(rs, btn).flex, "none", btn);
 });
 
@@ -127,7 +133,7 @@ const assertDotOnly = (rs, pill, label) => {
 };
 
 test("a pill too narrow for its label shows only its dot, with the status in its tooltip", () => {
-  for (const [tag, el] of cards("pl")) {
+  for (const [tag, el] of cards("pl", {}, { illustration: false })) {
     assertDotOnly(rules(el), ".st", tag);
     const out = el.shadowRoot.innerHTML;
     const pill = /<span class="st" title="([^"]+)"><span class="dot"><\/span><span class="stt">([^<]+)<\/span><\/span>/.exec(out);
@@ -147,10 +153,27 @@ test("unavailable device: the narrow pill still carries the translated status", 
     "fan.living_room_purifier_air_purifier": { state: "unavailable" },
     "fan.bedroom_fan_fan": { state: "unavailable" },
     "climate.air_conditioner": { state: "unavailable" },
-  })) {
+  }, { illustration: false })) {
     const out = el.shadowRoot.innerHTML;
     assert.match(out, /<span class="st" title="Niedostępne"><span class="dot"><\/span><span class="stt">Niedostępne<\/span>/, tag);
     assert.doesNotMatch(out, /data-action="power"/, `${tag}: no power button`);
+  }
+});
+
+test("illustrated banner: the status pill right after the title, a grey icon when offline, the classic header with illustration: false", () => {
+  const off = { "fan.living_room_purifier_air_purifier": { state: "unavailable" }, "fan.bedroom_fan_fan": { state: "unavailable" }, "climate.air_conditioner": { state: "unavailable" } };
+  for (const [tag, el] of cards("pl", off)) {
+    const out = el.shadowRoot.innerHTML;
+    assert.match(out, /<div class="banner [^"]*"/, `${tag}: banner`);
+    assert.match(out, /<div class="trow"><div class="name">[^<]+<\/div><span class="st" title="Niedostępne"><span class="dot"><\/span><span class="stt">Niedostępne<\/span><\/span><\/div>/, `${tag}: pill on the title line`);
+    assert.doesNotMatch(out, /<div class="sub">Niedostępne/, `${tag}: the status not repeated in the subtitle`);
+    assert.match(out, /--ca-badge:var\(--disabled-text-color/, `${tag}: grey icon`);
+    assert.doesNotMatch(out, /data-action="power"/, `${tag}: no power button`);
+  }
+  for (const [tag, el] of cards("en", {}, { illustration: false })) {
+    const out = el.shadowRoot.innerHTML;
+    assert.doesNotMatch(out, /class="banner/, `${tag}: classic header`);
+    assert.match(out, /<div class="header">/, tag);
   }
 });
 
@@ -263,4 +286,35 @@ test("narrow full cards: the info goes under the picture and long chips wrap ins
   const wide = ovRules.find((r) => r.sel === ".dev:has(.chips)" && /^@container/.test(r.cond));
   assert.ok(wide && maxWidth(wide.cond) >= 130, "a narrow rule gives the alert the whole tile");
   assert.match(wide.decl["grid-template-areas"], /"chips chips"/);
+});
+
+test("illustrated banner: night from sun.sun below the horizon or the dark theme, forced by illustration_theme; the icon tells alerts", () => {
+  const withSun = (state, dark = false) => {
+    const h = makeHass();
+    h.states["sun.sun"] = { entity_id: "sun.sun", state, attributes: {} };
+    h.themes = { darkMode: dark };
+    return h;
+  };
+  const html = (config, hass) => mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier", ...config }, hass).shadowRoot.innerHTML;
+  assert.match(html({}, withSun("below_horizon")), /class="banner [^"]*\bnight\b/);
+  assert.match(html({}, withSun("above_horizon", true)), /class="banner [^"]*\bnight\b/, "dark theme while the sun is up: night");
+  assert.doesNotMatch(html({}, withSun("above_horizon", false)), /class="banner [^"]*\bnight\b/, "light theme while the sun is up: day");
+  assert.doesNotMatch(html({ illustration_theme: "day" }, withSun("above_horizon", true)), /class="banner [^"]*\bnight\b/);
+  assert.match(html({}, withSun("unavailable", true)), /class="banner [^"]*\bnight\b/);
+  assert.match(html({ illustration_theme: "night" }, withSun("above_horizon")), /class="banner [^"]*\bnight\b/);
+  assert.doesNotMatch(html({ illustration_theme: "day" }, withSun("below_horizon")), /class="banner [^"]*\bnight\b/);
+  const noSun = makeHass();
+  noSun.themes = { darkMode: true };
+  assert.match(html({}, noSun), /class="banner [^"]*\bnight\b/, "no sun: the dark theme");
+  // Two cards on a page: their banner SVG ids differ.
+  const ids = (s) => [...s.matchAll(/id="(ca-[^"]+)"/g)].map((m) => m[1]);
+  const a = ids(html({}, makeHass()));
+  const b = ids(html({}, makeHass()));
+  assert.ok(a.length && !a.some((id) => b.includes(id)), "unique ids per card");
+  // The bedroom purifier's filter is to replace: a red icon.
+  const alert = mount(lib, "climate-air-purifier-card", { entity: "fan.bedroom_purifier" }, makeHass()).shadowRoot.innerHTML;
+  assert.match(alert, /--ca-badge:var\(--error-color/);
+  // Off: a grey icon.
+  const off = mount(lib, "climate-air-fan-card", { entity: "fan.office_fan_fan" }, makeHass()).shadowRoot.innerHTML;
+  assert.match(off, /--ca-badge:var\(--disabled-text-color/);
 });

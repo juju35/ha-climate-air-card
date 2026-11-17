@@ -413,6 +413,11 @@ class ClimateAirHumidifierCard extends CaCard {
     } else super._action(action, value);
   }
 
+  // The compact mini card's lines show the mode while it runs.
+  _subInBody(m, full) {
+    return !full && m.running;
+  }
+
   // The humidity and its target, the mode, the mist intensity of a diffuser, the tank and the filter.
   _miniInfo(m) {
     const target = m.running && m.target != null ? ` → ${this._pct(m.target)}` : "";

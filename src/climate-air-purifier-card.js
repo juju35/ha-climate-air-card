@@ -235,6 +235,11 @@ class ClimateAirPurifierCard extends CaCard {
     } else super._action(action, value);
   }
 
+  // The compact mini card's lines show the mode while it runs.
+  _subInBody(m, full) {
+    return !full && m.running;
+  }
+
   _miniInfo(m) {
     const lines = [];
     if (m.pm25 != null || m.aqi != null) {

@@ -24,7 +24,7 @@ test("purifier: air quality, filter, presets and options", () => {
   assert.match(out, /76 %/);
   assert.match(out, /data-action="preset" data-value="Sleep"/);
   assert.match(out, /data-range="percentage"/);
-  assert.match(out, /class="picture k-purifier st-on running"/);
+  assert.match(out, /class="bdev k-purifier st-on running"/);
   // The favorite level only shows in the favorite preset.
   assert.doesNotMatch(out, /data-number="number\.living_room_purifier_favorite_fan_level"/);
   const fav = mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier" },
@@ -74,12 +74,26 @@ test("fan: speed, oscillation, natural wind and options", () => {
   const h = makeHass();
   const el = mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, h);
   const out = html(el);
-  assert.match(out, /class="picture k-fan st-on running osc natural"/);
+  assert.match(out, /class="bdev k-fan st-on running osc natural"/);
   assert.match(out, /--ca-spin:1\.13s/);
   assert.match(out, /Oscillation 90°/);
   assert.match(out, /data-press="button\.bedroom_fan_turn_left"/);
   el._onClick({ composedPath: () => [{ dataset: { action: "oscillate" } }] });
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["fan", "oscillate", { entity_id: "fan.bedroom_fan_fan", oscillating: false }]);
+});
+
+test("the header's subtitle does not repeat the mode the body shows: the room instead", () => {
+  const sub = (tag, entity) => html(mount(lib, tag, { entity }, makeHass())).match(/<div class="sub">([^<]*)</)?.[1];
+  // Fan: the hero's label (full card) and the compact lines (mini card) show the preset.
+  const fan = html(mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, makeHass()));
+  assert.match(fan, /<span class="lbl">Natural wind<\/span>/);
+  assert.equal(sub("climate-air-fan-card", "fan.bedroom_fan_fan"), "Bedroom");
+  assert.equal(sub("climate-air-fan-mini-card", "fan.bedroom_fan_fan"), "Bedroom");
+  // Purifier: the full card's hero shows the air, so its subtitle keeps the preset; the compact lines show it.
+  assert.equal(sub("climate-air-purifier-card", "fan.living_room_purifier_air_purifier"), "Living room · Auto");
+  assert.equal(sub("climate-air-purifier-mini-card", "fan.living_room_purifier_air_purifier"), "Living room");
+  const mini = html(mount(lib, "climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier" }, makeHass()));
+  assert.match(mini, /class="line"><ha-icon[^>]*><\/ha-icon><span>Auto<\/span>/);
 });
 
 test("unavailable device: offline chip, no controls", () => {
@@ -135,7 +149,7 @@ test("heat pump: found by its hot water tank, with its temperatures, tank, modes
   const el = mount(lib, "climate-air-heatpump-card", {}, h);
   const out = html(el);
   assert.equal(el._r.id, "climate.heat_pump");
-  assert.match(out, /class="picture k-heatpump st-heat running ph-heat active"/);
+  assert.match(out, /class="bdev k-heatpump st-heat running ph-heat active"/);
   assert.match(out, /20,5<small> °C/);
   assert.match(out, /Ballon 52 °C → 55 °C/);
   assert.match(out, /Extérieur 4 °C/);
@@ -190,11 +204,11 @@ test("heat pump: hot water through the valve, defrost and the backup heater", ()
     "binary_sensor.heat_pump_backup_heater": { state: "on" },
   });
   const out = html(mount(lib, "climate-air-heatpump-card", { entity: "climate.heat_pump" }, h));
-  assert.match(out, /class="picture k-heatpump st-dhw running ph-dhw active defrost"/);
+  assert.match(out, /class="bdev k-heatpump st-dhw running ph-dhw active defrost"/);
   assert.match(out, /<span class="stt">Defrosting</);
   assert.match(out, /Backup heater/);
   const off = html(mount(lib, "climate-air-heatpump-card", { entity: "climate.heat_pump" }, makeHass("en", { "climate.heat_pump": { state: "off", hvac_action: "off" } })));
-  assert.match(off, /class="picture k-heatpump st-off ph-off"/);
+  assert.match(off, /class="bdev k-heatpump st-off ph-off"/);
 });
 
 test("heat pump: TOUG (T.One) driven by the select of its mode, found without a climate entity", () => {
@@ -342,7 +356,7 @@ test("humidifier: humidity, target, tank, modes and controls", () => {
   const h = makeHass("fr");
   const el = mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h);
   const out = html(el);
-  assert.match(out, /class="picture k-humidifier st-on running v-column active"/);
+  assert.match(out, /class="bdev k-humidifier st-on running v-column active"/);
   assert.match(out, /48<small> %/);
   assert.match(out, /→ 55 %/);
   assert.match(out, /Réservoir 60 %/);
@@ -361,7 +375,7 @@ test("humidifier: an empty tank stops it and flags it, on the card and the overv
   const h = makeHass("en", { "sensor.bedroom_humidifier_water_level": { state: 0 } });
   const out = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_humidifier" }, h));
   assert.match(out, /<span class="stt">Water tank empty</);
-  assert.match(out, /class="picture k-humidifier st-on running v-column low"/);
+  assert.match(out, /class="bdev k-humidifier st-on running v-column low"/);
   assert.match(overview({ zoom: false }, h).body, /mdi:water-off"><\/ha-icon><span>Water tank empty/);
 });
 
@@ -863,6 +877,24 @@ test("the fan editors offer no alerts toggle: the fan cards show no alert", () =
   assert.deepEqual(JSON.parse(JSON.stringify(ed._config)), { type: "custom:climate-air-fan-card", entity: "fan.bedroom_fan_fan" });
 });
 
+test("device editors: the illustration (or none, the classic header) and its day / night theme, mini cards too", () => {
+  for (const tag of ["climate-air-fan-card", "climate-air-heatpump-mini-card", "climate-air-purifier-mini-card"]) {
+    const ed = new (lib.customElements.get(`${tag}-editor`))();
+    ed.setConfig({ type: `custom:${tag}`, illustration: false });
+    ed.hass = makeHass();
+    const fields = ed._form.schema.flatMap((s) => (s.schema ? s.schema : [s]));
+    const ill = fields.find((f) => f.name === "illustration");
+    assert.ok(ill?.selector.select.options.some((o) => o.value === "none"), `${tag}: a no-illustration choice`);
+    assert.ok(fields.some((f) => f.name === "illustration_theme"), `${tag}: illustration_theme`);
+    assert.equal(ed._form.data.illustration, "none", `${tag}: false shown as none`);
+    ed._valueChanged({ stopPropagation() {}, detail: { value: { ...ed._form.data, illustration_theme: "night" } } });
+    assert.equal(ed._config.illustration, false, `${tag}: none written as false`);
+    assert.equal(ed._config.illustration_theme, "night");
+    ed._valueChanged({ stopPropagation() {}, detail: { value: { ...ed._form.data, illustration: "auto", illustration_theme: "auto" } } });
+    assert.ok(!("illustration" in ed._config) && !("illustration_theme" in ed._config), `${tag}: defaults dropped`);
+  }
+});
+
 test("overview editor: the alerts toggle the card reads, on by default and only written when turned off", () => {
   const ed = new (lib.customElements.get("climate-air-overview-card-editor"))();
   ed.setConfig({ type: "custom:climate-air-overview-card" });
@@ -1224,14 +1256,14 @@ test("air conditioner: a horizontal swing select when the entity supports it", (
   const out = html(el);
   assert.match(out, /<span>Balayage horizontal<\/span><select data-attr-service="set_swing_horizontal_mode" data-attr="swing_horizontal_mode">/);
   assert.match(out, /<option value="auto" selected>/);
-  assert.match(out, /class="picture k-aircon [^"]*swing-v swing-h"/);
+  assert.match(out, /class="bdev k-aircon [^"]*swing-v swing-h(?: wall)?"/);
   el.shadowRoot.emit("pointerdown");
   el._onChange({ target: { value: "left", dataset: { attrService: "set_swing_horizontal_mode", attr: "swing_horizontal_mode" }, blur() {} } });
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["climate", "set_swing_horizontal_mode", { entity_id: "climate.air_conditioner", swing_horizontal_mode: "left" }]]);
   // Without the feature bit (512), no select.
   const plain = mount(lib, "climate-air-aircon-card", { entity: "climate.air_conditioner" }, makeHass("en", { "climate.air_conditioner": { supported_features: 441 } }));
   assert.doesNotMatch(html(plain), /swing_horizontal_mode/);
-  assert.match(html(plain), /class="picture k-aircon [^"]*swing-v"/);
+  assert.match(html(plain), /class="bdev k-aircon [^"]*swing-v(?: wall)?"/);
 });
 
 test("air conditioner: − / + does not jump back after the call, until the entity reports the target or 10 s pass", async (t) => {
@@ -1461,7 +1493,7 @@ const METERED = {
 test("heat pump metered: running from the power threshold, read-only, with its monitoring roles and water source", () => {
   const out = html(mount(lib, "climate-air-heatpump-card", METERED, meteredHass(5100)));
   // Running (5.1 kW > the default 100 W threshold), active, heating; a two-well doublet, no outdoor fan.
-  assert.match(out, /class="picture k-heatpump st-heat running ph-heat active"/);
+  assert.match(out, /class="bdev k-heatpump st-heat running ph-heat active"/);
   assert.match(out, /class="brine"/);
   assert.doesNotMatch(out, /class="hfan"/);
   assert.match(out, /class="casing"/);
@@ -1487,11 +1519,11 @@ test("heat pump metered: running from the power threshold, read-only, with its m
 
 test("heat pump metered: idle below the threshold shows no instantaneous COP and does not animate", () => {
   const out = html(mount(lib, "climate-air-heatpump-card", { ...METERED, power_threshold: 100 }, meteredHass(39)));
-  assert.match(out, /class="picture k-heatpump st-off ph-off"/);
+  assert.match(out, /class="bdev k-heatpump st-off ph-off"/);
   assert.doesNotMatch(out, /mdi:gauge/); // no instantaneous COP chip while idle
   // A custom threshold is honoured: 39 W counts as running once the threshold drops below it.
   const on = html(mount(lib, "climate-air-heatpump-card", { ...METERED, power_threshold: 20 }, meteredHass(39)));
-  assert.match(on, /class="picture k-heatpump st-heat running ph-heat active"/);
+  assert.match(on, /class="bdev k-heatpump st-heat running ph-heat active"/);
 });
 
 test("heat pump metered: COP is computed from heat output ÷ electrical power when no COP sensor is given", () => {
