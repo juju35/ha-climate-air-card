@@ -1,6 +1,6 @@
 /*
  * climate-air-overview-card — every heat pump, air conditioner, air purifier, humidifier and fan of the instance at a glance, one tile each,
- * like room-overview-card (ha-room-card). The detail button shows every device; tap a tile to unfold its full card,
+ * like room-overview-card (ha-room-card), under the illustrated header of the device cards (a room with its devices). The detail button shows every device; tap a tile to unfold its full card,
  * tap its icon to turn it on or off.
  */
 const CA_KINDS = ["heatpump", "aircon", "purifier", "humidifier", "fan"];
@@ -270,25 +270,29 @@ class ClimateAirOverviewCard extends CaElement {
 
     if (!this.shadowRoot.querySelector("ha-card")) {
       const art = CA_KINDS.map((k) => CA_ART[k]?.styles || "").join("");
-      this.shadowRoot.innerHTML = `<style>${CA_ART_STYLES}${art}${CA_OVERVIEW_STYLES}</style><ha-card><div class="head"></div><div class="panel" hidden></div><div class="body"></div></ha-card>`;
+      this.shadowRoot.innerHTML = `<style>${CA_ART_STYLES}${art}${CA_BANNER_STYLES}${CA_OVERVIEW_STYLES}</style><ha-card><div class="head"></div><div class="panel" hidden></div><div class="body"></div></ha-card>`;
     }
     const card = this.shadowRoot.querySelector("ha-card");
     const on = all.filter((x) => x.on);
     const flagged = all.filter((x) => x.alert);
     const alerts = flagged.length;
-    card.className = alerts ? "lvl-warn" : on.length ? "lvl-on" : "lvl-ok";
+    const severe = flagged.some((x) => x.alertLevel === "alert");
+    card.className = severe ? "lvl-alert" : alerts ? "lvl-warn" : on.length ? "lvl-on" : "lvl-ok";
     const alertTitle = [...new Set(flagged.map((x) => x.alert))].join(", ");
-    const alertChip = alerts ? `<span class="chip ${flagged.some((x) => x.alertLevel === "alert") ? "alert" : "warn"}" title="${caEsc(alertTitle)}"><ha-icon icon="mdi:air-filter"></ha-icon><span>${alerts}</span></span>` : "";
+    const onChip = on.length ? `<span class="chip on" title="${caEsc(this._t("running_n", { n: on.length }))}"><ha-icon icon="mdi:power"></ha-icon><span>${on.length}</span></span>` : "";
     const zoomLabel = caEsc(this._t(compact ? "zoom_in" : "zoom_out"));
     const zoom =
       c.zoom === false
         ? ""
         : `<button class="zoom" data-action="zoom" title="${zoomLabel}" aria-label="${zoomLabel}"><ha-icon icon="${compact ? "mdi:arrow-expand" : "mdi:arrow-collapse"}"></ha-icon></button>`;
-    const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
-    card.querySelector(".head").innerHTML =
-      `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div>` +
+    const status = alerts ? alertTitle : on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
+    // The status pill names the alerts (in red, or amber for a filter to change soon); the chip counts the devices on.
+    const chips = onChip ? `<div class="sub hchips">${onChip}</div>` : "";
+    const titles =
       `<div class="titles"><div class="trow"><div class="title name">${c.show_title !== false ? caEsc(c.title || this._t("title")) : ""}</div>` +
-      `<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div></div></div>${alertChip}${zoom}`;
+      `<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div></div>${chips}</div>`;
+    const badge = `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div>`;
+    card.querySelector(".head").innerHTML = this._banner(all, `${badge}${titles}`, zoom);
     this._fitPills();
 
     const body = card.querySelector(".body");
@@ -311,6 +315,60 @@ class ClimateAirOverviewCard extends CaElement {
     this._fillPanel(all.find((x) => x.id === this._open));
     // The focus is put back for the keyboard only: after a mouse click, it would draw the focus ring.
     if (!this._pointer) caRestoreFocus(this.shadowRoot, focus);
+  }
+
+  // The illustrated header, like the device cards': the round icon, the title and the status on the left, and on the
+  // right a room with one device of each kind (the one running or needing attention first), drawn and animated as in
+  // the device cards, on the 10 px floor strip. Heat pumps stand outdoors: they get the garden only when they are the
+  // only devices. Night (sun.sun below the horizon or the dark theme, unless `illustration_theme` forces it) dims it.
+  _banner(all, head, zoom) {
+    this._uid ??= ++caUidSeq;
+    const night = caIsNight(this._hass, this._config);
+    const live = all.filter((x) => !x.na);
+    const rank = (x) => (x.alert ? 0 : x.on ? 1 : 2);
+    const pick = (list) => CA_KINDS.map((k) => list.filter((x) => x.kind === k).sort((a, b) => rank(a) - rank(b))[0]).filter(Boolean);
+    const indoor = pick(live.filter((x) => x.kind !== "heatpump"));
+    let scene = "";
+    let width = 0;
+    let cls = "";
+    if (!indoor.length && live.length) {
+      const hp = pick(live)[0];
+      scene = caBannerScene("heatpump", hp.variant, hp.art, night, `${this._uid}hp`);
+      width = 200;
+      cls = " k-heatpump-banner";
+    } else if (indoor.length) {
+      ({ scene, width } = this._room(indoor, night));
+    }
+    const wall = cls ? "" : `--ca-wall:${CA_OV_WALL[night ? 1 : 0]};--ca-wall-fill:${CA_OV_WALL[night ? 1 : 0]};`;
+    return (
+      `<div class="banner ov-banner${cls}${night ? " night" : ""}" style="${wall}--bw:${width}px">` +
+      `${scene}<div class="ground"></div><div class="bhead">${head}</div>${zoom}</div>`
+    );
+  }
+
+  // The overview's room: the window on the left, then the floor devices side by side (at most three, smaller under a
+  // wall air conditioner), the wall unit high on the wall above them.
+  _room(devices, night) {
+    const isWall = (x) => x.kind === "aircon" && (x.variant || "split") === "split";
+    const wallUnit = devices.find(isWall);
+    const floor = devices.filter((x) => !isWall(x)).slice(0, 3);
+    const slots = Math.max(floor.length, 1);
+    const width = CA_OV_LEFT + slots * CA_OV_SLOT;
+    const win =
+      `<rect class="b-win" x="8" y="12" width="26" height="34" rx="1.5"/>` +
+      (night ? '<circle class="b-wstar" cx="15" cy="20" r=".7"/><circle class="b-wstar" cx="28" cy="34" r=".6"/>' : '<circle class="b-sun" cx="27" cy="22" r="4.5"/>') +
+      '<path class="b-frame" d="M21 12V46"/>';
+    const place = (x, slot) => ({ x, p: caBannerPlace(x.kind, x.variant, slot) });
+    const placed = floor.map((x, i) => place(x, { cx: CA_OV_LEFT + CA_OV_SLOT * (i + 0.5), maxW: 40, maxH: wallUnit ? 46 : 62 }));
+    if (wallUnit) placed.push(place(wallUnit, { cx: CA_OV_LEFT + (slots * CA_OV_SLOT) / 2, maxW: 46, wallH: 22, wallY: 5 }));
+    const fx = placed
+      .map(({ x, p }) => `<g class="bfx${x.art.running ? " running" : ""}">${caBannerFx(x.kind, x.variant, p, p.x - 40)}</g>`)
+      .join("");
+    const devs = placed.map(({ x, p }) => caBannerDevice(x.kind, x.variant, x.art, p, `${this._uid}${x.kind}`)).join("");
+    const scene =
+      `<svg class="bscene" viewBox="0 0 ${width} 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">` +
+      `<rect class="b-wall" width="${width}" height="80"/>${win}${fx}${devs}</svg>`;
+    return { scene, width };
   }
 
   // The icon in front of a group heading: the kind of device, or the area's own icon from the registry.
@@ -342,7 +400,7 @@ class ClimateAirOverviewCard extends CaElement {
       `<div class="${cls}" data-id="${caEsc(x.id)}" style="${style}" title="${caEsc(`${x.name} — ${x.text}`)}">` +
       `<button class="ic ${x.iconSet ? x.anim : "pic"}" data-toggle="${caEsc(x.id)}" title="${caEsc(this._t("toggle"))}" aria-label="${caEsc(`${this._t("toggle")} ${x.name}`)}"${x.na ? " disabled" : ""}>${look}</button>` +
       `<button class="name" data-open="${caEsc(x.id)}" aria-expanded="${x.id === this._open}">${caEsc(label)}</button>` +
-      `<span class="state">${caEsc(x.text)}</span>` +
+      `<span class="state">${caEsc(x.text)}</span><span class="sdot ${x.na ? "na" : x.alert ? x.alertLevel || "warn" : x.on ? "on" : "off"}" aria-hidden="true"></span>` +
       (x.alert
         ? `<span class="chips"><span class="chip ${x.alertLevel || "warn"}" data-more-info="${caEsc(x.alertEntity)}" role="button" tabindex="0"><ha-icon icon="${x.alertIcon || "mdi:air-filter"}"></ha-icon><span>${caEsc(x.alert)}</span></span></span>`
         : "") +
@@ -421,6 +479,11 @@ class ClimateAirOverviewCard extends CaElement {
   }
 }
 
+// The overview's room: its wall (day / night), the window's band on the left and the width of each device's place.
+const CA_OV_WALL = ["#edf2f6", "#222a36"];
+const CA_OV_LEFT = 42;
+const CA_OV_SLOT = 50;
+
 const CA_OVERVIEW_STYLES = `
   :host { display: block; --ca-ok: var(--success-color, #43a047); --ca-warn: var(--warning-color, #ffa600); --ca-on: var(--info-color, #039be5);
           --ca-idle: var(--secondary-text-color, #9e9e9e); min-width: 0; }
@@ -430,7 +493,22 @@ const CA_OVERVIEW_STYLES = `
   ha-card.lvl-ok { --c: var(--ca-idle); }
   ha-card.lvl-on { --c: var(--ca-on); }
   ha-card.lvl-warn { --c: var(--ca-warn); }
-  .head { display: flex; align-items: center; gap: 8px; }
+  ha-card.lvl-alert { --c: var(--error-color, #db4437); }
+  .head { display: block; }
+  /* The illustrated header: the room as wide as its devices need, clear of the corner button. */
+  .banner { margin-bottom: 8px; }
+  .ov-banner .bscene { width: min(var(--bw), 58%); }
+  .ov-banner .bhead { right: calc(min(var(--bw), 58%) - 20px); }
+  .ov-banner:has(> .zoom) .bscene { right: 28px; }
+  .ov-banner:has(> .zoom) .bhead { right: calc(min(var(--bw), 58%) + 8px); }
+  .banner .pill { background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
+  .banner.night .pill { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
+  .banner .title { color: inherit; }
+  .hchips { display: flex; gap: 4px; margin-top: 4px; }
+  .banner .hchips .chip { background: rgba(255,255,255,.7); }
+  .banner.night .hchips .chip { background: rgba(255,255,255,.12); color: color-mix(in srgb, var(--k) 40%, #ffffff); }
+  @container (max-width: 300px) { .ov-banner .bscene { width: 44%; } .ov-banner .bhead, .ov-banner:has(> .zoom) .bhead { right: calc(44% + 8px); } }
+  @container (max-width: 200px) { .ov-banner .bscene { display: none; } .ov-banner .bhead, .ov-banner:has(> .zoom) .bhead { right: 36px; } }
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); }
   .badge ha-icon { --mdc-icon-size: 24px; }
@@ -455,7 +533,6 @@ const CA_OVERVIEW_STYLES = `
   .chip.warn { --k: var(--ca-warn); }
   .chip.alert { --k: var(--error-color, #db4437); }
   .chip[data-more-info] { cursor: pointer; }
-  @container (max-width: 340px) { .head { gap: 6px; } .head .chip { display: none; } }
   /* A pill whose whole label does not fit (caFitPills) keeps only a dot, its text clipped (still read by screen
      readers, and in the tooltip); at the narrowest the header badge goes too. */
   .pill.dot-only { flex: none; padding: 4px; }
@@ -480,13 +557,17 @@ const CA_OVERVIEW_STYLES = `
   .empty { padding: 12px; margin-top: 8px; text-align: center; font-size: 13px; color: var(--secondary-text-color);
            border-radius: 10px; background: var(--secondary-background-color, transparent); }
 
-  .dev { --t: var(--ca-idle); box-sizing: border-box; cursor: pointer; min-width: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr);
+  .dev { --t: var(--ca-idle); position: relative; box-sizing: border-box; cursor: pointer; min-width: 0; display: grid; grid-template-columns: 28px minmax(0, 1fr);
          grid-template-areas: "ic name" "ic state"; column-gap: 7px; align-items: center; align-content: center;
-         padding: 6px 7px; border-radius: 10px; background: var(--secondary-background-color, transparent); border: 1px solid transparent;
+         padding: 6px 16px 6px 7px; border-radius: 10px; background: var(--secondary-background-color, transparent); border: 1px solid transparent;
          transition: background .2s, border-color .2s; outline: none; }
-  /* Tile B look: an active device keeps a neutral background — its state reads from the tinted icon badge and the coloured state line (an alert still shows its border). */
+  /* Tile B look: a neutral background whatever the state — the state reads from the illustration, the coloured state
+     line and the status dot in the corner (red alert, amber warning, the device's colour while on, grey at rest). */
   .dev:has(.chips) { grid-template-areas: "ic name" "ic state" "ic chips"; }
-  .dev.alert { border-color: color-mix(in srgb, var(--ca-warn) 45%, transparent); }
+  .sdot { position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--ca-idle); opacity: .55; }
+  .sdot.on { background: var(--t); opacity: 1; }
+  .sdot.warn { background: var(--ca-warn); opacity: 1; }
+  .sdot.alert { background: var(--error-color, #db4437); opacity: 1; }
   .dev.na { opacity: .6; }
   .dev:hover { background: color-mix(in srgb, var(--t) 14%, var(--secondary-background-color, transparent)); }
   .dev.sel { border-color: color-mix(in srgb, var(--primary-color) 60%, transparent); }
@@ -498,7 +579,7 @@ const CA_OVERVIEW_STYLES = `
   .name:focus-visible, .chip[data-more-info]:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 1px; border-radius: 4px; }
   .ic:disabled { cursor: default; }
   .ic ha-icon { --mdc-icon-size: 16px; display: flex; }
-  .dev:has(.ic.pic) { grid-template-columns: 40px minmax(0, 1fr); padding: 5px 7px 5px 5px; }
+  .dev:has(.ic.pic) { grid-template-columns: 40px minmax(0, 1fr); padding: 5px 16px 5px 5px; }
   .ic.pic { width: 40px; height: 46px; border-radius: 8px; background: none; grid-row: 1 / -1; overflow: visible; }
   .dev.on .ic.pic, .ic.pic:hover { background: none; box-shadow: none; }
   .ic.pic:hover .picture { transform: scale(1.06); }
@@ -545,7 +626,7 @@ const CA_DEVICE_FIELDS = ["name", "type", "illustration", "icon"];
 
 class ClimateAirOverviewCardEditor extends CaCardEditor {
   _defaults() {
-    return { show_title: true, zoom: true, show_all: false, show_alerts: true, filter_warning: CA_FILTER_WARNING, group_by: "type" };
+    return { show_title: true, illustration_theme: "auto", zoom: true, show_all: false, show_alerts: true, filter_warning: CA_FILTER_WARNING, group_by: "type" };
   }
 
   _helpers() {
@@ -585,6 +666,7 @@ class ClimateAirOverviewCardEditor extends CaCardEditor {
         schema: [
           { name: "title", selector: { text: {} } },
           { name: "icon", selector: { icon: {} } },
+          caThemeField(lang),
         ],
       },
       {

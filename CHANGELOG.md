@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.14.0 - 2026-11-17
+
+### Features
+- **Overview: illustrated header**, like the device cards: a 90 px banner with the round icon (its colour tells the status: red alert, amber warning, blue while devices run, grey at rest), the title, the status pill (the alerts by name, else how many devices are on), a chip counting the devices on and the frosted detail button in the corner. On the right, a room with one device of each kind — the one running or needing attention first, up to three on the floor and a wall air conditioner above them — drawn and animated as on the device cards (cold air, dust drawn into a purifier, a fan's breeze, mist), on the floor strip; heat pumps alone get the garden. Night picture after sunset or with the dark theme, forced with `illustration_theme` (also in the visual editor).
+- **Overview: calm tiles** — a neutral background whatever the state (an alert no longer draws an amber border), the coloured state line and a status dot in each tile's corner (red alert, amber warning, the device's colour while on, grey at rest).
+
 ## 2.13.0 - 2026-11-17
 
 ### Features

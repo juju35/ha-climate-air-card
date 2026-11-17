@@ -6796,15 +6796,22 @@ const CA_BANNER_BOX = {
 
 // Where the device stands in the 200 × 80 room: a wall unit high on the wall, everything else on the floor (y 80),
 // as big as the room allows. Returns its box { x, y, w, h } and the crop of its picture.
-function caBannerPlace(kind, variant) {
+// `slot` ({ cx, maxW, maxH, wallH, wallY }) places it elsewhere, smaller: the overview's room holds several devices.
+function caBannerPlace(kind, variant, slot) {
   const boxes = CA_BANNER_BOX[kind] || {};
   const vb = boxes[variant] || Object.values(boxes)[0] || [0, 0, 80, 94];
   const wall = kind === "aircon" && (variant || "split") === "split";
-  const [maxW, maxH, cx] = wall ? [66, 40, 160] : kind === "heatpump" ? [86, 70, 154] : [76, 72, 160];
+  const [maxW, maxH, cx] = slot
+    ? [slot.maxW, wall ? slot.wallH : slot.maxH, slot.cx]
+    : wall
+      ? [66, 40, 160]
+      : kind === "heatpump"
+        ? [86, 70, 154]
+        : [76, 72, 160];
   const k = Math.min(maxW / vb[2], maxH / vb[3]);
   const w = vb[2] * k;
   const h = vb[3] * k;
-  return { vb, wall, x: cx - w / 2, y: wall ? 10 : 80 - h, w, h, k };
+  return { vb, wall, x: cx - w / 2, y: wall ? (slot?.wallY ?? 10) : 80 - h, w, h, k };
 }
 
 const caF = (n) => +n.toFixed(1);
@@ -6812,8 +6819,6 @@ const caF = (n) => +n.toFixed(1);
 // The room behind the device (200 × 80, the device at x ≈ 122–198): the wall and its window, and the effects of the
 // running device around it (drawn only while it runs, animated by CA_BANNER_STYLES).
 function caBannerRoom(kind, variant, n, p) {
-  const top = p.y;
-  const cx = p.x + p.w / 2;
   if (kind === "heatpump") {
     const sky = n
       ? `<g class="b-star">${[[96, 10], [110, 22], [74, 16], [120, 6], [88, 30]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".7"/>`).join("")}</g><path class="b-moon" d="M106 8a6 6 0 1 0 5.2 9 4.8 4.8 0 1 1-5.2-9Z"/>`
@@ -6831,6 +6836,15 @@ function caBannerRoom(kind, variant, n, p) {
     (sunny && !n ? '<circle class="b-sun" cx="110" cy="22" r="5"/>' : "") +
     (n ? '<circle class="b-wstar" cx="96" cy="20" r=".7"/><circle class="b-wstar" cx="111" cy="34" r=".6"/>' : "") +
     '<path class="b-frame" d="M103 12V46"/>';
+  return `<rect class="b-wall" width="200" height="80"/>${win}<g class="bfx">${caBannerFx(kind, variant, p)}</g>`;
+}
+
+// What the running device does in the room (drawn only while it runs): cold air under the wall unit, dust drawn into
+// the purifier and clean air leaving it, the breeze of a fan, mist above a humidifier. `dustX` is where the dust starts
+// (the left of a 40-unit band). Shared by the device cards' banner and the overview's.
+function caBannerFx(kind, variant, p, dustX = 92) {
+  const top = p.y;
+  const cx = p.x + p.w / 2;
   let fx = "";
   if (kind === "aircon" && p.wall) {
     // Cold (or warm) air falling from the wall unit into the room.
@@ -6841,7 +6855,7 @@ function caBannerRoom(kind, variant, n, p) {
     const ty = top + p.h * 0.45;
     fx =
       Array.from({ length: 12 }, (_, i) => {
-        const x = 92 + ((i * 23) % 40);
+        const x = dustX + ((i * 23) % 40);
         const y = 8 + ((i * 17) % 60);
         return `<circle class="suck s${i % 4}" cx="${x}" cy="${y}" r="1.4" style="--dx:${caF(tx - x)}px;--dy:${caF(ty - y)}px"/>`;
       }).join("") +
@@ -6859,7 +6873,7 @@ function caBannerRoom(kind, variant, n, p) {
         .join("");
     }
   }
-  return `<rect class="b-wall" width="200" height="80"/>${win}<g class="bfx">${fx}</g>`;
+  return fx;
 }
 
 // The banner's picture: the room and, in front of it, the card's illustration of the device (same drawing, classes
@@ -6868,15 +6882,21 @@ function caBannerScene(kind, variant, s, n, uid) {
   const art = CA_ART[kind];
   if (!art) return "";
   const p = caBannerPlace(kind, variant);
-  const r = art.render(variant, s);
+  return (
+    `<svg class="bscene" viewBox="0 0 200 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">` +
+    `${caBannerRoom(kind, variant, n, p)}${caBannerDevice(kind, variant, s, p, uid)}</svg>`
+  );
+}
+
+// The device in the banner's room, placed at `p` (caBannerPlace): its illustration cropped to it, with the classes
+// that run its animations.
+function caBannerDevice(kind, variant, s, p, uid) {
+  const r = CA_ART[kind].render(variant, s);
   const svg = r.svg
     .replace(/(id="|url\(#)(ca-[a-z0-9]+)/g, `$1$2-b${uid}`)
     .replace(/^<svg\b[^>]*>/, `<svg x="${caF(p.x)}" y="${caF(p.y)}" width="${caF(p.w)}" height="${caF(p.h)}" viewBox="${p.vb.join(" ")}" overflow="visible" aria-hidden="true">`);
   const cls = ["bdev", `k-${kind}`, `st-${s.state || (s.running ? "on" : "off")}`, s.running ? "running" : "", ...(r.cls || []), p.wall ? "wall" : ""];
-  return (
-    `<svg class="bscene" viewBox="0 0 200 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true" focusable="false">` +
-    `${caBannerRoom(kind, variant, n, p)}<g class="${cls.filter(Boolean).join(" ")}"${r.style ? ` style="${r.style}"` : ""}>${svg}</g></svg>`
-  );
+  return `<g class="${cls.filter(Boolean).join(" ")}"${r.style ? ` style="${r.style}"` : ""}>${svg}</g>`;
 }
 
 // The banner's colours per kind of device (the room's wall, day / night); a heat pump has the sky.
@@ -6939,7 +6959,7 @@ const CA_BANNER_STYLES = `
   .bdev.wall .floor { display: none; }
   /* The effects of the running device. */
   .bfx { display: none; }
-  .banner.running .bfx { display: inline; }
+  .banner.running .bfx, .bfx.running { display: inline; }
   .bfx .ca { fill: none; stroke: var(--ca-color); stroke-width: 1.8; stroke-linecap: round; opacity: 0; animation: ca-b-fall 2.4s ease-in infinite; }
   .bfx .c1 { animation-delay: -.8s; } .bfx .c2 { animation-delay: -1.6s; }
   .bfx .suck { fill: #a39e94; opacity: 0; animation: ca-b-suck 3s ease-in infinite; }
@@ -7206,10 +7226,7 @@ class CaCardEditor extends HTMLElement {
                     select: { mode: "dropdown", options: ["auto", ...variants, "none"].map((v) => ({ value: v, label: caT(lang, `ill_${v}`) })) },
                   },
                 },
-                {
-                  name: "illustration_theme",
-                  selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: caT(lang, `theme_${v}`) })) } },
-                },
+                caThemeField(lang),
               ],
             },
           ]
@@ -7311,6 +7328,12 @@ const CA_NO_FILTER = ["fan", "heatpump"];
 
 // Illustration variants of each kind of device (the first is the fallback).
 // The folded Advanced section: the language, and the other `names` edited as YAML.
+// The banner's day / night theme in the visual editors (device cards and overview).
+const caThemeField = (lang) => ({
+  name: "illustration_theme",
+  selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((v) => ({ value: v, label: caT(lang, `theme_${v}`) })) } },
+});
+
 const caAdvanced = (lang, ...names) => [
   {
     name: "advanced",
