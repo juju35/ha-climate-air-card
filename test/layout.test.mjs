@@ -106,17 +106,15 @@ test("mini cards: the header badge keeps the full card's size", () => {
   }
 });
 
-test("overview: the pill shrinks and truncates instead of crushing the title, buttons never shrink", () => {
+test("overview: the pill right after the title, under it when both do not fit whole, buttons never shrink", () => {
   const rs = rules(overview());
-  const pill = decl(rs, ".pill");
-  assert.equal(pill.flex, "0 1 auto");
-  assert.equal(pill["min-width"], "0");
-  assert.equal(pill["max-width"], "50%");
-  assert.equal(pill.overflow, "hidden");
+  assert.equal(decl(rs, ".trow .pill").flex, "none", "the pill keeps its whole label beside the title");
+  assert.equal(decl(rs, ".trow .pill")["max-width"], "none");
+  assert.equal(decl(rs, ".pill").overflow, "hidden");
   assert.equal(decl(rs, ".pill .stt")["text-overflow"], "ellipsis");
   const title = decl(rs, ".title");
-  assert.equal(title.flex, "1 1 0");
-  assert.match(title["min-width"], /^\d+(\.\d+)?ch$/);
+  assert.equal(title.flex, "0 1 auto", "the pill sits right after the title, not at the far right");
+  assert.equal(decl(rs, ".titles.pill-below .trow").display, "contents", "measured (caFitPills): its own line under the title");
   for (const btn of [".badge", ".zoom"]) assert.equal(decl(rs, btn).flex, "none", btn);
 });
 

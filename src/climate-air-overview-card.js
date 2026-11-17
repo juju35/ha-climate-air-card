@@ -286,8 +286,9 @@ class ClimateAirOverviewCard extends CaElement {
         : `<button class="zoom" data-action="zoom" title="${zoomLabel}" aria-label="${zoomLabel}"><ha-icon icon="${compact ? "mdi:arrow-expand" : "mdi:arrow-collapse"}"></ha-icon></button>`;
     const status = on.length ? this._t("running_n", { n: on.length }) : this._t("all_off");
     card.querySelector(".head").innerHTML =
-      `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div><div class="title">${c.show_title !== false ? caEsc(c.title || this._t("title")) : ""}</div>` +
-      `${alertChip}<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div>${zoom}`;
+      `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div>` +
+      `<div class="titles"><div class="trow"><div class="title name">${c.show_title !== false ? caEsc(c.title || this._t("title")) : ""}</div>` +
+      `<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div></div></div>${alertChip}${zoom}`;
     this._fitPills();
 
     const body = card.querySelector(".body");
@@ -433,9 +434,14 @@ const CA_OVERVIEW_STYLES = `
   .badge { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
            background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); }
   .badge ha-icon { --mdc-icon-size: 24px; }
-  /* The pill gets its whole label first (at most half the header) and the title the rest, keeping about four
-     characters: the pill is only truncated when even that does not fit. */
-  .title { flex: 1 1 0; min-width: 5ch; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* The pill right after the title when the whole title and its whole label fit there, else on its own line under the
+     title; only its dot when even that does not fit (caFitPills). */
+  .titles { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; }
+  .trow { display: flex; align-items: center; gap: 8px; max-width: 100%; min-width: 0; }
+  .titles.pill-below .trow { display: contents; }
+  .titles.pill-below .pill { margin-top: 3px; max-width: 100%; }
+  .trow .pill { flex: none; max-width: none; }
+  .title { flex: 0 1 auto; min-width: 0; max-width: 100%; font-size: 16px; font-weight: 500; color: var(--primary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pill { flex: 0 1 auto; min-width: 0; max-width: 50%; overflow: hidden; box-sizing: border-box; position: relative; display: inline-flex; align-items: center;
           font-size: 11px; font-weight: 500; padding: 1px 8px; border-radius: 999px;
           color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); white-space: nowrap; }

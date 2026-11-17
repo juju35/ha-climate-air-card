@@ -5243,15 +5243,46 @@ function caName(hass, id) {
 //   _miniInfo(m)          the lines of the mini card
 //   _miniButtons(m)       extra round buttons of the mini card (the power button is added after them)
 // What every card of the bundle shares: grid size, language and labels.
-// The status pill shows its whole label, or only its dot when that label truncates (at most half the header, the
-// title keeping a few characters): measured on the rendered text, since a width threshold also hid labels that fit
-// (a 245 px card showed only dots). Re-measured after each render and whenever the card's width changes.
+// The width of an element's whole text in fractional pixels, even while it is cut with an ellipsis (0 when hidden).
+const textWidth = (el) => {
+  if (!el?.getClientRects?.().length || typeof document.createRange !== "function") return 0;
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  return range.getBoundingClientRect().width;
+};
+
+// The status pill goes on the title row, right after the title, only when the whole title and the pill's whole label
+// fit there; otherwise it takes its own line under the subtitle (.pill-below) and the title keeps its row (cut only
+// when it does not fit alone). The subtitle then keeps one line (its whole text in its tooltip), and when the block
+// still runs out of the banner or into its floor strip, or the label does not fit its own line, or the card is 200 px
+// wide or less, the pill keeps its dot alone (.dot-only, the label in its tooltip and for screen readers). Measured
+// on the rendered text, never by a fixed width, so that every language fits; re-measured after each render and
+// whenever the card's width changes.
 const caFitPills = (root) => {
-  for (const pill of root?.querySelectorAll?.(".st, .pill") || []) {
-    if (!pill.getClientRects?.().length) continue;
+  const card = root?.querySelector?.("ha-card");
+  for (const t of root?.querySelectorAll?.(".titles") || []) {
+    const pill = t.querySelector(".st, .pill");
+    if (!pill?.getClientRects?.().length) continue;
+    t.classList.remove("pill-below");
     pill.classList.remove("dot-only");
-    const stt = pill.querySelector(".stt");
-    if (stt && (stt.scrollWidth > stt.clientWidth + 0.5 || pill.scrollWidth > pill.clientWidth + 0.5)) pill.classList.add("dot-only");
+    const sub = t.querySelector(".sub");
+    sub?.removeAttribute("title");
+    if (card && card.getBoundingClientRect().width <= 200) {
+      pill.classList.add("dot-only");
+      continue;
+    }
+    const avail = t.getBoundingClientRect().width;
+    const gap = parseFloat(getComputedStyle(pill.parentElement).columnGap) || 0;
+    const width = pill.getBoundingClientRect().width;
+    if (textWidth(t.querySelector(".name")) + gap + width <= avail + 0.01) continue;
+    t.classList.add("pill-below");
+    if (sub && sub.scrollWidth > sub.clientWidth) sub.title = sub.textContent.trim();
+    const banner = t.closest(".banner");
+    const box = banner?.getBoundingClientRect();
+    const floor = banner?.querySelector(".ground")?.getBoundingClientRect().top ?? box?.bottom;
+    const r = t.getBoundingClientRect();
+    const out = box && (r.top < box.top - 0.5 || r.bottom > floor + 0.5);
+    if (out || width > avail + 0.01) pill.classList.add("dot-only");
   }
 };
 
@@ -6869,19 +6900,17 @@ const CA_BANNER_STYLES = `
   .badge .brand { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 5px; padding: 2px; box-sizing: border-box;
                   display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 1px rgba(13,42,69,.16), 0 1px 3px rgba(13,42,69,.18); }
   .badge .brand img { width: 100%; height: 100%; object-fit: contain; }
-  /* The status pill (banner and classic header) sits on the title line, right after the title (the title ellipsises first, keeping a few
-     characters); without room for both, it goes on its own line under the subtitle. It keeps its whole label, or
-     only its dot when that label really does not fit (caFitPills). Its colour is the round icon's. */
+  /* The status pill (banner and classic header) sits on the title line, right after the title, when the whole title
+     and its whole label fit there; otherwise it goes on its own line under the subtitle. It keeps its whole label, or
+     only its dot when even that does not fit (caFitPills). Its colour is the round icon's. */
   .titles { container: ca-titles / inline-size; display: flex; flex-direction: column; align-items: flex-start; }
   .titles > * { max-width: 100%; }
   .trow { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; }
-  .trow .name { flex: 0 1 auto; min-width: 4ch; }
-  .trow .st { flex: none; max-width: 50%; }
-  @container ca-titles (max-width: 170px) {
-    .trow { display: contents; }
-    .trow .name, .trow .st { max-width: 100%; }
-    .trow .st { order: 3; margin-top: 3px; }
-  }
+  .trow .name { flex: 0 1 auto; min-width: 0; }
+  .trow .st { flex: none; max-width: none; }
+  .titles.pill-below .trow { display: contents; }
+  .titles.pill-below .trow .name, .titles.pill-below .trow .st { max-width: 100%; }
+  .titles.pill-below .trow .st { order: 3; margin-top: 3px; }
   .banner .st { line-height: 16px; background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
   .banner.night .st { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
   .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; width: 24px; height: 24px; color: #33506b;
