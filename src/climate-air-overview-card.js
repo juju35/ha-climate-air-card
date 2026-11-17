@@ -320,7 +320,7 @@ class ClimateAirOverviewCard extends CaElement {
   // The illustrated header, like the device cards': the round icon, the title and the status on the left, and on the
   // right a room with one device of each kind (the one running or needing attention first), drawn and animated as in
   // the device cards, on the 10 px floor strip. Heat pumps stand outdoors: they get the garden only when they are the
-  // only devices. Night (sun.sun below the horizon or the dark theme, unless `illustration_theme` forces it) dims it.
+  // only devices. Night (the dark theme, unless `illustration_theme` forces it) dims it.
   _banner(all, head, zoom) {
     this._uid ??= ++caUidSeq;
     const night = caIsNight(this._hass, this._config);
