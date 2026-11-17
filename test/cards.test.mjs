@@ -82,6 +82,20 @@ test("fan: speed, oscillation, natural wind and options", () => {
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["fan", "oscillate", { entity_id: "fan.bedroom_fan_fan", oscillating: false }]);
 });
 
+test("the header's subtitle does not repeat the mode the body shows: the room instead", () => {
+  const sub = (tag, entity) => html(mount(lib, tag, { entity }, makeHass())).match(/<div class="sub">([^<]*)</)?.[1];
+  // Fan: the hero's label (full card) and the compact lines (mini card) show the preset.
+  const fan = html(mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, makeHass()));
+  assert.match(fan, /<span class="lbl">Natural wind<\/span>/);
+  assert.equal(sub("climate-air-fan-card", "fan.bedroom_fan_fan"), "Bedroom");
+  assert.equal(sub("climate-air-fan-mini-card", "fan.bedroom_fan_fan"), "Bedroom");
+  // Purifier: the full card's hero shows the air, so its subtitle keeps the preset; the compact lines show it.
+  assert.equal(sub("climate-air-purifier-card", "fan.living_room_purifier_air_purifier"), "Living room · Auto");
+  assert.equal(sub("climate-air-purifier-mini-card", "fan.living_room_purifier_air_purifier"), "Living room");
+  const mini = html(mount(lib, "climate-air-purifier-mini-card", { entity: "fan.living_room_purifier_air_purifier" }, makeHass()));
+  assert.match(mini, /class="line"><ha-icon[^>]*><\/ha-icon><span>Auto<\/span>/);
+});
+
 test("unavailable device: offline chip, no controls", () => {
   const el = mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, makeHass("en", { "fan.bedroom_fan_fan": { state: "unavailable" } }));
   assert.match(html(el), /Device offline/);

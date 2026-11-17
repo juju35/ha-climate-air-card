@@ -9,6 +9,7 @@
 - **Status pill on the title line** of the illustrated header (full and mini cards): right after the name, in the round icon's status colour, dropping under the subtitle when the header is narrow (the subtitle no longer repeats the status). The mini card's expand/collapse button is a 24 px frosted round button in the banner's top-right corner.
 - The classic header (`illustration: false`) puts its status pill in the same place, right after the name (under the subtitle when narrow), instead of at the far right. On a wide mini air conditioner card, the wall unit steps left so the corner expand / collapse button no longer covers it.
 - **Night picture with the dark theme even while the sun is up**: in `auto`, every device card's banner shows the night picture when the sun is below the horizon or Home Assistant's theme is dark.
+- **No repeated mode**: where the body already shows the mode or preset (the fan card's hero, the compact lines of the fan, purifier, air conditioner and humidifier mini cards), the header's subtitle tells the room instead of repeating it.
 
 ## 2.12.1 - 2026-11-16
 

@@ -104,6 +104,11 @@ class ClimateAirFanCard extends CaCard {
     };
   }
 
+  // The hero's label and the compact lines both show the preset while it runs.
+  _subInBody(m) {
+    return m.running;
+  }
+
   _heroInfo(m) {
     if (!m.running) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     return `<div class="big"><span class="val">${Math.round(m.pct)}<small> %</small></span><span class="lbl">${caEsc(m.sub || m.statusText)}</span></div>`;

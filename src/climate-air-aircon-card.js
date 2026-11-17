@@ -238,6 +238,11 @@ class ClimateAirAirconCard extends CaClimateCard {
     return [this._filterResetButton(m.filterState, this._r.ent.filter_reset)];
   }
 
+  // The compact mini card's lines show the mode while it runs.
+  _subInBody(m, full) {
+    return !full && m.running;
+  }
+
   _miniInfo(m) {
     const lines = [this._tempLine(m)];
     if (m.running && (m.fanMode || m.sub)) lines.push(caLine("mdi:fan", [m.fanMode, m.sub].filter(Boolean).join(" · ")));

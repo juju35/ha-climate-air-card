@@ -5580,7 +5580,8 @@ class CaCard extends CaElement {
       target.innerHTML = this._miniHtml(m);
       return;
     }
-    const sub = [caAreaName(this._hass, r.id), m.sub].filter(Boolean).join(" · ");
+    // The subtitle: the room, then the mode (m.sub) unless the body shows it already (see _subInBody).
+    const sub = [caAreaName(this._hass, r.id), this._subInBody(m, true) ? "" : m.sub].filter(Boolean).join(" · ");
     const chips = m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : "";
     const head = m.illustrated
       ? this._banner(m, sub)
@@ -5590,6 +5591,12 @@ class CaCard extends CaElement {
       ? `<div class="hero"><div class="info">${this._heroInfo(m)}${chips}</div>${m.powerBtn}</div>`
       : `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${chips}</div></div>`;
     target.innerHTML = `${this._styles(m.color, m.badgeColor)}<ha-card>${head}${hero}${c.show_controls && m.online ? this._controls(m) : ""}</ha-card>`;
+  }
+
+  // Whether the body shows the mode (m.sub) already: the full card's hero (`full`), else the compact mini card's
+  // lines. The header's subtitle then tells the room instead of repeating it. Overridden by the cards.
+  _subInBody() {
+    return false;
   }
 
   // Whether the header is the illustrated banner (the default) or the classic one (`illustration: false`, or a
@@ -6602,8 +6609,9 @@ const caMini = (Base) =>
     _miniHtml(m) {
       const btns = [...(m.online && this._config.show_controls ? this._miniButtons(m) : []), m.powerBtn].filter(Boolean);
       const chips = m.chips.filter((x) => x.includes("chip warn") || x.includes("chip alert") || !m.online);
+      // The banner's subtitle: the mode, or the room when the compact lines show the mode (see _subInBody).
       const head = m.illustrated
-        ? this._banner(m, m.sub)
+        ? this._banner(m, this._subInBody(m, false) ? caAreaName(this._hass, this._r.id) : m.sub)
         : `<div class="header">${m.badge}${this._titles(m)}${this._zoomButton()}</div>`;
       return (
         `${this._styles(m.color, m.badgeColor)}<ha-card class="mini">${head}` +
