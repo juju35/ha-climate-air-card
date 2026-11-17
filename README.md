@@ -151,7 +151,7 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 
 - The device cards and their mini cards open on a 90 px banner: the round icon (its colour tells the status: the state's colour while running, grey when off or offline, amber for a warning, red for an alert), with the logo of the device's brand or integration on it (Xiaomi, Dyson, Daikin, Midea, VOCOlinc, Rituals…), the name and the status on the left, and on the right the device's own animated illustration in its room, standing on a floor strip that runs edge to edge
 - The room follows the kind of device and comes alive while it runs: cold air falls from the wall unit with the sun at the window (air conditioner), dust is drawn into the purifier and clean air leaves it, a fan blows a breeze, mist rises above a humidifier; a heat pump's outdoor unit stands against the façade, on the lawn
-- A night picture after sunset (`sun.sun`, else Home Assistant's dark theme), or always day or night with `illustration_theme`; `illustration: false` brings back the classic header (icon, title, status pill and power button, the illustration next to the state). Animations stop with the system's *reduce motion* setting
+- A night picture after sunset (`sun.sun`) or with Home Assistant's dark theme (even while the sun is up), or always day or night with `illustration_theme`; `illustration: false` brings back the classic header (icon, title, status pill and power button, the illustration next to the state). Animations stop with the system's *reduce motion* setting
 
 ### Mini cards
 
@@ -239,7 +239,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_subtitle` | ❌ | `true` | Show the subtitle under the title |
 | `icon` | ❌ | Illustration | Replaces the illustration with an icon |
 | `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable`, `window` or `portasplit`. `auto` picks one from the device model and name; `false` (*No illustration* in the visual editor) keeps the classic header (see [Illustrated header](#illustrated-header)) |
-| `illustration_theme` | ❌ | `auto` | The header's picture by day or by night: `auto` (night after sunset, from `sun.sun`, else Home Assistant's dark theme), `day` or `night`. Both the full and the mini card |
+| `illustration_theme` | ❌ | `auto` | The header's picture by day or by night: `auto` (night after sunset, from `sun.sun`, or with Home Assistant's dark theme, even while the sun is up), `day` or `night`. Both the full and the mini card |
 | `brand` | ❌ | Auto | YAML only: the logo on the header icon, guessed from the device's manufacturer, else its integration; a logo name (`xiaomi_home`, `xiaomi_miio`, `dyson_local`, `daikin_onecta`, `midea_ac_lan`, `homekit`, `vocolinc`, `rituals`, `matter`, `melcloud`, `vicare`, `myuplink`, `panasonic`, `cozytouch`, `hitachi_yutaki`, `esphome`) picks one, `none` removes it |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |

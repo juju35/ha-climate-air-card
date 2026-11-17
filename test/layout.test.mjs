@@ -290,7 +290,7 @@ test("narrow full cards: the info goes under the picture and long chips wrap ins
   assert.match(wide.decl["grid-template-areas"], /"chips chips"/);
 });
 
-test("illustrated banner: night from sun.sun or the dark theme, forced by illustration_theme; the icon tells alerts", () => {
+test("illustrated banner: night from sun.sun below the horizon or the dark theme, forced by illustration_theme; the icon tells alerts", () => {
   const withSun = (state, dark = false) => {
     const h = makeHass();
     h.states["sun.sun"] = { entity_id: "sun.sun", state, attributes: {} };
@@ -299,7 +299,10 @@ test("illustrated banner: night from sun.sun or the dark theme, forced by illust
   };
   const html = (config, hass) => mount(lib, "climate-air-purifier-card", { entity: "fan.living_room_purifier_air_purifier", ...config }, hass).shadowRoot.innerHTML;
   assert.match(html({}, withSun("below_horizon")), /class="banner [^"]*\bnight\b/);
-  assert.doesNotMatch(html({}, withSun("above_horizon", true)), /class="banner [^"]*\bnight\b/, "the sun wins over the theme");
+  assert.match(html({}, withSun("above_horizon", true)), /class="banner [^"]*\bnight\b/, "dark theme while the sun is up: night");
+  assert.doesNotMatch(html({}, withSun("above_horizon", false)), /class="banner [^"]*\bnight\b/, "light theme while the sun is up: day");
+  assert.doesNotMatch(html({ illustration_theme: "day" }, withSun("above_horizon", true)), /class="banner [^"]*\bnight\b/);
+  assert.match(html({}, withSun("unavailable", true)), /class="banner [^"]*\bnight\b/);
   assert.match(html({ illustration_theme: "night" }, withSun("above_horizon")), /class="banner [^"]*\bnight\b/);
   assert.doesNotMatch(html({ illustration_theme: "day" }, withSun("below_horizon")), /class="banner [^"]*\bnight\b/);
   const noSun = makeHass();

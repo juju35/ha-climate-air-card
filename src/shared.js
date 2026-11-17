@@ -6688,7 +6688,7 @@ const CA_ART_STYLES = `
 // of the device in front of it and a 10 px floor strip edge to edge at the bottom. The room shows what the device does
 // while it runs: cold air under the wall unit and the sun at the window (air conditioner), particles drawn into the
 // purifier and clean air leaving it, the breeze of a fan, mist above a humidifier; a heat pump stands outdoors,
-// against the façade, on the lawn. Night (sun.sun below the horizon, else Home Assistant's dark theme, unless
+// against the façade, on the lawn. Night (sun.sun below the horizon or Home Assistant's dark theme, unless
 // `illustration_theme` forces day or night) dims the room. `illustration: false` keeps the classic header.
 
 // The brand logos, by slug, embedded by the build from images/badge/<slug>.png (scripts/build.mjs).
@@ -6727,13 +6727,12 @@ const caBrandBadge = (slug) => {
   return logo ? `<span class="brand"><img src="${caEsc(logo)}" alt=""></span>` : "";
 };
 
-// Night picture: forced by illustration_theme, else the sun below the horizon, else Home Assistant's dark mode.
+// Night picture: forced by illustration_theme, else the sun below the horizon or Home Assistant's dark mode
+// (the dark theme shows the night picture even while the sun is up; an unavailable sun leaves the dark mode alone).
 function caIsNight(hass, config) {
   if (config.illustration_theme === "night") return true;
   if (config.illustration_theme === "day") return false;
-  const sun = hass?.states?.["sun.sun"];
-  if (sun && !caUnavailable(sun)) return sun.state === "below_horizon";
-  return !!hass?.themes?.darkMode;
+  return hass?.states?.["sun.sun"]?.state === "below_horizon" || !!hass?.themes?.darkMode;
 }
 
 // The device's outline in its own picture (viewBox units: x, y, width, height), measured once from each drawing: the
