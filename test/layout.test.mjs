@@ -83,6 +83,13 @@ test("device cards: the status pill shrinks and truncates instead of crushing th
   }
 });
 
+test("classic header: the status pill sits right after the title, like on the banner", () => {
+  for (const [tag, el] of cards("en", {}, { illustration: false })) {
+    const out = el.shadowRoot.innerHTML;
+    assert.match(out, /<div class="header">[\s\S]*?<div class="titles"><div class="trow"><div class="name">[^<]*<\/div><span class="st"/, `${tag}: pill after the title`);
+  }
+});
+
 test("mini cards: the header badge keeps the full card's size", () => {
   for (const [kind, entity] of DEVICES) {
     const full = rules(mount(lib, `${kind}-card`, { entity }, makeHass()));

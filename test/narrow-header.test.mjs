@@ -130,10 +130,17 @@ test("status pills: the whole label, or only the dot when the label really does 
             const card = sr.querySelector("ha-card").getBoundingClientRect();
             const p = pill.getBoundingClientRect();
             state.outside = p.left < card.left - 0.5 || p.right > card.right + 0.5;
+            // Banner and classic header alike: the pill right after the title on its line, or on a line under it.
+            const name = pill.closest(".titles")?.querySelector(".name")?.getBoundingClientRect();
+            if (name) {
+              const sameLine = Math.abs(p.top + p.height / 2 - (name.top + name.height / 2)) < 3;
+              state.misplaced = sameLine ? !(p.left - name.right >= 6 && p.left - name.right <= 12) : p.top < name.bottom - 0.5;
+            }
             return state;
           });
           const where = `${tag} ${config.entity || ""} ${lang} ${unavailable ? "unavailable" : "normal"} ${width}px « ${r.label} »`;
           if (r.outside) bad.push(`${where}: pill outside the card`);
+          if (r.misplaced) bad.push(`${where}: pill not right after the title, nor under it`);
           if (r.shown && r.cut) bad.push(`${where}: label truncated`);
           if (!r.shown && !r.neededDot) bad.push(`${where}: only the dot although the label fits`);
           if (width === 245) {

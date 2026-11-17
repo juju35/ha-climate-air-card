@@ -5584,8 +5584,7 @@ class CaCard extends CaElement {
     const chips = m.chips.length ? `<div class="chips">${m.chips.join("")}</div>` : "";
     const head = m.illustrated
       ? this._banner(m, sub)
-      : `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>` +
-        `${caPill(m.statusText)}${m.powerBtn}${this._zoomButton()}</div>`;
+      : `<div class="header">${m.badge}${this._titles(m, sub)}${m.powerBtn}${this._zoomButton()}</div>`;
     // Under the banner, the device is in the picture above: the measurements, and the on / off button at their right.
     const hero = m.illustrated
       ? `<div class="hero"><div class="info">${this._heroInfo(m)}${chips}</div>${m.powerBtn}</div>`
@@ -5610,9 +5609,14 @@ class CaCard extends CaElement {
     return (
       `<div class="${cls}"${wall ? ` style="--ca-wall:${wall};--ca-wall-fill:${wall}"` : ""}>` +
       `${caBannerScene(kind, m.variant, m, night, this._uid)}<div class="ground"></div>` +
-      `<div class="bhead">${m.badge}<div class="titles"><div class="trow"><div class="name">${caEsc(m.name)}</div>${caPill(m.statusText)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div></div>` +
+      `<div class="bhead">${m.badge}${this._titles(m, sub)}</div>` +
       `${this._zoomButton()}</div>`
     );
+  }
+
+  // The title row of the banner and of the classic header: the name with the status pill right after it, `sub` under.
+  _titles(m, sub) {
+    return `<div class="titles"><div class="trow"><div class="name">${caEsc(m.name)}</div>${caPill(m.statusText)}</div>${sub ? `<div class="sub">${caEsc(sub)}</div>` : ""}</div>`;
   }
 
   // Whether the header's on / off button shows. A metered heat pump (its entity is a power sensor) is read-only.
@@ -6600,7 +6604,7 @@ const caMini = (Base) =>
       const chips = m.chips.filter((x) => x.includes("chip warn") || x.includes("chip alert") || !m.online);
       const head = m.illustrated
         ? this._banner(m, m.sub)
-        : `<div class="header">${m.badge}<div class="titles"><div class="name">${caEsc(m.name)}</div></div>${caPill(m.statusText)}${this._zoomButton()}</div>`;
+        : `<div class="header">${m.badge}${this._titles(m)}${this._zoomButton()}</div>`;
       return (
         `${this._styles(m.color, m.badgeColor)}<ha-card class="mini">${head}` +
         `<div class="content">${m.illustrated ? "" : this._picture(m)}<div class="info">${this._miniInfo(m)}${chips.length ? `<div class="chips">${chips.join("")}</div>` : ""}</div>` +
@@ -6858,18 +6862,18 @@ const CA_BANNER_STYLES = `
   .badge .brand { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; border-radius: 5px; padding: 2px; box-sizing: border-box;
                   display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 1px rgba(13,42,69,.16), 0 1px 3px rgba(13,42,69,.18); }
   .badge .brand img { width: 100%; height: 100%; object-fit: contain; }
-  /* The status pill sits on the title line, right after the title (the title ellipsises first, keeping a few
+  /* The status pill (banner and classic header) sits on the title line, right after the title (the title ellipsises first, keeping a few
      characters); without room for both, it goes on its own line under the subtitle. It keeps its whole label, or
      only its dot when that label really does not fit (caFitPills). Its colour is the round icon's. */
-  .banner .titles { container: ca-titles / inline-size; display: flex; flex-direction: column; align-items: flex-start; }
-  .banner .titles > * { max-width: 100%; }
-  .banner .trow { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; }
-  .banner .trow .name { flex: 0 1 auto; min-width: 4ch; }
-  .banner .trow .st { flex: none; max-width: 50%; }
+  .titles { container: ca-titles / inline-size; display: flex; flex-direction: column; align-items: flex-start; }
+  .titles > * { max-width: 100%; }
+  .trow { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; }
+  .trow .name { flex: 0 1 auto; min-width: 4ch; }
+  .trow .st { flex: none; max-width: 50%; }
   @container ca-titles (max-width: 170px) {
-    .banner .trow { display: contents; }
-    .banner .trow .name, .banner .trow .st { max-width: 100%; }
-    .banner .trow .st { order: 3; margin-top: 3px; }
+    .trow { display: contents; }
+    .trow .name, .trow .st { max-width: 100%; }
+    .trow .st { order: 3; margin-top: 3px; }
   }
   .banner .st { line-height: 16px; background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
   .banner.night .st { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
@@ -6920,6 +6924,13 @@ const CA_BANNER_STYLES = `
   @keyframes ca-b-rise { from { transform: translateY(2px); opacity: 0; } 30% { opacity: .9; } to { transform: translateY(-6px); opacity: 0; } }
   @keyframes ca-b-blow { from { transform: translateX(0); opacity: .9; } to { transform: translateX(-30px); opacity: 0; } }
   @keyframes ca-b-puff { from { transform: translateY(10px) scale(.6); opacity: 0; } 40% { opacity: .8; } to { transform: translateY(-8px) scale(1.2); opacity: 0; } }
+  /* A wall unit sits high on the wall, under the mini card's corner button: the room steps left, at full size, so the
+     button stays clear of it (the banner is the wall's colour, the room just continues behind the button). Narrower,
+     the smaller room already clears it. */
+  @container (min-width: 301px) {
+    .banner:has(> .zoom):has(.bdev.wall) .bscene { right: 28px; }
+    .banner:has(> .zoom):has(.bdev.wall) .bhead { right: calc(min(200px, 58%) + 8px); }
+  }
   /* Narrow cards (the Sections view's 6 columns): a smaller room, the text gets more of the width. */
   @container (max-width: 300px) { .bscene { width: 48%; } .bhead { right: calc(48% - 26px); gap: 8px; } }
   /* Narrowest cards: the sky alone, the text gets the width. */

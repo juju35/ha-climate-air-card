@@ -7,6 +7,7 @@
 - The round header icon's colour now always tells the status: the state's colour while running, grey when off or offline, amber for a warning, red for an alert.
 - A **brand badge** on the header icon: the logo of the device's maker or integration (Xiaomi, Dyson, Daikin, Midea, VOCOlinc, Rituals, HomeKit, Matter…), embedded in the bundle; `brand` (YAML) picks another one or `none`.
 - **Status pill on the title line** of the illustrated header (full and mini cards): right after the name, in the round icon's status colour, dropping under the subtitle when the header is narrow (the subtitle no longer repeats the status). The mini card's expand/collapse button is a 24 px frosted round button in the banner's top-right corner.
+- The classic header (`illustration: false`) puts its status pill in the same place, right after the name (under the subtitle when narrow), instead of at the far right. On a wide mini air conditioner card, the wall unit steps left so the corner expand / collapse button no longer covers it.
 
 ## 2.12.1 - 2026-11-16
 
