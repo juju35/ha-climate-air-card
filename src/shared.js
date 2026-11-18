@@ -7424,12 +7424,12 @@ const CA_BANNER_STYLES = `
   @keyframes ca-b-rise { from { transform: translateY(2px); opacity: 0; } 30% { opacity: .9; } to { transform: translateY(-6px); opacity: 0; } }
   @keyframes ca-b-blow { from { transform: translateX(0); opacity: .9; } to { transform: translateX(-30px); opacity: 0; } }
   @keyframes ca-b-puff { from { transform: translateY(10px) scale(.6); opacity: 0; } 40% { opacity: .8; } to { transform: translateY(-8px) scale(1.2); opacity: 0; } }
-  /* A wall unit sits high on the wall, under the mini card's corner button: the room steps left, at full size, so the
-     button stays clear of it (the banner is the wall's colour, the room just continues behind the button). Narrower,
-     the smaller room already clears it. */
+  /* A wall unit sits high on the wall, and a ventilation unit's ducts rise to the ceiling, under the mini card's
+     corner button: the room steps left, at full size, so the button stays clear of it (the banner is the wall's
+     colour, the room just continues behind the button). Narrower, the smaller room already clears it. */
   @container (min-width: 301px) {
-    .banner:has(> .zoom):has(.bdev.wall) .bscene { right: 28px; }
-    .banner:has(> .zoom):has(.bdev.wall) .bhead { right: calc(min(200px, 58%) + 8px); }
+    .banner:has(> .zoom):has(.bdev.wall, .bdev.k-ventilation) .bscene { right: 28px; }
+    .banner:has(> .zoom):has(.bdev.wall, .bdev.k-ventilation) .bhead { right: calc(min(200px, 58%) + 8px); }
   }
   /* Narrow cards (the Sections view's 6 columns): a smaller room, the text gets more of the width. */
   @container (max-width: 300px) { .bscene { width: 48%; } .bhead { right: calc(48% - 26px); gap: 8px; } }
