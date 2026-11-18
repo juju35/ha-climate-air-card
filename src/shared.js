@@ -6714,7 +6714,7 @@ const CA_KIND_ICONS = {
   aircon: "mdi:air-conditioner",
   heatpump: "mdi:heat-pump-outline",
   humidifier: "mdi:air-humidifier",
-  ventilation: "mdi:hvac",
+  ventilation: "mdi:fan",
 };
 
 // ── Heat pumps ───────────────────────────────────────────────────────────────
