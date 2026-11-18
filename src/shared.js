@@ -139,7 +139,7 @@ const CA_I18N = {
     ill_auto: "Automatic",
     ill_none: "No illustration (classic header)",
     ed_illustration_theme: "Illustration theme",
-    theme_auto: "Automatic (sun or dark theme)",
+    theme_auto: "Automatic (follows the theme)",
     theme_day: "Day",
     theme_night: "Night",
     ill_tower: "Tower",
@@ -342,7 +342,7 @@ const CA_I18N = {
     ill_auto: "Automatique",
     ill_none: "Sans illustration (en-tête classique)",
     ed_illustration_theme: "Thème de l'illustration",
-    theme_auto: "Automatique (soleil ou thème sombre)",
+    theme_auto: "Automatique (suit le thème)",
     theme_day: "Jour",
     theme_night: "Nuit",
     ill_tower: "Tour",
@@ -546,7 +546,7 @@ const CA_I18N = {
     ill_auto: "Automatisch",
     ill_none: "Keine Illustration (klassische Kopfzeile)",
     ed_illustration_theme: "Illustrationsthema",
-    theme_auto: "Automatisch (Sonne oder dunkles Design)",
+    theme_auto: "Automatisch (folgt dem Design)",
     theme_day: "Tag",
     theme_night: "Nacht",
     ill_tower: "Turm",
@@ -749,7 +749,7 @@ const CA_I18N = {
     ill_auto: "Automático",
     ill_none: "Sin ilustración (encabezado clásico)",
     ed_illustration_theme: "Tema de la ilustración",
-    theme_auto: "Automático (sol o tema oscuro)",
+    theme_auto: "Automático (sigue el tema)",
     theme_day: "Día",
     theme_night: "Noche",
     ill_tower: "Torre",
@@ -952,7 +952,7 @@ const CA_I18N = {
     ill_auto: "Аутоматски",
     ill_none: "Без илустрације (класично заглавље)",
     ed_illustration_theme: "Тема илустрације",
-    theme_auto: "Аутоматски (сунце или тамна тема)",
+    theme_auto: "Аутоматски (прати тему)",
     theme_day: "Дан",
     theme_night: "Ноћ",
     ill_tower: "Стубни",
@@ -1155,7 +1155,7 @@ const CA_I18N = {
     ill_auto: "Automatski",
     ill_none: "Bez ilustracije (klasično zaglavlje)",
     ed_illustration_theme: "Tema ilustracije",
-    theme_auto: "Automatski (sunce ili tamna tema)",
+    theme_auto: "Automatski (prati temu)",
     theme_day: "Dan",
     theme_night: "Noć",
     ill_tower: "Stubni",
@@ -1358,7 +1358,7 @@ const CA_I18N = {
     ill_auto: "Automatica",
     ill_none: "Nessuna illustrazione (intestazione classica)",
     ed_illustration_theme: "Tema dell'illustrazione",
-    theme_auto: "Automatico (sole o tema scuro)",
+    theme_auto: "Automatico (segue il tema)",
     theme_day: "Giorno",
     theme_night: "Notte",
     ill_tower: "Torre",
@@ -1562,7 +1562,7 @@ const CA_I18N = {
     ill_auto: "Automatisch",
     ill_none: "Geen illustratie (klassieke koptekst)",
     ed_illustration_theme: "Illustratiethema",
-    theme_auto: "Automatisch (zon of donker thema)",
+    theme_auto: "Automatisch (volgt het thema)",
     theme_day: "Dag",
     theme_night: "Nacht",
     ill_tower: "Toren",
@@ -1766,7 +1766,7 @@ const CA_I18N = {
     ill_auto: "Automática",
     ill_none: "Sem ilustração (cabeçalho clássico)",
     ed_illustration_theme: "Tema da ilustração",
-    theme_auto: "Automático (sol ou tema escuro)",
+    theme_auto: "Automático (segue o tema)",
     theme_day: "Dia",
     theme_night: "Noite",
     ill_tower: "Torre",
@@ -1970,7 +1970,7 @@ const CA_I18N = {
     ill_auto: "Automatycznie",
     ill_none: "Bez ilustracji (klasyczny nagłówek)",
     ed_illustration_theme: "Motyw ilustracji",
-    theme_auto: "Automatycznie (słońce lub ciemny motyw)",
+    theme_auto: "Automatycznie (według motywu)",
     theme_day: "Dzień",
     theme_night: "Noc",
     ill_tower: "Wieża",
@@ -2174,7 +2174,7 @@ const CA_I18N = {
     ill_auto: "Automat",
     ill_none: "Fără ilustrație (antet clasic)",
     ed_illustration_theme: "Tema ilustrației",
-    theme_auto: "Automat (soare sau temă întunecată)",
+    theme_auto: "Automat (urmează tema)",
     theme_day: "Zi",
     theme_night: "Noapte",
     ill_tower: "Turn",
@@ -2378,7 +2378,7 @@ const CA_I18N = {
     ill_auto: "Automatisk",
     ill_none: "Ingen illustration (klassisk overskrift)",
     ed_illustration_theme: "Illustrationstema",
-    theme_auto: "Automatisk (sol eller mørkt tema)",
+    theme_auto: "Automatisk (følger temaet)",
     theme_day: "Dag",
     theme_night: "Nat",
     ill_tower: "Tårn",
@@ -2582,7 +2582,7 @@ const CA_I18N = {
     ill_auto: "Automatisk",
     ill_none: "Ingen illustration (klassisk rubrik)",
     ed_illustration_theme: "Illustrationstema",
-    theme_auto: "Automatiskt (sol eller mörkt tema)",
+    theme_auto: "Automatiskt (följer temat)",
     theme_day: "Dag",
     theme_night: "Natt",
     ill_tower: "Torn",
@@ -2786,7 +2786,7 @@ const CA_I18N = {
     ill_auto: "Автоматично",
     ill_none: "Без илюстрация (класическа заглавка)",
     ed_illustration_theme: "Тема на илюстрацията",
-    theme_auto: "Автоматично (слънце или тъмна тема)",
+    theme_auto: "Автоматично (следва темата)",
     theme_day: "Ден",
     theme_night: "Нощ",
     ill_tower: "Колона",
@@ -2990,7 +2990,7 @@ const CA_I18N = {
     ill_auto: "Автоматически",
     ill_none: "Без иллюстрации (классический заголовок)",
     ed_illustration_theme: "Тема иллюстрации",
-    theme_auto: "Автоматически (солнце или тёмная тема)",
+    theme_auto: "Автоматически (по теме)",
     theme_day: "День",
     theme_night: "Ночь",
     ill_tower: "Колонна",
@@ -3194,7 +3194,7 @@ const CA_I18N = {
     ill_auto: "Автоматично",
     ill_none: "Без ілюстрації (класичний заголовок)",
     ed_illustration_theme: "Тема ілюстрації",
-    theme_auto: "Автоматично (сонце або темна тема)",
+    theme_auto: "Автоматично (за темою)",
     theme_day: "День",
     theme_night: "Ніч",
     ill_tower: "Колона",
@@ -3398,7 +3398,7 @@ const CA_I18N = {
     ill_auto: "Automatikus",
     ill_none: "Nincs illusztráció (klasszikus fejléc)",
     ed_illustration_theme: "Illusztráció témája",
-    theme_auto: "Automatikus (nap vagy sötét téma)",
+    theme_auto: "Automatikus (a témát követi)",
     theme_day: "Nappal",
     theme_night: "Éjszaka",
     ill_tower: "Torony",
@@ -3602,7 +3602,7 @@ const CA_I18N = {
     ill_auto: "Automaticky",
     ill_none: "Bez ilustrácie (klasická hlavička)",
     ed_illustration_theme: "Téma ilustrácie",
-    theme_auto: "Automaticky (slnko alebo tmavá téma)",
+    theme_auto: "Automaticky (podľa témy)",
     theme_day: "Deň",
     theme_night: "Noc",
     ill_tower: "Veža",
@@ -3806,7 +3806,7 @@ const CA_I18N = {
     ill_auto: "Automaticky",
     ill_none: "Bez ilustrace (klasická hlavička)",
     ed_illustration_theme: "Motiv ilustrace",
-    theme_auto: "Automaticky (slunce nebo tmavý motiv)",
+    theme_auto: "Automaticky (podle motivu)",
     theme_day: "Den",
     theme_night: "Noc",
     ill_tower: "Věž",
@@ -4010,7 +4010,7 @@ const CA_I18N = {
     ill_auto: "Samodejno",
     ill_none: "Brez ilustracije (klasična glava)",
     ed_illustration_theme: "Tema ilustracije",
-    theme_auto: "Samodejno (sonce ali temna tema)",
+    theme_auto: "Samodejno (sledi temi)",
     theme_day: "Dan",
     theme_night: "Noč",
     ill_tower: "Stolp",
@@ -4214,7 +4214,7 @@ const CA_I18N = {
     ill_auto: "Automātiski",
     ill_none: "Bez ilustrācijas (klasiska galvene)",
     ed_illustration_theme: "Ilustrācijas tēma",
-    theme_auto: "Automātiski (saule vai tumšā tēma)",
+    theme_auto: "Automātiski (atbilstoši tēmai)",
     theme_day: "Diena",
     theme_night: "Nakts",
     ill_tower: "Tornis",
@@ -4418,7 +4418,7 @@ const CA_I18N = {
     ill_auto: "Αυτόματα",
     ill_none: "Χωρίς εικονογράφηση (κλασική κεφαλίδα)",
     ed_illustration_theme: "Θέμα εικονογράφησης",
-    theme_auto: "Αυτόματο (ήλιος ή σκούρο θέμα)",
+    theme_auto: "Αυτόματο (ακολουθεί το θέμα)",
     theme_day: "Ημέρα",
     theme_night: "Νύχτα",
     ill_tower: "Πύργος",
@@ -5528,7 +5528,7 @@ class CaCard extends CaElement {
     const ids = [r.id, ...Object.values(r.ent), ...(this._extraIds?.(r) || [])];
     // Home Assistant replaces a `states[id]` object whenever the entity changes: comparing the ids and the state
     // object references is enough to tell a tick apart, with nothing serialized.
-    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, hass.states["sun.sun"], hass.themes?.darkMode, ...(this._extraSig?.() || []), ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
+    const sig = [this._lang(), this._zoomed, this._pendingTemp, this._armedReset, hass.themes?.darkMode, ...(this._extraSig?.() || []), ...ids.flatMap((id) => [id, (id && hass.states[id]) || null])];
     if (this._sig && sig.length === this._sig.length && sig.every((v, i) => v === this._sig[i])) return;
     // A dropdown open or a slider held in the card is not rebuilt: the card is redrawn around it.
     const active = this.shadowRoot.activeElement;
@@ -6727,8 +6727,8 @@ const CA_ART_STYLES = `
 // of the device in front of it and a 10 px floor strip edge to edge at the bottom. The room shows what the device does
 // while it runs: cold air under the wall unit and the sun at the window (air conditioner), particles drawn into the
 // purifier and clean air leaving it, the breeze of a fan, mist above a humidifier; a heat pump stands outdoors,
-// against the façade, on the lawn. Night (sun.sun below the horizon or Home Assistant's dark theme, unless
-// `illustration_theme` forces day or night) dims the room. `illustration: false` keeps the classic header.
+// against the façade, on the lawn. Night (Home Assistant's dark theme, unless `illustration_theme` forces
+// day or night) dims the room. `illustration: false` keeps the classic header.
 
 // The brand logos, by slug, embedded by the build from images/badge/<slug>.png (scripts/build.mjs).
 const CA_BRAND_LOGOS = {} /* __BRAND_LOGOS__ */;
@@ -6766,12 +6766,12 @@ const caBrandBadge = (slug) => {
   return logo ? `<span class="brand"><img src="${caEsc(logo)}" alt=""></span>` : "";
 };
 
-// Night picture: forced by illustration_theme, else the sun below the horizon or Home Assistant's dark mode
-// (the dark theme shows the night picture even while the sun is up; an unavailable sun leaves the dark mode alone).
+// Night picture: forced by illustration_theme, else Home Assistant's dark mode alone (a light theme keeps the day
+// picture after sunset).
 function caIsNight(hass, config) {
   if (config.illustration_theme === "night") return true;
   if (config.illustration_theme === "day") return false;
-  return hass?.states?.["sun.sun"]?.state === "below_horizon" || !!hass?.themes?.darkMode;
+  return !!hass?.themes?.darkMode;
 }
 
 // The device's outline in its own picture (viewBox units: x, y, width, height), measured once from each drawing: the
