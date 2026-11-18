@@ -26,16 +26,22 @@
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/cozytouch.png" alt="Atlantic Cozytouch" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/panasonic.png" alt="Panasonic Aquarea" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/hitachi_yutaki.png" alt="Hitachi Yutaki" width="64">&nbsp;&nbsp;
-  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="ESPHome (TOUG)" width="64">
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="ESPHome (TOUG)" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/comfoconnect.png" alt="Zehnder ComfoConnect" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/duco.png" alt="Duco" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/renson.png" alt="Renson" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vallox.png" alt="Vallox" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/prana.png" alt="Prana" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/flow_it.png" alt="Flow-it" width="64">
 </p>
 
-Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifiers, humidifiers, dehumidifiers, essential oil diffusers and fans**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
+Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifiers, humidifiers, dehumidifiers, essential oil diffusers, ventilation units and fans**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
 
 [![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-climate-air-card&category=plugin)
 
 | Card | Type | What it shows |
 |---|---|---|
-| [Overview](#overview) | `custom:climate-air-overview-card` | Every heat pump, air conditioner, air purifier, humidifier, diffuser and fan at a glance: one tile per device, tap a tile to unfold its full card. |
+| [Overview](#overview) | `custom:climate-air-overview-card` | Every heat pump, air conditioner, air purifier, humidifier, diffuser, ventilation unit and fan at a glance: one tile per device, tap a tile to unfold its full card. |
 | [Air purifier](#air-purifier) | `custom:climate-air-purifier-card` | Air quality, filter life, presets, speed and options of an air purifier. |
 | [Air purifier mini](#mini-cards) | `custom:climate-air-purifier-mini-card` | The same purifier on two lines, with a zoom to the full card. |
 | [Fan](#fan) | `custom:climate-air-fan-card` | Speed, oscillation, presets, angle, timer and options of a fan. |
@@ -46,6 +52,8 @@ Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifier
 | [Heat pump mini](#mini-cards) | `custom:climate-air-heatpump-mini-card` | The same heat pump on two lines, with a zoom to the full card. |
 | [Humidifier](#humidifier) | `custom:climate-air-humidifier-card` | Humidity, target, modes and water tank of a humidifier, a dehumidifier or an essential oil diffuser, with a large animated illustration. |
 | [Humidifier mini](#mini-cards) | `custom:climate-air-humidifier-mini-card` | The same device on two lines, with a zoom to the full card. |
+| [Ventilation](#ventilation) | `custom:climate-air-ventilation-card` | The four air streams through the heat exchanger of a ventilation unit, the heat it recovers, its level, boost, bypass, filters and air quality. |
+| [Ventilation mini](#mini-cards) | `custom:climate-air-ventilation-mini-card` | The same unit on two lines, with a zoom to the full card. |
 
 | Overview | Air purifier | Fan | Air conditioner |
 |---|---|---|---|
@@ -148,6 +156,21 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 |---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-rituals-dark.png"><img alt="Rituals Perfume Genie" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-rituals.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-rituals-black-dark.png"><img alt="Rituals Perfume Genie black" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-rituals-black.png" width="400"></picture> |
 
+### Ventilation
+
+`custom:climate-air-ventilation-card` — A ventilation unit (a `fan` entity): a heat recovery unit (MVHR, *VMC double flux*) or an extract unit (*VMC simple flux*), and the sensors of its device.
+
+- Found by itself: a `fan` entity of a ventilation integration (Zehnder ComfoConnect, Duco, Renson, Vallox, Prana, Flow-it…) or named like one (*ventilation*, *VMC*, *MVHR*, *HRV*, *Lüftung*, *WTW*…); the Overview shows it among its own type
+- The heat its exchanger recovers in large (its efficiency sensor, else worked out from the stream temperatures: (supply − outdoor) ÷ (extract − outdoor)), with the airflow; the airflow in large when the bypass is open (no heat recovered then) or no temperature is known
+- **Air flows**: the four streams through the exchanger, each with its temperature — outdoor air in and supply air to the rooms, extract air from the rooms and exhaust air out — running while the unit runs; the exchanger fades and *Bypass open* shows under it when the air goes round it
+- Its level as a button per level (a unit of 2 to 5 speeds, *Level 1 · 2 · 3*), else a speed slider; its presets as segmented buttons when it has several
+- **Boost** (a switch, or a button to press) as an option and on the mini card; CO₂, humidity, airflow and power chips; the filter's life as a bar, or its days left
+- Animated illustration: the air runs in the four ducts and the fan turns, faster in boost. Two shapes, picked from the device or set with `illustration`: `mvhr` (heat recovery unit, four ducts) and `extract` (extract unit, two ducts)
+
+| Heat recovery | Bypass open, boost | Mini |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-card-dark.png"><img alt="Ventilation" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-boost-dark.png"><img alt="Ventilation, bypass open" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-boost.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-mini-dark.png"><img alt="Ventilation mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-mini.png" width="400"></picture> |
+
 ### Illustrated header
 
 - The device cards and their mini cards open on a 90 px banner: the round icon (its colour tells the status: the state's colour while running, grey when off or offline, amber for a warning, red for an alert), with the logo of the device's brand or integration on it (Xiaomi, Dyson, Daikin, Midea, VOCOlinc, Rituals…), the name and the status on the left, and on the right the device's own animated illustration in its room, standing on a floor strip that runs edge to edge
@@ -156,9 +179,9 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 
 ### Mini cards
 
-`custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card`, `custom:climate-air-heatpump-mini-card`, `custom:climate-air-humidifier-mini-card` — The device on two lines, for a compact dashboard.
+`custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card`, `custom:climate-air-heatpump-mini-card`, `custom:climate-air-humidifier-mini-card`, `custom:climate-air-ventilation-mini-card` — The device on two lines, for a compact dashboard.
 
-- The illustrated header (animated too, the detail button at its top right), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature, the humidifier's humidity and tank) and round buttons: power, plus the preset (purifier), the mode (humidifier), the oscillation (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
+- The illustrated header (animated too, the detail button at its top right), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature, the humidifier's humidity and tank) and round buttons: power, plus the preset (purifier), the mode (humidifier), boost (ventilation), the oscillation (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
 - The **detail** button (top right) unfolds the full card, and back, as does a click anywhere else (`zoom: false` removes it)
 
 | Air purifier | Fan | Air conditioner | Heat pump |
@@ -192,6 +215,9 @@ The cards work with **any integration** that provides air purifiers and fans as 
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vocolinc.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in), VOCOlinc | The VOCOlinc MistFlow humidifier and FlowerBud essential oil diffuser (no dedicated integration: pair them with HomeKit Device) with their own illustrations, lit in the colour of their light; the FlowerBud's *Spray quantity* as a *Mist intensity* slider and its *Mood Light* as an option |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/rituals.png" alt="" width="16"> [Rituals Perfume Genie](https://www.home-assistant.io/integrations/rituals_perfume_genie/) (built in) | The diffuser (a `switch`, no `humidifier` entity) with its own brass / black illustration: the *Perfume amount* as an *Intensity* slider, the *Room size* (m²) as segments, the cartridge fill as a bar with a *Cartridge empty* alert, and the perfume, battery and Wi-Fi as chips |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="" width="16"> [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, the *Aiguillage vanne* valve (air or hot water), and — on a multi-zone install — a thermostat `number` and a temperature `sensor` per room as the *Zones*, the hot water tank from its temperature, fill percentage and remaining volume sensors, and the fault sensor as a chip; a single-thermostat install keeps its *Thermostat* number as the setpoint |
+
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/comfoconnect.png" alt="" width="16"> [Zehnder ComfoAir Q](https://www.home-assistant.io/integrations/comfoconnect/) (built in) and [its custom integration](https://github.com/michaelarnauts/home-assistant-comfoconnect) (Marketplace) | ComfoAir Q350 / Q450 / Q600 on the ventilation card: the four air stream temperatures, bypass, airflow, filter days left, boost |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/duco.png" alt="" width="16"> [Duco](https://www.home-assistant.io/integrations/duco/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/renson.png" alt="" width="16"> [Renson](https://www.home-assistant.io/integrations/renson/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vallox.png" alt="" width="16"> [Vallox](https://www.home-assistant.io/integrations/vallox/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/prana.png" alt="" width="16"> [Prana](https://www.home-assistant.io/integrations/prana/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/flow_it.png" alt="" width="16"> [Flow-it](https://www.home-assistant.io/integrations/flow_it/) (built in); Brink, Dantherm, Maico, Helty, Komfovent (Marketplace, Modbus) | Their ventilation unit on the ventilation card, its level, presets, CO₂ and humidity |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
 
@@ -373,6 +399,24 @@ entity: humidifier.bedroom_humidifier
 illustration: vocolinc   # column, tank, evaporative, vocolinc, diffuser, dehumidifier or auto
 ```
 
+### Ventilation
+
+```yaml
+type: custom:climate-air-ventilation-card
+entity: fan.comfoairq
+illustration: mvhr   # mvhr, extract or auto
+entities:            # only to override a role found on the device
+  air_outdoor_temp: sensor.comfoairq_outdoor_air_temperature
+  air_supply_temp: sensor.comfoairq_supply_temperature
+  air_extract_temp: sensor.comfoairq_extract_temperature
+  air_exhaust_temp: sensor.comfoairq_exhaust_temperature
+  bypass: sensor.comfoairq_bypass_state
+  airflow: sensor.comfoairq_supply_airflow
+  boost: button.comfoairq_boost_30_min
+```
+
+Roles found on the device: `air_outdoor_temp`, `air_supply_temp`, `air_extract_temp`, `air_exhaust_temp`, `bypass` (a binary sensor, switch, select, sensor or number: open when on, *open* or above 0), `efficiency`, `airflow` (in m³/h), `co2`, `humidity`, `power`, `filter` (%), `filter_days`, `boost` (a switch or a button); the `entities` map is **YAML only**.
+
 ### Coming from 1.x: thermostats
 
 The thermostat card moved to [ha-heating-card](https://github.com/juju35/ha-heating-card), where it lives on; 2.0.0 removes it from this repository, and the Overview no longer shows thermostats. Install ha-heating-card, then replace the card types (every option keeps its name and meaning: `entity`, `name`, `icon`, `illustration`, `entities`, `show_title`, `show_subtitle`, `show_controls`, `show_sensors`, `show_alerts`, `zoom`, `language`):
@@ -552,6 +596,12 @@ The dehumidifier blows dry air out of its top while drops fall into its bucket.
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/dehumidifier.gif" alt="dehumidifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/dehumidifier-dark.gif" alt="dehumidifier animation, dark theme" width="400"> |
+
+The ventilation unit runs: the air runs through its four ducts, its fan turns.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation.gif" alt="ventilation animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/ventilation-dark.gif" alt="ventilation animation, dark theme" width="400"> |
 
 The overview gathers every device: its header's room comes alive with the devices running, and each tile's illustration moves with its device.
 

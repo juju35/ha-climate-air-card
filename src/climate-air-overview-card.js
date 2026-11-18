@@ -3,7 +3,7 @@
  * like room-overview-card (ha-room-card), under the illustrated header of the device cards (a room with its devices). The detail button shows every device; tap a tile to unfold its full card,
  * tap its icon to turn it on or off.
  */
-const CA_KINDS = ["heatpump", "aircon", "purifier", "humidifier", "fan"];
+const CA_KINDS = ["heatpump", "aircon", "purifier", "humidifier", "ventilation", "fan"];
 const CA_HP_ICON_ANIM = { heat: "flicker", cool: "twirl", dhw: "bob" };
 const CA_AC_ICON_ANIM = { cool: "twirl", heat: "flicker", dry: "bob", fan_only: "spin", auto: "breathe", heat_cool: "breathe" };
 
@@ -212,7 +212,17 @@ class ClimateAirOverviewCard extends CaElement {
       item.on = st.state === "on";
       const pct = item.on ? Number(a.percentage ?? 0) : 0;
       const preset = item.on && a.preset_mode ? fmtAttr("preset_mode", a.preset_mode) : "";
-      if (kind === "purifier") {
+      if (kind === "ventilation") {
+        // A ventilation unit: its level (preset or speed) and the heat its exchanger recovers.
+        const ent = (role) => roleSt(role);
+        const t = { o: caNum(ent("air_outdoor_temp")), s: caNum(ent("air_supply_temp")), e: caNum(ent("air_extract_temp")) };
+        const eff = item.on ? caVentEfficiency(caNum(ent("efficiency")), t) : null;
+        item.text = item.on ? [preset || `${Math.round(pct)} %`, eff != null ? `${this._t("efficiency")} ${caFmtNum(this._intlLang(), eff, 0)} %` : ""].filter(Boolean).join(" · ") : this._t("st_off");
+        item.color = item.on ? CA_FAN_COLOR : CA_IDLE;
+        item.anim = item.on ? "spin" : "";
+        item.spin = caSpin(pct);
+        item.art = { running: item.on, pct, boost: /boost|turbo|intensiv|party|max/i.test(a.preset_mode || "") };
+      } else if (kind === "purifier") {
         const pm25 = caNum(roleSt("pm25"));
         const aqi = caNum(roleSt("aqi"));
         const aq = caAirQuality(pm25, aqi);

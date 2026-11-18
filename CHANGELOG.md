@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.15.0 - 2026-11-18
+
+### Features
+- **Ventilation card** (`custom:climate-air-ventilation-card`) and its mini card: a heat recovery or extract unit (a `fan` entity), found from its integration (Zehnder ComfoConnect, Duco, Renson, Vallox, Prana, Flow-it…) or its name. The heat its exchanger recovers in large (its efficiency, else worked out from the stream temperatures) with the airflow; the four **air streams** through the exchanger with their temperatures, running while it runs, the exchanger faded with the bypass open; a button per level (or the speed slider) and its presets; **boost** (switch or button); CO₂, humidity, airflow and power chips; the filter's life or days left. Animated `mvhr` / `extract` illustration in the card and the illustrated header.
+- **Overview**: ventilation units get their own type, tile (level and efficiency) and illustration, and their entry in the editor's device types.
+
 ## 2.14.1 - 2026-11-18
 
 ### Fixes

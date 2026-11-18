@@ -60,6 +60,22 @@ const DEVICES = [
     ["switch.bedroom_fan_alarm", { en: "Sound", fr: "Son" }, "off", {}],
     ["light.bedroom_fan_indicator_light", { en: "Indicator light", fr: "Voyant" }, "off", {}],
   ]],
+  // A heat recovery ventilation unit (Zehnder ComfoAir Q through ComfoConnect style): three levels, the temperatures of
+  // its four air streams, its bypass closed, airflow, CO₂, extract humidity, power, filter days left and boost.
+  ["dev_vmc", "office", { en: "Ventilation", fr: "VMC" }, [
+    ["fan.ventilation", null, "on", { preset_modes: ["auto"], preset_mode: null, percentage: 67, percentage_step: 33.333, speed_count: 3, supported_features: 57 }],
+    ["sensor.ventilation_outdoor_air_temperature", { en: "Outdoor air temperature", fr: "Température air extérieur" }, 4.2, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.ventilation_supply_air_temperature", { en: "Supply air temperature", fr: "Température air soufflé" }, 18.1, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.ventilation_extract_air_temperature", { en: "Extract air temperature", fr: "Température air repris" }, 21.3, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.ventilation_exhaust_air_temperature", { en: "Exhaust air temperature", fr: "Température air rejeté" }, 7.4, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["sensor.ventilation_bypass_state", { en: "Bypass state", fr: "État du bypass" }, 0, { unit_of_measurement: "%" }],
+    ["sensor.ventilation_supply_airflow", { en: "Supply airflow", fr: "Débit d'air soufflé" }, 185, { unit_of_measurement: "m³/h" }],
+    ["sensor.ventilation_co2", { en: "CO₂", fr: "CO₂" }, 640, { device_class: "carbon_dioxide", unit_of_measurement: "ppm" }],
+    ["sensor.ventilation_extract_humidity", { en: "Extract humidity", fr: "Humidité reprise" }, 48, { device_class: "humidity", unit_of_measurement: "%" }],
+    ["sensor.ventilation_power_usage", { en: "Power usage", fr: "Consommation" }, 34, { device_class: "power", unit_of_measurement: "W" }],
+    ["sensor.ventilation_filter_days_remaining", { en: "Filter days remaining", fr: "Jours restants du filtre" }, 58, { unit_of_measurement: "d" }],
+    ["switch.ventilation_boost", { en: "Boost", fr: "Boost" }, "off", {}],
+  ]],
   ["dev_f2", "office", { en: "Office fan", fr: "Ventilateur bureau" }, [
     ["fan.office_fan_fan", { en: "Fan", fr: "Fan" }, "off",
       { preset_modes: ["Natural", "Standard"], preset_mode: "Natural", oscillating: false, percentage: 100, percentage_step: 25, supported_features: 59 }],
@@ -172,6 +188,7 @@ const BRANDS = {
   dev_rituals: ["rituals_perfume_genie", "Rituals"],
   dev_dehum: ["midea_ac_lan"],
   dev_hp: ["daikin_onecta"],
+  dev_vmc: ["comfoconnect", "Zehnder"],
 };
 
 export const mockHass = (lang = "en", changes = {}) => {

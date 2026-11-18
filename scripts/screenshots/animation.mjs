@@ -64,6 +64,13 @@ await animate({
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "climate.air_conditioner", illustration: "portasplit" } }),
 });
 
+// The ventilation unit running: the air runs through its four ducts and its fan turns.
+await animate({
+  file: "ventilation",
+  tag: "climate-air-ventilation-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.ventilation" } }),
+});
+
 // The heat pump heating: the fan spins behind its grille, the water flows to the house and warm air rises.
 await animate({
   file: "heatpump",
