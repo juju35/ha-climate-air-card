@@ -12,7 +12,7 @@ test("every card and its editor are registered", () => {
     assert.ok(cls, tag);
     assert.ok(lib.customElements.get(`${tag}-editor`), `${tag}-editor`);
   }
-  assert.equal(lib.window.customCards.length, 11);
+  assert.equal(lib.window.customCards.length, 13);
   assert.ok(!lib.customElements.get("climate-air-thermostat-card"), "the thermostat card moved to ha-heating-card");
 });
 
@@ -665,11 +665,11 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /9 on/);
+  assert.match(head, /10 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
-  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Heat pumps", "Air conditioners", "Air purifiers", "Humidity", "Fans"]);
+  assert.deepEqual([...body.matchAll(/class="group">.*?<span>([^<]+)</g)].map((m) => m[1]), ["Heat pumps", "Air conditioners", "Air purifiers", "Humidity", "Ventilation", "Fans"]);
 });
 
 test("overview: the detail button shows every device; zoom: false always does", () => {
@@ -695,7 +695,7 @@ test("overview: exclude, include and group by area", () => {
   assert.match(office, /<ha-icon icon="mdi:texture-box"><\/ha-icon><span>Office</);
   // Grouped by area, the tiles are labelled by kind of device instead of repeating the room, in a fixed order.
   const names = [...body.matchAll(/class="name"[^>]*>([^<]+)</g)].map((m) => m[1]);
-  assert.ok(names.every((n) => ["Heat pump", "Air conditioner", "Air purifier", "Humidifier", "Dehumidifier", "Essential oil diffuser", "Fan"].includes(n)), names.join(", "));
+  assert.ok(names.every((n) => ["Heat pump", "Air conditioner", "Air purifier", "Humidifier", "Dehumidifier", "Essential oil diffuser", "Ventilation", "Fan"].includes(n)), names.join(", "));
   const grouped = overview({ zoom: false, group_by: "area", devices: [{ entity: "fan.bedroom_purifier", name: "Bedroom air" }] }).body;
   assert.match(grouped, /class="name"[^>]*>Bedroom air</);
 });
@@ -729,7 +729,7 @@ test("overview: an area icon with markup in it stays inert in the group heading"
 
 test("overview: each group spans as many columns as it has devices, up to the column count", () => {
   const spans = (body) => [...body.matchAll(/class="grp" style="--span:(\d+)"/g)].map((m) => Number(m[1]));
-  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 1, 2, 2, 2]);
+  assert.deepEqual(spans(overview({ zoom: false }).body), [1, 1, 2, 2, 1, 2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none" }).body), [2]);
   assert.deepEqual(spans(overview({ zoom: false, group_by: "none", columns: 6 }).body), [6]);
 });
@@ -796,6 +796,7 @@ test("overview editor: device types and devices as sections, written back as ill
     ["aircon", "Climatiseurs", ["illustration", "icon"]],
     ["purifier", "Purificateurs", ["illustration", "icon"]],
     ["humidifier", "Humidité", ["illustration", "icon"]],
+    ["ventilation", "VMC", ["illustration", "icon"]],
     ["fan", "Ventilateurs", ["icon"]],
   ]);
   const devs = schema.find((s) => s.name === "devs");
@@ -809,9 +810,10 @@ test("overview editor: device types and devices as sections, written back as ill
     ["humidifier.living_room_diffuser", "Diffuseur séjour"],
     ["humidifier.bedroom_humidifier", "Humidificateur chambre"],
     ["switch.perfume_genie_diffuser", "Perfume Genie"],
+    ["fan.ventilation", "VMC"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
   ]);
-  assert.deepEqual(json(devs.schema[9].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[10].schema.map((f) => f.name)), ["name", "type", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;
@@ -1564,4 +1566,30 @@ test("heat pump source illustrations: each source and variant draws its own left
   const lake = draw({ source: "water", water_type: "lake" });
   assert.match(lake, /class="wbody"/);
   assert.match(lake, /M14 52V64H56q4 0 4 4t-4 4H12q-4 0-4 4t4 4H40V52/);
+});
+
+test("ventilation: found by its integration or name, its four air streams, heat recovered and levels", () => {
+  const h = makeHass();
+  assert.equal(lib.caKindOf(h, "fan.ventilation"), "ventilation");
+  assert.equal(lib.caKindOf(h, "fan.bedroom_fan_fan"), "fan");
+  assert.equal(lib.caVariant(h, "ventilation", "fan.ventilation"), "mvhr");
+  assert.equal(Math.round(lib.caVentEfficiency(null, { o: 4.2, s: 18.1, e: 21.3 })), 81);
+  assert.equal(lib.caVentEfficiency(null, { o: 20, s: 20.5, e: 21 }), null);
+  assert.equal(lib.caVentBypass({ entity_id: "sensor.x_bypass", state: "0" }), false);
+  assert.equal(lib.caVentBypass({ entity_id: "select.x_bypass", state: "Open" }), true);
+  const el = mount(lib, "climate-air-ventilation-card", { entity: "fan.ventilation" }, h);
+  const out = html(el);
+  assert.match(out, /81<small> %<\/small>/);
+  assert.match(out, /Heat recovered · 185 m³\/h/);
+  assert.match(out, /Outdoor<\/span><span class="vv">4.2°/);
+  assert.match(out, /Extract<\/span><span class="vv">21.3°/);
+  assert.match(out, /Bypass closed/);
+  assert.match(out, /Filter: 58 d/);
+  assert.match(out, /data-action="level" data-value="67" aria-pressed="true"/);
+  el._onClick({ composedPath: () => [{ dataset: { action: "level", value: "100" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["fan", "set_percentage", { entity_id: "fan.ventilation", percentage: 100 }]);
+  // The bypass open: no heat recovered, the airflow in big.
+  const by = html(mount(lib, "climate-air-ventilation-card", { entity: "fan.ventilation" }, makeHass("en", { "sensor.ventilation_bypass_state": { state: 100 } })));
+  assert.match(by, /185<small> m³\/h<\/small>/);
+  assert.match(by, /class="vent flowing bypassed"/);
 });
