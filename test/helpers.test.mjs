@@ -61,13 +61,13 @@ test("a fridge or freezer exposed as a climate entity is no air conditioner", ()
 test("every device of a kind is found, sorted by name", () => {
   const h = makeHass();
   assert.deepEqual(json(lib.caFindEntities(h, "purifier")), ["fan.bedroom_purifier", "fan.dyson_pure_cool", "fan.living_room_purifier_air_purifier"]);
-  assert.deepEqual(json(lib.caFindEntities(h, "fan")), ["fan.bedroom_fan_fan", "fan.office_fan_fan"]);
+  assert.deepEqual(json(lib.caFindEntities(h, "fan")), ["fan.bedroom_fan_fan", "fan.ceiling_fan", "fan.office_fan_fan"]);
 });
 
 test("hidden and configuration entities are left out", () => {
   const h = makeHass();
   h.entities["fan.office_fan_fan"].hidden = true;
-  assert.deepEqual(json(lib.caFindEntities(h, "fan")), ["fan.bedroom_fan_fan"]);
+  assert.deepEqual(json(lib.caFindEntities(h, "fan")), ["fan.bedroom_fan_fan", "fan.ceiling_fan"]);
 });
 
 test("roles are found on the device", () => {

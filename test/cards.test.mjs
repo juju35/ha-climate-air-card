@@ -82,6 +82,30 @@ test("fan: speed, oscillation, natural wind and options", () => {
   assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["fan", "oscillate", { entity_id: "fan.bedroom_fan_fan", oscillating: false }]);
 });
 
+test("ceiling fan: guessed from the device, hung from the ceiling, its light and its direction", () => {
+  const h = makeHass();
+  const el = mount(lib, "climate-air-fan-card", { entity: "fan.ceiling_fan" }, h);
+  const out = html(el);
+  // A Bond (Olibra) fan is a ceiling fan: hung at the top of the room like a wall unit, its light on.
+  assert.match(out, /class="bdev k-fan st-on running ceiling lit wall"/);
+  assert.match(out, /<svg x="[\d.]+" y="0" [^>]*viewBox="2 0 96 51"/);
+  assert.match(out, /class="bz b0 down"/);
+  assert.match(out, /data-toggle="light\.ceiling_fan_light"[^>]*><ha-icon icon="mdi:ceiling-fan-light"><\/ha-icon>Light/);
+  // The indicator light of the standing fan is not taken for a fan light.
+  assert.doesNotMatch(html(mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan" }, makeHass())), /ceiling-fan-light/);
+  el._onClick({ composedPath: () => [{ dataset: { action: "direction" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["fan", "set_direction", { entity_id: "fan.ceiling_fan", direction: "reverse" }]);
+  // Reversed and the light off: the blades and the breeze turn the other way, no glow.
+  const rev = html(mount(lib, "climate-air-fan-card", { entity: "fan.ceiling_fan" }, makeHass("en", { "fan.ceiling_fan": { direction: "reverse" }, "light.ceiling_fan_light": { state: "off" } })));
+  assert.match(rev, /class="bdev k-fan st-on running ceiling reverse wall"/);
+  // `illustration` forces either drawing.
+  assert.match(html(mount(lib, "climate-air-fan-card", { entity: "fan.ceiling_fan", illustration: "fan" }, makeHass())), /class="bdev k-fan st-on running lit"/);
+  assert.match(html(mount(lib, "climate-air-fan-card", { entity: "fan.bedroom_fan_fan", illustration: "ceiling" }, makeHass())), /class="bdev k-fan st-on running ceiling osc natural wall"/);
+  // The mini card has the light button, even with the fan off.
+  const mini = html(mount(lib, "climate-air-fan-mini-card", { entity: "fan.ceiling_fan" }, makeHass("en", { "fan.ceiling_fan": { state: "off" } })));
+  assert.match(mini, /class="round on" data-toggle="light\.ceiling_fan_light"/);
+});
+
 test("the header's subtitle does not repeat the mode the body shows: the room instead", () => {
   const sub = (tag, entity) => html(mount(lib, tag, { entity }, makeHass())).match(/<div class="sub">([^<]*)</)?.[1];
   // Fan: the hero's label (full card) and the compact lines (mini card) show the preset.
@@ -665,7 +689,7 @@ const overview = (config = {}, hass = makeHass()) => {
 
 test("overview: only the devices on or needing attention, grouped by type", () => {
   const { body, head } = overview();
-  assert.match(head, /10 on/);
+  assert.match(head, /11 on/);
   assert.doesNotMatch(body, /fan\.office_fan_fan/);
   assert.match(body, /data-id="fan\.bedroom_purifier"/);
   assert.match(body, /Replace the filter/);
@@ -797,7 +821,7 @@ test("overview editor: device types and devices as sections, written back as ill
     ["purifier", "Purificateurs", ["illustration", "icon"]],
     ["humidifier", "Humidité", ["illustration", "icon"]],
     ["ventilation", "VMC", ["illustration", "icon"]],
-    ["fan", "Ventilateurs", ["icon"]],
+    ["fan", "Ventilateurs", ["illustration", "icon"]],
   ]);
   const devs = schema.find((s) => s.name === "devs");
   assert.deepEqual(json(devs.schema.map((d) => [d.name, d.title])), [
@@ -812,8 +836,9 @@ test("overview editor: device types and devices as sections, written back as ill
     ["switch.perfume_genie_diffuser", "Perfume Genie"],
     ["fan.ventilation", "VMC"],
     ["fan.bedroom_fan_fan", "Ventilateur chambre"],
+    ["fan.ceiling_fan", "Ventilateur de plafond"],
   ]);
-  assert.deepEqual(json(devs.schema[10].schema.map((f) => f.name)), ["name", "type", "icon"]);
+  assert.deepEqual(json(devs.schema[10].schema.map((f) => f.name)), ["name", "type", "illustration", "icon"]);
   assert.equal(ed._form.computeLabel({ name: "type" }), "Type");
   // The device's illustration moves from `illustrations` into its `devices` entry; the excluded device keeps its own.
   const data = ed._form.data;

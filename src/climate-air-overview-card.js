@@ -241,7 +241,14 @@ class ClimateAirOverviewCard extends CaElement {
         item.color = item.on ? CA_FAN_COLOR : CA_IDLE;
         item.anim = item.on ? "spin" : "";
         item.spin = caSpin(pct);
-        item.art = { running: item.on, pct, osc: !!a.oscillating, natural: /natur/i.test(a.preset_mode || "") };
+        item.art = {
+          running: item.on,
+          pct,
+          osc: !!a.oscillating,
+          natural: /natur/i.test(a.preset_mode || ""),
+          reverse: a.direction === "reverse",
+          lit: roleSt("fan_light")?.state === "on",
+        };
       }
     }
     // A worn filter (its life at the warning threshold or below) or a dirty one (the dirty-filter sensor on): the tile
@@ -595,6 +602,8 @@ const CA_OVERVIEW_STYLES = `
   .ic.pic:hover .picture { transform: scale(1.06); }
   .ic.pic .picture { width: 40px; height: 46px; transition: transform .2s; }
   .ic.pic .picture svg { filter: drop-shadow(0 1.5px 3px rgba(0,0,0,.2)); }
+  /* A ceiling fan's picture is wide and flat (its light below it): drawn larger so its blades read in the tile. */
+  .ic.pic .picture.ceiling svg { transform: scale(1.45) translateY(4px); transform-origin: 50% 0; }
   .dev:not(.on) .ic.pic .picture { opacity: .8; }
   .ic.spin ha-icon { animation: ca-spin var(--ca-spin, 1s) linear infinite; }
   .ic.twirl ha-icon { animation: ca-spin 6s linear infinite; }

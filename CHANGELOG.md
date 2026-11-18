@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.16.0 - 2026-11-18
+
+### Features
+- **Ceiling fan**: a second fan illustration (`illustration: ceiling`, guessed from a ceiling fan name or maker: Bond, Big Ass Fans, Modern Forms, Hunter, Lucci Air, Minka, Casablanca, Fanimation, Westinghouse). It hangs from the ceiling of the header's room, its four blades turning with the speed and the breeze falling into the room; reversed, the blades turn the other way and the air rises. On the full card, the overview tiles and the mini card.
+- **Fan light and direction**: the light of a fan's device (not its indicator) glows under a ceiling fan, with a *Light* toggle (and a round button on the mini card); a *Reverse* toggle when the fan supports the direction.
+- Brand badges for Bond, Big Ass Fans and Modern Forms.
+
+### Maintenance
+- Screenshots: a ceiling fan in the mock home, its full and mini card captures and two GIFs (turning, reversed).
+- README: the ventilation integrations rejoin the *Supported integrations* table.
+
 ## 2.15.0 - 2026-11-18
 
 ### Features

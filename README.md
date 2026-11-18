@@ -32,7 +32,10 @@
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/renson.png" alt="Renson" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vallox.png" alt="Vallox" width="64">&nbsp;&nbsp;
   <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/prana.png" alt="Prana" width="64">&nbsp;&nbsp;
-  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/flow_it.png" alt="Flow-it" width="64">
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/flow_it.png" alt="Flow-it" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/bond.png" alt="Bond" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/baf.png" alt="Big Ass Fans" width="64">&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/modern_forms.png" alt="Modern Forms" width="64">
 </p>
 
 Lovelace cards for Home Assistant's **heat pumps, air conditioners, air purifiers, humidifiers, dehumidifiers, essential oil diffusers, ventilation units and fans**: one card per kind of device, each with a mini card, and an overview of every device of the instance. Add a card, it finds the device and its sensors by itself. The illustrations come alive while a device runs. Thermostats and radiators have their own cards in [ha-heating-card](https://github.com/juju35/ha-heating-card) (see [Coming from 1.x](#coming-from-1x-thermostats)).
@@ -97,6 +100,11 @@ On narrow cards (6 columns of a Sections view), the status pill moves under the 
 - Animated illustration while it runs: the blades turn faster with the speed, the head swings while oscillating, and the breeze comes in gusts in a natural wind preset
 - Oscillation, ionizer, child lock, sound and indicator light toggles; oscillation angle, timer and display brightness; turn left / turn right buttons
 - Temperature and humidity chips when the fan measures them
+- **Ceiling fan**: a fan named like one (*ceiling*, *plafond*, *Decken*, *techo*…) or from a ceiling fan maker (Bond, Big Ass Fans, Modern Forms, Hunter, Lucci Air, Minka, Casablanca, Fanimation, Westinghouse) hangs from the ceiling of the header's room, set with `illustration: ceiling` (`fan` forces the standing fan). Its four blades turn with the speed and the breeze falls into the room; reversed (winter), the blades turn the other way and the air rises. Its own light (a `light` of the same device) glows under it, with a **Light** toggle and a **Reverse** toggle when the fan supports the direction; the mini card gets a round light button, even with the fan off
+
+| Ceiling fan | Ceiling fan mini |
+|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-card-dark.png"><img alt="Ceiling fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-mini-dark.png"><img alt="Ceiling fan mini" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-mini.png" width="400"></picture> |
 
 ### Air conditioner
 
@@ -181,7 +189,7 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 
 `custom:climate-air-purifier-mini-card`, `custom:climate-air-fan-mini-card`, `custom:climate-air-aircon-mini-card`, `custom:climate-air-heatpump-mini-card`, `custom:climate-air-humidifier-mini-card`, `custom:climate-air-ventilation-mini-card` — The device on two lines, for a compact dashboard.
 
-- The illustrated header (animated too, the detail button at its top right), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature, the humidifier's humidity and tank) and round buttons: power, plus the preset (purifier), the mode (humidifier), boost (ventilation), the oscillation (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
+- The illustrated header (animated too, the detail button at its top right), the key reading (PM2.5, speed, temperatures, the heat pump's tank and outdoor temperature, the humidifier's humidity and tank) and round buttons: power, plus the preset (purifier), the mode (humidifier), boost (ventilation), the oscillation and the light of a ceiling fan (fan) or − / + for the target (air conditioner, heat pump with a climate entity)
 - The **detail** button (top right) unfolds the full card, and back, as does a click anywhere else (`zoom: false` removes it)
 
 | Air purifier | Fan | Air conditioner | Heat pump |
@@ -215,9 +223,9 @@ The cards work with **any integration** that provides air purifiers and fans as 
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vocolinc.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in), VOCOlinc | The VOCOlinc MistFlow humidifier and FlowerBud essential oil diffuser (no dedicated integration: pair them with HomeKit Device) with their own illustrations, lit in the colour of their light; the FlowerBud's *Spray quantity* as a *Mist intensity* slider and its *Mood Light* as an option |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/rituals.png" alt="" width="16"> [Rituals Perfume Genie](https://www.home-assistant.io/integrations/rituals_perfume_genie/) (built in) | The diffuser (a `switch`, no `humidifier` entity) with its own brass / black illustration: the *Perfume amount* as an *Intensity* slider, the *Room size* (m²) as segments, the cartridge fill as a bar with a *Cartridge empty* alert, and the perfume, battery and Wi-Fi as chips |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/esphome.png" alt="" width="16"> [TOUG](https://github.com/djtef/toug) (ESPHome) | The Aldes T.One AquaAir heat pump without a climate entity: its *Mode air* select as mode buttons, the *Aiguillage vanne* valve (air or hot water), and — on a multi-zone install — a thermostat `number` and a temperature `sensor` per room as the *Zones*, the hot water tank from its temperature, fill percentage and remaining volume sensors, and the fault sensor as a chip; a single-thermostat install keeps its *Thermostat* number as the setpoint |
-
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/comfoconnect.png" alt="" width="16"> [Zehnder ComfoAir Q](https://www.home-assistant.io/integrations/comfoconnect/) (built in) and [its custom integration](https://github.com/michaelarnauts/home-assistant-comfoconnect) (Marketplace) | ComfoAir Q350 / Q450 / Q600 on the ventilation card: the four air stream temperatures, bypass, airflow, filter days left, boost |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/duco.png" alt="" width="16"> [Duco](https://www.home-assistant.io/integrations/duco/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/renson.png" alt="" width="16"> [Renson](https://www.home-assistant.io/integrations/renson/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/vallox.png" alt="" width="16"> [Vallox](https://www.home-assistant.io/integrations/vallox/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/prana.png" alt="" width="16"> [Prana](https://www.home-assistant.io/integrations/prana/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/flow_it.png" alt="" width="16"> [Flow-it](https://www.home-assistant.io/integrations/flow_it/) (built in); Brink, Dantherm, Maico, Helty, Komfovent (Marketplace, Modbus) | Their ventilation unit on the ventilation card, its level, presets, CO₂ and humidity |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/bond.png" alt="" width="16"> [Bond](https://www.home-assistant.io/integrations/bond/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/baf.png" alt="" width="16"> [Big Ass Fans](https://www.home-assistant.io/integrations/baf/), <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/modern_forms.png" alt="" width="16"> [Modern Forms](https://www.home-assistant.io/integrations/modern_forms/) (built in) | Their ceiling fans with the ceiling fan illustration, the fan's light, and the forward / reverse direction |
 
 The sensors of the device (PM2.5, temperature, humidity, filter, child lock…) are discovered from its registry, whatever the integration.
 
@@ -265,9 +273,9 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `show_subtitle` | ❌ | `true` | Show the subtitle under the title |
 | `icon` | ❌ | Illustration | Replaces the illustration with an icon |
-| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); air conditioner: `split`, `portable`, `window` or `portasplit`. `auto` picks one from the device model and name; `false` (*No illustration* in the visual editor) keeps the classic header (see [Illustrated header](#illustrated-header)) |
+| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box` or `dyson` (bladeless loop); fan: `fan` (standing fan) or `ceiling` (ceiling fan); air conditioner: `split`, `portable`, `window` or `portasplit`. `auto` picks one from the device model and name; `false` (*No illustration* in the visual editor) keeps the classic header (see [Illustrated header](#illustrated-header)) |
 | `illustration_theme` | ❌ | `auto` | The header's picture by day or by night: `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme), `day` or `night`. Both the full and the mini card |
-| `brand` | ❌ | Auto | YAML only: the logo on the header icon, guessed from the device's manufacturer, else its integration; a logo name (`xiaomi_home`, `xiaomi_miio`, `dyson_local`, `daikin_onecta`, `midea_ac_lan`, `homekit`, `vocolinc`, `rituals`, `matter`, `melcloud`, `vicare`, `myuplink`, `panasonic`, `cozytouch`, `hitachi_yutaki`, `esphome`) picks one, `none` removes it |
+| `brand` | ❌ | Auto | YAML only: the logo on the header icon, guessed from the device's manufacturer, else its integration; a logo name (`xiaomi_home`, `xiaomi_miio`, `dyson_local`, `daikin_onecta`, `midea_ac_lan`, `homekit`, `vocolinc`, `rituals`, `matter`, `melcloud`, `vicare`, `myuplink`, `panasonic`, `cozytouch`, `hitachi_yutaki`, `esphome`, `bond`, `baf`, `modern_forms`) picks one, `none` removes it |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
 | `show_sensors` | ❌ | `true` | Show the measurement chips (temperature, humidity, PM10, outdoor temperature, power) |
 | `show_alerts` | ❌ | `true` | Purifier and air conditioner cards only: show the filter alerts (the fan cards have none) |
@@ -500,6 +508,18 @@ The fan spins its blades, the head slowly oscillates from side to side, and gust
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan.gif" alt="fan animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-dark.gif" alt="fan animation, dark theme" width="400"> |
+
+The ceiling fan turns its blades with the speed, its light glowing under it, and the breeze falls into the room.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling.gif" alt="ceiling fan animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-dark.gif" alt="ceiling fan animation, dark theme" width="400"> |
+
+Reversed for winter, its light off: the blades turn the other way and the warm air rises back to the ceiling.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-reverse.gif" alt="reversed ceiling fan animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-ceiling-reverse-dark.gif" alt="reversed ceiling fan animation, dark theme" width="400"> |
 
 The air conditioner swings its louvres while the cooled air falls out of the vent.
 

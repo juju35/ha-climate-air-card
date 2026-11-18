@@ -31,13 +31,55 @@ const CA_FAN_ART =
   '<circle cx="40" cy="32" r="5.5" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1"/><circle class="led" cx="40" cy="32" r="1.8"/>' +
   "</g></svg>";
 
+// A ceiling fan seen from the room: its canopy and downrod, four wooden blades in perspective that turn with the speed
+// (the other way when reversed), and its light under the motor, glowing while it is on.
+const CA_CEILING_FAN_ART =
+  '<svg viewBox="0 0 100 68" aria-hidden="true"><defs>' +
+  '<linearGradient id="ca-cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c0956b"/><stop offset="1" stop-color="#7f5539"/></linearGradient>' +
+  '<linearGradient id="ca-cm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b9c1ca"/><stop offset=".45" stop-color="#f4f6f8"/><stop offset="1" stop-color="#a9b2bc"/></linearGradient>' +
+  '<radialGradient id="ca-cl" cx=".5" cy=".1" r=".9"><stop offset="0" stop-color="#ffe8a3" stop-opacity=".8"/><stop offset="1" stop-color="#ffe8a3" stop-opacity="0"/></radialGradient></defs>' +
+  '<path class="glow" d="M43 46L18 68H82L57 46Z" fill="url(#ca-cl)"/>' +
+  '<rect x="40" y="0" width="20" height="3.4" rx="1.4" fill="url(#ca-cm)" stroke="#aab3bd" stroke-width=".5"/>' +
+  '<rect x="48.3" y="3" width="3.4" height="21" fill="url(#ca-cm)" stroke="#aab3bd" stroke-width=".4"/>' +
+  '<rect x="46" y="22.5" width="8" height="3" rx="1.2" fill="#aab3bd"/>' +
+  '<g transform="translate(50 32) scale(1 .3)"><g class="blades">' +
+  [45, 135, 225, 315]
+    .map((a) => `<path transform="rotate(${a})" d="M9 -6C20 -13 38 -15 47 -11C51 -5 51 5 47 11C38 15 20 13 9 6Z" fill="url(#ca-cw)" stroke="#5d4037" stroke-width="1.1"/>`)
+    .join("") +
+  "</g></g>" +
+  '<rect x="35" y="24.5" width="30" height="15" rx="7.5" fill="url(#ca-cm)" stroke="#9aa5b1" stroke-width=".7"/>' +
+  '<rect x="38" y="26.4" width="24" height="3" rx="1.5" fill="#fff" opacity=".75"/>' +
+  '<path d="M35.8 35.4h28.4" stroke="#9aa5b1" stroke-width=".6"/>' +
+  '<path class="lamp" d="M41 39.5h18l-2.8 6.6a6 6 0 0 1-12.4 0Z" stroke="#ced4da" stroke-width=".7"/>' +
+  '<circle class="led" cx="50" cy="31" r="1"/>' +
+  "</svg>";
+
+// A ceiling fan says so in its name or model, or comes from a ceiling fan maker (Hunter, Big Ass Fans, Lucci Air,
+// Minka, Casablanca, Fanimation, Westinghouse, Bond / Olibra, Modern Forms); anything else is the standing fan.
+const CA_CEILING_FAN_RE =
+  /(ceiling|plafond|plafonnier|decken|techo|soffitto|plafon|sufit|teto|tavan|потол|стел|stropn|griesti|οροφ|\bhunter\b|big ?ass|haiku|\bbaf\b|lucci|\bminka|casablanca|fanimation|westinghouse|\bbond\b|olibra|modern ?forms)/i;
+
 CA_ART.fan = {
-  render: (_variant, s) => ({
-    svg: CA_FAN_ART,
-    cls: [s.running && s.osc ? "osc" : "", s.running && s.natural ? "natural" : ""],
+  variants: ["fan", "ceiling"],
+  guess: (text) => (CA_CEILING_FAN_RE.test(text) ? "ceiling" : "fan"),
+  render: (variant, s) => ({
+    svg: variant === "ceiling" ? CA_CEILING_FAN_ART : CA_FAN_ART,
+    cls: [
+      variant === "ceiling" ? "ceiling" : "",
+      s.running && s.osc ? "osc" : "",
+      s.running && s.natural ? "natural" : "",
+      s.running && s.reverse ? "reverse" : "",
+      s.lit ? "lit" : "",
+    ],
     style: `--ca-spin:${caSpin(s.pct)}s`,
   }),
   styles: `
+    .k-fan.ceiling .blades { stroke: none; transform-box: fill-box; transform-origin: center; }
+    .k-fan.ceiling .lamp { fill: #f1f3f5; transition: fill .4s; }
+    .k-fan.ceiling .glow { opacity: 0; transition: opacity .6s; }
+    .k-fan.ceiling.lit .lamp { fill: #fff3bf; }
+    .k-fan.ceiling.lit .glow { opacity: 1; }
+    .k-fan.running.reverse .blades { animation-direction: reverse; }
     .k-fan .blades { stroke: #7fb2dd; stroke-width: .5; transform-box: view-box; transform-origin: 40px 32px; }
     .k-fan .head { transform-box: view-box; transform-origin: 40px 32px; }
     .k-fan .wind { fill: none; stroke: var(--ca-color); stroke-width: 1.6; stroke-linecap: round; }
@@ -66,7 +108,7 @@ class ClimateAirFanCard extends CaCard {
   }
 
   _roles() {
-    return ["temperature", "humidity", "angle", "timer", "rotate_left", "rotate_right", "child_lock", "buzzer", "light", "brightness", "anion"];
+    return ["temperature", "humidity", "angle", "timer", "rotate_left", "rotate_right", "child_lock", "buzzer", "light", "brightness", "anion", "fan_light"];
   }
 
   _model(r) {
@@ -101,6 +143,9 @@ class ClimateAirFanCard extends CaCard {
       preset,
       chips,
       natural,
+      // A ceiling fan turning the other way (winter), and its own light.
+      reverse: a.direction === "reverse",
+      lit: this._val(ent.fan_light) === "on",
     };
   }
 
@@ -129,6 +174,8 @@ class ClimateAirFanCard extends CaCard {
       this._toggle(ent.child_lock, this._t("child_lock"), this._val(ent.child_lock) === "on" ? "mdi:lock" : "mdi:lock-open-variant-outline"),
       this._toggle(ent.buzzer, this._t("buzzer"), this._val(ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(ent.light, this._t("light"), "mdi:lightbulb-outline"),
+      this._toggle(ent.fan_light, this._t("fan_light"), "mdi:ceiling-fan-light"),
+      f & CA_FAN_DIRECTION ? this._toggle(null, this._t("reverse"), "mdi:rotate-3d-variant", { action: "direction", on: a.direction === "reverse" }) : "",
     ]);
     const fields = [
       ent.angle ? this._numberControl(ent.angle, this._t("angle"), "mdi:angle-acute") : "",
@@ -150,6 +197,8 @@ class ClimateAirFanCard extends CaCard {
     const id = this._r.id;
     if (action === "preset") this._call("fan", "set_preset_mode", { entity_id: id, preset_mode: value });
     else if (action === "oscillate") this._call("fan", "oscillate", { entity_id: id, oscillating: !this._st(id).attributes.oscillating });
+    else if (action === "direction")
+      this._call("fan", "set_direction", { entity_id: id, direction: this._st(id).attributes.direction === "reverse" ? "forward" : "reverse" });
     else super._action(action, value);
   }
 
@@ -162,13 +211,24 @@ class ClimateAirFanCard extends CaCard {
     return lines.join("");
   }
 
+  // The oscillation while it runs, and the light of a fan that has one (a ceiling fan), even when it is off.
   _miniButtons(m) {
     const f = this._st(this._r.id).attributes.supported_features || 0;
-    if (!m.running || !(f & CA_FAN_OSCILLATE)) return [];
-    const label = caEsc(this._t("oscillation"));
-    return [
-      `<button class="round${m.osc ? " on" : ""}" data-action="oscillate" title="${label}" aria-label="${label}" aria-pressed="${m.osc}"><ha-icon icon="mdi:arrow-oscillating"></ha-icon></button>`,
-    ];
+    const btns = [];
+    if (m.running && f & CA_FAN_OSCILLATE) {
+      const label = caEsc(this._t("oscillation"));
+      btns.push(
+        `<button class="round${m.osc ? " on" : ""}" data-action="oscillate" title="${label}" aria-label="${label}" aria-pressed="${m.osc}"><ha-icon icon="mdi:arrow-oscillating"></ha-icon></button>`,
+      );
+    }
+    const lamp = this._r.ent.fan_light;
+    if (lamp && this._avail(lamp)) {
+      const label = caEsc(this._t("fan_light"));
+      btns.push(
+        `<button class="round${m.lit ? " on" : ""}" data-toggle="${caEsc(lamp)}" title="${label}" aria-label="${label}" aria-pressed="${m.lit}"><ha-icon icon="mdi:ceiling-fan-light"></ha-icon></button>`,
+      );
+    }
+    return btns;
   }
 
   static styles = `

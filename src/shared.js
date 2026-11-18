@@ -128,6 +128,10 @@ const CA_I18N = {
     ventilation: "Ventilation",
     g_ventilation: "Ventilation",
     ill_mvhr: "Heat recovery unit",
+    ill_fan: "Standing fan",
+    ill_ceiling: "Ceiling fan",
+    fan_light: "Light",
+    reverse: "Reverse",
     ill_extract: "Extract unit",
     heat_recovered: "Heat recovered",
     air_flows: "Air flows",
@@ -347,6 +351,10 @@ const CA_I18N = {
     ventilation: "VMC",
     g_ventilation: "VMC",
     ill_mvhr: "VMC double flux",
+    ill_fan: "Ventilateur sur pied",
+    ill_ceiling: "Ventilateur de plafond",
+    fan_light: "Lumière",
+    reverse: "Inverser",
     ill_extract: "VMC simple flux",
     heat_recovered: "Chaleur récupérée",
     air_flows: "Flux d'air",
@@ -567,6 +575,10 @@ const CA_I18N = {
     ventilation: "Lüftung",
     g_ventilation: "Lüftungsanlagen",
     ill_mvhr: "Lüftungsgerät mit Wärmerückgewinnung",
+    ill_fan: "Standventilator",
+    ill_ceiling: "Deckenventilator",
+    fan_light: "Licht",
+    reverse: "Umkehren",
     ill_extract: "Abluftgerät",
     heat_recovered: "Zurückgewonnene Wärme",
     air_flows: "Luftströme",
@@ -786,6 +798,10 @@ const CA_I18N = {
     ventilation: "Ventilación",
     g_ventilation: "Ventilación",
     ill_mvhr: "Recuperador de calor",
+    ill_fan: "Ventilador de pie",
+    ill_ceiling: "Ventilador de techo",
+    fan_light: "Luz",
+    reverse: "Invertir",
     ill_extract: "Extractor",
     heat_recovered: "Calor recuperado",
     air_flows: "Flujos de aire",
@@ -1005,6 +1021,10 @@ const CA_I18N = {
     ventilation: "Вентилација",
     g_ventilation: "Вентилација",
     ill_mvhr: "Рекуператор топлоте",
+    ill_fan: "Стојећи вентилатор",
+    ill_ceiling: "Плафонски вентилатор",
+    fan_light: "Светло",
+    reverse: "Обрнуто",
     ill_extract: "Одсисна јединица",
     heat_recovered: "Повраћена топлота",
     air_flows: "Токови ваздуха",
@@ -1224,6 +1244,10 @@ const CA_I18N = {
     ventilation: "Ventilacija",
     g_ventilation: "Ventilacija",
     ill_mvhr: "Rekuperator toplote",
+    ill_fan: "Stojeći ventilator",
+    ill_ceiling: "Plafonski ventilator",
+    fan_light: "Svetlo",
+    reverse: "Obrnuto",
     ill_extract: "Odsisna jedinica",
     heat_recovered: "Povraćena toplota",
     air_flows: "Tokovi vazduha",
@@ -1443,6 +1467,10 @@ const CA_I18N = {
     ventilation: "Ventilazione",
     g_ventilation: "Ventilazione",
     ill_mvhr: "Recuperatore di calore",
+    ill_fan: "Ventilatore a piantana",
+    ill_ceiling: "Ventilatore da soffitto",
+    fan_light: "Luce",
+    reverse: "Inverti",
     ill_extract: "Estrattore",
     heat_recovered: "Calore recuperato",
     air_flows: "Flussi d'aria",
@@ -1663,6 +1691,10 @@ const CA_I18N = {
     ventilation: "Ventilatie",
     g_ventilation: "Ventilatie",
     ill_mvhr: "Warmteterugwinunit",
+    ill_fan: "Staande ventilator",
+    ill_ceiling: "Plafondventilator",
+    fan_light: "Lamp",
+    reverse: "Omkeren",
     ill_extract: "Afzuigunit",
     heat_recovered: "Teruggewonnen warmte",
     air_flows: "Luchtstromen",
@@ -1883,6 +1915,10 @@ const CA_I18N = {
     ventilation: "Ventilação",
     g_ventilation: "Ventilação",
     ill_mvhr: "Recuperador de calor",
+    ill_fan: "Ventoinha de pé",
+    ill_ceiling: "Ventoinha de teto",
+    fan_light: "Luz",
+    reverse: "Inverter",
     ill_extract: "Extrator",
     heat_recovered: "Calor recuperado",
     air_flows: "Fluxos de ar",
@@ -2103,6 +2139,10 @@ const CA_I18N = {
     ventilation: "Wentylacja",
     g_ventilation: "Wentylacja",
     ill_mvhr: "Rekuperator",
+    ill_fan: "Wentylator stojący",
+    ill_ceiling: "Wentylator sufitowy",
+    fan_light: "Światło",
+    reverse: "Odwróć",
     ill_extract: "Wentylator wyciągowy",
     heat_recovered: "Odzyskane ciepło",
     air_flows: "Przepływy powietrza",
@@ -2323,6 +2363,10 @@ const CA_I18N = {
     ventilation: "Ventilație",
     g_ventilation: "Ventilație",
     ill_mvhr: "Recuperator de căldură",
+    ill_fan: "Ventilator cu picior",
+    ill_ceiling: "Ventilator de tavan",
+    fan_light: "Lumină",
+    reverse: "Inversare",
     ill_extract: "Unitate de extracție",
     heat_recovered: "Căldură recuperată",
     air_flows: "Fluxuri de aer",
@@ -2543,6 +2587,10 @@ const CA_I18N = {
     ventilation: "Ventilation",
     g_ventilation: "Ventilation",
     ill_mvhr: "Varmegenvindingsanlæg",
+    ill_fan: "Standerventilator",
+    ill_ceiling: "Loftventilator",
+    fan_light: "Lys",
+    reverse: "Vend",
     ill_extract: "Udsugningsanlæg",
     heat_recovered: "Genvundet varme",
     air_flows: "Luftstrømme",
@@ -2763,6 +2811,10 @@ const CA_I18N = {
     ventilation: "Ventilation",
     g_ventilation: "Ventilation",
     ill_mvhr: "FTX-aggregat",
+    ill_fan: "Golvfläkt",
+    ill_ceiling: "Takfläkt",
+    fan_light: "Lampa",
+    reverse: "Vänd",
     ill_extract: "Frånluftsaggregat",
     heat_recovered: "Återvunnen värme",
     air_flows: "Luftflöden",
@@ -2983,6 +3035,10 @@ const CA_I18N = {
     ventilation: "Вентилация",
     g_ventilation: "Вентилация",
     ill_mvhr: "Рекуператор",
+    ill_fan: "Вентилатор на стойка",
+    ill_ceiling: "Таванен вентилатор",
+    fan_light: "Лампа",
+    reverse: "Обръщане",
     ill_extract: "Смукателна вентилация",
     heat_recovered: "Възстановена топлина",
     air_flows: "Въздушни потоци",
@@ -3203,6 +3259,10 @@ const CA_I18N = {
     ventilation: "Вентиляция",
     g_ventilation: "Вентиляция",
     ill_mvhr: "Рекуператор",
+    ill_fan: "Напольный вентилятор",
+    ill_ceiling: "Потолочный вентилятор",
+    fan_light: "Свет",
+    reverse: "Реверс",
     ill_extract: "Вытяжная установка",
     heat_recovered: "Возвращённое тепло",
     air_flows: "Потоки воздуха",
@@ -3423,6 +3483,10 @@ const CA_I18N = {
     ventilation: "Вентиляція",
     g_ventilation: "Вентиляція",
     ill_mvhr: "Рекуператор",
+    ill_fan: "Підлоговий вентилятор",
+    ill_ceiling: "Стельовий вентилятор",
+    fan_light: "Світло",
+    reverse: "Реверс",
     ill_extract: "Витяжна установка",
     heat_recovered: "Повернене тепло",
     air_flows: "Потоки повітря",
@@ -3643,6 +3707,10 @@ const CA_I18N = {
     ventilation: "Szellőzés",
     g_ventilation: "Szellőzés",
     ill_mvhr: "Hővisszanyerős szellőztető",
+    ill_fan: "Állóventilátor",
+    ill_ceiling: "Mennyezeti ventilátor",
+    fan_light: "Lámpa",
+    reverse: "Megfordítás",
     ill_extract: "Elszívó egység",
     heat_recovered: "Visszanyert hő",
     air_flows: "Légáramok",
@@ -3863,6 +3931,10 @@ const CA_I18N = {
     ventilation: "Vetranie",
     g_ventilation: "Vetranie",
     ill_mvhr: "Rekuperačná jednotka",
+    ill_fan: "Stojanový ventilátor",
+    ill_ceiling: "Stropný ventilátor",
+    fan_light: "Svetlo",
+    reverse: "Obrátiť",
     ill_extract: "Odsávacia jednotka",
     heat_recovered: "Spätne získané teplo",
     air_flows: "Prúdy vzduchu",
@@ -4083,6 +4155,10 @@ const CA_I18N = {
     ventilation: "Větrání",
     g_ventilation: "Větrání",
     ill_mvhr: "Rekuperační jednotka",
+    ill_fan: "Stojanový ventilátor",
+    ill_ceiling: "Stropní ventilátor",
+    fan_light: "Světlo",
+    reverse: "Obrátit",
     ill_extract: "Odsávací jednotka",
     heat_recovered: "Zpětně získané teplo",
     air_flows: "Proudy vzduchu",
@@ -4303,6 +4379,10 @@ const CA_I18N = {
     ventilation: "Prezračevanje",
     g_ventilation: "Prezračevanje",
     ill_mvhr: "Rekuperator",
+    ill_fan: "Stoječi ventilator",
+    ill_ceiling: "Stropni ventilator",
+    fan_light: "Luč",
+    reverse: "Obrni",
     ill_extract: "Odsesovalna enota",
     heat_recovered: "Vrnjena toplota",
     air_flows: "Zračni tokovi",
@@ -4523,6 +4603,10 @@ const CA_I18N = {
     ventilation: "Ventilācija",
     g_ventilation: "Ventilācija",
     ill_mvhr: "Rekuperators",
+    ill_fan: "Grīdas ventilators",
+    ill_ceiling: "Griestu ventilators",
+    fan_light: "Gaisma",
+    reverse: "Apgriezt",
     ill_extract: "Nosūces iekārta",
     heat_recovered: "Atgūtais siltums",
     air_flows: "Gaisa plūsmas",
@@ -4743,6 +4827,10 @@ const CA_I18N = {
     ventilation: "Εξαερισμός",
     g_ventilation: "Εξαερισμός",
     ill_mvhr: "Μονάδα ανάκτησης θερμότητας",
+    ill_fan: "Ανεμιστήρας δαπέδου",
+    ill_ceiling: "Ανεμιστήρας οροφής",
+    fan_light: "Φως",
+    reverse: "Αντιστροφή",
     ill_extract: "Μονάδα απαγωγής",
     heat_recovered: "Ανακτημένη θερμότητα",
     air_flows: "Ροές αέρα",
@@ -5153,6 +5241,7 @@ const caSpin = (pct) => (1.8 - 1.5 * Math.max(0, Math.min(100, pct ?? 50)) / 100
 // Feature flags (homeassistant.components.fan / climate).
 const CA_FAN_SET_SPEED = 1;
 const CA_FAN_OSCILLATE = 2;
+const CA_FAN_DIRECTION = 4;
 const CA_FAN_PRESET = 8;
 const CA_CLIMATE_TARGET = 1;
 const CA_CLIMATE_RANGE = 2;
@@ -5269,6 +5358,8 @@ const CA_ROLES = {
   child_lock: { domain: "switch", keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
   buzzer: { domain: "switch", keys: ["buzzer", "alarm"], id: /(buzzer|alarm|sound|_son_|_son$|bip)/ },
   light: { domain: "light", id: /(indicator|indicador|_led|voyant|display|anzeige|pantalla)/ },
+  // The light of a ceiling fan: any other light of the fan's device (not its indicator).
+  fan_light: { domain: "light", test: (_st, id) => !/(indicator|indicador|_led|voyant|display|anzeige|pantalla)/.test(id) },
   brightness: { domain: "select", id: /(brightness|luminosit|helligkeit|brillo)/ },
   favorite: { domain: "number", keys: ["favorite_level"], id: /favorite/ },
   angle: { domain: ["number", "select"], id: /(angle|angulo|winkel|swing_included)/ },
@@ -7188,6 +7279,9 @@ const CA_BRAND_MAKERS = [
   [/hitachi/i, "hitachi_yutaki"],
   [/atlantic/i, "cozytouch"],
   [/xiaomi|smartmi|zhimi|deerma|mijia/i, "xiaomi_home"],
+  [/big ?ass/i, "baf"],
+  [/olibra|\bbond\b/i, "bond"],
+  [/modern ?forms/i, "modern_forms"],
 ];
 const CA_BRAND_PLATFORMS = { homekit_controller: "homekit", aquarea: "panasonic", overkiz: "cozytouch", rituals_perfume_genie: "rituals" };
 function caBrand(hass, id, config) {
@@ -7217,7 +7311,7 @@ function caIsNight(hass, config) {
 const CA_BANNER_BOX = {
   aircon: { split: [2.4, 13.4, 75.2, 32.2], portable: [1.5, 2.5, 61.1, 87.1], window: [1, 3.6, 71.6, 84.8], portasplit: [3.4, 18.1, 73.2, 71.2] },
   purifier: { tower: [17.9, 6.4, 44.2, 82.2], cylinder: [20.4, 7.9, 39.2, 82.3], box: [11.4, 16.4, 57.2, 72.2], dyson: [23.9, 1.3, 32.2, 87.3] },
-  fan: { fan: [13.2, 5.2, 53.6, 86.5] },
+  fan: { fan: [13.2, 5.2, 53.6, 86.5], ceiling: [2, 0, 96, 51] },
   humidifier: {
     column: [23.4, 21.4, 33.2, 67.2],
     tank: [7.4, 11.5, 65.2, 75.1],
@@ -7238,18 +7332,22 @@ const CA_BANNER_BOX = {
 function caBannerPlace(kind, variant, slot) {
   const boxes = CA_BANNER_BOX[kind] || {};
   const vb = boxes[variant] || Object.values(boxes)[0] || [0, 0, 80, 94];
-  const wall = kind === "aircon" && (variant || "split") === "split";
+  // A ceiling fan hangs from the ceiling (y 0): drawn like a wall unit, high in the room, its light under it.
+  const hang = kind === "fan" && variant === "ceiling";
+  const wall = (kind === "aircon" && (variant || "split") === "split") || hang;
   const [maxW, maxH, cx] = slot
-    ? [slot.maxW, wall ? slot.wallH : slot.maxH, slot.cx]
-    : wall
-      ? [66, 40, 160]
-      : kind === "heatpump"
-        ? [86, 70, 154]
-        : [76, 72, 160];
+    ? [hang ? slot.maxW + 6 : slot.maxW, hang ? 30 : wall ? slot.wallH : slot.maxH, slot.cx]
+    : hang
+      ? [66, 48, 156]
+      : wall
+        ? [66, 40, 160]
+        : kind === "heatpump"
+          ? [86, 70, 154]
+          : [76, 72, 160];
   const k = Math.min(maxW / vb[2], maxH / vb[3]);
   const w = vb[2] * k;
   const h = vb[3] * k;
-  return { vb, wall, x: cx - w / 2, y: wall ? (slot?.wallY ?? 10) : 80 - h, w, h, k };
+  return { vb, wall, hang, x: cx - w / 2, y: hang ? 0 : wall ? (slot?.wallY ?? 10) : 80 - h, w, h, k };
 }
 
 const caF = (n) => +n.toFixed(1);
@@ -7298,6 +7396,10 @@ function caBannerFx(kind, variant, p, dustX = 92) {
         return `<circle class="suck s${i % 4}" cx="${x}" cy="${y}" r="1.4" style="--dx:${caF(tx - x)}px;--dy:${caF(ty - y)}px"/>`;
       }).join("") +
       `<g class="clean">${[-5, 0, 5].map((dx, i) => `<path class="cl l${i}" d="M${caF(cx + dx)} ${caF(top - 1)} q-3 -3 0 -6"/>`).join("")}</g>`;
+  } else if (kind === "fan" && p.hang) {
+    // The breeze a ceiling fan pushes down into the room (drawn rising when it turns the other way, by its CSS).
+    const by = top + p.h * 0.6;
+    fx = [-0.36, 0, 0.36].map((f, i) => `<path class="bz b${i} down" d="M${caF(cx + f * p.w)} ${caF(by)} q-5 9 0 18 t0 18"/>`).join("");
   } else if (kind === "fan") {
     // The breeze blowing from the fan's head into the room.
     const hy = top + (32 - 5.2) * p.k;
@@ -7423,6 +7525,11 @@ const CA_BANNER_STYLES = `
   @keyframes ca-b-suck { from { transform: translate(0, 0); opacity: .8; } to { transform: translate(var(--dx), var(--dy)); opacity: 0; } }
   @keyframes ca-b-rise { from { transform: translateY(2px); opacity: 0; } 30% { opacity: .9; } to { transform: translateY(-6px); opacity: 0; } }
   @keyframes ca-b-blow { from { transform: translateX(0); opacity: .9; } to { transform: translateX(-30px); opacity: 0; } }
+  /* Under a ceiling fan the breeze falls into the room, and rises when the fan turns the other way (winter). */
+  .bfx .bz.down { animation-name: ca-b-down; }
+  .banner:has(.bdev.reverse) .bfx .bz.down { animation-name: ca-b-up; }
+  @keyframes ca-b-down { from { transform: translateY(-4px); opacity: .9; } to { transform: translateY(16px); opacity: 0; } }
+  @keyframes ca-b-up { from { transform: translateY(16px); opacity: .9; } to { transform: translateY(-4px); opacity: 0; } }
   @keyframes ca-b-puff { from { transform: translateY(10px) scale(.6); opacity: 0; } 40% { opacity: .8; } to { transform: translateY(-8px) scale(1.2); opacity: 0; } }
   /* A wall unit sits high on the wall, and a ventilation unit's ducts rise to the ceiling, under the mini card's
      corner button: the room steps left, at full size, so the button stays clear of it (the banner is the wall's
