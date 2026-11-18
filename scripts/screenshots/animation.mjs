@@ -30,6 +30,23 @@ await animate({
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.bedroom_fan_fan" } }),
 });
 
+// The ceiling fan turning, its light on: the blades spin and the breeze falls into the room.
+await animate({
+  file: "fan-ceiling",
+  tag: "climate-air-fan-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.ceiling_fan" } }),
+});
+
+// The ceiling fan reversed (winter), its light off: the blades turn the other way and the air rises to the ceiling.
+await animate({
+  file: "fan-ceiling-reverse",
+  tag: "climate-air-fan-card",
+  setup: (_s, lang) => ({
+    hass: mockHass(lang, { "fan.ceiling_fan": { direction: "reverse", percentage: 33 }, "light.ceiling_fan_light": { state: "off" } }),
+    config: { entity: "fan.ceiling_fan" },
+  }),
+});
+
 // The air conditioner cooling: the louvres flap and the chilled air falls from them.
 await animate({
   file: "aircon",

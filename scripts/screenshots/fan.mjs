@@ -1,4 +1,4 @@
-// Renders the fan cards with the mock home and saves the README screenshots.
+// Renders the fan cards (the standing fan and the ceiling fan) with the mock home and saves the README screenshots.
 // Usage: npm install && npm run build && node scripts/screenshots/fan.mjs
 import { pair, shoot } from "./harness.mjs";
 import { mockHass } from "./mock.mjs";
@@ -17,4 +17,19 @@ await shoot({
   tag: "climate-air-fan-mini-card",
   shots: pair("mini"),
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity } }),
+});
+
+// The ceiling fan (Bond style), turning with its light on: full and mini card.
+await shoot({
+  prefix: "fan-ceiling",
+  tag: "climate-air-fan-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.ceiling_fan" } }),
+});
+
+await shoot({
+  prefix: "fan-ceiling",
+  tag: "climate-air-fan-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.ceiling_fan" } }),
 });
