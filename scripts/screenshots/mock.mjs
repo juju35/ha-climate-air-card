@@ -1,4 +1,4 @@
-// Mock home for the screenshots (and the unit tests): three air purifiers, two fans, an air conditioner and an
+// Mock home for the screenshots (and the unit tests): three air purifiers, two fans, a ceiling fan, an air conditioner and an
 // air-to-water heat pump with its hot water tank, a humidifier, an essential oil diffuser and a dehumidifier, with the
 // entities their integrations expose (Xiaomi Home, HomeKit, Midea style), named in English or French (the screenshots
 // use English, the unit tests both), and a heat-only thermostat the cards leave out.
@@ -75,6 +75,11 @@ const DEVICES = [
     ["sensor.ventilation_power_usage", { en: "Power usage", fr: "Consommation" }, 34, { device_class: "power", unit_of_measurement: "W" }],
     ["sensor.ventilation_filter_days_remaining", { en: "Filter days remaining", fr: "Jours restants du filtre" }, 58, { unit_of_measurement: "d" }],
     ["switch.ventilation_boost", { en: "Boost", fr: "Boost" }, "off", {}],
+  ]],
+  // A ceiling fan (Bond style): six speeds, forward / reverse, and its own light, on.
+  ["dev_cf", "living_room", { en: "Ceiling fan", fr: "Ventilateur de plafond" }, [
+    ["fan.ceiling_fan", null, "on", { percentage: 50, percentage_step: 16.667, speed_count: 6, direction: "forward", supported_features: 53 }],
+    ["light.ceiling_fan_light", { en: "Light", fr: "Lumière" }, "on", { brightness: 200, color_mode: "brightness", supported_color_modes: ["brightness"] }],
   ]],
   ["dev_f2", "office", { en: "Office fan", fr: "Ventilateur bureau" }, [
     ["fan.office_fan_fan", { en: "Fan", fr: "Fan" }, "off",
@@ -189,6 +194,7 @@ const BRANDS = {
   dev_dehum: ["midea_ac_lan"],
   dev_hp: ["daikin_onecta"],
   dev_vmc: ["comfoconnect", "Zehnder"],
+  dev_cf: ["bond", "Olibra"],
 };
 
 export const mockHass = (lang = "en", changes = {}) => {

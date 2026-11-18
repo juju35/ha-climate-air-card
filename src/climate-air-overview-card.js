@@ -241,7 +241,14 @@ class ClimateAirOverviewCard extends CaElement {
         item.color = item.on ? CA_FAN_COLOR : CA_IDLE;
         item.anim = item.on ? "spin" : "";
         item.spin = caSpin(pct);
-        item.art = { running: item.on, pct, osc: !!a.oscillating, natural: /natur/i.test(a.preset_mode || "") };
+        item.art = {
+          running: item.on,
+          pct,
+          osc: !!a.oscillating,
+          natural: /natur/i.test(a.preset_mode || ""),
+          reverse: a.direction === "reverse",
+          lit: roleSt("fan_light")?.state === "on",
+        };
       }
     }
     // A worn filter (its life at the warning threshold or below) or a dirty one (the dirty-filter sensor on): the tile
