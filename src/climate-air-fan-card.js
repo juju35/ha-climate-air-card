@@ -34,22 +34,24 @@ const CA_FAN_ART =
 // A ceiling fan seen from the room: its canopy and downrod, four wooden blades in perspective that turn with the speed
 // (the other way when reversed), and its light under the motor, glowing while it is on.
 const CA_CEILING_FAN_ART =
-  '<svg viewBox="0 0 100 44" aria-hidden="true"><defs>' +
-  '<linearGradient id="ca-cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b08968"/><stop offset="1" stop-color="#7f5539"/></linearGradient>' +
-  '<linearGradient id="ca-cm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c3cad2"/><stop offset=".5" stop-color="#f4f6f8"/><stop offset="1" stop-color="#b4bcc5"/></linearGradient>' +
-  '<radialGradient id="ca-cl" cx=".5" cy=".2" r=".8"><stop offset="0" stop-color="#ffe8a3" stop-opacity=".75"/><stop offset="1" stop-color="#ffe8a3" stop-opacity="0"/></radialGradient></defs>' +
-  '<path class="glow" d="M42 24L22 44H78L58 24Z" fill="url(#ca-cl)"/>' +
-  '<rect x="41" y="0" width="18" height="3" rx="1.2" fill="url(#ca-cm)" stroke="#aab3bd" stroke-width=".5"/>' +
-  '<rect x="48.6" y="2.5" width="2.8" height="9" fill="#aab3bd"/>' +
-  '<g transform="translate(50 15.5) scale(1 .26)"><g class="blades">' +
-  [0, 90, 180, 270]
-    .map((a) => `<path transform="rotate(${a})" d="M5 -3.5C16 -8.5 38 -10 47 -6C49.6 -2 49.6 2 47 6C38 10 16 8.5 5 3.5Z" fill="url(#ca-cw)" stroke="#6d4c41" stroke-width=".8"/>`)
+  '<svg viewBox="0 0 100 68" aria-hidden="true"><defs>' +
+  '<linearGradient id="ca-cw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c0956b"/><stop offset="1" stop-color="#7f5539"/></linearGradient>' +
+  '<linearGradient id="ca-cm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b9c1ca"/><stop offset=".45" stop-color="#f4f6f8"/><stop offset="1" stop-color="#a9b2bc"/></linearGradient>' +
+  '<radialGradient id="ca-cl" cx=".5" cy=".1" r=".9"><stop offset="0" stop-color="#ffe8a3" stop-opacity=".8"/><stop offset="1" stop-color="#ffe8a3" stop-opacity="0"/></radialGradient></defs>' +
+  '<path class="glow" d="M43 46L18 68H82L57 46Z" fill="url(#ca-cl)"/>' +
+  '<rect x="40" y="0" width="20" height="3.4" rx="1.4" fill="url(#ca-cm)" stroke="#aab3bd" stroke-width=".5"/>' +
+  '<rect x="48.3" y="3" width="3.4" height="21" fill="url(#ca-cm)" stroke="#aab3bd" stroke-width=".4"/>' +
+  '<rect x="46" y="22.5" width="8" height="3" rx="1.2" fill="#aab3bd"/>' +
+  '<g transform="translate(50 32) scale(1 .3)"><g class="blades">' +
+  [45, 135, 225, 315]
+    .map((a) => `<path transform="rotate(${a})" d="M9 -6C20 -13 38 -15 47 -11C51 -5 51 5 47 11C38 15 20 13 9 6Z" fill="url(#ca-cw)" stroke="#5d4037" stroke-width="1.1"/>`)
     .join("") +
   "</g></g>" +
-  '<rect x="40" y="11" width="20" height="8.5" rx="4.2" fill="url(#ca-cm)" stroke="#aab3bd" stroke-width=".7"/>' +
-  '<rect x="42" y="12.4" width="16" height="2" rx="1" fill="#fff" opacity=".7"/>' +
-  '<path class="lamp" d="M43.5 19.5h13l-2.2 5.4a4.4 4.4 0 0 1-8.6 0Z" stroke="#ced4da" stroke-width=".6"/>' +
-  '<circle class="led" cx="50" cy="15.2" r=".9"/>' +
+  '<rect x="35" y="24.5" width="30" height="15" rx="7.5" fill="url(#ca-cm)" stroke="#9aa5b1" stroke-width=".7"/>' +
+  '<rect x="38" y="26.4" width="24" height="3" rx="1.5" fill="#fff" opacity=".75"/>' +
+  '<path d="M35.8 35.4h28.4" stroke="#9aa5b1" stroke-width=".6"/>' +
+  '<path class="lamp" d="M41 39.5h18l-2.8 6.6a6 6 0 0 1-12.4 0Z" stroke="#ced4da" stroke-width=".7"/>' +
+  '<circle class="led" cx="50" cy="31" r="1"/>' +
   "</svg>";
 
 // A ceiling fan says so in its name or model, or comes from a ceiling fan maker (Hunter, Big Ass Fans, Lucci Air,

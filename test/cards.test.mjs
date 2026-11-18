@@ -88,7 +88,7 @@ test("ceiling fan: guessed from the device, hung from the ceiling, its light and
   const out = html(el);
   // A Bond (Olibra) fan is a ceiling fan: hung at the top of the room like a wall unit, its light on.
   assert.match(out, /class="bdev k-fan st-on running ceiling lit wall"/);
-  assert.match(out, /<svg x="[\d.]+" y="0" [^>]*viewBox="2 0 96 30"/);
+  assert.match(out, /<svg x="[\d.]+" y="0" [^>]*viewBox="2 0 96 51"/);
   assert.match(out, /class="bz b0 down"/);
   assert.match(out, /data-toggle="light\.ceiling_fan_light"[^>]*><ha-icon icon="mdi:ceiling-fan-light"><\/ha-icon>Light/);
   // The indicator light of the standing fan is not taken for a fan light.

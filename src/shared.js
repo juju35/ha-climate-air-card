@@ -7311,7 +7311,7 @@ function caIsNight(hass, config) {
 const CA_BANNER_BOX = {
   aircon: { split: [2.4, 13.4, 75.2, 32.2], portable: [1.5, 2.5, 61.1, 87.1], window: [1, 3.6, 71.6, 84.8], portasplit: [3.4, 18.1, 73.2, 71.2] },
   purifier: { tower: [17.9, 6.4, 44.2, 82.2], cylinder: [20.4, 7.9, 39.2, 82.3], box: [11.4, 16.4, 57.2, 72.2], dyson: [23.9, 1.3, 32.2, 87.3] },
-  fan: { fan: [13.2, 5.2, 53.6, 86.5], ceiling: [2, 0, 96, 30] },
+  fan: { fan: [13.2, 5.2, 53.6, 86.5], ceiling: [2, 0, 96, 51] },
   humidifier: {
     column: [23.4, 21.4, 33.2, 67.2],
     tank: [7.4, 11.5, 65.2, 75.1],
@@ -7336,9 +7336,9 @@ function caBannerPlace(kind, variant, slot) {
   const hang = kind === "fan" && variant === "ceiling";
   const wall = (kind === "aircon" && (variant || "split") === "split") || hang;
   const [maxW, maxH, cx] = slot
-    ? [slot.maxW, wall ? slot.wallH : slot.maxH, slot.cx]
+    ? [hang ? slot.maxW + 6 : slot.maxW, hang ? 30 : wall ? slot.wallH : slot.maxH, slot.cx]
     : hang
-      ? [74, 30, 156]
+      ? [66, 48, 156]
       : wall
         ? [66, 40, 160]
         : kind === "heatpump"
