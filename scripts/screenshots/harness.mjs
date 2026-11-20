@@ -1,6 +1,6 @@
 // Shared by the screenshot scripts: theme variables, <ha-card> / <ha-icon> stand-ins, and the render loop.
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,6 +11,8 @@ import { writeBufferIfChanged, writeIfChanged } from "./write-if-changed.mjs";
 
 export const root = fileURLToPath(new URL("../..", import.meta.url));
 const cardJs = readFileSync(`${root}dist/ha-climate-air-card.js`, "utf8");
+// Where the screenshot pages load dist/ from (served by page.route, nothing leaves the machine).
+const DIST_URL = "https://cards.test/";
 
 // Every mdi:* icon the cards or the mock data can use, as SVG paths for the <ha-icon> stand-in.
 const iconsFor = (extra) => {
@@ -80,9 +82,25 @@ const openCard = async (browser, { tag, label, s, iconMap, setup }) => {
   const page = await browser.newPage({ deviceScaleFactor: 2, viewport: { width: 1000, height: 2000 } });
   page.on("pageerror", (err) => console.error(`pageerror (${label}): ${err.message}`));
   const { hass, config, open } = setup(s, "en");
+  // The bundle is served from dist/ under a URL, as Home Assistant does, so the files it fetches next to itself
+  // (brand logos) load too.
+  const pending = new Set();
+  page.on("request", (req) => req.url().startsWith(DIST_URL) && pending.add(req));
+  page.on("requestfinished", (req) => pending.delete(req));
+  page.on("requestfailed", (req) => pending.delete(req));
+  await page.route(`${DIST_URL}**`, (route) => {
+    const file = new URL(route.request().url()).pathname.slice(1);
+    if (!/^[\w.-]+\.js$/.test(file) || !existsSync(`${root}dist/${file}`)) return route.fulfill({ status: 404, body: "" });
+    return route.fulfill({
+      status: 200,
+      contentType: "text/javascript",
+      headers: { "access-control-allow-origin": "*" },
+      body: readFileSync(`${root}dist/${file}`, "utf8"),
+    });
+  });
   await page.setContent(pageHtml(s.theme, widthFor(tag)));
   await page.addScriptTag({ content: haElements(iconMap) });
-  await page.addScriptTag({ content: cardJs });
+  await page.addScriptTag({ url: `${DIST_URL}ha-climate-air-card.js` });
   await page.evaluate(
     ({ tag, hass, config, dark, open }) => {
       const el = document.createElement(tag);
@@ -100,6 +118,9 @@ const openCard = async (browser, { tag, label, s, iconMap, setup }) => {
     },
     { tag, hass, config, dark: s.theme === "dark", open },
   );
+  // Until the logo files the card asked for are in and drawn.
+  for (let i = 0; i < 100 && pending.size; i++) await page.waitForTimeout(20);
+  await page.evaluate(() => new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res))));
   return page;
 };
 

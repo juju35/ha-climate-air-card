@@ -6188,7 +6188,7 @@ class CaCard extends CaElement {
           ? "var(--warning-color, #ffa600)"
           : m.color;
     m.illustrated = this._illustrated();
-    const brand = m.illustrated ? caBrandBadge(caBrand(this._hass, r.id, c)) : "";
+    const brand = m.illustrated ? caBrandBadge(caBrand(this._hass, r.id, c), this) : "";
     m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon>${brand}</div>`;
 
     if (this._compact()) {
@@ -7337,8 +7337,68 @@ const CA_ART_STYLES = `
 // against the façade, on the lawn. Night (Home Assistant's dark theme, unless `illustration_theme` forces
 // day or night) dims the room. `illustration: false` keeps the classic header.
 
-// The brand logos, by slug, embedded by the build from images/badge/<slug>.png (scripts/build.mjs).
+// The brand logos, by slug (images/badge/<slug>.png). The build lists the slugs here (`slug: true`) and writes each
+// logo to its own file next to the bundle, ha-climate-air-card.brand.<slug>.js (scripts/build.mjs): the first card
+// showing a brand fetches its logo, then every card waiting for it is drawn again. A data URI string is a logo in
+// hand (fetched, or given inline); "" a logo that could not be had (no badge).
 const CA_BRAND_LOGOS = {} /* __BRAND_LOGOS__ */;
+const caBrandLoads = {};
+const caBrandWaiting = new Set();
+// The bundle's URL, read while it runs (document.currentScript is only set then), else from the resources loaded.
+const caBundleUrl = (() => {
+  const re = /\/ha-climate-air-card\.js(\?|$)/;
+  let url;
+  return () => {
+    if (url !== undefined) return url;
+    url = null;
+    try {
+      const src = document.currentScript?.src;
+      if (src && re.test(src)) url = src;
+      const entries = url ? [] : performance.getEntriesByType("resource");
+      for (let i = entries.length - 1; i >= 0 && !url; i--) if (re.test(entries[i].name)) url = entries[i].name;
+      if (!url) for (const s of document.querySelectorAll("script[src]")) if (re.test(s.src)) url = s.src;
+    } catch (_err) {
+      /* no DOM */
+    }
+    return url;
+  };
+})();
+caBundleUrl();
+// The logo of `slug`, or "" while it loads (`card` is then drawn again once it is in) or when there is none.
+function caBrandLogo(slug, card) {
+  const logo = slug ? CA_BRAND_LOGOS[slug] : undefined;
+  if (typeof logo === "string") return logo;
+  if (logo !== true) return "";
+  if (card) caBrandWaiting.add(card);
+  if (!caBrandLoads[slug]) {
+    const base = caBundleUrl();
+    const done = () => {
+      const cards = [...caBrandWaiting];
+      caBrandWaiting.clear();
+      for (const c of cards) {
+        c._sig = null;
+        c._update?.();
+      }
+    };
+    if (!base) {
+      // Bundle injected as content: no file to fetch, no badge.
+      CA_BRAND_LOGOS[slug] = "";
+      return "";
+    }
+    caBrandLoads[slug] = import(new URL(`ha-climate-air-card.brand.${slug}.js?v=__VERSION__`, base).href)
+      .then(
+        (m) => {
+          CA_BRAND_LOGOS[slug] = typeof m.default === "string" && m.default.startsWith("data:image/") ? m.default : "";
+        },
+        (err) => {
+          CA_BRAND_LOGOS[slug] = "";
+          console.warn(`ha-climate-air-card: "${slug}" brand logo not loaded (${err?.message ?? err})`);
+        },
+      )
+      .then(done);
+  }
+  return "";
+}
 
 // A number per card instance, for the ids of its banner's SVG.
 let caUidSeq = 0;
@@ -7371,8 +7431,8 @@ function caBrand(hass, id, config) {
   const platform = hass.entities?.[id]?.platform || "";
   return CA_BRAND_PLATFORMS[platform] || platform;
 }
-const caBrandBadge = (slug) => {
-  const logo = slug && CA_BRAND_LOGOS[slug];
+const caBrandBadge = (slug, card) => {
+  const logo = caBrandLogo(slug, card);
   return logo ? `<span class="brand"><img src="${caEsc(logo)}" alt=""></span>` : "";
 };
 
