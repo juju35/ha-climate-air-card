@@ -6,7 +6,12 @@
 - The mini cards' detail button keeps its frosted glass on older Safari / iOS (`-webkit-backdrop-filter`).
 - The page no longer jumps on state updates: the cards patch their content in place instead of rewriting it. The rewrite replaced `<ha-card>` and the icons, which Home Assistant draws a moment later: the status pill was measured with the card collapsed to its border, the page got shorter and its scroll position moved. Updates of entities a card does not show change nothing, the illustration's animations no longer restart and the brand logo is no longer reloaded.
 
+### Performance
+- The brand logos of the header badge left the bundle (−52 KB, 399 → 347 KB): each is a small file next to it (`ha-climate-air-card.brand.<slug>.js`), fetched the first time a card shows that brand, so a dashboard only downloads the logos of its own devices.
+
 ### Maintenance
+- CI: the Build & check job runs in the Debian 12 container with Chromium and ffmpeg, so the browser tests (layout, pill, narrow header, shrink to fit, layout shift) actually run, and fails if any test is skipped.
+- Screenshots: the bundle is served under a URL to the screenshot pages, so the files it loads next to itself (brand logos) load too.
 - README: the heat pump's own options (`source`, `ground_type`, `water_type`, `power_threshold`, `outdoor_temp`, `exclude`, `zone_temps`) get an options table.
 
 ## 2.16.0 - 2026-11-18
