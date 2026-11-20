@@ -22,7 +22,7 @@ customElements.define("ha-card", class extends HTMLElement {
     const sheet = new CSSStyleSheet();
     sheet.replaceSync(":host{display:block;border:1px solid #ddd;border-radius:12px;overflow:hidden}");
     root.adoptedStyleSheets = [sheet];
-    queueMicrotask(() => { root.innerHTML = "<slot></slot>"; });
+    this.updateComplete = new Promise((done) => queueMicrotask(() => { root.innerHTML = "<slot></slot>"; done(true); }));
   }
 });
 customElements.define("ha-icon", class extends HTMLElement {

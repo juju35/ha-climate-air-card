@@ -5918,6 +5918,13 @@ class CaElement extends HTMLElement {
 
   _fitPills() {
     caFitPills(this.shadowRoot);
+    // A new <ha-card> (first render) shows its content once Home Assistant has rendered it, a microtask later: the
+    // pill measured before is measured again then, before the frame is painted.
+    const card = this.shadowRoot?.querySelector?.("ha-card");
+    if (card && card !== this._fitCard) {
+      this._fitCard = card;
+      card.updateComplete?.then?.(() => caFitPills(this.shadowRoot));
+    }
   }
 
   getGridOptions() {
