@@ -5326,6 +5326,75 @@ const caPatchAround = (root, fresh, keep, twin) => {
   return true;
 };
 
+// A state update patches the card in place instead of rewriting its shadow root. A rewrite replaced <ha-card> and
+// every <ha-icon>, whose own shadow DOM Home Assistant renders a microtask later: the card's measurements (status
+// pill) forced a layout in between, with the card collapsed to its border, which shortened the page and moved its
+// scroll position (the dashboard jumped on every sensor change); it also restarted the illustration's animations and
+// reloaded the brand logo. `caMorph(root, html)` turns `root`'s children into `html`, keeping every node that is still
+// there (same tag at the same place, or the same `data-key` / `data-id` among its siblings) and updating its
+// attributes and text; only what changed is inserted or removed.
+const caPatchAttrs = (cur, next) => {
+  // A custom element may style its own host (an inline style the markup never gives): that one stays.
+  const own = cur.localName.includes("-") ? "style" : "";
+  for (const { name } of [...cur.attributes]) if (!next.hasAttribute(name) && name !== own) cur.removeAttribute(name);
+  for (const { name, value } of next.attributes) if (cur.getAttribute(name) !== value) cur.setAttribute(name, value);
+};
+const caKeyOf = (n) => (n.nodeType === 1 ? (n.getAttribute("data-key") ?? n.getAttribute("data-id")) : null);
+const caPatchChildren = (cur, next) => {
+  const old = [...cur.childNodes];
+  const fresh = [...next.childNodes];
+  const byKey = new Map();
+  for (const o of old) {
+    const k = caKeyOf(o);
+    if (k !== null && !byKey.has(k)) byKey.set(k, o);
+  }
+  const used = new Set();
+  fresh.forEach((n, i) => {
+    const k = caKeyOf(n);
+    let o = k !== null ? byKey.get(k) : old[i];
+    if (!o || o.nodeType !== n.nodeType || o.nodeName !== n.nodeName || used.has(o) || (k === null && caKeyOf(o) !== null)) o = null;
+    const ref = cur.childNodes[i] ?? null;
+    if (!o) {
+      cur.insertBefore(n, ref);
+      return;
+    }
+    used.add(o);
+    if (o !== ref) cur.insertBefore(o, ref);
+    if (n.nodeType !== 1) {
+      if (o.nodeValue !== n.nodeValue) o.nodeValue = n.nodeValue;
+      return;
+    }
+    caPatchAttrs(o, n);
+    // A custom element given no children (<ha-icon>) keeps those it draws itself.
+    if (n.firstChild || !o.localName.includes("-")) caPatchChildren(o, n);
+    // A control the user changed no longer follows its attributes: its value is set as a fresh one would have it.
+    if (o.localName === "input") {
+      if (o.type === "checkbox" || o.type === "radio") o.checked = o.hasAttribute("checked");
+      else if (o.value !== (o.getAttribute("value") ?? "")) o.value = o.getAttribute("value") ?? "";
+    } else if (o.localName === "select") {
+      const at = [...o.options].findIndex((x) => x.hasAttribute("selected"));
+      o.selectedIndex = at < 0 ? 0 : at;
+    }
+  });
+  while (cur.childNodes.length > fresh.length) cur.removeChild(cur.lastChild);
+};
+const caMorph = (root, html) => {
+  // No DOM to patch (the unit tests' stand-ins): written at once.
+  if (!root.childNodes) {
+    root.innerHTML = html;
+    return;
+  }
+  const tpl = document.createElement("template");
+  tpl.innerHTML = html;
+  caPatchChildren(root, tpl.content);
+};
+
+// The card's markup into `target`: patched in place in a shadow root, written at once in a detached element.
+const caWrite = (target, html) => {
+  if (typeof ShadowRoot !== "undefined" && target instanceof ShadowRoot) caMorph(target, html);
+  else target.innerHTML = html;
+};
+
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
 
 // Entities a device may have next to its fan or climate entity. Each role is looked up by its registry
@@ -6077,9 +6146,12 @@ class CaCard extends CaElement {
     const st = this._st(r.id);
     const icon = c.icon || (st && this._kindIcon?.(r)) || CA_KIND_ICONS[kind];
     if (!st) {
-      target.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
-        c.entity ? `${this._t("no_device")} (${c.entity})` : this._t("no_device"),
-      )}</div></ha-card>`;
+      caWrite(
+        target,
+        `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
+          c.entity ? `${this._t("no_device")} (${c.entity})` : this._t("no_device"),
+        )}</div></ha-card>`,
+      );
       return;
     }
     const m = this._model(r);
@@ -6113,7 +6185,7 @@ class CaCard extends CaElement {
     m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon>${brand}</div>`;
 
     if (this._compact()) {
-      target.innerHTML = this._miniHtml(m);
+      caWrite(target, this._miniHtml(m));
       return;
     }
     // The subtitle: the room, then the mode (m.sub) unless the body shows it already (see _subInBody).
@@ -6126,7 +6198,7 @@ class CaCard extends CaElement {
     const hero = m.illustrated
       ? `<div class="hero"><div class="info">${this._heroInfo(m)}${chips}</div>${m.powerBtn}</div>`
       : `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${chips}</div></div>`;
-    target.innerHTML = `${this._styles(m.color, m.badgeColor)}<ha-card>${head}${hero}${c.show_controls && m.online ? this._controls(m) : ""}</ha-card>`;
+    caWrite(target, `${this._styles(m.color, m.badgeColor)}<ha-card>${head}${hero}${c.show_controls && m.online ? this._controls(m) : ""}</ha-card>`);
   }
 
   // Whether the body shows the mode (m.sub) already: the full card's hero (`full`), else the compact mini card's

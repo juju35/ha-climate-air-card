@@ -309,7 +309,7 @@ class ClimateAirOverviewCard extends CaElement {
       `<div class="titles"><div class="trow"><div class="title name">${c.show_title !== false ? caEsc(c.title || this._t("title")) : ""}</div>` +
       `<div class="pill" title="${caEsc(status)}"><span class="dot"></span><span class="stt">${caEsc(status)}</span></div></div>${chips}</div>`;
     const badge = `<div class="badge"><ha-icon icon="${caEsc(c.icon || "mdi:air-filter")}"></ha-icon></div>`;
-    card.querySelector(".head").innerHTML = this._banner(all, `${badge}${titles}`, zoom);
+    caMorph(card.querySelector(".head"), this._banner(all, `${badge}${titles}`, zoom));
     this._fitPills();
 
     const body = card.querySelector(".body");
@@ -317,17 +317,20 @@ class ClimateAirOverviewCard extends CaElement {
     body.style.setProperty("--cols", cols);
     body.classList.toggle("fixed", !!c.columns);
     body.classList.toggle("packed", !!shown.length);
-    if (!all.length) body.innerHTML = `<div class="empty">${caEsc(this._t("no_devices"))}</div>`;
-    else if (!shown.length) body.innerHTML = `<div class="empty">${caEsc(this._t("nothing_on"))}</div>`;
+    if (!all.length) caMorph(body, `<div class="empty">${caEsc(this._t("no_devices"))}</div>`);
+    else if (!shown.length) caMorph(body, `<div class="empty">${caEsc(this._t("nothing_on"))}</div>`);
     // Each group takes as many columns as it has devices, so small groups sit side by side instead of leaving half a row empty.
     else
-      body.innerHTML = this._groups(shown)
-        .map(
+      caMorph(
+        body,
+        this._groups(shown)
+          .map(
           ([title, items]) =>
             `<div class="grp" style="--span:${Math.min(items.length, cols)}">${title ? `<div class="group"><ha-icon icon="${caEsc(this._groupIcon(items[0]))}"></ha-icon><span>${caEsc(title)}</span></div>` : ""}` +
             `<div class="grid">${items.map((x) => this._tile(x, `${x.kind}-${all.indexOf(x)}`)).join("")}</div></div>`,
         )
-        .join("");
+        .join(""),
+      );
 
     this._fillPanel(all.find((x) => x.id === this._open));
     // The focus is put back for the keyboard only: after a mouse click, it would draw the focus ring.

@@ -4,6 +4,7 @@
 
 ### Fixes
 - The mini cards' detail button keeps its frosted glass on older Safari / iOS (`-webkit-backdrop-filter`).
+- The page no longer jumps on state updates: the cards patch their content in place instead of rewriting it. The rewrite replaced `<ha-card>` and the icons, which Home Assistant draws a moment later: the status pill was measured with the card collapsed to its border, the page got shorter and its scroll position moved. Updates of entities a card does not show change nothing, the illustration's animations no longer restart and the brand logo is no longer reloaded.
 
 ### Maintenance
 - README: the heat pump's own options (`source`, `ground_type`, `water_type`, `power_threshold`, `outdoor_temp`, `exclude`, `zone_temps`) get an options table.
