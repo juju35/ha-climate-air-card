@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.16.1 - 2026-11-20
+
+### Fixes
+- The mini cards' detail button keeps its frosted glass on older Safari / iOS (`-webkit-backdrop-filter`).
+
+### Maintenance
+- README: the heat pump's own options (`source`, `ground_type`, `water_type`, `power_threshold`, `outdoor_temp`, `exclude`, `zone_temps`) get an options table.
+
 ## 2.16.0 - 2026-11-18
 
 ### Features
