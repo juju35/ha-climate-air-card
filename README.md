@@ -399,6 +399,16 @@ entities:                            # monitoring roles (YAML only)
 
 `source`, `ground_type`, `water_type`, `power_threshold` and `outdoor_temp` are in the visual editor; the `entities` monitoring role map is **YAML only**.
 
+| Option | Required | Default | Description |
+|---|---|---|---|
+| `source` | ❌ | From the name, else `air` | Source side of the illustration: `air`, `ground` or `water` (guessed from a ground- or water-source name or model) |
+| `ground_type` | ❌ | `collector` | With `source: ground`: `collector` (horizontal loop) or `borehole` |
+| `water_type` | ❌ | `well` | With `source: water`: `well`, `doublet` or `lake` |
+| `power_threshold` | ❌ | `100` | Metered (read-only) pump: power in W above which it counts as running |
+| `outdoor_temp` | ❌ | Discovered | A `sensor` or `weather` entity for the outdoor temperature chip |
+| `exclude` | ❌ | — | Multi-zone: room setpoints or device switches left off the card |
+| `zone_temps` | ❌ | — | YAML only: `{ setpoint number: temperature sensor }`, pairs a room's setpoint with its sensor by hand |
+
 ### Humidifier
 
 ```yaml

@@ -5326,6 +5326,75 @@ const caPatchAround = (root, fresh, keep, twin) => {
   return true;
 };
 
+// A state update patches the card in place instead of rewriting its shadow root. A rewrite replaced <ha-card> and
+// every <ha-icon>, whose own shadow DOM Home Assistant renders a microtask later: the card's measurements (status
+// pill) forced a layout in between, with the card collapsed to its border, which shortened the page and moved its
+// scroll position (the dashboard jumped on every sensor change); it also restarted the illustration's animations and
+// reloaded the brand logo. `caMorph(root, html)` turns `root`'s children into `html`, keeping every node that is still
+// there (same tag at the same place, or the same `data-key` / `data-id` among its siblings) and updating its
+// attributes and text; only what changed is inserted or removed.
+const caPatchAttrs = (cur, next) => {
+  // A custom element may style its own host (an inline style the markup never gives): that one stays.
+  const own = cur.localName.includes("-") ? "style" : "";
+  for (const { name } of [...cur.attributes]) if (!next.hasAttribute(name) && name !== own) cur.removeAttribute(name);
+  for (const { name, value } of next.attributes) if (cur.getAttribute(name) !== value) cur.setAttribute(name, value);
+};
+const caKeyOf = (n) => (n.nodeType === 1 ? (n.getAttribute("data-key") ?? n.getAttribute("data-id")) : null);
+const caPatchChildren = (cur, next) => {
+  const old = [...cur.childNodes];
+  const fresh = [...next.childNodes];
+  const byKey = new Map();
+  for (const o of old) {
+    const k = caKeyOf(o);
+    if (k !== null && !byKey.has(k)) byKey.set(k, o);
+  }
+  const used = new Set();
+  fresh.forEach((n, i) => {
+    const k = caKeyOf(n);
+    let o = k !== null ? byKey.get(k) : old[i];
+    if (!o || o.nodeType !== n.nodeType || o.nodeName !== n.nodeName || used.has(o) || (k === null && caKeyOf(o) !== null)) o = null;
+    const ref = cur.childNodes[i] ?? null;
+    if (!o) {
+      cur.insertBefore(n, ref);
+      return;
+    }
+    used.add(o);
+    if (o !== ref) cur.insertBefore(o, ref);
+    if (n.nodeType !== 1) {
+      if (o.nodeValue !== n.nodeValue) o.nodeValue = n.nodeValue;
+      return;
+    }
+    caPatchAttrs(o, n);
+    // A custom element given no children (<ha-icon>) keeps those it draws itself.
+    if (n.firstChild || !o.localName.includes("-")) caPatchChildren(o, n);
+    // A control the user changed no longer follows its attributes: its value is set as a fresh one would have it.
+    if (o.localName === "input") {
+      if (o.type === "checkbox" || o.type === "radio") o.checked = o.hasAttribute("checked");
+      else if (o.value !== (o.getAttribute("value") ?? "")) o.value = o.getAttribute("value") ?? "";
+    } else if (o.localName === "select") {
+      const at = [...o.options].findIndex((x) => x.hasAttribute("selected"));
+      o.selectedIndex = at < 0 ? 0 : at;
+    }
+  });
+  while (cur.childNodes.length > fresh.length) cur.removeChild(cur.lastChild);
+};
+const caMorph = (root, html) => {
+  // No DOM to patch (the unit tests' stand-ins): written at once.
+  if (!root.childNodes) {
+    root.innerHTML = html;
+    return;
+  }
+  const tpl = document.createElement("template");
+  tpl.innerHTML = html;
+  caPatchChildren(root, tpl.content);
+};
+
+// The card's markup into `target`: patched in place in a shadow root, written at once in a detached element.
+const caWrite = (target, html) => {
+  if (typeof ShadowRoot !== "undefined" && target instanceof ShadowRoot) caMorph(target, html);
+  else target.innerHTML = html;
+};
+
 const caDc = (dc) => (st) => st.attributes.device_class === dc;
 
 // Entities a device may have next to its fan or climate entity. Each role is looked up by its registry
@@ -5849,6 +5918,13 @@ class CaElement extends HTMLElement {
 
   _fitPills() {
     caFitPills(this.shadowRoot);
+    // A new <ha-card> (first render) shows its content once Home Assistant has rendered it, a microtask later: the
+    // pill measured before is measured again then, before the frame is painted.
+    const card = this.shadowRoot?.querySelector?.("ha-card");
+    if (card && card !== this._fitCard) {
+      this._fitCard = card;
+      card.updateComplete?.then?.(() => caFitPills(this.shadowRoot));
+    }
   }
 
   getGridOptions() {
@@ -6077,9 +6153,12 @@ class CaCard extends CaElement {
     const st = this._st(r.id);
     const icon = c.icon || (st && this._kindIcon?.(r)) || CA_KIND_ICONS[kind];
     if (!st) {
-      target.innerHTML = `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
-        c.entity ? `${this._t("no_device")} (${c.entity})` : this._t("no_device"),
-      )}</div></ha-card>`;
+      caWrite(
+        target,
+        `${this._styles()}<ha-card><div class="empty"><ha-icon icon="${caEsc(icon)}"></ha-icon>${caEsc(
+          c.entity ? `${this._t("no_device")} (${c.entity})` : this._t("no_device"),
+        )}</div></ha-card>`,
+      );
       return;
     }
     const m = this._model(r);
@@ -6109,11 +6188,11 @@ class CaCard extends CaElement {
           ? "var(--warning-color, #ffa600)"
           : m.color;
     m.illustrated = this._illustrated();
-    const brand = m.illustrated ? caBrandBadge(caBrand(this._hass, r.id, c)) : "";
+    const brand = m.illustrated ? caBrandBadge(caBrand(this._hass, r.id, c), this) : "";
     m.badge = `<div class="badge"><ha-icon icon="${caEsc(icon)}"></ha-icon>${brand}</div>`;
 
     if (this._compact()) {
-      target.innerHTML = this._miniHtml(m);
+      caWrite(target, this._miniHtml(m));
       return;
     }
     // The subtitle: the room, then the mode (m.sub) unless the body shows it already (see _subInBody).
@@ -6126,7 +6205,7 @@ class CaCard extends CaElement {
     const hero = m.illustrated
       ? `<div class="hero"><div class="info">${this._heroInfo(m)}${chips}</div>${m.powerBtn}</div>`
       : `<div class="hero">${this._picture(m)}<div class="info">${this._heroInfo(m)}${chips}</div></div>`;
-    target.innerHTML = `${this._styles(m.color, m.badgeColor)}<ha-card>${head}${hero}${c.show_controls && m.online ? this._controls(m) : ""}</ha-card>`;
+    caWrite(target, `${this._styles(m.color, m.badgeColor)}<ha-card>${head}${hero}${c.show_controls && m.online ? this._controls(m) : ""}</ha-card>`);
   }
 
   // Whether the body shows the mode (m.sub) already: the full card's hero (`full`), else the compact mini card's
@@ -7258,8 +7337,68 @@ const CA_ART_STYLES = `
 // against the façade, on the lawn. Night (Home Assistant's dark theme, unless `illustration_theme` forces
 // day or night) dims the room. `illustration: false` keeps the classic header.
 
-// The brand logos, by slug, embedded by the build from images/badge/<slug>.png (scripts/build.mjs).
+// The brand logos, by slug (images/badge/<slug>.png). The build lists the slugs here (`slug: true`) and writes each
+// logo to its own file next to the bundle, ha-climate-air-card.brand.<slug>.js (scripts/build.mjs): the first card
+// showing a brand fetches its logo, then every card waiting for it is drawn again. A data URI string is a logo in
+// hand (fetched, or given inline); "" a logo that could not be had (no badge).
 const CA_BRAND_LOGOS = {} /* __BRAND_LOGOS__ */;
+const caBrandLoads = {};
+const caBrandWaiting = new Set();
+// The bundle's URL, read while it runs (document.currentScript is only set then), else from the resources loaded.
+const caBundleUrl = (() => {
+  const re = /\/ha-climate-air-card\.js(\?|$)/;
+  let url;
+  return () => {
+    if (url !== undefined) return url;
+    url = null;
+    try {
+      const src = document.currentScript?.src;
+      if (src && re.test(src)) url = src;
+      const entries = url ? [] : performance.getEntriesByType("resource");
+      for (let i = entries.length - 1; i >= 0 && !url; i--) if (re.test(entries[i].name)) url = entries[i].name;
+      if (!url) for (const s of document.querySelectorAll("script[src]")) if (re.test(s.src)) url = s.src;
+    } catch (_err) {
+      /* no DOM */
+    }
+    return url;
+  };
+})();
+caBundleUrl();
+// The logo of `slug`, or "" while it loads (`card` is then drawn again once it is in) or when there is none.
+function caBrandLogo(slug, card) {
+  const logo = slug ? CA_BRAND_LOGOS[slug] : undefined;
+  if (typeof logo === "string") return logo;
+  if (logo !== true) return "";
+  if (card) caBrandWaiting.add(card);
+  if (!caBrandLoads[slug]) {
+    const base = caBundleUrl();
+    const done = () => {
+      const cards = [...caBrandWaiting];
+      caBrandWaiting.clear();
+      for (const c of cards) {
+        c._sig = null;
+        c._update?.();
+      }
+    };
+    if (!base) {
+      // Bundle injected as content: no file to fetch, no badge.
+      CA_BRAND_LOGOS[slug] = "";
+      return "";
+    }
+    caBrandLoads[slug] = import(new URL(`ha-climate-air-card.brand.${slug}.js?v=__VERSION__`, base).href)
+      .then(
+        (m) => {
+          CA_BRAND_LOGOS[slug] = typeof m.default === "string" && m.default.startsWith("data:image/") ? m.default : "";
+        },
+        (err) => {
+          CA_BRAND_LOGOS[slug] = "";
+          console.warn(`ha-climate-air-card: "${slug}" brand logo not loaded (${err?.message ?? err})`);
+        },
+      )
+      .then(done);
+  }
+  return "";
+}
 
 // A number per card instance, for the ids of its banner's SVG.
 let caUidSeq = 0;
@@ -7292,8 +7431,8 @@ function caBrand(hass, id, config) {
   const platform = hass.entities?.[id]?.platform || "";
   return CA_BRAND_PLATFORMS[platform] || platform;
 }
-const caBrandBadge = (slug) => {
-  const logo = slug && CA_BRAND_LOGOS[slug];
+const caBrandBadge = (slug, card) => {
+  const logo = caBrandLogo(slug, card);
   return logo ? `<span class="brand"><img src="${caEsc(logo)}" alt=""></span>` : "";
 };
 
@@ -7480,7 +7619,7 @@ const CA_BANNER_STYLES = `
   .banner .st { line-height: 16px; background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
   .banner.night .st { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
   .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; margin: 0; width: 24px; height: 24px; color: #33506b;
-                  background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); backdrop-filter: blur(4px); }
+                  background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
   .banner.night .zoom { color: #fff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
   .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
   .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #fff; }
