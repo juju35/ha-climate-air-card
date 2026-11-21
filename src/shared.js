@@ -5313,7 +5313,7 @@ const caPatchAround = (root, fresh, keep, twin) => {
     const twinNode = news[i];
     const kids = [...newParent.childNodes];
     const at = kids.indexOf(twinNode);
-    for (const n of [...oldParent.childNodes]) if (n !== node) n.remove();
+    for (const n of [...oldParent.childNodes]) if (n !== node && !caForeign(n)) n.remove();
     node.before(...kids.slice(0, at));
     node.after(...kids.slice(at + 1));
     if (node !== keep) {
@@ -5340,8 +5340,22 @@ const caPatchAttrs = (cur, next) => {
   for (const { name, value } of next.attributes) if (cur.getAttribute(name) !== value) cur.setAttribute(name, value);
 };
 const caKeyOf = (n) => (n.nodeType === 1 ? (n.getAttribute("data-key") ?? n.getAttribute("data-id")) : null);
+// Nodes the card does not render itself stay where they are, untouched: card-mod's <card-mod> element (its styles),
+// inserted into the shadow root after the card has drawn (#107). Neither matched to the card's markup nor trimmed.
+const CA_FOREIGN = new Set(["card-mod"]);
+const caForeign = (n) => n.nodeType === 1 && CA_FOREIGN.has(n.localName);
 const caPatchChildren = (cur, next) => {
-  const old = [...cur.childNodes];
+  const all = [...cur.childNodes];
+  const old = all.filter((n) => !caForeign(n));
+  // With a foreign node among them, positions count the card's own nodes only, and a node added at the end goes
+  // before the foreign ones, which keep the last place (card-mod's styles after the card's own).
+  const at =
+    old.length === all.length
+      ? (i) => cur.childNodes[i] ?? null
+      : (i) => {
+          const own = [...cur.childNodes].filter((n) => !caForeign(n));
+          return own[i] ?? (own.length ? own[own.length - 1].nextSibling : cur.firstChild);
+        };
   const fresh = [...next.childNodes];
   const byKey = new Map();
   for (const o of old) {
@@ -5353,7 +5367,7 @@ const caPatchChildren = (cur, next) => {
     const k = caKeyOf(n);
     let o = k !== null ? byKey.get(k) : old[i];
     if (!o || o.nodeType !== n.nodeType || o.nodeName !== n.nodeName || used.has(o) || (k === null && caKeyOf(o) !== null)) o = null;
-    const ref = cur.childNodes[i] ?? null;
+    const ref = at(i);
     if (!o) {
       cur.insertBefore(n, ref);
       return;
@@ -5376,7 +5390,8 @@ const caPatchChildren = (cur, next) => {
       o.selectedIndex = at < 0 ? 0 : at;
     }
   });
-  while (cur.childNodes.length > fresh.length) cur.removeChild(cur.lastChild);
+  let kept = 0;
+  for (const n of [...cur.childNodes]) if (!caForeign(n) && ++kept > fresh.length) cur.removeChild(n);
 };
 const caMorph = (root, html) => {
   // No DOM to patch (the unit tests' stand-ins): written at once.

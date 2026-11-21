@@ -133,3 +133,42 @@ test("state updates patch the cards in place: no DOM change for other entities, 
     await page.close();
   }
 });
+
+// card-mod (#107) inserts a <card-mod> element into the card's shadow root once the card has drawn: the in-place
+// patch must leave it there, at the end, through every update (also one that rebuilds a section).
+test("card-mod's element in the shadow root survives the in-place updates", { timeout: 60000 }, async (t) => {
+  if (skip) return t.skip(skip);
+  const page = await browser.newPage({ viewport: { width: 900, height: 700 } });
+  await page.setContent("<!doctype html><body><div id='root' style='width:400px'></div></body>");
+  await page.addScriptTag({ content: STAND_INS });
+  await page.addScriptTag({ content: src });
+  const r = await page.evaluate(
+    async ({ hass }) => {
+      const frame = () => new Promise((res) => requestAnimationFrame(res));
+      const el = document.createElement("climate-air-humidifier-card");
+      el.setConfig({ type: "custom:climate-air-humidifier-card", entity: "humidifier.bedroom_humidifier" });
+      let h = { ...hass, themes: { darkMode: false }, callService: async () => {} };
+      el.hass = h;
+      document.getElementById("root").appendChild(el);
+      for (let i = 0; i < 5; i++) await frame();
+      const mod = document.createElement("card-mod");
+      mod.innerHTML = "<style>.name{color:rgb(255,0,0)}</style>";
+      el.shadowRoot.appendChild(mod);
+      const id = "humidifier.bedroom_humidifier";
+      for (let i = 0; i < 10; i++) {
+        const st = h.states[id];
+        // Every other update turns it off and back on: whole sections come and go.
+        const states = { ...h.states, [id]: { ...st, state: i % 2 ? "off" : "on", attributes: { ...st.attributes, current_humidity: 40 + i } } };
+        h = { ...h, states };
+        el.hass = h;
+        await frame();
+      }
+      return { connected: mod.isConnected, last: el.shadowRoot.lastChild === mod, cards: el.shadowRoot.querySelectorAll("ha-card").length };
+    },
+    { hass },
+  );
+  assert.ok(r.connected, "the <card-mod> element is still in the shadow root");
+  assert.ok(r.last, "it stays after the card's own nodes");
+  assert.equal(r.cards, 1, "the card is not drawn twice around it");
+  await page.close();
+});
