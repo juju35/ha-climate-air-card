@@ -1618,3 +1618,46 @@ test("ventilation: found by its integration or name, its four air streams, heat 
   assert.match(by, /185<small> m³\/h<\/small>/);
   assert.match(by, /class="vent flowing bypassed"/);
 });
+
+test("ventilation: levels made of switches (cumulative or exclusive) set and show the level", () => {
+  const h = makeHass();
+  const sw = (id, state) => (h.states[id] = { entity_id: id, state, attributes: { friendly_name: id } });
+  sw("switch.bath_fan_1", "on");
+  sw("switch.bath_fan_2", "off");
+  const config = { illustration: "extract", levels: ["switch.bath_fan_1", "switch.bath_fan_2"] };
+  const el = mount(lib, "climate-air-ventilation-card", config, h);
+  const out = html(el);
+  assert.match(out, /1<small> \/ 2<\/small>/);
+  assert.doesNotMatch(out, /0<small> %/);
+  assert.match(out, /data-action="switch-level" data-value="1" aria-pressed="true"/);
+  // Cumulative: level 2 turns stage 2 on on top of stage 1.
+  el._onClick({ composedPath: () => [{ dataset: { action: "switch-level", value: "2" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["switch", "turn_on", { entity_id: "switch.bath_fan_2" }]]);
+  // Power off turns every switch off, the top stage first.
+  sw("switch.bath_fan_2", "on");
+  h.calls.length = 0;
+  el._onClick({ composedPath: () => [{ dataset: { action: "power" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
+    ["switch", "turn_off", { entity_id: "switch.bath_fan_2" }],
+    ["switch", "turn_off", { entity_id: "switch.bath_fan_1" }],
+  ]);
+  // Exclusive: one channel per speed, the other one off first.
+  const ex = mount(lib, "climate-air-ventilation-card", { ...config, levels_mode: "exclusive" }, h);
+  sw("switch.bath_fan_2", "off");
+  h.calls.length = 0;
+  ex._onClick({ composedPath: () => [{ dataset: { action: "switch-level", value: "2" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [
+    ["switch", "turn_off", { entity_id: "switch.bath_fan_1" }],
+    ["switch", "turn_on", { entity_id: "switch.bath_fan_2" }],
+  ]);
+  // All off: off, and power turns level 1 on.
+  sw("switch.bath_fan_1", "off");
+  const off = mount(lib, "climate-air-ventilation-card", config, h);
+  assert.doesNotMatch(html(off), /data-action="switch-level"/);
+  h.calls.length = 0;
+  off._onClick({ composedPath: () => [{ dataset: { action: "power" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls)), [["switch", "turn_on", { entity_id: "switch.bath_fan_1" }]]);
+  // The mini card says the level.
+  sw("switch.bath_fan_1", "on");
+  assert.match(html(mount(lib, "climate-air-ventilation-mini-card", config, h)), /Level 1/);
+});

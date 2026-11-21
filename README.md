@@ -172,6 +172,7 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 - The heat its exchanger recovers in large (its efficiency sensor, else worked out from the stream temperatures: (supply − outdoor) ÷ (extract − outdoor)), with the airflow; the airflow in large when the bypass is open (no heat recovered then) or no temperature is known
 - **Air flows**: the four streams through the exchanger, each with its temperature — outdoor air in and supply air to the rooms, extract air from the rooms and exhaust air out — running while the unit runs; the exchanger fades and *Bypass open* shows under it when the air goes round it
 - Its level as a button per level (a unit of 2 to 5 speeds, *Level 1 · 2 · 3*), else a speed slider; its presets as segmented buttons when it has several
+- **Levels made of switches**: an extract fan whose speeds are relay channels (a 2- or 3-channel relay, no `fan` entity) takes them as `levels`, lowest first — a button per level, the level in large (*1 / 2*), power off turning every channel off
 - **Boost** (a switch, or a button to press) as an option and on the mini card; CO₂, humidity, airflow and power chips; the filter's life as a bar, or its days left
 - Animated illustration: the air runs in the four ducts and the fan turns, faster in boost. Two shapes, picked from the device or set with `illustration`: `mvhr` (heat recovery unit, four ducts) and `extract` (extract unit, two ducts)
 
@@ -432,6 +433,22 @@ entities:            # only to override a role found on the device
   airflow: sensor.comfoairq_supply_airflow
   boost: button.comfoairq_boost_30_min
 ```
+
+A fan with two or three speeds wired to the channels of a relay (no `fan` entity) takes its switches as `levels`, lowest first:
+
+```yaml
+type: custom:climate-air-ventilation-card
+illustration: extract
+levels:
+  - switch.bathroom_fan_stage_1
+  - switch.bathroom_fan_stage_2
+levels_mode: cumulative   # cumulative (default) or exclusive
+entities:
+  humidity: sensor.bathroom_humidity
+  power: sensor.bathroom_fan_power
+```
+
+Level *n* means the switches up to *n* on and the ones above off (`cumulative`: each stage runs on top of the one below), or only the *n*-th on (`exclusive`: one channel per speed). The card shows a button per level and the level in large (*1 / 2*) instead of a percentage; power off turns every switch off (the top one first), power on sets level 1. Switches go off before others come on, so two exclusive channels never run together. `entity` defaults to the first switch; `levels` and `levels_mode` are **YAML only**.
 
 Roles found on the device: `air_outdoor_temp`, `air_supply_temp`, `air_extract_temp`, `air_exhaust_temp`, `bypass` (a binary sensor, switch, select, sensor or number: open when on, *open* or above 0), `efficiency`, `airflow` (in m³/h), `co2`, `humidity`, `power`, `filter` (%), `filter_days`, `boost` (a switch or a button); the `entities` map is **YAML only**.
 

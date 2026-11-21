@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.17.0 - 2026-11-21
+
+### Features
+- **Ventilation: levels made of switches** (#106): a fan whose speeds are relay channels (no `fan` entity) takes them as `levels`, lowest first. A button per level, the level in large (*1 / 2*) instead of *0 %*, *Level n* on the mini card; power off turns every switch off, power on sets level 1. `levels_mode: cumulative` (default: the switches up to *n* on) or `exclusive` (only the *n*-th on); switches go off before others come on.
+
 ## 2.16.1 - 2026-11-20
 
 ### Fixes

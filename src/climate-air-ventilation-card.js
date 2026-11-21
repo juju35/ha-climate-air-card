@@ -78,6 +78,42 @@ class ClimateAirVentilationCard extends CaCard {
     return "ventilation";
   }
 
+  // `levels`: a unit whose speeds are relay channels (switches), lowest first, with no fan entity. Level n means the
+  // switches up to n on (`levels_mode: cumulative`, the default: each stage runs on top of the one below) or only the
+  // n-th (`exclusive`: one channel per speed).
+  _levelIds() {
+    return [].concat(this._config.levels || []).filter((x) => typeof x === "string" && x);
+  }
+
+  _exclusive() {
+    return this._config.levels_mode === "exclusive";
+  }
+
+  // The level the switches say: the highest one on (0 when they are all off).
+  _level() {
+    return this._levelIds().reduce((n, id, i) => (this._val(id) === "on" ? i + 1 : n), 0);
+  }
+
+  _entity() {
+    return this._config.entity || this._levelIds()[0] || super._entity();
+  }
+
+  _extraIds() {
+    return this._levelIds();
+  }
+
+  // Sets level n (0: every switch off). Switches go off before others come on, so two exclusive channels never run
+  // together and a cumulative stage never runs without the ones below it.
+  _setLevel(n) {
+    const ids = this._levelIds();
+    const want = (i) => (this._exclusive() ? i === n - 1 : i < n);
+    const sw = (id, on) => this._call(id.split(".")[0], on ? "turn_on" : "turn_off", { entity_id: id });
+    for (let i = ids.length - 1; i >= 0; i--) if (!want(i) && this._val(ids[i]) !== "off") sw(ids[i], false);
+    ids.forEach((id, i) => {
+      if (want(i) && this._val(id) !== "on") sw(id, true);
+    });
+  }
+
   _roles() {
     return [...CA_VENT_STREAMS, "bypass", "efficiency", "airflow", "co2", "humidity", "power", "filter", "filter_days", "filter_alert", "filter_reset", "boost"];
   }
@@ -96,8 +132,10 @@ class ClimateAirVentilationCard extends CaCard {
   _model(r) {
     const { ent } = r;
     const { state, attributes: a } = this._st(r.id);
-    const on = state === "on";
-    const [pct, preset] = on ? [Number(a.percentage ?? 0), a.preset_mode] : [0, null];
+    const levels = this._levelIds().length;
+    const level = levels ? this._level() : null;
+    const on = levels ? level > 0 : state === "on";
+    const [pct, preset] = !on ? [0, null] : levels ? [(level / levels) * 100, null] : [Number(a.percentage ?? 0), a.preset_mode];
     const t = { o: this._num(ent.air_outdoor_temp), s: this._num(ent.air_supply_temp), e: this._num(ent.air_extract_temp), x: this._num(ent.air_exhaust_temp) };
     const bypass = ent.bypass ? caVentBypass(this._st(ent.bypass)) : null;
     // With the bypass open the air goes round the exchanger: no heat is recovered, so none is shown.
@@ -118,6 +156,8 @@ class ClimateAirVentilationCard extends CaCard {
       statusText: on ? (boost ? this._t("boost") : this._t("st_on")) : this._t("st_off"),
       sub: preset ? this._fmtAttr(r.id, "preset_mode", preset) : "",
       pct,
+      level,
+      levels,
       preset,
       boost,
       temps: t,
@@ -138,13 +178,20 @@ class ClimateAirVentilationCard extends CaCard {
   _heroInfo(m) {
     if (!m.running) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     const lang = this._intlLang();
-    const level = [m.sub, `${Math.round(m.pct)} %`].filter(Boolean).join(" · ");
+    const level = [m.sub, this._levelText(m)].filter(Boolean).join(" · ");
     if (m.eff != null) {
       const under = [this._t("heat_recovered"), m.airflow].filter(Boolean).join(" · ");
       return `<div class="big"><span class="val">${caFmtNum(lang, m.eff, 0)}<small> %</small></span><span class="lbl">${caEsc(under)}</span></div>${caLine("mdi:fan", level)}`;
     }
     if (m.airflow) return `<div class="big"><span class="val">${caEsc(m.airflow.replace(/\s+\S+$/, ""))}<small> ${caEsc(m.airflow.split(/\s+/).pop())}</small></span><span class="lbl">${caEsc(this._t("airflow"))}</span></div>${caLine("mdi:fan", level)}`;
+    // Levels made of switches: the level (of how many) instead of a percentage.
+    if (m.levels) return `<div class="big"><span class="val">${m.level}<small> / ${m.levels}</small></span><span class="lbl">${caEsc(this._t("speed"))}</span></div>`;
     return `<div class="big"><span class="val">${Math.round(m.pct)}<small> %</small></span><span class="lbl">${caEsc(m.sub || m.statusText)}</span></div>`;
+  }
+
+  // The level as words: "Level 2" with switches, else the speed in %.
+  _levelText(m) {
+    return m.levels ? this._t("level", { n: m.level }) : `${Math.round(m.pct)} %`;
   }
 
   // The four air streams through the exchanger: outdoor air in and supply air out on the cold side's top line, extract
@@ -186,7 +233,13 @@ class ClimateAirVentilationCard extends CaCard {
     }
     // A unit of a few levels (speed_count 2 to 5): a button per level; else the speed slider.
     const count = Number(a.speed_count) || 0;
-    if (f & CA_FAN_SET_SPEED && on) {
+    const ids = this._levelIds();
+    if (ids.length >= 2) {
+      if (m.running) {
+        const opts = ids.map((_, i) => String(i + 1));
+        level += this._segments("switch-level", opts, String(m.level), (o) => this._t("level", { n: o }), null);
+      }
+    } else if (f & CA_FAN_SET_SPEED && on) {
       if (count >= 2 && count <= 5) {
         const step = 100 / count;
         const opts = Array.from({ length: count }, (_, i) => String(Math.round((i + 1) * step)));
@@ -216,13 +269,17 @@ class ClimateAirVentilationCard extends CaCard {
 
   // A preset or a level for the fan entity; anything else (power, filter reset) as every card does.
   _action(action, value) {
+    if (this._levelIds().length && (action === "switch-level" || action === "power")) {
+      this._setLevel(action === "power" ? (this._level() ? 0 : 1) : Number(value));
+      return;
+    }
     const call = { preset: ["set_preset_mode", { preset_mode: value }], level: ["set_percentage", { percentage: Number(value) }] }[action];
     if (call) this._call("fan", call[0], { entity_id: this._r.id, ...call[1] });
     else super._action(action, value);
   }
 
   _miniInfo(m) {
-    const lines = m.running ? [caBar(m.pct, `${Math.round(m.pct)} %`, "mdi:fan")] : [];
+    const lines = m.running ? [caBar(m.pct, this._levelText(m), "mdi:fan")] : [];
     if (m.running && m.eff != null) lines.push(caLine("mdi:swap-horizontal", `${this._t("heat_recovered")} ${caFmtNum(this._intlLang(), m.eff, 0)} %`));
     const t = m.temps;
     if (t.s != null || t.o != null) {
