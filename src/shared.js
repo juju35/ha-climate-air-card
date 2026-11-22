@@ -8120,7 +8120,7 @@ function caRegister(type, cls, name, description, Editor) {
   customElements.define(type, cls);
   customElements.define(`${type}-editor`, editor);
   window.customCards = window.customCards || [];
-  window.customCards.push({ type, name, description, preview: true, documentationURL: CA_REPO });
+  window.customCards.push({ type, name, description, preview: false, documentationURL: CA_REPO });
 }
 
 if (!customElements.get("climate-air-overview-card")) {
