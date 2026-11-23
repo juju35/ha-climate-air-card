@@ -114,6 +114,7 @@ const CA_I18N = {
     st_heating: "Heating",
     st_cooling: "Cooling",
     st_idle: "Idle",
+    st_source: "Source pumps",
     st_defrost: "Defrosting",
     tank: "Tank",
     dhw_target: "Hot water",
@@ -296,6 +297,8 @@ const CA_I18N = {
     ed_water_type: "Water loop",
     ed_power_threshold: "Running threshold (W)",
     ed_power_threshold_helper: "Power above which a metered heat pump counts as running",
+    ed_compressor_threshold: "Compressor threshold (W)",
+    ed_compressor_threshold_helper: "Power above which the compressor runs; between the running threshold and this one, only the source pumps run (ground / water source)",
     ed_outdoor_temp: "Outdoor temperature",
     ed_outdoor_temp_helper: "A sensor or weather entity for the outdoor chip",
   },
@@ -337,6 +340,7 @@ const CA_I18N = {
     st_heating: "Chauffe",
     st_cooling: "Refroidit",
     st_idle: "En attente",
+    st_source: "Pompes de source",
     st_defrost: "Dégivrage",
     tank: "Ballon",
     dhw_target: "Eau chaude",
@@ -520,6 +524,8 @@ const CA_I18N = {
     ed_water_type: "Boucle sur eau",
     ed_power_threshold: "Seuil de marche (W)",
     ed_power_threshold_helper: "Puissance au-dessus de laquelle une pompe à chaleur mesurée est considérée en marche",
+    ed_compressor_threshold: "Seuil du compresseur (W)",
+    ed_compressor_threshold_helper: "Puissance au-dessus de laquelle le compresseur tourne ; entre le seuil de marche et celui-ci, seules les pompes de source tournent (sol / eau)",
     ed_outdoor_temp: "Température extérieure",
     ed_outdoor_temp_helper: "Un capteur ou une entité météo pour la puce extérieure",
   },
@@ -561,6 +567,7 @@ const CA_I18N = {
     st_heating: "Heizt",
     st_cooling: "Kühlt",
     st_idle: "Bereit",
+    st_source: "Quellenpumpen",
     st_defrost: "Abtauen",
     tank: "Speicher",
     dhw_target: "Warmwasser",
@@ -743,6 +750,8 @@ const CA_I18N = {
     ed_water_type: "Wasserschleife",
     ed_power_threshold: "Laufschwelle (W)",
     ed_power_threshold_helper: "Leistung, ab der eine gemessene Wärmepumpe als laufend gilt",
+    ed_compressor_threshold: "Verdichterschwelle (W)",
+    ed_compressor_threshold_helper: "Leistung, ab der der Verdichter läuft; zwischen der Laufschwelle und dieser laufen nur die Quellenpumpen (Sole / Wasser)",
     ed_outdoor_temp: "Außentemperatur",
     ed_outdoor_temp_helper: "Ein Sensor oder eine Wetter-Entität für den Außen-Chip",
   },
@@ -784,6 +793,7 @@ const CA_I18N = {
     st_heating: "Calentando",
     st_cooling: "Enfriando",
     st_idle: "En espera",
+    st_source: "Bombas de captación",
     st_defrost: "Desescarche",
     tank: "Depósito",
     dhw_target: "Agua caliente",
@@ -966,6 +976,8 @@ const CA_I18N = {
     ed_water_type: "Bucle de agua",
     ed_power_threshold: "Umbral de marcha (W)",
     ed_power_threshold_helper: "Potencia por encima de la cual una bomba de calor medida cuenta como en marcha",
+    ed_compressor_threshold: "Umbral del compresor (W)",
+    ed_compressor_threshold_helper: "Potencia por encima de la cual funciona el compresor; entre el umbral de marcha y este, solo funcionan las bombas de captación (suelo / agua)",
     ed_outdoor_temp: "Temperatura exterior",
     ed_outdoor_temp_helper: "Un sensor o entidad meteorológica para el chip exterior",
   },
@@ -1007,6 +1019,7 @@ const CA_I18N = {
     st_heating: "Греје",
     st_cooling: "Хлади",
     st_idle: "На чекању",
+    st_source: "Пумпе извора",
     st_defrost: "Одмрзавање",
     tank: "Бојлер",
     dhw_target: "Топла вода",
@@ -1189,6 +1202,8 @@ const CA_I18N = {
     ed_water_type: "Водена петља",
     ed_power_threshold: "Праг рада (W)",
     ed_power_threshold_helper: "Снага изнад које се мерена топлотна пумпа сматра да ради",
+    ed_compressor_threshold: "Праг компресора (W)",
+    ed_compressor_threshold_helper: "Снага изнад које ради компресор; између прага рада и овог раде само пумпе извора (тло / вода)",
     ed_outdoor_temp: "Спољна температура",
     ed_outdoor_temp_helper: "Сензор или временски ентитет за спољни чип",
   },
@@ -1230,6 +1245,7 @@ const CA_I18N = {
     st_heating: "Greje",
     st_cooling: "Hladi",
     st_idle: "Na čekanju",
+    st_source: "Pumpe izvora",
     st_defrost: "Odmrzavanje",
     tank: "Bojler",
     dhw_target: "Topla voda",
@@ -1412,6 +1428,8 @@ const CA_I18N = {
     ed_water_type: "Vodena petlja",
     ed_power_threshold: "Prag rada (W)",
     ed_power_threshold_helper: "Snaga iznad koje se merena toplotna pumpa smatra da radi",
+    ed_compressor_threshold: "Prag kompresora (W)",
+    ed_compressor_threshold_helper: "Snaga iznad koje radi kompresor; između praga rada i ovog rade samo pumpe izvora (tlo / voda)",
     ed_outdoor_temp: "Spoljna temperatura",
     ed_outdoor_temp_helper: "Senzor ili vremenski entitet za spoljni čip",
   },
@@ -1453,6 +1471,7 @@ const CA_I18N = {
     st_heating: "Riscalda",
     st_cooling: "Raffresca",
     st_idle: "In attesa",
+    st_source: "Pompe della sorgente",
     st_defrost: "Sbrinamento",
     tank: "Accumulo",
     dhw_target: "Acqua calda",
@@ -1636,6 +1655,8 @@ const CA_I18N = {
     ed_water_type: "Anello ad acqua",
     ed_power_threshold: "Soglia di funzionamento (W)",
     ed_power_threshold_helper: "Potenza oltre la quale una pompa di calore misurata è considerata in funzione",
+    ed_compressor_threshold: "Soglia del compressore (W)",
+    ed_compressor_threshold_helper: "Potenza oltre la quale funziona il compressore; tra la soglia di funzionamento e questa funzionano solo le pompe della sorgente (suolo / acqua)",
     ed_outdoor_temp: "Temperatura esterna",
     ed_outdoor_temp_helper: "Un sensore o un'entità meteo per il chip esterno",
   },
@@ -1677,6 +1698,7 @@ const CA_I18N = {
     st_heating: "Verwarmt",
     st_cooling: "Koelt",
     st_idle: "Inactief",
+    st_source: "Bronpompen",
     st_defrost: "Ontdooien",
     tank: "Boiler",
     dhw_target: "Warm water",
@@ -1860,6 +1882,8 @@ const CA_I18N = {
     ed_water_type: "Waterlus",
     ed_power_threshold: "Draaidrempel (W)",
     ed_power_threshold_helper: "Vermogen waarboven een gemeten warmtepomp als draaiend geldt",
+    ed_compressor_threshold: "Compressordrempel (W)",
+    ed_compressor_threshold_helper: "Vermogen waarboven de compressor draait; tussen de draaidrempel en deze draaien alleen de bronpompen (bodem / water)",
     ed_outdoor_temp: "Buitentemperatuur",
     ed_outdoor_temp_helper: "Een sensor of weer-entiteit voor de buitenchip",
   },
@@ -1901,6 +1925,7 @@ const CA_I18N = {
     st_heating: "A aquecer",
     st_cooling: "A arrefecer",
     st_idle: "Em espera",
+    st_source: "Bombas da fonte",
     st_defrost: "Descongelação",
     tank: "Depósito",
     dhw_target: "Água quente",
@@ -2084,6 +2109,8 @@ const CA_I18N = {
     ed_water_type: "Circuito de água",
     ed_power_threshold: "Limiar de funcionamento (W)",
     ed_power_threshold_helper: "Potência acima da qual uma bomba de calor medida conta como em funcionamento",
+    ed_compressor_threshold: "Limiar do compressor (W)",
+    ed_compressor_threshold_helper: "Potência acima da qual o compressor funciona; entre o limiar de funcionamento e este, só funcionam as bombas da fonte (solo / água)",
     ed_outdoor_temp: "Temperatura exterior",
     ed_outdoor_temp_helper: "Um sensor ou entidade meteorológica para o chip exterior",
   },
@@ -2125,6 +2152,7 @@ const CA_I18N = {
     st_heating: "Grzeje",
     st_cooling: "Chłodzi",
     st_idle: "Bezczynna",
+    st_source: "Pompy dolnego źródła",
     st_defrost: "Odszranianie",
     tank: "Zasobnik",
     dhw_target: "Ciepła woda",
@@ -2308,6 +2336,8 @@ const CA_I18N = {
     ed_water_type: "Pętla wodna",
     ed_power_threshold: "Próg pracy (W)",
     ed_power_threshold_helper: "Moc, powyżej której mierzona pompa ciepła jest uznawana za pracującą",
+    ed_compressor_threshold: "Próg sprężarki (W)",
+    ed_compressor_threshold_helper: "Moc, powyżej której pracuje sprężarka; między progiem pracy a tym progiem pracują tylko pompy dolnego źródła (grunt / woda)",
     ed_outdoor_temp: "Temperatura zewnętrzna",
     ed_outdoor_temp_helper: "Czujnik lub encja pogodowa dla chipu zewnętrznego",
   },
@@ -2349,6 +2379,7 @@ const CA_I18N = {
     st_heating: "Încălzește",
     st_cooling: "Răcește",
     st_idle: "În așteptare",
+    st_source: "Pompele sursei",
     st_defrost: "Degivrare",
     tank: "Boiler",
     dhw_target: "Apă caldă",
@@ -2532,6 +2563,8 @@ const CA_I18N = {
     ed_water_type: "Buclă pe apă",
     ed_power_threshold: "Prag de funcționare (W)",
     ed_power_threshold_helper: "Puterea peste care o pompă de căldură măsurată este considerată în funcțiune",
+    ed_compressor_threshold: "Prag compresor (W)",
+    ed_compressor_threshold_helper: "Puterea peste care funcționează compresorul; între pragul de funcționare și acesta funcționează doar pompele sursei (sol / apă)",
     ed_outdoor_temp: "Temperatură exterioară",
     ed_outdoor_temp_helper: "Un senzor sau o entitate meteo pentru cipul exterior",
   },
@@ -2573,6 +2606,7 @@ const CA_I18N = {
     st_heating: "Varmer",
     st_cooling: "Køler",
     st_idle: "Inaktiv",
+    st_source: "Kildepumper",
     st_defrost: "Afrimning",
     tank: "Beholder",
     dhw_target: "Varmt vand",
@@ -2756,6 +2790,8 @@ const CA_I18N = {
     ed_water_type: "Vandsløjfe",
     ed_power_threshold: "Driftsgrænse (W)",
     ed_power_threshold_helper: "Effekt, over hvilken en målt varmepumpe tæller som kørende",
+    ed_compressor_threshold: "Kompressortærskel (W)",
+    ed_compressor_threshold_helper: "Effekt, over hvilken kompressoren kører; mellem drifttærsklen og denne kører kun kildepumperne (jord / vand)",
     ed_outdoor_temp: "Udetemperatur",
     ed_outdoor_temp_helper: "En sensor eller vejr-entitet til udendørschippen",
   },
@@ -2797,6 +2833,7 @@ const CA_I18N = {
     st_heating: "Värmer",
     st_cooling: "Kyler",
     st_idle: "Vilar",
+    st_source: "Köldbärarpumpar",
     st_defrost: "Avfrostning",
     tank: "Tank",
     dhw_target: "Varmvatten",
@@ -2980,6 +3017,8 @@ const CA_I18N = {
     ed_water_type: "Vattenslinga",
     ed_power_threshold: "Driftgräns (W)",
     ed_power_threshold_helper: "Effekt över vilken en mätt värmepump räknas som igång",
+    ed_compressor_threshold: "Kompressortröskel (W)",
+    ed_compressor_threshold_helper: "Effekt över vilken kompressorn går; mellan drifttröskeln och denna går bara köldbärarpumparna (mark / vatten)",
     ed_outdoor_temp: "Utomhustemperatur",
     ed_outdoor_temp_helper: "En sensor eller väderentitet för utomhuschippet",
   },
@@ -3021,6 +3060,7 @@ const CA_I18N = {
     st_heating: "Отоплява",
     st_cooling: "Охлажда",
     st_idle: "В готовност",
+    st_source: "Помпи на източника",
     st_defrost: "Размразяване",
     tank: "Бойлер",
     dhw_target: "Топла вода",
@@ -3204,6 +3244,8 @@ const CA_I18N = {
     ed_water_type: "Воден контур",
     ed_power_threshold: "Праг на работа (W)",
     ed_power_threshold_helper: "Мощност, над която измервана термопомпа се счита за работеща",
+    ed_compressor_threshold: "Праг на компресора (W)",
+    ed_compressor_threshold_helper: "Мощност, над която работи компресорът; между прага на работа и този работят само помпите на източника (почва / вода)",
     ed_outdoor_temp: "Външна температура",
     ed_outdoor_temp_helper: "Сензор или метеорологичен обект за външния чип",
   },
@@ -3245,6 +3287,7 @@ const CA_I18N = {
     st_heating: "Нагрев",
     st_cooling: "Охлаждение",
     st_idle: "Ожидание",
+    st_source: "Насосы источника",
     st_defrost: "Оттаивание",
     tank: "Бойлер",
     dhw_target: "Горячая вода",
@@ -3428,6 +3471,8 @@ const CA_I18N = {
     ed_water_type: "Водяной контур",
     ed_power_threshold: "Порог работы (Вт)",
     ed_power_threshold_helper: "Мощность, выше которой измеряемый тепловой насос считается работающим",
+    ed_compressor_threshold: "Порог компрессора (Вт)",
+    ed_compressor_threshold_helper: "Мощность, выше которой работает компрессор; между порогом работы и этим работают только насосы источника (грунт / вода)",
     ed_outdoor_temp: "Наружная температура",
     ed_outdoor_temp_helper: "Датчик или объект погоды для наружного чипа",
   },
@@ -3469,6 +3514,7 @@ const CA_I18N = {
     st_heating: "Нагрів",
     st_cooling: "Охолодження",
     st_idle: "Очікування",
+    st_source: "Насоси джерела",
     st_defrost: "Відтавання",
     tank: "Бойлер",
     dhw_target: "Гаряча вода",
@@ -3652,6 +3698,8 @@ const CA_I18N = {
     ed_water_type: "Водяний контур",
     ed_power_threshold: "Поріг роботи (Вт)",
     ed_power_threshold_helper: "Потужність, вище якої вимірюваний тепловий насос вважається працюючим",
+    ed_compressor_threshold: "Поріг компресора (Вт)",
+    ed_compressor_threshold_helper: "Потужність, вище якої працює компресор; між порогом роботи і цим працюють лише насоси джерела (ґрунт / вода)",
     ed_outdoor_temp: "Зовнішня температура",
     ed_outdoor_temp_helper: "Датчик або об'єкт погоди для зовнішнього чипа",
   },
@@ -3693,6 +3741,7 @@ const CA_I18N = {
     st_heating: "Fűt",
     st_cooling: "Hűt",
     st_idle: "Készenlét",
+    st_source: "Forrásoldali szivattyúk",
     st_defrost: "Leolvasztás",
     tank: "Tároló",
     dhw_target: "Melegvíz",
@@ -3876,6 +3925,8 @@ const CA_I18N = {
     ed_water_type: "Vízhurok",
     ed_power_threshold: "Működési küszöb (W)",
     ed_power_threshold_helper: "Teljesítmény, amely felett a mért hőszivattyú működőnek számít",
+    ed_compressor_threshold: "Kompresszor küszöb (W)",
+    ed_compressor_threshold_helper: "Teljesítmény, amely felett a kompresszor működik; a működési küszöb és e között csak a forrásoldali szivattyúk járnak (talaj / víz)",
     ed_outdoor_temp: "Külső hőmérséklet",
     ed_outdoor_temp_helper: "Érzékelő vagy időjárás-entitás a külső chiphez",
   },
@@ -3917,6 +3968,7 @@ const CA_I18N = {
     st_heating: "Kúri",
     st_cooling: "Chladí",
     st_idle: "Nečinné",
+    st_source: "Čerpadlá zdroja",
     st_defrost: "Odmrazovanie",
     tank: "Zásobník",
     dhw_target: "Teplá voda",
@@ -4100,6 +4152,8 @@ const CA_I18N = {
     ed_water_type: "Vodná slučka",
     ed_power_threshold: "Prah chodu (W)",
     ed_power_threshold_helper: "Výkon, nad ktorým sa merané tepelné čerpadlo považuje za bežiace",
+    ed_compressor_threshold: "Prah kompresora (W)",
+    ed_compressor_threshold_helper: "Výkon, nad ktorým beží kompresor; medzi prahom chodu a týmto bežia len čerpadlá zdroja (zem / voda)",
     ed_outdoor_temp: "Vonkajšia teplota",
     ed_outdoor_temp_helper: "Senzor alebo entita počasia pre vonkajší čip",
   },
@@ -4141,6 +4195,7 @@ const CA_I18N = {
     st_heating: "Topí",
     st_cooling: "Chladí",
     st_idle: "Nečinné",
+    st_source: "Čerpadla zdroje",
     st_defrost: "Odmrazování",
     tank: "Zásobník",
     dhw_target: "Teplá voda",
@@ -4324,6 +4379,8 @@ const CA_I18N = {
     ed_water_type: "Vodní smyčka",
     ed_power_threshold: "Práh chodu (W)",
     ed_power_threshold_helper: "Výkon, nad kterým se měřené tepelné čerpadlo považuje za běžící",
+    ed_compressor_threshold: "Práh kompresoru (W)",
+    ed_compressor_threshold_helper: "Výkon, nad kterým běží kompresor; mezi prahem chodu a tímto běží jen čerpadla zdroje (země / voda)",
     ed_outdoor_temp: "Venkovní teplota",
     ed_outdoor_temp_helper: "Senzor nebo entita počasí pro venkovní čip",
   },
@@ -4365,6 +4422,7 @@ const CA_I18N = {
     st_heating: "Greje",
     st_cooling: "Hladi",
     st_idle: "V pripravljenosti",
+    st_source: "Črpalke vira",
     st_defrost: "Odtaljevanje",
     tank: "Hranilnik",
     dhw_target: "Topla voda",
@@ -4548,6 +4606,8 @@ const CA_I18N = {
     ed_water_type: "Vodna zanka",
     ed_power_threshold: "Prag delovanja (W)",
     ed_power_threshold_helper: "Moč, nad katero se merjena toplotna črpalka šteje za delujočo",
+    ed_compressor_threshold: "Prag kompresorja (W)",
+    ed_compressor_threshold_helper: "Moč, nad katero deluje kompresor; med pragom delovanja in tem delujejo le črpalke vira (zemlja / voda)",
     ed_outdoor_temp: "Zunanja temperatura",
     ed_outdoor_temp_helper: "Senzor ali vremenska entiteta za zunanji čip",
   },
@@ -4589,6 +4649,7 @@ const CA_I18N = {
     st_heating: "Silda",
     st_cooling: "Dzesē",
     st_idle: "Gaidstāve",
+    st_source: "Avota sūkņi",
     st_defrost: "Atkausēšana",
     tank: "Tvertne",
     dhw_target: "Karstais ūdens",
@@ -4772,6 +4833,8 @@ const CA_I18N = {
     ed_water_type: "Ūdens cilpa",
     ed_power_threshold: "Darbības slieksnis (W)",
     ed_power_threshold_helper: "Jauda, virs kuras mērīts siltumsūknis tiek uzskatīts par darbojošos",
+    ed_compressor_threshold: "Kompresora slieksnis (W)",
+    ed_compressor_threshold_helper: "Jauda, virs kuras darbojas kompresors; starp darbības slieksni un šo darbojas tikai avota sūkņi (grunts / ūdens)",
     ed_outdoor_temp: "Āra temperatūra",
     ed_outdoor_temp_helper: "Sensors vai laikapstākļu entītija āra čipam",
   },
@@ -4813,6 +4876,7 @@ const CA_I18N = {
     st_heating: "Θερμαίνει",
     st_cooling: "Ψύχει",
     st_idle: "Σε αναμονή",
+    st_source: "Αντλίες πηγής",
     st_defrost: "Απόψυξη",
     tank: "Δοχείο",
     dhw_target: "Ζεστό νερό",
@@ -4996,6 +5060,8 @@ const CA_I18N = {
     ed_water_type: "Βρόχος νερού",
     ed_power_threshold: "Όριο λειτουργίας (W)",
     ed_power_threshold_helper: "Ισχύς πάνω από την οποία μια μετρούμενη αντλία θερμότητας θεωρείται σε λειτουργία",
+    ed_compressor_threshold: "Κατώφλι συμπιεστή (W)",
+    ed_compressor_threshold_helper: "Ισχύς πάνω από την οποία λειτουργεί ο συμπιεστής· μεταξύ του κατωφλίου λειτουργίας και αυτού λειτουργούν μόνο οι αντλίες πηγής (έδαφος / νερό)",
     ed_outdoor_temp: "Εξωτερική θερμοκρασία",
     ed_outdoor_temp_helper: "Αισθητήρας ή οντότητα καιρού για το εξωτερικό τσιπ",
   },
@@ -7026,10 +7092,16 @@ function caHeatPumpState(id, st, roleSt, opts = {}) {
   const valve = String(roleSt("valve")?.state ?? "");
   const dhw = roleSt("dhw");
   let on;
+  let compressor = false;
   if (metered) {
     const powerW = caPowerW(st);
     const threshold = Number.isFinite(Number(opts.powerThreshold)) ? Number(opts.powerThreshold) : CA_HP_POWER_ON;
     on = powerW != null && powerW > threshold;
+    // A ground- or water-source pump runs its source pumps (well pump, brine circulation) before and after the
+    // compressor: with `compressor_threshold`, the power between the two thresholds is that pump stage, and only
+    // above it does the compressor run. Without it, running means the compressor runs.
+    const comp = opts.compressorThreshold;
+    compressor = on && (comp != null && comp !== "" && Number.isFinite(Number(comp)) ? powerW > Number(comp) : true);
   } else on = caHpIsOn(id, mode);
   const defrost = on && roleSt("defrost")?.state === "on";
   const backup = on && roleSt("backup")?.state === "on";
@@ -7038,8 +7110,8 @@ function caHeatPumpState(id, st, roleSt, opts = {}) {
   const toTank = on && CA_HP_DHW.test(valve);
   const cool = metered ? false : climate ? (action ? action === "cooling" : mode === "cool") : CA_HP_COOL.test(String(mode));
   const idle = action ? ["idle", "off"].includes(action) : !toTank && CA_HP_IDLE.test(valve);
-  // Metered: the pump runs whenever it draws power, so running means active (the compressor is on).
-  const active = on && (metered || (freq != null ? freq > 0 : toTank || !idle));
+  // Metered: active while the compressor runs (above `compressor_threshold`, else whenever it runs).
+  const active = on && (metered ? compressor : (freq != null ? freq > 0 : toTank || !idle));
   const phase = !on ? "off" : toTank ? "dhw" : cool ? "cool" : "heat";
   const tankSt = dhw?.attributes.current_temperature != null ? Number(dhw.attributes.current_temperature) : caNum(roleSt("tank_temp"));
   return {
@@ -7048,10 +7120,12 @@ function caHeatPumpState(id, st, roleSt, opts = {}) {
     active,
     defrost,
     backup,
+    // A metered pump's source side (well / brine) flows whenever it runs, the compressor stage or not.
+    sourceOn: metered && on,
     color: phase === "off" ? CA_IDLE : phase === "dhw" ? CA_HP_DHW_COLOR : CA_MODE_COLORS[phase],
     tank: Number.isFinite(tankSt) ? tankSt : null,
     tankTarget: dhw?.attributes.temperature != null ? Number(dhw.attributes.temperature) : null,
-    statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? "st_idle" : cool ? "st_cooling" : "st_heating",
+    statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? (metered ? "st_source" : "st_idle") : cool ? "st_cooling" : "st_heating",
   };
 }
 
@@ -7364,6 +7438,10 @@ function caFilterLevel(pct, warning) {
 }
 
 const caLine = (icon, text) => `<div class="line"><ha-icon icon="${icon}"></ha-icon><span>${caEsc(text)}</span></div>`;
+// A line of several figures (« Flow 24.2 °C · Return 22.2 °C · ΔT 2 »): it wraps between the figures instead of
+// cutting the end off in a narrow card, each figure staying whole.
+const caLineParts = (icon, parts) =>
+  `<div class="line parts"><ha-icon icon="${icon}"></ha-icon><span>${parts.map((p) => `<span class="pt">${caEsc(p)}</span>`).join(" · ")}</span></div>`;
 
 // ── Illustrations ────────────────────────────────────────────────────────────
 // Each card file registers the illustration of its kind of device, shared with the overview tiles:
@@ -7893,6 +7971,10 @@ const CA_STYLES = `${CA_ART_STYLES}
   .line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
   .line ha-icon { --mdc-icon-size: 14px; flex-shrink: 0; }
   .line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .line.parts { align-items: flex-start; }
+  .line.parts ha-icon { margin-top: 1px; }
+  .line.parts > span { white-space: normal; overflow: visible; }
+  .line.parts .pt { white-space: nowrap; }
   .line b { color: var(--primary-text-color); font-weight: 500; }
   .mcontrols { display: flex; gap: 6px; flex-shrink: 0; }
   ha-card.mini .power { width: 40px; height: 40px; }
@@ -7972,7 +8054,7 @@ class CaCardEditor extends HTMLElement {
   }
 
   _helpers() {
-    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "power_threshold", "outdoor_temp"];
+    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "power_threshold", "compressor_threshold", "outdoor_temp"];
   }
 
   _schema() {
@@ -8044,6 +8126,7 @@ class CaCardEditor extends HTMLElement {
       ...(source === "ground" ? [sel("ground_type", CA_HP_GROUND_TYPES)] : []),
       ...(source === "water" ? [sel("water_type", CA_HP_WATER_TYPES)] : []),
       { name: "power_threshold", selector: { number: { min: 0, step: 10, mode: "box", unit_of_measurement: "W" } } },
+      { name: "compressor_threshold", selector: { number: { min: 0, step: 10, mode: "box", unit_of_measurement: "W" } } },
       { name: "outdoor_temp", selector: { entity: { domain: ["sensor", "weather"] } } },
     ];
   }

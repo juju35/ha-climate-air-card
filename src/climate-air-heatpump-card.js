@@ -106,7 +106,7 @@ const caHpArt = (s) => {
 CA_ART.heatpump = {
   render: (_variant, s) => ({
     svg: caHpArt(s),
-    cls: [`ph-${s.phase || "off"}`, s.active ? "active" : "", s.defrost ? "defrost" : ""],
+    cls: [`ph-${s.phase || "off"}`, s.active ? "active" : "", s.sourceOn ? "srcon" : "", s.defrost ? "defrost" : ""],
   }),
   styles: `
     .picture.k-heatpump { aspect-ratio: 120 / 94; }
@@ -155,7 +155,7 @@ CA_ART.heatpump = {
     .k-heatpump .casing { fill: #eef1f4; stroke: #c3cad2; stroke-width: 1; }
     .k-heatpump .loopbg { fill: none; stroke: #b6bfc9; stroke-width: 3.2; stroke-linecap: round; }
     .k-heatpump .brine { fill: none; stroke: var(--ca-color); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1.5 5; opacity: 0; transition: opacity .6s; }
-    .k-heatpump.running.active .brine { opacity: .95; animation: ca-hp-flow .9s linear infinite; }
+    .k-heatpump.running.active .brine, .k-heatpump.running.srcon .brine { opacity: .95; animation: ca-hp-flow .9s linear infinite; }
     @keyframes ca-hp-flow { to { stroke-dashoffset: -13; } }
   `,
 };
@@ -207,6 +207,11 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     return this._config.power_threshold;
   }
 
+  // The compressor threshold (watts) of a metered ground- or water-source pump: below it, only its source pumps run.
+  _compressorThreshold() {
+    return this._config.compressor_threshold;
+  }
+
   // The source side (air / ground / water) and its ground / water variant: from the config, else guessed from the
   // device name.
   _source() {
@@ -248,7 +253,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     const st = this._st(r.id);
     const climate = r.id.startsWith("climate.");
     const metered = this._metered();
-    const hp = caHeatPumpState(r.id, st, (role) => this._st(ent[role]), { powerThreshold: this._threshold() });
+    const hp = caHeatPumpState(r.id, st, (role) => this._st(ent[role]), { powerThreshold: this._threshold(), compressorThreshold: this._compressorThreshold() });
     let base;
     if (climate) base = this._climate(r);
     else if (metered) {
@@ -264,8 +269,9 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     if (c.show_alerts && fault) chips.push(this._chip("mdi:alert-circle-outline", fault, "alert", this._label(ent.faults), ent.faults));
     if (hp.defrost) chips.push(this._chip("mdi:snowflake-melt", this._t("st_defrost"), "warn", "", ent.defrost));
     if (hp.backup) chips.push(this._chip("mdi:radiator", this._t("backup"), "warn", "", ent.backup));
-    // COP first — the figure people look at first on a heat pump — then today's and the seasonal figures.
-    const cop = hp.on ? this._cop(ent, metered) : null;
+    // COP first — the figure people look at first on a heat pump — then today's and the seasonal figures. A metered
+    // pump has one only while its compressor runs (not while only its source pumps do).
+    const cop = (metered ? hp.active : hp.on) ? this._cop(ent, metered) : null;
     if (cop != null) chips.push(this._chip("mdi:gauge", `${this._t("cop")} ${caFmtNum(this._intlLang(), cop, 1)}`, "", this._t("cop"), ent.cop));
     const copToday = this._fmtSensor(ent.cop_today);
     if (copToday) chips.push(this._chip("mdi:sigma", `${this._t("cop_today")} ${copToday}`, "", this._label(ent.cop_today), ent.cop_today));
@@ -291,6 +297,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       mode: base.mode,
       running: hp.on,
       active: hp.active,
+      sourceOn: hp.sourceOn,
       phase: hp.phase,
       defrost: hp.defrost,
       color: hp.color,
@@ -368,19 +375,28 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       if (flow != null) parts.push(`${this._t("flow_temp")} ${this._temp(flow, 1)}`);
       if (ret != null) parts.push(`${this._t("return_temp")} ${this._temp(ret, 1)}`);
       if (flow != null && ret != null) parts.push(`${this._t("delta_t")} ${caFmtNum(this._intlLang(), Math.abs(flow - ret), 1)}`);
-      lines.push(caLine("mdi:swap-vertical", parts.join(" · ")));
+      lines.push(caLineParts("mdi:swap-vertical", parts));
     }
     const rate = this._fmtSensor(ent.flow_rate);
     if (rate) lines.push(caLine("mdi:pump", `${this._t("flow_rate")} ${rate}`));
-    const elec = this._fmtSensor(ent.energy);
-    const heatE = this._fmtSensor(ent.heat_energy);
+    const elec = this._fmtEnergy(ent.energy);
+    const heatE = this._fmtEnergy(ent.heat_energy);
     if (elec || heatE) {
       const parts = [];
       if (elec) parts.push(`${this._t("elec_energy")} ${elec}`);
       if (heatE) parts.push(`${this._t("heat_energy")} ${heatE}`);
-      lines.push(caLine("mdi:lightning-bolt", parts.join(" · ")));
+      lines.push(caLineParts("mdi:lightning-bolt", parts));
     }
     return lines.join("");
+  }
+
+  // An energy reading, scaled up from Wh once it reaches 1 000 Wh (a daily utility meter in Wh reads « 9.1 kWh »,
+  // not « 9,134.5 Wh »); other units as the sensor gives them.
+  _fmtEnergy(id) {
+    const st = this._st(id);
+    const v = Number(st?.state);
+    if (caUnavailable(st) || !Number.isFinite(v) || st.attributes.unit_of_measurement !== "Wh" || Math.abs(v) < 1000) return this._fmtSensor(id);
+    return Math.abs(v) >= 1e6 ? `${caFmtNum(this._intlLang(), v / 1e6, 1)} MWh` : `${caFmtNum(this._intlLang(), v / 1000, 1)} kWh`;
   }
 
   _showTarget(m) {
