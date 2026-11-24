@@ -140,7 +140,7 @@ export class ClimateAirOverviewCard extends CaElement {
     if (kind === "heatpump") {
       // A heat pump: what it does (heating, hot water…) with its target, or its room temperature once off; the tank in
       // its illustration. Driven by a select (TOUG), its mode stands for the target.
-      const hp = caHeatPumpState(id, st, roleSt, { powerThreshold: o.power_threshold });
+      const hp = caHeatPumpState(id, st, roleSt, { powerThreshold: o.power_threshold, compressorThreshold: o.compressor_threshold });
       const unit = h.config?.unit_system?.temperature || "°C";
       const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       const climate = id.startsWith("climate.");

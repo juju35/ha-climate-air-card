@@ -1520,7 +1520,7 @@ const METERED = {
 test("heat pump metered: running from the power threshold, read-only, with its monitoring roles and water source", () => {
   const out = html(mount(lib, "climate-air-heatpump-card", METERED, meteredHass(5100)));
   // Running (5.1 kW > the default 100 W threshold), active, heating; a two-well doublet, no outdoor fan.
-  assert.match(out, /class="bdev k-heatpump st-heat running ph-heat active"/);
+  assert.match(out, /class="bdev k-heatpump st-heat running ph-heat active srcon"/);
   assert.match(out, /class="brine"/);
   assert.doesNotMatch(out, /class="hfan"/);
   assert.match(out, /class="casing"/);
@@ -1535,9 +1535,11 @@ test("heat pump metered: running from the power threshold, read-only, with its m
   assert.match(out, /SCOP 3\.5/);
   // The monitoring lines: heat output, flow / return with ΔT, flow rate, electrical and heat energy.
   assert.match(out, /Heat output 20 kW/);
-  assert.match(out, /Flow 35 °C · Return 30 °C · ΔT 5/);
+  // The figures of a line wrap between them, each one whole.
+  assert.match(out, /<div class="line parts">[\s\S]*?<span class="pt">Flow 35 °C<\/span> · <span class="pt">Return 30 °C<\/span> · <span class="pt">ΔT 5<\/span>/);
   assert.match(out, /Flow rate 900 l\/h/);
-  assert.match(out, /Electrical energy 4,930 Wh/);
+  // An energy in Wh is scaled to kWh from 1,000 Wh; other units stay as given.
+  assert.match(out, /Electrical energy 4\.9 kWh/);
   assert.match(out, /Heat energy 26 MWh/);
   // The outdoor chip reads a weather entity's temperature; the running power draw shows.
   assert.match(out, /Outdoor 7 °C/);
@@ -1550,7 +1552,26 @@ test("heat pump metered: idle below the threshold shows no instantaneous COP and
   assert.doesNotMatch(out, /mdi:gauge/); // no instantaneous COP chip while idle
   // A custom threshold is honoured: 39 W counts as running once the threshold drops below it.
   const on = html(mount(lib, "climate-air-heatpump-card", { ...METERED, power_threshold: 20 }, meteredHass(39)));
-  assert.match(on, /class="bdev k-heatpump st-heat running ph-heat active"/);
+  assert.match(on, /class="bdev k-heatpump st-heat running ph-heat active srcon"/);
+});
+
+test("heat pump metered: compressor_threshold splits the source pump stage from the compressor", () => {
+  const cfg = { ...METERED, power_threshold: 100, compressor_threshold: 3000 };
+  // ~1.45 kW: only the well pump and the exchanger circulation — running, the water flows, no compressor, no COP.
+  const pumps = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(1450)));
+  assert.match(pumps, /class="bdev k-heatpump st-heat running ph-heat srcon"/);
+  assert.match(pumps, /Source pumps/);
+  assert.doesNotMatch(pumps, /mdi:gauge/);
+  // ~5.1 kW: the compressor runs — active, heating, with its COP.
+  const comp = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(5100)));
+  assert.match(comp, /class="bdev k-heatpump st-heat running ph-heat active srcon"/);
+  assert.match(comp, /mdi:gauge[\s\S]*?COP 4\.1/);
+  // 39 W: off.
+  const off = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(39)));
+  assert.match(off, /class="bdev k-heatpump st-off ph-off"/);
+  // An energy under 1,000 Wh stays in Wh.
+  const small = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(39, { "sensor.hp_energy": { entity_id: "sensor.hp_energy", state: "640", attributes: { device_class: "energy", unit_of_measurement: "Wh" } } })));
+  assert.match(small, /Electrical energy 640 Wh/);
 });
 
 test("heat pump metered: COP is computed from heat output ÷ electrical power when no COP sensor is given", () => {

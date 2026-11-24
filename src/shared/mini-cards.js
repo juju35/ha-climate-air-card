@@ -141,3 +141,7 @@ export function caFilterLevel(pct, warning) {
 }
 
 export const caLine = (icon, text) => `<div class="line"><ha-icon icon="${icon}"></ha-icon><span>${caEsc(text)}</span></div>`;
+// A line of several figures (« Flow 24.2 °C · Return 22.2 °C · ΔT 2 »): it wraps between the figures instead of
+// cutting the end off in a narrow card, each figure staying whole.
+export const caLineParts = (icon, parts) =>
+  `<div class="line parts"><ha-icon icon="${icon}"></ha-icon><span>${parts.map((p) => `<span class="pt">${caEsc(p)}</span>`).join(" · ")}</span></div>`;

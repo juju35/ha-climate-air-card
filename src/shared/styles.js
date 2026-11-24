@@ -127,6 +127,10 @@ export const CA_STYLES = `${CA_ART_STYLES}
   .line { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
   .line ha-icon { --mdc-icon-size: 14px; flex-shrink: 0; }
   .line span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .line.parts { align-items: flex-start; }
+  .line.parts ha-icon { margin-top: 1px; }
+  .line.parts > span { white-space: normal; overflow: visible; }
+  .line.parts .pt { white-space: nowrap; }
   .line b { color: var(--primary-text-color); font-weight: 500; }
   .mcontrols { display: flex; gap: 6px; flex-shrink: 0; }
   ha-card.mini .power { width: 40px; height: 40px; }

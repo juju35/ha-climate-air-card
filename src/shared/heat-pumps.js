@@ -59,10 +59,16 @@ export function caHeatPumpState(id, st, roleSt, opts = {}) {
   const valve = String(roleSt("valve")?.state ?? "");
   const dhw = roleSt("dhw");
   let on;
+  let compressor = false;
   if (metered) {
     const powerW = caPowerW(st);
     const threshold = Number.isFinite(Number(opts.powerThreshold)) ? Number(opts.powerThreshold) : CA_HP_POWER_ON;
     on = powerW != null && powerW > threshold;
+    // A ground- or water-source pump runs its source pumps (well pump, brine circulation) before and after the
+    // compressor: with `compressor_threshold`, the power between the two thresholds is that pump stage, and only
+    // above it does the compressor run. Without it, running means the compressor runs.
+    const comp = opts.compressorThreshold;
+    compressor = on && (comp != null && comp !== "" && Number.isFinite(Number(comp)) ? powerW > Number(comp) : true);
   } else on = caHpIsOn(id, mode);
   const defrost = on && roleSt("defrost")?.state === "on";
   const backup = on && roleSt("backup")?.state === "on";
@@ -71,8 +77,8 @@ export function caHeatPumpState(id, st, roleSt, opts = {}) {
   const toTank = on && CA_HP_DHW.test(valve);
   const cool = metered ? false : climate ? (action ? action === "cooling" : mode === "cool") : CA_HP_COOL.test(String(mode));
   const idle = action ? ["idle", "off"].includes(action) : !toTank && CA_HP_IDLE.test(valve);
-  // Metered: the pump runs whenever it draws power, so running means active (the compressor is on).
-  const active = on && (metered || (freq != null ? freq > 0 : toTank || !idle));
+  // Metered: active while the compressor runs (above `compressor_threshold`, else whenever it runs).
+  const active = on && (metered ? compressor : (freq != null ? freq > 0 : toTank || !idle));
   const phase = !on ? "off" : toTank ? "dhw" : cool ? "cool" : "heat";
   const tankSt = dhw?.attributes.current_temperature != null ? Number(dhw.attributes.current_temperature) : caNum(roleSt("tank_temp"));
   return {
@@ -81,10 +87,12 @@ export function caHeatPumpState(id, st, roleSt, opts = {}) {
     active,
     defrost,
     backup,
+    // A metered pump's source side (well / brine) flows whenever it runs, the compressor stage or not.
+    sourceOn: metered && on,
     color: phase === "off" ? CA_IDLE : phase === "dhw" ? CA_HP_DHW_COLOR : CA_MODE_COLORS[phase],
     tank: Number.isFinite(tankSt) ? tankSt : null,
     tankTarget: dhw?.attributes.temperature != null ? Number(dhw.attributes.temperature) : null,
-    statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? "st_idle" : cool ? "st_cooling" : "st_heating",
+    statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? (metered ? "st_source" : "st_idle") : cool ? "st_cooling" : "st_heating",
   };
 }
 
