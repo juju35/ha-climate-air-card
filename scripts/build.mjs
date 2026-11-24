@@ -5,11 +5,12 @@
 import { mkdirSync, readdirSync, readFileSync, realpathSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { splitDist } from "./i18n-split.mjs";
+import { sourceOf } from "./bundle.mjs";
 
 const CARDS = ["climate-air-purifier-card", "climate-air-fan-card", "climate-air-aircon-card", "climate-air-heatpump-card", "climate-air-humidifier-card", "climate-air-ventilation-card", "climate-air-overview-card"];
 const root = fileURLToPath(new URL("..", import.meta.url));
 const pkg = JSON.parse(readFileSync(`${root}package.json`, "utf8"));
-const src = (name) => readFileSync(`${root}src/${name}.js`, "utf8").replaceAll("__VERSION__", pkg.version);
+const src = (name) => sourceOf(name).replaceAll("__VERSION__", pkg.version);
 
 // The brand logos of the header badge, as data URIs (no network to a third party at run time): images/badge/<slug>.png,
 // small copies of the README logos, the slug being the integration (or brand) they stand for. Each logo is its own
