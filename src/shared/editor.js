@@ -41,7 +41,7 @@ export class CaCardEditor extends HTMLElement {
   }
 
   _helpers() {
-    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "power_threshold", "compressor_threshold", "outdoor_temp"];
+    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "circulation_threshold", "power_threshold", "compressor_threshold", "outdoor_temp"];
   }
 
   _schema() {
@@ -114,6 +114,7 @@ export class CaCardEditor extends HTMLElement {
       ...(source === "water" ? [sel("water_type", CA_HP_WATER_TYPES)] : []),
       { name: "power_threshold", selector: { number: { min: 0, step: 10, mode: "box", unit_of_measurement: "W" } } },
       { name: "compressor_threshold", selector: { number: { min: 0, step: 10, mode: "box", unit_of_measurement: "W" } } },
+      { name: "circulation_threshold", selector: { number: { min: 0, step: 5, mode: "box", unit_of_measurement: "W" } } },
       { name: "outdoor_temp", selector: { entity: { domain: ["sensor", "weather"] } } },
     ];
   }

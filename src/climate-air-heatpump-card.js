@@ -106,7 +106,7 @@ const caHpArt = (s) => {
 CA_ART.heatpump = {
   render: (_variant, s) => ({
     svg: caHpArt(s),
-    cls: [`ph-${s.phase || "off"}`, s.active ? "active" : "", s.sourceOn ? "srcon" : "", s.defrost ? "defrost" : ""],
+    cls: [`ph-${s.phase || "off"}`, s.active ? "active" : "", s.sourceOn ? "srcon" : "", s.circulating ? "circ" : "", s.defrost ? "defrost" : ""],
   }),
   styles: `
     .picture.k-heatpump { aspect-ratio: 120 / 94; }
@@ -129,6 +129,10 @@ CA_ART.heatpump = {
     .k-heatpump .flow { fill: none; stroke: var(--ca-color); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 1.5 5; opacity: 0; transition: opacity .6s; }
     .k-heatpump.running.active .flow { opacity: .95; animation: ca-hp-flow .9s linear infinite; }
     .k-heatpump.running.active .flow.ret { opacity: .55; animation-direction: reverse; }
+    /* A metered pump's heating circulation alone (above circulation_threshold): the water flows in the heating pipes,
+       in the idle colour while the heat pump itself is off. */
+    .k-heatpump.circ .flow { opacity: .95; animation: ca-hp-flow .9s linear infinite; }
+    .k-heatpump.circ .flow.ret { opacity: .55; animation-direction: reverse; }
     .k-heatpump .water { fill: #85b7eb; opacity: .45; }
     .k-heatpump .hot { fill: var(--ca-color); opacity: 0; transition: opacity .6s; }
     .k-heatpump.ph-dhw .hot, .k-heatpump.ph-heat .hot { opacity: .55; }
@@ -212,6 +216,12 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     return this._config.compressor_threshold;
   }
 
+  // The circulation threshold (watts) of a metered pump: above it and below the running threshold, only the heating
+  // circulation pump runs (floor heating, radiators), the heat pump itself is off.
+  _circulationThreshold() {
+    return this._config.circulation_threshold;
+  }
+
   // The source side (air / ground / water) and its ground / water variant: from the config, else guessed from the
   // device name.
   _source() {
@@ -253,7 +263,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
     const st = this._st(r.id);
     const climate = r.id.startsWith("climate.");
     const metered = this._metered();
-    const hp = caHeatPumpState(r.id, st, (role) => this._st(ent[role]), { powerThreshold: this._threshold(), compressorThreshold: this._compressorThreshold() });
+    const hp = caHeatPumpState(r.id, st, (role) => this._st(ent[role]), { powerThreshold: this._threshold(), compressorThreshold: this._compressorThreshold(), circulationThreshold: this._circulationThreshold() });
     let base;
     if (climate) base = this._climate(r);
     else if (metered) {
@@ -298,6 +308,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       running: hp.on,
       active: hp.active,
       sourceOn: hp.sourceOn,
+      circulating: hp.circulating,
       phase: hp.phase,
       defrost: hp.defrost,
       color: hp.color,
