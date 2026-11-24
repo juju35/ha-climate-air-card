@@ -1,11 +1,16 @@
 # Changelog
 
-## 2.17.4 - 2026-11-23
+## 2.17.5 - 2026-11-24
 
 ### Fixes
 - **Heat pump, metered: the source pump stage** (follow-up of #90): a ground- or water-source pump runs its source pumps (well pump, brine circulation) before and after the compressor, at a power between its idle and its running draw (here ~40 W, ~1.45 kW, ~5 kW). The new `compressor_threshold` (W, also in the visual editor) tells them apart: between `power_threshold` and it, the card shows *Source pumps* with the well / brine flowing and no COP; above it, the compressor runs (heating, COP). Without it, nothing changes.
 - **Heat pump, metered: energies in kWh**: an electrical or heat energy in Wh (a daily utility meter) reads *9.1 kWh* instead of *9,134.5 Wh* from 1,000 Wh on.
 - **Heat pump: the monitoring lines wrap** between their figures (*Flow 24.2 °C · Return 22.2 °C · ΔT 2*, the energies) instead of being cut in a one-column card.
+
+## 2.17.4 - 2026-11-24
+
+### Maintenance
+- The card source is split into ES modules: `src/climate-air-overview-card/` (entry `src/climate-air-overview-card/index.js`), `src/shared/` (entry `src/shared/index.js`), cut at its sections, with the translations in one file per language (`i18n/<lang>.js`). `scripts/bundle.mjs` concatenates them back, in their original order, into the same single file and per-language files as before; the tests evaluate that bundle.
 
 ## 2.17.3 - 2026-11-22
 
