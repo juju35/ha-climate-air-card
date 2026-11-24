@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.17.6 - 2026-11-24
+## 2.18.0 - 2026-11-24
 
 ### Features
 - **Heat pump, metered: the heating circulation** (follow-up of #90): the heating circulation pump (floor heating, radiators) often runs on its own while the heat pump is off, at a few tens of watts (here ~27–60 W, against ~1.45 kW for the source pumps and ~5 kW with the compressor). The new `circulation_threshold` (W, also in the visual editor) shows it: between it and `power_threshold`, the card reads *Circulation* with the water flowing in the heating pipes, the heat pump itself off (no COP, not counted as on in the overview); the circulation keeps flowing in every stage above it. Without it, nothing changes.
