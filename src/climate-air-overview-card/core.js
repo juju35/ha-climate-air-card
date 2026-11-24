@@ -140,7 +140,7 @@ export class ClimateAirOverviewCard extends CaElement {
     if (kind === "heatpump") {
       // A heat pump: what it does (heating, hot water…) with its target, or its room temperature once off; the tank in
       // its illustration. Driven by a select (TOUG), its mode stands for the target.
-      const hp = caHeatPumpState(id, st, roleSt, { powerThreshold: o.power_threshold, compressorThreshold: o.compressor_threshold });
+      const hp = caHeatPumpState(id, st, roleSt, { powerThreshold: o.power_threshold, compressorThreshold: o.compressor_threshold, circulationThreshold: o.circulation_threshold });
       const unit = h.config?.unit_system?.temperature || "°C";
       const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       const climate = id.startsWith("climate.");
@@ -153,7 +153,7 @@ export class ClimateAirOverviewCard extends CaElement {
       item.color = hp.color;
       item.anim = hp.on ? CA_HP_ICON_ANIM[hp.phase] || "breathe" : "";
       const src = caHpSource(o, h, id);
-      item.art = { running: hp.on, state: hp.on ? hp.phase : "off", phase: hp.phase, active: hp.active, defrost: hp.defrost, tank: hp.tank, source: src.source, groundType: src.groundType, waterType: src.waterType, lang: this._intlLang() };
+      item.art = { running: hp.on, state: hp.on ? hp.phase : "off", phase: hp.phase, active: hp.active, sourceOn: hp.sourceOn, circulating: hp.circulating, defrost: hp.defrost, tank: hp.tank, source: src.source, groundType: src.groundType, waterType: src.waterType, lang: this._intlLang() };
       return item;
     }
     if (kind === "humidifier") {

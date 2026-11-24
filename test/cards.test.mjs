@@ -1555,6 +1555,29 @@ test("heat pump metered: idle below the threshold shows no instantaneous COP and
   assert.match(on, /class="bdev k-heatpump st-heat running ph-heat active srcon"/);
 });
 
+test("heat pump metered: circulation_threshold shows the heating circulation while the heat pump is off", () => {
+  const cfg = { ...METERED, circulation_threshold: 20, power_threshold: 100, compressor_threshold: 3000 };
+  // ~39 W: only the floor heating circulation — off, but the heating pipes flow; no COP.
+  const circ = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(39)));
+  assert.match(circ, /class="bdev k-heatpump st-off ph-off circ"/);
+  assert.match(circ, /Circulation/);
+  assert.doesNotMatch(circ, /mdi:gauge/);
+  // ~1.45 kW and ~5.1 kW: the circulation keeps flowing in the source pump and compressor stages.
+  const pumps = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(1450)));
+  assert.match(pumps, /class="bdev k-heatpump st-heat running ph-heat srcon circ"/);
+  assert.match(pumps, /Source pumps/);
+  const comp = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(5100)));
+  assert.match(comp, /class="bdev k-heatpump st-heat running ph-heat active srcon circ"/);
+  // 10 W: nothing runs.
+  const off = html(mount(lib, "climate-air-heatpump-card", cfg, meteredHass(10)));
+  assert.match(off, /class="bdev k-heatpump st-off ph-off"/);
+  assert.doesNotMatch(off, /Circulation/);
+  // Without the option, 39 W stays plain off.
+  const plain = html(mount(lib, "climate-air-heatpump-card", { ...METERED, power_threshold: 100 }, meteredHass(39)));
+  assert.match(plain, /class="bdev k-heatpump st-off ph-off"/);
+  assert.doesNotMatch(plain, /Circulation/);
+});
+
 test("heat pump metered: compressor_threshold splits the source pump stage from the compressor", () => {
   const cfg = { ...METERED, power_threshold: 100, compressor_threshold: 3000 };
   // ~1.45 kW: only the well pump and the exchanger circulation — running, the water flows, no compressor, no COP.

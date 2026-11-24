@@ -386,6 +386,7 @@ water_type: well                     # well (default), doublet or lake — for s
 # ground_type: collector             # collector (default) or borehole — for source: ground
 power_threshold: 100                 # W above which the pump counts as running (default 100)
 compressor_threshold: 3000           # W above which the compressor runs; below it only the source pumps do (optional)
+circulation_threshold: 20            # W above which the heating circulation runs, the heat pump itself off (optional)
 outdoor_temp: weather.home           # a sensor or a weather entity for the outdoor chip
 entities:                            # monitoring roles (YAML only)
   heat_power: sensor.heatpump_heat_output
@@ -399,7 +400,7 @@ entities:                            # monitoring roles (YAML only)
   heat_energy: sensor.heatpump_heat_energy
 ```
 
-`source`, `ground_type`, `water_type`, `power_threshold`, `compressor_threshold` and `outdoor_temp` are in the visual editor; the `entities` monitoring role map is **YAML only**.
+`source`, `ground_type`, `water_type`, `power_threshold`, `compressor_threshold`, `circulation_threshold` and `outdoor_temp` are in the visual editor; the `entities` monitoring role map is **YAML only**.
 
 | Option | Required | Default | Description |
 |---|---|---|---|
@@ -408,6 +409,7 @@ entities:                            # monitoring roles (YAML only)
 | `water_type` | ❌ | `well` | With `source: water`: `well`, `doublet` or `lake` |
 | `power_threshold` | ❌ | `100` | Metered (read-only) pump: power in W above which it counts as running |
 | `compressor_threshold` | ❌ | — | Metered ground- or water-source pump: power in W above which the compressor runs. Between `power_threshold` and this one only the source pumps run (*Source pumps*: the well / brine flows, no COP); without it, running means the compressor runs |
+| `circulation_threshold` | ❌ | — | Metered pump: power in W above which the heating circulation pump runs (floor heating, radiators). Between it and `power_threshold` the card shows *Circulation* with the heating pipes flowing, the heat pump itself off (no COP); the circulation keeps flowing in every stage above it. Without it, below `power_threshold` is *Off* |
 | `outdoor_temp` | ❌ | Discovered | A `sensor` or `weather` entity for the outdoor temperature chip |
 | `exclude` | ❌ | — | Multi-zone: room setpoints or device switches left off the card |
 | `zone_temps` | ❌ | — | YAML only: `{ setpoint number: temperature sensor }`, pairs a room's setpoint with its sensor by hand |

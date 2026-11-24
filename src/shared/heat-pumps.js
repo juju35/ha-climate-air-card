@@ -60,6 +60,7 @@ export function caHeatPumpState(id, st, roleSt, opts = {}) {
   const dhw = roleSt("dhw");
   let on;
   let compressor = false;
+  let circulating = false;
   if (metered) {
     const powerW = caPowerW(st);
     const threshold = Number.isFinite(Number(opts.powerThreshold)) ? Number(opts.powerThreshold) : CA_HP_POWER_ON;
@@ -69,6 +70,11 @@ export function caHeatPumpState(id, st, roleSt, opts = {}) {
     // above it does the compressor run. Without it, running means the compressor runs.
     const comp = opts.compressorThreshold;
     compressor = on && (comp != null && comp !== "" && Number.isFinite(Number(comp)) ? powerW > Number(comp) : true);
+    // Below the running threshold the heat pump is off, but the heating circulation pump (floor heating, radiators)
+    // may still run on its own: with `circulation_threshold`, the power above it is that circulation. It runs through
+    // every stage above it too.
+    const circ = opts.circulationThreshold;
+    circulating = circ != null && circ !== "" && Number.isFinite(Number(circ)) && powerW != null && powerW > Number(circ);
   } else on = caHpIsOn(id, mode);
   const defrost = on && roleSt("defrost")?.state === "on";
   const backup = on && roleSt("backup")?.state === "on";
@@ -89,10 +95,12 @@ export function caHeatPumpState(id, st, roleSt, opts = {}) {
     backup,
     // A metered pump's source side (well / brine) flows whenever it runs, the compressor stage or not.
     sourceOn: metered && on,
+    // A metered pump's heating circulation runs (above `circulation_threshold`), the heat pump itself on or not.
+    circulating,
     color: phase === "off" ? CA_IDLE : phase === "dhw" ? CA_HP_DHW_COLOR : CA_MODE_COLORS[phase],
     tank: Number.isFinite(tankSt) ? tankSt : null,
     tankTarget: dhw?.attributes.temperature != null ? Number(dhw.attributes.temperature) : null,
-    statusKey: !on ? "st_off" : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? (metered ? "st_source" : "st_idle") : cool ? "st_cooling" : "st_heating",
+    statusKey: !on ? (circulating ? "st_circulation" : "st_off") : defrost ? "st_defrost" : phase === "dhw" ? "st_dhw" : !active ? (metered ? "st_source" : "st_idle") : cool ? "st_cooling" : "st_heating",
   };
 }
 
