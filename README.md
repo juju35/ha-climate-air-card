@@ -295,6 +295,8 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `filter_warning` | ❌ | `20` | Purifier and air conditioner cards only: filter life (%) at or below which *Replace the filter soon* shows in orange; at 10 % or below, *Replace the filter* in red |
 | `zoom` | ❌ | `true` | Mini cards only: detail button at the top right that unfolds the full card (a click elsewhere folds it back) |
 | `language` | ❌ | Auto | Force language: `en`, `fr`, `de`, `es`, `sr`, `sr-Latn`, `it`, `nl`, `pt`, `pl`, `ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv` or `el` (auto-detects from HA settings; `pt-BR` gets European Portuguese); also on the Overview card |
+| `temperature_entity` | ❌ | — | Air conditioner and heat pump cards: a room temperature `sensor` (better placed than the unit's own probe) shown as the room temperature instead of the climate entity's `current_temperature`, on the full and mini cards. When it is unavailable, the unit's own temperature comes back. The controls stay those of the climate entity |
+| `show_device_temperature` | ❌ | `true` | With `temperature_entity`: the unit's own temperature under the sensor's (*Unit 22.4 °C*), full card only |
 | `entities` | ❌ | Auto | Override the sensors and controls found on the device (see [Entity overrides](#entity-overrides)) |
 
 ### Overview
@@ -347,7 +349,7 @@ devices:
 | `filter_warning` | ❌ | `20` | Filter life (%) at or below which a tile shows *Replace the filter soon* (orange); at 10 % or below, *Replace the filter* (red) |
 | `exclude` | ❌ | — | Devices left out |
 | `include` | ❌ | — | `climate` or `fan` entities the card would not pick on its own (a hidden entity); a heat-only thermostat stays out unless `devices` gives it a `type` |
-| `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type}`, with `type` one of `heatpump`, `aircon`, `purifier`, `humidifier`, `fan` (they win over `icons` and `illustrations`) |
+| `devices` | ❌ | — | Per-device overrides: `{entity, name, icon, illustration, type, temperature_entity}`, with `type` one of `heatpump`, `aircon`, `purifier`, `humidifier`, `fan` (they win over `icons` and `illustrations`); `temperature_entity` shows a room sensor instead of an air conditioner's or heat pump's own temperature |
 
 ### Air purifier
 

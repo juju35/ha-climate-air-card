@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Nivo {n}",
     target: "Cilj",
+    device_temp: "Uređaj",
     target_low: "Grejanje na",
     target_high: "Hlađenje na",
     target_humidity: "Ciljna vlažnost",
@@ -233,6 +234,9 @@ export default {
     ed_circulation_threshold_helper: "Snaga iznad koje radi cirkulaciona pumpa grejanja (podno grejanje, radijatori); ispod praga rada toplotna pumpa ostaje isključena",
     ed_outdoor_temp: "Spoljna temperatura",
     ed_outdoor_temp_helper: "Senzor ili vremenski entitet za spoljni čip",
+    ed_temperature_entity: "Senzor temperature prostorije",
+    ed_temperature_entity_helper: "Prikazuje se kao temperatura prostorije umesto temperature uređaja; ona se vraća kada senzor nije dostupan",
+    ed_show_device_temperature: "Temperatura uređaja ispod temperature senzora",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatski", manual: "Manuelno", smart: "Pametno", sleep: "Spavanje", night: "Noć", favorite: "Omiljeno",

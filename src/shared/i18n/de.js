@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Stufe {n}",
     target: "Sollwert",
+    device_temp: "Gerät",
     target_low: "Heizen auf",
     target_high: "Kühlen auf",
     target_humidity: "Zielfeuchte",
@@ -233,6 +234,9 @@ export default {
     ed_circulation_threshold_helper: "Leistung, ab der die Heizungsumwälzpumpe läuft (Fußbodenheizung, Heizkörper); unter der Laufschwelle bleibt die Wärmepumpe selbst aus",
     ed_outdoor_temp: "Außentemperatur",
     ed_outdoor_temp_helper: "Ein Sensor oder eine Wetter-Entität für den Außen-Chip",
+    ed_temperature_entity: "Raumtemperatursensor",
+    ed_temperature_entity_helper: "Wird statt der Gerätetemperatur als Raumtemperatur angezeigt; die Gerätetemperatur kehrt zurück, wenn der Sensor nicht verfügbar ist",
+    ed_show_device_temperature: "Gerätetemperatur unter der des Sensors",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatisch", manual: "Manuell", smart: "Smart", sleep: "Schlafmodus", night: "Nacht", favorite: "Favorit", favourite: "Favorit", silent: "Leise", quiet: "Leise", turbo: "Turbo", boost: "Boost", strong: "Stark", max: "Max", natural: "Natürlich", natural_wind: "Natürlicher Wind", nature: "Natürlich", straight: "Direkt", straight_wind: "Direkter Wind", direct: "Direkt", direct_wind: "Direkter Wind", standard: "Standard", normal: "Normal", baby: "Baby", low: "Niedrig", middle: "Mittel", medium: "Mittel", mid: "Mittel", high: "Hoch", full: "Voll", fixed: "Fest", off: "Aus", on: "An", vertical: "Vertikal", horizontal: "Horizontal", both: "Beide", none: "Keine", comfort: "Komfort", eco: "Eco", away: "Abwesend", home: "Zuhause", activity: "Aktivität", purifying: "Reinigt", idle: "Leerlauf", inactive: "Inaktiv", purify: "Reinigen",

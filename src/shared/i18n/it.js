@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Livello {n}",
     target: "Obiettivo",
+    device_temp: "Unità",
     target_low: "Riscalda a",
     target_high: "Raffredda a",
     target_humidity: "Umidità desiderata",
@@ -234,6 +235,9 @@ export default {
     ed_circulation_threshold_helper: "Potenza oltre la quale funziona il circolatore del riscaldamento (pavimento radiante, radiatori); sotto la soglia di funzionamento la pompa di calore resta spenta",
     ed_outdoor_temp: "Temperatura esterna",
     ed_outdoor_temp_helper: "Un sensore o un'entità meteo per il chip esterno",
+    ed_temperature_entity: "Sensore di temperatura della stanza",
+    ed_temperature_entity_helper: "Mostrato come temperatura della stanza al posto di quella dell'unità; quella dell'unità torna se il sensore non è disponibile",
+    ed_show_device_temperature: "Temperatura dell'unità sotto quella del sensore",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatico", manual: "Manuale", smart: "Smart", sleep: "Notte", night: "Notte", favorite: "Preferito",

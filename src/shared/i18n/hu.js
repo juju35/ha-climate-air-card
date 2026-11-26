@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "{n}. szint",
     target: "Cél",
+    device_temp: "Készülék",
     target_low: "Fűtés",
     target_high: "Hűtés",
     target_humidity: "Célpáratartalom",
@@ -234,6 +235,9 @@ export default {
     ed_circulation_threshold_helper: "Teljesítmény, amely felett a fűtés keringető szivattyúja jár (padlófűtés, radiátorok); a működési küszöb alatt maga a hőszivattyú kikapcsolva marad",
     ed_outdoor_temp: "Külső hőmérséklet",
     ed_outdoor_temp_helper: "Érzékelő vagy időjárás-entitás a külső chiphez",
+    ed_temperature_entity: "Szobahőmérséklet-érzékelő",
+    ed_temperature_entity_helper: "A készülék saját hőmérséklete helyett szobahőmérsékletként jelenik meg; a készüléké visszatér, ha az érzékelő nem elérhető",
+    ed_show_device_temperature: "A készülék hőmérséklete az érzékelőé alatt",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatikus", manual: "Kézi", smart: "Okos", sleep: "Alvás", night: "Éjszaka", favorite: "Kedvenc",

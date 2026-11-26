@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Objetivo",
+    device_temp: "Equipo",
     target_low: "Calentar a",
     target_high: "Enfriar a",
     target_humidity: "Humedad objetivo",
@@ -233,6 +234,9 @@ export default {
     ed_circulation_threshold_helper: "Potencia por encima de la cual funciona la bomba de circulación de la calefacción (suelo radiante, radiadores); por debajo del umbral de marcha la bomba de calor sigue apagada",
     ed_outdoor_temp: "Temperatura exterior",
     ed_outdoor_temp_helper: "Un sensor o entidad meteorológica para el chip exterior",
+    ed_temperature_entity: "Sensor de temperatura de la habitación",
+    ed_temperature_entity_helper: "Se muestra como temperatura de la habitación en lugar de la del equipo; la del equipo vuelve si el sensor no está disponible",
+    ed_show_device_temperature: "Temperatura del equipo bajo la del sensor",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automático", manual: "Manual", smart: "Inteligente", sleep: "Dormir", night: "Noche", favorite: "Favorito", favourite: "Favorito", silent: "Silencioso", quiet: "Silencioso", turbo: "Turbo", boost: "Boost", strong: "Fuerte", max: "Máx.", natural: "Natural", natural_wind: "Viento natural", nature: "Natural", straight: "Directo", straight_wind: "Viento directo", direct: "Directo", direct_wind: "Viento directo", standard: "Estándar", normal: "Normal", baby: "Bebé", low: "Bajo", middle: "Medio", medium: "Medio", mid: "Medio", high: "Alto", full: "Máximo", fixed: "Fijo", off: "Apagado", on: "Encendido", vertical: "Vertical", horizontal: "Horizontal", both: "Ambos", none: "Ninguno", comfort: "Confort", eco: "Eco", away: "Ausente", home: "En casa", activity: "Actividad", purifying: "Purificando", idle: "En espera", inactive: "Inactivo", purify: "Purificar",

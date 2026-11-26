@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Level {n}",
     target: "Target",
+    device_temp: "Unit",
     target_low: "Heat to",
     target_high: "Cool to",
     target_humidity: "Target humidity",
@@ -233,6 +234,9 @@ export default {
     ed_circulation_threshold_helper: "Power above which the heating circulation pump runs (floor heating, radiators); below the running threshold the heat pump itself stays off",
     ed_outdoor_temp: "Outdoor temperature",
     ed_outdoor_temp_helper: "A sensor or weather entity for the outdoor chip",
+    ed_temperature_entity: "Room temperature sensor",
+    ed_temperature_entity_helper: "Shown as the room temperature instead of the unit's own; the unit's comes back when the sensor is unavailable",
+    ed_show_device_temperature: "Unit temperature under the sensor's",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatic", manual: "Manual", smart: "Smart", sleep: "Sleep", night: "Night", favorite: "Favorite",
