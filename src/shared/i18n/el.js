@@ -167,6 +167,7 @@ export default {
     ill_switchbot: "Καθαριστής SwitchBot",
     ill_switchbot_table: "Καθαριστής-τραπεζάκι SwitchBot",
     ill_circulator: "Ανεμιστήρας κυκλοφορίας",
+    ill_circulator_standing: "Επιδαπέδιος ανεμιστήρας κυκλοφορίας",
     ill_switchbot_humidifier: "Υγραντήρας SwitchBot",
     ill_switchbot_evaporative: "Υγραντήρας εξάτμισης SwitchBot",
     ed_show_controls: "Χειριστήρια",

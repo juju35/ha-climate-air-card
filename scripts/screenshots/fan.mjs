@@ -51,3 +51,12 @@ await shoot({
   shots: pair("mini"),
   setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.study_fan" } }),
 });
+
+// SwitchBot Standing Circulator Fan (Cloud, « Standing Fan »): the circulator on its pole, picked from its model.
+// Captures: fan-circulator-standing-card (and its -dark twin).
+await shoot({
+  prefix: "fan-circulator-standing",
+  tag: "climate-air-fan-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.hall_fan" } }),
+});

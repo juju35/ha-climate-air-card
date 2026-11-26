@@ -177,6 +177,14 @@ const SWITCHBOT_DEVICES = [
   ["dev_sb_f", "office", { en: "Study fan", fr: "Ventilateur bureau" }, [
     ["fan.study_fan", null, "on", { preset_modes: ["normal", "natural", "sleep", "baby"], preset_mode: "normal", percentage: 60, percentage_step: 1, oscillating: true, supported_features: 59 }],
   ]],
+  // SwitchBot Cloud: an Air Purifier PM2.5 (the one without a table) and a Standing Circulator Fan (« Standing Fan »).
+  ["dev_sb_p2", "office", { en: "Hall purifier", fr: "Purificateur entrée" }, [
+    ["fan.hall_purifier", null, "on", { preset_modes: ["normal", "auto", "sleep", "pet"], preset_mode: "auto", supported_features: 56 }],
+  ]],
+  ["dev_sb_f2", "office", { en: "Hall fan", fr: "Ventilateur entrée" }, [
+    ["fan.hall_fan", null, "on", { preset_modes: ["direct", "natural", "sleep", "baby"], preset_mode: "natural", percentage: 45, percentage_step: 1, supported_features: 57 }],
+    ["sensor.hall_fan_battery", { en: "Battery", fr: "Batterie" }, 80, { device_class: "battery", unit_of_measurement: "%" }],
+  ]],
   ["dev_sb_h", "office", { en: "Study humidifier", fr: "Humidificateur bureau" }, [
     ["humidifier.study_humidifier", null, "on", {
       device_class: "humidifier", humidity: 55, current_humidity: 41, min_humidity: 1, max_humidity: 99,
@@ -223,6 +231,8 @@ const BRANDS = {
   dev_sb_p: ["switchbot", "switchbot", "Air Purifier Table US"],
   dev_sb_f: ["switchbot", "switchbot", "Circulator Fan"],
   dev_sb_h: ["switchbot", "switchbot", "Evaporative Humidifier"],
+  dev_sb_p2: ["switchbot_cloud", "SwitchBot", "Air Purifier PM2.5"],
+  dev_sb_f2: ["switchbot_cloud", "SwitchBot", "Standing Fan"],
 };
 
 export const mockHass = (lang = "en", changes = {}, { switchbot = false } = {}) => {

@@ -494,6 +494,52 @@ test("switchbot: illustrations picked from the model, air quality as a word, fil
   assert.equal(lib.caBrand(h, "fan.study_fan", {}), "switchbot");
 });
 
+test("switchbot: every model of the Bluetooth and Cloud integrations gets its illustration", () => {
+  const h = makeHass("en", {}, { switchbot: true });
+  const check = (dev, kind, id, cases) => {
+    for (const [manufacturer, model, variant] of cases) {
+      Object.assign(h.devices[dev], { manufacturer, model });
+      assert.equal(lib.caVariant(h, kind, id), variant, `${manufacturer} ${model}`);
+    }
+  };
+  check("dev_sb_p", "purifier", "fan.study_purifier", [
+    ["switchbot", "Air Purifier US", "switchbot"],
+    ["switchbot", "Air Purifier JP", "switchbot"],
+    ["switchbot", "Air Purifier Table US", "switchbot_table"],
+    ["switchbot", "Air Purifier Table JP", "switchbot_table"],
+    ["SwitchBot", "Air Purifier PM2.5", "switchbot"],
+    ["SwitchBot", "Air Purifier VOC", "switchbot"],
+    ["SwitchBot", "Air Purifier Table PM2.5", "switchbot_table"],
+    ["SwitchBot", "Air Purifier Table VOC", "switchbot_table"],
+  ]);
+  check("dev_sb_f", "fan", "fan.study_fan", [
+    ["switchbot", "Circulator Fan", "circulator"],
+    ["switchbot", "Circulator Fan Pro", "circulator"],
+    ["switchbot", "Standing Fan", "circulator_standing"],
+    ["SwitchBot", "Battery Circulator Fan", "circulator"],
+    ["SwitchBot", "Battery Circulator Fan 2 Pro", "circulator"],
+    ["SwitchBot", "Standing Fan", "circulator_standing"],
+    // Another brand's standing fan stays a standing fan.
+    ["Acme", "Standing Fan", "fan"],
+  ]);
+  check("dev_sb_h", "humidifier", "humidifier.study_humidifier", [
+    ["switchbot", "WoHumi", "switchbot_humidifier"],
+    ["switchbot", "Evaporative Humidifier", "switchbot_evaporative"],
+    ["SwitchBot", "Humidifier", "switchbot_humidifier"],
+    ["SwitchBot", "Humidifier2", "switchbot_evaporative"],
+    ["SwitchBot", "Evaporative Humidifier (Auto-refill)", "switchbot_evaporative"],
+  ]);
+  // The Cloud purifier without a table and the standing circulator of the mock home.
+  const plain = makeHass("en", {}, { switchbot: true });
+  assert.equal(lib.caKindOf(plain, "fan.hall_purifier"), "purifier");
+  assert.equal(lib.caVariant(plain, "purifier", "fan.hall_purifier"), "switchbot");
+  assert.equal(lib.caVariant(plain, "fan", "fan.hall_fan"), "circulator_standing");
+  // The standing circulator turns about the same centre as the other fans.
+  const art = lib.caPicture("fan", "circulator_standing", { running: true, pct: 50 }, "u");
+  assert.match(art, /class="head"[\s\S]*class="blades"/);
+  assert.match(art, /rotate\(0 40 32\) translate\(40 32\) scale\(0\.68\)/);
+});
+
 test("rituals: a localised (German) Perfume Genie is recognised from its platform, translation keys and manufacturer", () => {
   // A Rituals Perfume Genie on a German install: the entity ids are translated and the device name carries neither
   // "Rituals" nor "Perfume Genie", so the roles must be found by their registry translation_key and the illustration

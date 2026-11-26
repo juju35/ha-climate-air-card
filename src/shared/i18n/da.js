@@ -167,6 +167,7 @@ export default {
     ill_switchbot: "SwitchBot-luftrenser",
     ill_switchbot_table: "SwitchBot-luftrenserbord",
     ill_circulator: "Cirkulationsventilator",
+    ill_circulator_standing: "Stående cirkulationsventilator",
     ill_switchbot_humidifier: "SwitchBot-luftfugter",
     ill_switchbot_evaporative: "SwitchBot-fordampningsluftfugter",
     ed_show_controls: "Betjening",

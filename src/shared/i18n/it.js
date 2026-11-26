@@ -167,6 +167,7 @@ export default {
     ill_switchbot: "Purificatore SwitchBot",
     ill_switchbot_table: "Purificatore tavolino SwitchBot",
     ill_circulator: "Ventilatore circolatore",
+    ill_circulator_standing: "Ventilatore circolatore a piantana",
     ill_switchbot_humidifier: "Umidificatore SwitchBot",
     ill_switchbot_evaporative: "Umidificatore evaporativo SwitchBot",
     ed_show_controls: "Comandi",

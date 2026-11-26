@@ -167,6 +167,7 @@ export default {
     ill_switchbot: "Oczyszczacz SwitchBot",
     ill_switchbot_table: "Oczyszczacz-stolik SwitchBot",
     ill_circulator: "Wentylator cyrkulacyjny",
+    ill_circulator_standing: "Stojący wentylator cyrkulacyjny",
     ill_switchbot_humidifier: "Nawilżacz SwitchBot",
     ill_switchbot_evaporative: "Nawilżacz ewaporacyjny SwitchBot",
     ed_show_controls: "Sterowanie",

@@ -167,6 +167,7 @@ export default {
     ill_switchbot: "SwitchBot Air Purifier",
     ill_switchbot_table: "SwitchBot Air Purifier Table",
     ill_circulator: "Circulator fan",
+    ill_circulator_standing: "Standing circulator fan",
     ill_switchbot_humidifier: "SwitchBot Humidifier",
     ill_switchbot_evaporative: "SwitchBot Evaporative Humidifier",
     ed_show_controls: "Controls",

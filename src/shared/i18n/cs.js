@@ -167,6 +167,7 @@ export default {
     ill_switchbot: "Čistička SwitchBot",
     ill_switchbot_table: "Čistička-stolek SwitchBot",
     ill_circulator: "Cirkulační ventilátor",
+    ill_circulator_standing: "Stojanový cirkulační ventilátor",
     ill_switchbot_humidifier: "Zvlhčovač SwitchBot",
     ill_switchbot_evaporative: "Odpařovací zvlhčovač SwitchBot",
     ed_show_controls: "Ovládání",

@@ -34,32 +34,49 @@ const CA_FAN_ART =
 // A circulator fan (SwitchBot Circulator Fan, Battery Circulator Fan…): a compact round head with a deep grille of
 // concentric rings, held by a yoke on a short stem and a round base. The blades turn behind the grille with the speed,
 // the head swings while oscillating and the breeze pulses, like the standing fan (same centre, same classes).
-const CA_CIRCULATOR_RINGS = [8, 13, 18, 23].map((r) => `<circle cx="40" cy="32" r="${r}"/>`).join("");
-const CA_CIRCULATOR_ART =
-  '<svg viewBox="0 0 80 94" aria-hidden="true"><defs>' +
-  '<linearGradient id="ca-fp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd5dc"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#c3cad2"/></linearGradient>' +
-  '<linearGradient id="ca-fb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3f2fd"/><stop offset="1" stop-color="#90c4ee"/></linearGradient>' +
-  '<radialGradient id="ca-ff" cx=".5" cy=".5" r=".5"><stop offset="0" class="c-stop" stop-opacity=".5"/><stop offset="1" class="c-stop" stop-opacity="0"/></radialGradient></defs>' +
-  '<ellipse class="floor" cx="40" cy="90" rx="24" ry="3.5" fill="url(#ca-ff)"/>' +
-  '<path d="M22 87.5A18 4.5 0 0 0 58 87.5V84.5H22Z" fill="#c3cad2"/>' +
-  '<ellipse cx="40" cy="84.5" rx="18" ry="4.5" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width="1"/>' +
-  '<rect x="37" y="62" width="6" height="23" rx="2.5" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width=".8"/>' +
-  '<circle class="led" cx="40" cy="80" r="1.3"/>' +
-  '<g class="head">' +
-  '<g class="wind"><path d="M7 22q-4 4 0 8"/><path d="M4 32q-4 4 0 8" /><path d="M7 42q-4 4 0 8"/>' +
-  '<path d="M73 22q4 4 0 8"/><path d="M76 32q4 4 0 8"/><path d="M73 42q4 4 0 8"/></g>' +
-  '<path d="M12 32A28 28 0 0 0 68 32" fill="none" stroke="url(#ca-fp)" stroke-width="4" stroke-linecap="round"/>' +
-  '<path d="M12 32A28 28 0 0 0 68 32" fill="none" stroke="#aab3bd" stroke-width=".7"/>' +
-  '<rect x="36" y="58" width="8" height="6" rx="2" fill="#c3cad2"/>' +
-  '<circle cx="40" cy="32" r="25" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1.6"/>' +
-  '<circle cx="40" cy="32" r="23.5" fill="#e3e8ee"/>' +
-  '<g class="blades" fill="url(#ca-fb)">' +
-  [0, 72, 144, 216, 288].map((a) => `<path transform="rotate(${a} 40 32)" d="M40 32C42.5 24 48 17 54 19.5C57 24.5 50 30.5 40 32Z"/>`).join("") +
-  "</g>" +
-  `<g fill="none" stroke="#9aa5b1" stroke-opacity=".75" stroke-width=".7">${CA_CIRCULATOR_RINGS}</g>` +
-  '<circle cx="40" cy="32" r="25" fill="none" stroke="#aab3bd" stroke-width="2.2"/>' +
-  '<circle cx="40" cy="32" r="4.6" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1"/>' +
-  "</g></svg>";
+// `standing`: the Standing Circulator Fan — a smaller head on a tall telescopic pole.
+const caCirculatorArt = (standing) => {
+  // Head radius, and the blades / rings scaled to it around the centre (40, 32) the animations turn on.
+  const r = standing ? 17 : 25;
+  const k = r / 25;
+  const yoke = r + 3;
+  const scale = k === 1 ? "" : ` translate(40 32) scale(${k}) translate(-40 -32)`;
+  const blade = (a) => `<path transform="rotate(${a} 40 32)${scale}" d="M40 32C42.5 24 48 17 54 19.5C57 24.5 50 30.5 40 32Z"/>`;
+  const rings = [8, 13, 18, 23].map((ring) => `<circle cx="40" cy="32" r="${ring * k}"/>`).join("");
+  const neck = 32 + yoke;
+  const stem = standing
+    ? // The telescopic pole: two tubes, the thinner one out of the thicker, and its collar.
+      `<rect x="38" y="${neck}" width="4" height="${70 - neck}" rx="1.6" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width=".7"/>` +
+      '<rect x="36.6" y="68" width="6.8" height="17" rx="2.4" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width=".8"/>' +
+      '<rect x="36" y="67" width="8" height="3" rx="1.2" fill="#c3cad2"/>'
+    : '<rect x="37" y="62" width="6" height="23" rx="2.5" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width=".8"/>';
+  return (
+    '<svg viewBox="0 0 80 94" aria-hidden="true"><defs>' +
+    '<linearGradient id="ca-fp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd5dc"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#c3cad2"/></linearGradient>' +
+    '<linearGradient id="ca-fb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3f2fd"/><stop offset="1" stop-color="#90c4ee"/></linearGradient>' +
+    '<radialGradient id="ca-ff" cx=".5" cy=".5" r=".5"><stop offset="0" class="c-stop" stop-opacity=".5"/><stop offset="1" class="c-stop" stop-opacity="0"/></radialGradient></defs>' +
+    '<ellipse class="floor" cx="40" cy="90" rx="24" ry="3.5" fill="url(#ca-ff)"/>' +
+    '<path d="M22 87.5A18 4.5 0 0 0 58 87.5V84.5H22Z" fill="#c3cad2"/>' +
+    '<ellipse cx="40" cy="84.5" rx="18" ry="4.5" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width="1"/>' +
+    stem +
+    '<circle class="led" cx="40" cy="80" r="1.3"/>' +
+    '<g class="head">' +
+    '<g class="wind"><path d="M7 22q-4 4 0 8"/><path d="M4 32q-4 4 0 8" /><path d="M7 42q-4 4 0 8"/>' +
+    '<path d="M73 22q4 4 0 8"/><path d="M76 32q4 4 0 8"/><path d="M73 42q4 4 0 8"/></g>' +
+    `<path d="M${40 - yoke} 32A${yoke} ${yoke} 0 0 0 ${40 + yoke} 32" fill="none" stroke="url(#ca-fp)" stroke-width="4" stroke-linecap="round"/>` +
+    `<path d="M${40 - yoke} 32A${yoke} ${yoke} 0 0 0 ${40 + yoke} 32" fill="none" stroke="#aab3bd" stroke-width=".7"/>` +
+    `<rect x="36" y="${neck - 2}" width="8" height="6" rx="2" fill="#c3cad2"/>` +
+    `<circle cx="40" cy="32" r="${r}" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1.6"/>` +
+    `<circle cx="40" cy="32" r="${r - 1.5}" fill="#e3e8ee"/>` +
+    `<g class="blades" fill="url(#ca-fb)">${[0, 72, 144, 216, 288].map(blade).join("")}</g>` +
+    `<g fill="none" stroke="#9aa5b1" stroke-opacity=".75" stroke-width=".7">${rings}</g>` +
+    `<circle cx="40" cy="32" r="${r}" fill="none" stroke="#aab3bd" stroke-width="2.2"/>` +
+    `<circle cx="40" cy="32" r="${4.6 * Math.max(k, 0.8)}" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1"/>` +
+    "</g></svg>"
+  );
+};
+const CA_CIRCULATOR_ART = caCirculatorArt(false);
+const CA_STANDING_CIRCULATOR_ART = caCirculatorArt(true);
 
 // A ceiling fan seen from the room: its canopy and downrod, four wooden blades in perspective that turn with the speed
 // (the other way when reversed), and its light under the motor, glowing while it is on.
@@ -92,12 +109,23 @@ const CA_CEILING_FAN_RE =
 // A circulator says so in its name or model (SwitchBot Circulator Fan, Battery Circulator Fan, Vornado…).
 // The device, not « circulation »: circulator, Zirkulator, circolatore, circulateur, circulador.
 const CA_CIRCULATOR_RE = /(circulator|zirkulator|circolatore|circulateur|circulador|vornado)/i;
+// A circulator on a pole: SwitchBot's Standing Circulator Fan (« Standing Fan » for its integrations), or a name with
+// both words.
+const CA_STANDING_CIRCULATOR_RE = /(switch\s?bot|wonderlabs).*standing fan|standing fan.*(switch\s?bot|wonderlabs)|standing circulator|circulator.*(floor|pole|stand)/i;
 
 CA_ART.fan = {
-  variants: ["fan", "ceiling", "circulator"],
-  guess: (text) => (CA_CEILING_FAN_RE.test(text) ? "ceiling" : CA_CIRCULATOR_RE.test(text) ? "circulator" : "fan"),
+  variants: ["fan", "ceiling", "circulator", "circulator_standing"],
+  guess: (text) =>
+    CA_CEILING_FAN_RE.test(text) ? "ceiling" : CA_STANDING_CIRCULATOR_RE.test(text) ? "circulator_standing" : CA_CIRCULATOR_RE.test(text) ? "circulator" : "fan",
   render: (variant, s) => ({
-    svg: variant === "ceiling" ? CA_CEILING_FAN_ART : variant === "circulator" ? CA_CIRCULATOR_ART : CA_FAN_ART,
+    svg:
+      variant === "ceiling"
+        ? CA_CEILING_FAN_ART
+        : variant === "circulator"
+          ? CA_CIRCULATOR_ART
+          : variant === "circulator_standing"
+            ? CA_STANDING_CIRCULATOR_ART
+            : CA_FAN_ART,
     cls: [
       variant === "ceiling" ? "ceiling" : "",
       s.running && s.osc ? "osc" : "",
