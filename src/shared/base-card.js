@@ -10,7 +10,7 @@
 // What every card of the bundle shares: grid size, language and labels.
 // The width of an element's whole text in fractional pixels, even while it is cut with an ellipsis (0 when hidden).
 import { caEsc, caFmtNum, caIntlLang, caLang, caNum, caT, caUnavailable, caValueLabel } from "./i18n-helpers.js";
-import { CA_IDLE } from "./colors.js";
+import { CA_IDLE, CA_PRESET_ICON } from "./colors.js";
 import { CA_TEMP_DEBOUNCE, caAreaName, caChipKey, caDeviceEntities, caDeviceName, caDeviceOf, caFindEntities, caFindKey, caFocusKey, caMoreInfo, caName, caPatchAround, caRestoreFocus, caRoleOf, caTempData, caWrite } from "./device-discovery.js";
 import { CA_KIND_ICONS, caSwitchInfo } from "./climate-cards.js";
 import { CA_FILTER_WARNING, CA_RESET_ARM, caBar, caFilterLevel, caLine, caPill } from "./mini-cards.js";
@@ -518,6 +518,16 @@ export class CaCard extends CaElement {
       .join("")}</div>`;
   }
 
+  // A fan speed given as a select (Midea's « Fan speed »: Lowest, Low, Medium, High, Auto) as segmented buttons, its
+  // « Off » left to the power button.
+  _speedSegments(id) {
+    const st = this._st(id);
+    if (!st || caUnavailable(st)) return "";
+    const options = (st.attributes.options || []).filter((o) => !/^off$/i.test(String(o)));
+    const segs = this._segments("fspeed", options, st.state, (o) => this._fmtState(id, o), CA_PRESET_ICON);
+    return segs ? this._section(this._t("speed"), segs, "mdi:fan") : "";
+  }
+
   // ── Filter ──
   // The filter of the device: its life (%, `filter`), its hours of use, and its wear `level` — "replace", "soon" (see
   // caFilterLevel) or "dirty" (a dirty-filter binary sensor on, an air conditioner's "full dust"). `entity` is what its
@@ -674,9 +684,15 @@ export class CaCard extends CaElement {
   _toggle(id, label, icon, opts = {}) {
     if (!opts.action && (!id || !this._st(id))) return "";
     const ok = opts.action ? true : this._avail(id);
-    const on = opts.on ?? this._val(id) === "on";
+    const on = opts.on ?? this._isOn(id);
     const data = opts.action ? `data-action="${opts.action}"` : `data-toggle="${caEsc(id)}"`;
     return `<button class="toggle${on ? " on" : ""}" ${data}${ok ? "" : " disabled"} aria-pressed="${on}"><ha-icon icon="${icon}"></ha-icon>${caEsc(label)}</button>`;
+  }
+
+  // A switch on, or a lock locked (a child lock exposed as a `lock`).
+  _isOn(id) {
+    const v = this._val(id);
+    return v === "on" || v === "locked";
   }
 
   _toggles(items) {
@@ -705,7 +721,9 @@ export class CaCard extends CaElement {
       return;
     }
     if (d.toggle) {
-      this._call(d.toggle.split(".")[0], "toggle", { entity_id: d.toggle });
+      // A lock has no toggle service: locked → unlock, else lock.
+      if (d.toggle.startsWith("lock.")) this._call("lock", this._val(d.toggle) === "locked" ? "unlock" : "lock", { entity_id: d.toggle });
+      else this._call(d.toggle.split(".")[0], "toggle", { entity_id: d.toggle });
       return;
     }
     if (d.press) {
@@ -723,6 +741,10 @@ export class CaCard extends CaElement {
   _action(action, value) {
     if (action === "filter-reset") {
       this._resetFilter(value);
+      return;
+    }
+    if (action === "fspeed") {
+      this._call("select", "select_option", { entity_id: this._r.ent.fan_speed, option: value });
       return;
     }
     if (action === "power") {

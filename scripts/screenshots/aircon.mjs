@@ -44,3 +44,34 @@ await shoot({
   shots: [...pair("mini"), ...pair("portable", { illustration: "portable" }), ...pair("window", { illustration: "window" }), ...pair("portasplit", { illustration: "portasplit" })],
   setup: (s, lang) => ({ hass: mockHass(lang), config: { entity, ...(s.illustration ? { illustration: s.illustration } : {}) } }),
 });
+
+// Midea: the Breezeless wall unit (picked from its name), and the floor console, box window unit and Duo portable.
+// Captures: aircon-breezeless-card, aircon-breezeless-mini, aircon-console-card, aircon-window-box-card,
+// aircon-duo-card (and their -dark twins).
+const md = (lang, changes) => mockHass(lang, changes, { midea: true });
+await shoot({
+  prefix: "aircon-breezeless",
+  tag: "climate-air-aircon-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "climate.bedroom_breezeless" } }),
+});
+
+await shoot({
+  prefix: "aircon-breezeless",
+  tag: "climate-air-aircon-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "climate.bedroom_breezeless" } }),
+});
+
+for (const [prefix, illustration, changes] of [
+  ["aircon-console", "console", { [entity]: { state: "heat", temperature: 21, current_temperature: 18.5, hvac_action: "heating" } }],
+  ["aircon-window-box", "window_box", {}],
+  ["aircon-duo", "portable_duo", { [entity]: { state: "dry", hvac_action: "drying" } }],
+]) {
+  await shoot({
+    prefix,
+    tag: "climate-air-aircon-card",
+    shots: pair("card"),
+    setup: (_s, lang) => ({ hass: mockHass(lang, changes), config: { entity, illustration } }),
+  });
+}

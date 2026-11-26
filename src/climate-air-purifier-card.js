@@ -126,7 +126,8 @@ const caPurifierVariant = (text, model = "") => {
   const s = String(text).toLowerCase();
   if (/switch\s?bot|wonderlabs/.test(s)) return /\btable\b/i.test(model || s) ? "switchbot_table" : "switchbot";
   if (/dyson|pure (cool|hot)|hot\s*\+?\s*cool|cool me|humidify|big\s*\+?\s*quiet|\b(tp|hp|ph|bp)\d|\bam(0[67]|11)\b/.test(s)) return "dyson";
-  if (/smartmi.*\bp\d\b|\bp[12]\b|airp\.(mp|p\d)/.test(s)) return "box";
+  // Midea's purifiers are square boxes too.
+  if (/smartmi.*\bp\d\b|\bp[12]\b|airp\.(mp|p\d)|midea/.test(s)) return "box";
   if (/\b4\b|4 lite|4 compact|4 pro|elite|compact|\be1\b|cylind|round/.test(s)) return "cylinder";
   return "tower";
 };
@@ -178,7 +179,7 @@ class ClimateAirPurifierCard extends CaCard {
   }
 
   _roles() {
-    return ["pm25", "pm10", "voc", "no2", "aqi", "aq_level", "temperature", "humidity", "filter", "filter_hours", "filter_alert", "filter_reset", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
+    return ["pm25", "pm10", "voc", "no2", "aqi", "aq_level", "temperature", "humidity", "filter", "filter_hours", "filter_alert", "filter_reset", "status", "mode", "fan_speed", "favorite", "child_lock", "buzzer", "light"];
   }
 
   _model(r) {
@@ -189,7 +190,8 @@ class ClimateAirPurifierCard extends CaCard {
     const pm25 = this._num(ent.pm25);
     const aqi = this._num(ent.aqi);
     const aq = caAirQuality(pm25, aqi, this._avail(ent.aq_level) ? this._val(ent.aq_level) : null);
-    const pct = on ? Number(st.attributes.percentage ?? 0) : 0;
+    // A Midea purifier, driven by its power switch, gives its speed as a select.
+    const pct = on ? Number(st.attributes.percentage ?? caSelectSpeed(this._st(ent.fan_speed)) ?? 0) : 0;
     const filterState = this._filterState(ent);
     const filter = filterState.pct;
     const status = on ? (this._avail(ent.status) ? this._fmtState(ent.status) : this._t("st_purifying")) : this._t("st_off");
@@ -250,12 +252,13 @@ class ClimateAirPurifierCard extends CaCard {
       const ms = this._st(r.ent.mode);
       modes = this._segments("mode", ms.attributes.options, ms.state, (o) => this._fmtState(r.ent.mode, o), CA_PRESET_ICON);
     }
-    const speed = f & CA_FAN_SET_SPEED && m.running ? this._speedSlider(r.id) : "";
+    // The speed while it runs: a slider, or the segments of a speed select (Midea).
+    const speed = !m.running ? "" : f & CA_FAN_SET_SPEED ? this._speedSlider(r.id) : this._speedSegments(r.ent.fan_speed);
     // The favorite level only applies in the favorite preset (or when the purifier has no presets).
     const favPreset = !(a.preset_modes || []).length || /fav|manual/i.test(a.preset_mode || "");
     const favorite = r.ent.favorite && favPreset ? this._numberControl(r.ent.favorite, this._t("favorite"), "mdi:heart-outline") : "";
     const toggles = this._toggles([
-      this._toggle(r.ent.child_lock, this._t("child_lock"), this._val(r.ent.child_lock) === "on" ? "mdi:lock" : "mdi:lock-open-variant-outline"),
+      this._toggle(r.ent.child_lock, this._t("child_lock"), this._isOn(r.ent.child_lock) ? "mdi:lock" : "mdi:lock-open-variant-outline"),
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(r.ent.light, this._t("light"), "mdi:lightbulb-outline"),
     ]);

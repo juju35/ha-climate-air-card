@@ -8,8 +8,9 @@
 // mode color, with snowflakes when cooling, shimmer when heating and droplets when drying. While the compressor runs
 // the status light breathes (and the outdoor fan of a window split turns). Four shapes: a wall split unit, a portable
 // unit with its exhaust hose, a window split (indoor tower, outdoor unit hung outside the window), and a portasplit
-// (Midea PortaSplit: an indoor console and an outdoor condenser side by side, joined by a looping flexible hose);
-// `illustration: auto` picks one from the device model and name.
+// (Midea PortaSplit: an indoor console and an outdoor condenser side by side, joined by a looping flexible hose), and
+// Midea's other shapes: a Breezeless wall unit (its front of micro-holes), a floor console, a box window unit set in its
+// window, and a Duo portable (one wide hose-in-hose); `illustration: auto` picks one from the device model and name.
 const caSnow = (x, y) => `<path d="M${x} ${y}v5M${x - 2.2} ${y + 1.25}l4.4 2.5M${x - 2.2} ${y + 3.75}l4.4-2.5"/>`;
 const caDrop = (x, y) => `<path d="M${x} ${y}q-2 3 0 4.5t0-4.5Z"/>`;
 const caWave = (x, y) => `<path d="M${x} ${y}q-1.5 2 0 4t0 4"/>`;
@@ -116,6 +117,66 @@ const CA_AIRCON_ARTS = {
     [0, 45, 90, 135].map((a) => `<path transform="rotate(${a} 60 64.5)" d="M46 64.5H74" stroke-opacity=".45"/>`).join("") +
     "</g>" +
     '<rect x="45" y="82" width="3.5" height="3" rx="1" fill="#5d6874"/><rect x="69.5" y="82" width="3.5" height="3" rx="1" fill="#5d6874"/>',
+  // Midea Breezeless: a wall unit with rounded ends, the left of its front a panel of micro-holes the air seeps
+  // through, the display on the right, and its flap.
+  breezeless: (display) =>
+    '<ellipse class="floor" cx="40" cy="89" rx="30" ry="4" fill="url(#ca-af)"/>' +
+    caAirFx([20, 40, 60], 52, false) +
+    '<rect x="3" y="13" width="74" height="32" rx="11" fill="url(#ca-ab)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="8" y="18" width="40" height="18" rx="5" fill="#f4f6f8" stroke="#d5dbe2" stroke-width=".8"/>' +
+    `<g fill="#aab3bd">${Array.from({ length: 6 }, (_, j) =>
+      Array.from({ length: 14 }, (_, i) => `<circle cx="${(11 + i * 2.6 + (j % 2) * 1.3).toFixed(1)}" cy="${(20.6 + j * 2.6).toFixed(1)}" r=".55"/>`).join(""),
+    ).join("")}</g>` +
+    caDisplay(53, 23, 18, display) +
+    '<circle class="led" cx="62" cy="35" r="1.4"/>' +
+    '<rect x="9" y="38.5" width="62" height="4.5" rx="2.2" fill="#3a434e"/>' +
+    '<g class="flap"><path d="M10 41h60l-2.5 4.2H12.5Z" fill="#eef1f4" stroke="#aab3bd" stroke-width=".8" stroke-linejoin="round"/></g>',
+  // A floor console: a low wide unit on its feet, the air out of the louvre on its top, in through the grille below.
+  console: (display) =>
+    '<ellipse class="floor" cx="40" cy="89" rx="32" ry="4" fill="url(#ca-af)"/>' +
+    caAirFx([26, 40, 54], 36, true) +
+    '<rect x="9" y="37" width="62" height="48" rx="6" fill="url(#ca-ab2)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="14" y="39.5" width="52" height="6" rx="2.5" fill="#3a434e"/>' +
+    '<g class="flap"><rect x="15.5" y="40.6" width="49" height="1.5" rx=".7" fill="#eef1f4"/><rect x="15.5" y="43.2" width="49" height="1.5" rx=".7" fill="#eef1f4"/></g>' +
+    caDisplay(31, 50, 18, display) +
+    '<circle class="led" cx="16" cy="54.5" r="1.4"/>' +
+    '<path d="M13 62.5h54" stroke="#d5dbe2" stroke-width="1"/>' +
+    caGrille(16, 64, 66, 80, 3.4) +
+    '<rect x="13" y="85" width="6" height="3" rx="1" fill="#5d6874"/><rect x="61" y="85" width="6" height="3" rx="1" fill="#5d6874"/>',
+  // A box window unit (Midea EasyCool…) seen from the room: the sash lowered onto it, its louvres at the top, the
+  // intake grille and the display below, on the sill.
+  window_box: (display) =>
+    '<ellipse class="floor" cx="40" cy="89" rx="28" ry="3.6" fill="url(#ca-af)"/>' +
+    '<rect x="2" y="4" width="76" height="25" rx="1.5" fill="#dceaf5" fill-opacity=".55" stroke="#b6bfc9" stroke-width="1.6"/>' +
+    '<path d="M40 4V29M4 16.5H76" stroke="#c3cad2" stroke-width="1.1"/>' +
+    '<rect x="1" y="4" width="4" height="61" rx="1" fill="#d5dbe2" stroke="#b6bfc9" stroke-width=".8"/>' +
+    '<rect x="75" y="4" width="4" height="61" rx="1" fill="#d5dbe2" stroke="#b6bfc9" stroke-width=".8"/>' +
+    caAirFx([22, 40, 58], 44, false) +
+    '<rect x="8" y="29" width="64" height="33" rx="4" fill="url(#ca-ab)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="12" y="32" width="56" height="9" rx="2.5" fill="#3a434e"/>' +
+    '<g class="flap"><rect x="13.5" y="33.2" width="53" height="1.5" rx=".7" fill="#eef1f4"/><rect x="13.5" y="36" width="53" height="1.5" rx=".7" fill="#eef1f4"/><rect x="13.5" y="38.8" width="53" height="1.5" rx=".7" fill="#eef1f4"/></g>' +
+    `<g fill="#c3cad2">${Array.from({ length: 11 }, (_, i) => `<rect x="${(13 + i * 3.4).toFixed(1)}" y="45" width="1.4" height="13" rx=".7"/>`).join("")}</g>` +
+    caDisplay(51, 46, 17, display) +
+    '<circle class="led" cx="59.5" cy="58" r="1.2"/>' +
+    '<rect x="0" y="62" width="80" height="4" rx="1" fill="#c3cad2" stroke="#aab3bd" stroke-width=".6"/>',
+  // Midea Duo: a portable unit whose one wide hose holds both the intake and the exhaust (hose-in-hose), the air out
+  // of its top louvre.
+  portable_duo: (display) =>
+    '<ellipse class="floor" cx="44" cy="89" rx="26" ry="4" fill="url(#ca-af)"/>' +
+    '<path d="M26 40C10 40 6 30 6 5" fill="none" stroke="#aab3bd" stroke-width="11" stroke-linecap="round"/>' +
+    '<path d="M26 40C10 40 6 30 6 5" fill="none" stroke="#d5dbe2" stroke-width="8.4" stroke-linecap="round"/>' +
+    '<path d="M26 40C10 40 6 30 6 5" fill="none" stroke="#8f9aa6" stroke-width="8.4" stroke-dasharray="1 2.4" opacity=".4"/>' +
+    '<path d="M26 40C10 40 6 30 6 5" fill="none" stroke="#b6bfc9" stroke-width="3" stroke-linecap="round"/>' +
+    caAirFx([34, 45, 56], 12, true) +
+    '<rect x="23" y="13" width="44" height="72" rx="10" fill="url(#ca-ab2)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="28" y="16" width="34" height="10" rx="3" fill="#3a434e"/>' +
+    '<g class="flap"><rect x="29.5" y="17.6" width="31" height="1.7" rx=".8" fill="#eef1f4"/><rect x="29.5" y="20.6" width="31" height="1.7" rx=".8" fill="#eef1f4"/><rect x="29.5" y="23.6" width="31" height="1.7" rx=".8" fill="#eef1f4"/></g>' +
+    caDisplay(35.5, 31, 19, display) +
+    '<circle class="led" cx="29" cy="35.5" r="1.4"/>' +
+    '<circle cx="45" cy="58" r="11" fill="none" stroke="#d5dbe2" stroke-width="1.2"/>' +
+    '<circle cx="45" cy="58" r="7.5" fill="none" stroke="#d5dbe2" stroke-width="1"/>' +
+    '<circle cx="45" cy="58" r="3.6" fill="#e7ebef" stroke="#c3cad2" stroke-width=".8"/>' +
+    '<circle cx="30" cy="87" r="2.6" fill="#5d6874"/><circle cx="60" cy="87" r="2.6" fill="#5d6874"/>',
 };
 
 const caAirconArt = (variant, display) =>
@@ -127,16 +188,23 @@ const caAirconArt = (variant, display) =>
   "</svg>";
 
 // The shape that looks most like the device, from its model and name.
+// Midea's model numbers tell some apart: MAW…V… the U-shaped window unit (window), MAW… the box window units, MAP… the
+// portables; Breezeless, console, Duo and EasyCool by name.
 const caAirconVariant = (text) => {
   const s = String(text).toLowerCase();
   if (/porta.?split/.test(s)) return "portasplit";
-  if (/window|fen[eê]tre|saddle/.test(s)) return "window";
-  if (/portable|mobile|monobloc|move/.test(s)) return "portable";
+  if (/breeze.?less/.test(s)) return "breezeless";
+  if (/\bconsole\b|floor.?(standing|console|unit|mounted)|allège|allege|truhe|consola|pavimento/.test(s)) return "console";
+  if (/\bduo\b|hose.?in.?hose|dual.?hose|double.?(hose|gaine|tuyau)/.test(s)) return "portable_duo";
+  if (/u.?shaped|saddle|\bmidea u\b|\bmaw\d+v/.test(s)) return "window";
+  if (/easy.?cool|window.?box|box.?window|through.?the.?wall|\bmaw\d/.test(s)) return "window_box";
+  if (/window|fen[eê]tre/.test(s)) return "window";
+  if (/portable|mobile|monobloc|move|\bmap\d/.test(s)) return "portable";
   return "split";
 };
 
 CA_ART.aircon = {
-  variants: ["split", "portable", "window", "portasplit"],
+  variants: ["split", "portable", "window", "portasplit", "breezeless", "console", "window_box", "portable_duo"],
   guess: caAirconVariant,
   render: (variant, s) => {
     const swing = String(s.swing || "off").toLowerCase();

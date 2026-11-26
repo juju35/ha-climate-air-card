@@ -1841,3 +1841,130 @@ test("overview: a device's temperature_entity replaces the unit's own temperatur
   const { body } = overview({ zoom: false, devices: [{ entity: "climate.air_conditioner", temperature_entity: "sensor.living_room_probe" }] }, h);
   assert.match(body, /Off · 23\.8 °C/);
 });
+
+test("midea: a purifier driven by its power switch, select fan speeds, tank level and the Midea illustrations", () => {
+  const h = makeHass("en", {}, { midea: true });
+  // The purifier has no fan entity: its power switch is adopted, not its child lock; the other switches stay out.
+  assert.equal(lib.caKindOf(h, "switch.office_purifier_power"), "purifier");
+  assert.equal(lib.caKindOf(h, "switch.office_purifier_child_lock"), null);
+  assert.ok(lib.caFindEntities(h, "purifier").includes("switch.office_purifier_power"));
+  // Its mode select, not its detection mode; its filter and speed.
+  assert.equal(lib.caRoleOf(h, "switch.office_purifier_power", "mode"), "select.office_purifier_mode");
+  assert.equal(lib.caRoleOf(h, "switch.office_purifier_power", "fan_speed"), "select.office_purifier_fan_speed");
+  assert.equal(lib.caVariant(h, "purifier", "switch.office_purifier_power"), "box");
+  const card = mount(lib, "climate-air-purifier-card", { entity: "switch.office_purifier_power" }, h);
+  const out = html(card);
+  assert.match(out, /data-action="fspeed" data-value="Medium" aria-pressed="true"/);
+  assert.doesNotMatch(out, /data-value="Off"/);
+  assert.match(out, /data-action="mode" data-value="sleep"/);
+  card._action("fspeed", "High");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["select", "select_option", { entity_id: "select.office_purifier_fan_speed", option: "High" }]);
+  card._action("power");
+  assert.deepEqual(JSON.parse(JSON.stringify(h.calls.at(-1))), ["switch", "turn_off", { entity_id: "switch.office_purifier_power" }]);
+  // A select speed as a percentage: its rank, half for Auto, none when off.
+  const sel = (state) => ({ entity_id: "select.x", state, attributes: { options: ["Lowest", "Low", "Medium", "High", "Auto", "Off"] } });
+  assert.equal(lib.caSelectSpeed(sel("Low")), 50);
+  assert.equal(lib.caSelectSpeed(sel("High")), 100);
+  assert.equal(lib.caSelectSpeed(sel("Auto")), 50);
+  assert.equal(lib.caSelectSpeed(sel("Off")), null);
+  // The dehumidifier: its tank level (translation key tank_level or id …_tank), fan speed segments, its own drawing.
+  assert.equal(lib.caRoleOf(h, "humidifier.bedroom_dehumidifier", "water_level"), "sensor.bedroom_dehumidifier_tank_level");
+  const dehum = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_dehumidifier" }, h));
+  assert.match(dehum, /v-dehumidifier_midea/);
+  assert.match(dehum, /data-action="fspeed"/);
+  // The tower fan and the Breezeless wall unit, from their names.
+  assert.equal(lib.caVariant(h, "fan", "fan.office_tower_fan"), "tower_fan");
+  assert.equal(lib.caVariant(h, "aircon", "climate.bedroom_breezeless"), "breezeless");
+  // The Midea logo, from the manufacturer.
+  assert.equal(lib.caBrand(h, "switch.office_purifier_power", {}), "midea_ac_lan");
+  // Another brand's power switch is no purifier.
+  h.devices.dev_md_p.manufacturer = "Acme";
+  h.entities["switch.office_purifier_power"].platform = "acme";
+  assert.equal(lib.caMideaPurifierSwitch(h, "switch.office_purifier_power", h.devices.dev_md_p), false);
+});
+
+test("midea: every kind of appliance is recognised and every model gets its illustration", () => {
+  const h = makeHass("en", {}, { midea: true });
+  const check = (dev, kind, id, cases) => {
+    for (const [name, model, variant] of cases) {
+      Object.assign(h.devices[dev], { name, model });
+      assert.equal(lib.caVariant(h, kind, id), variant, `${name} ${model}`);
+    }
+  };
+  // A climate entity whose id names no model, on the same device.
+  h.entities["climate.bedroom_ac"] = { ...h.entities["climate.bedroom_breezeless"], entity_id: "climate.bedroom_ac" };
+  h.states["climate.bedroom_ac"] = { ...h.states["climate.bedroom_breezeless"], entity_id: "climate.bedroom_ac", attributes: { ...h.states["climate.bedroom_breezeless"].attributes, friendly_name: "AC" } };
+  check("dev_md_ac", "aircon", "climate.bedroom_ac", [
+    ["Bedroom", "Air Conditioner", "split"],
+    ["PortaSplit", "Air Conditioner", "portasplit"],
+    ["Breezeless+", "Air Conditioner", "breezeless"],
+    ["Living room console", "Air Conditioner", "console"],
+    ["Midea U", "MAW08V1QWT", "window"],
+    ["Window AC", "MAW05M1BWT", "window_box"],
+    ["EasyCool", "Air Conditioner", "window_box"],
+    ["Midea Duo", "Air Conditioner", "portable_duo"],
+    ["Portable AC", "MAP08R1CWT", "portable"],
+  ]);
+  check("dev_md_d", "humidifier", "humidifier.bedroom_dehumidifier", [
+    ["Dehumidifier", "Dehumidifier", "dehumidifier_midea"],
+    ["Cube", "Dehumidifier", "dehumidifier_cube"],
+    ["Basement", "MAD50PS1QWT", "dehumidifier_cube"],
+    ["Bedroom", "MDDF-20DEN7-WF", "dehumidifier_midea"],
+  ]);
+  // A dehumidifier of another brand keeps the plain bucket drawing.
+  h.devices.dev_md_d.manufacturer = "Acme";
+  check("dev_md_d", "humidifier", "humidifier.bedroom_dehumidifier", [["Dehumidifier", "Dehumidifier", "dehumidifier"]]);
+  check("dev_md_f", "fan", "fan.office_tower_fan", [
+    ["Tower fan", "Fan", "tower_fan"],
+    ["Ceiling", "Integrated Ceiling Fan", "ceiling"],
+  ]);
+  // The Midea Cube is a dehumidifier for the card's status and alerts.
+  assert.ok(lib.caIsDehumidifier("dehumidifier_cube"));
+  assert.ok(lib.caIsDehumidifier("dehumidifier_midea"));
+  // Fresh air appliances are ventilation units, M-Thermal controllers heat pumps.
+  assert.match("Fresh Air Appliance", lib.CA_VENT_NAME);
+  assert.match("Midea M-Thermal", lib.CA_HP_NAME);
+  // Every new drawing is offered in the editor, labelled in English.
+  for (const [kind, v] of [["aircon", "breezeless"], ["aircon", "console"], ["aircon", "window_box"], ["aircon", "portable_duo"], ["humidifier", "dehumidifier_cube"], ["humidifier", "dehumidifier_midea"], ["fan", "tower_fan"]]) {
+    assert.ok(lib.CA_ART[kind].variants.includes(v), v);
+    assert.notEqual(lib.caT("en", `ill_${v}`), `ill_${v}`, v);
+  }
+  // The tower fan's drum scrolls, its column swings about its own middle.
+  const art = lib.caPicture("fan", "tower_fan", { running: true, pct: 50, osc: true }, "u");
+  assert.match(art, /class="drum"/);
+  assert.match(art, /clip-path="url\(#ca-ts-u\)"/);
+});
+
+test("midea: no false matches outside Midea, speeds only while running, a child lock exposed as a lock", () => {
+  // « M-Thermal » is a heat pump; a « Room thermal » climate is not.
+  for (const n of ["Midea M-Thermal", "M Thermal Arctic", "mthermal"]) assert.match(n, lib.CA_HP_NAME, n);
+  for (const n of ["Room thermal comfort", "Custom thermal unit"]) assert.doesNotMatch(n, lib.CA_HP_NAME, n);
+  // The fresh air temperature of another brand's unit is still found; a Midea fresh air appliance's sensors are not taken for it.
+  const h = makeHass("en", {}, { midea: true });
+  const add = (id, attributes = {}) => {
+    h.states[id] = { entity_id: id, state: "12", attributes };
+    h.entities[id] = { entity_id: id, device_id: "dev_vent_x", platform: "mock" };
+    return h.entities[id];
+  };
+  const fresh = [add("sensor.vmc_fresh_air", { device_class: "temperature" })];
+  assert.equal(lib.caFindRole(h, fresh, "air_outdoor_temp"), "sensor.vmc_fresh_air");
+  const midea = [add("sensor.fresh_air_appliance_current_temperature", { device_class: "temperature" })];
+  assert.equal(lib.caFindRole(h, midea, "air_outdoor_temp"), undefined);
+  // A Xiaomi-style « fan level » select is no speed select.
+  assert.equal(lib.caFindRole(h, [add("select.deerma_humidifier_fan_level")], "fan_speed"), undefined);
+  // Off, the speed segments go with the device.
+  const off = makeHass("en", { "switch.office_purifier_power": { state: "off" }, "humidifier.bedroom_dehumidifier": { state: "off" } }, { midea: true });
+  assert.doesNotMatch(html(mount(lib, "climate-air-purifier-card", { entity: "switch.office_purifier_power" }, off)), /data-action="fspeed"/);
+  assert.doesNotMatch(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_dehumidifier" }, off)), /data-action="fspeed"/);
+  // Midea AC LAN's child lock is a lock: found, shown on when locked, and locked / unlocked from its toggle.
+  const lk = makeHass("en", {}, { midea: true });
+  delete lk.states["switch.office_purifier_child_lock"];
+  delete lk.entities["switch.office_purifier_child_lock"];
+  lk.states["lock.office_purifier_child_lock"] = { entity_id: "lock.office_purifier_child_lock", state: "locked", attributes: { friendly_name: "Child lock" } };
+  lk.entities["lock.office_purifier_child_lock"] = { entity_id: "lock.office_purifier_child_lock", device_id: "dev_md_p", platform: "midea_ac_lan" };
+  assert.equal(lib.caRoleOf(lk, "switch.office_purifier_power", "child_lock"), "lock.office_purifier_child_lock");
+  const card = mount(lib, "climate-air-purifier-card", { entity: "switch.office_purifier_power" }, lk);
+  assert.match(html(card), /class="toggle on" data-toggle="lock\.office_purifier_child_lock"/);
+  card._onClick({ composedPath: () => [{ dataset: { toggle: "lock.office_purifier_child_lock" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(lk.calls.at(-1))), ["lock", "unlock", { entity_id: "lock.office_purifier_child_lock" }]);
+});

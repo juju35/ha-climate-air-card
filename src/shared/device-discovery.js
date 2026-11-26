@@ -210,8 +210,17 @@ export const CA_ROLES = {
   },
   no2: { domain: "sensor", id: /(nitrogen_dioxide|_no2\b|dioxyde_d?_?azote|stickstoffdioxid|dioxido_de_nitrogeno)/, test: caDc("nitrogen_dioxide") },
   status: { domain: "sensor", keys: ["air_purifier_status"], id: /(purifier_status|purificateur.*statut)/ },
-  mode: { domain: "select", keys: ["air_purifier_mode"], id: /(purifier_mode|_mode)$/ },
-  child_lock: { domain: "switch", keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
+  // The mode select of a purifier: not its detection mode, screen or oscillation select (Midea's « Detect Mode »…).
+  mode: {
+    domain: "select",
+    keys: ["air_purifier_mode"],
+    id: /(purifier_mode|_mode)$/,
+    avoid: /(detect|screen|display|oscillation|swing|silent|fresh_air|aux_heat|water_level|tilting)_mode$/,
+  },
+  // A fan speed given as a select (Midea purifiers, humidifiers and dehumidifiers: Lowest, Low, Medium, High, Auto).
+  fan_speed: { domain: "select", keys: ["fan_speed"], id: /(fan_speed|wind_speed)$/ },
+  // A switch, or a lock (Midea AC LAN's child lock), locked when on.
+  child_lock: { domain: ["switch", "lock"], keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
   buzzer: { domain: "switch", keys: ["buzzer", "alarm"], id: /(buzzer|alarm|sound|_son_|_son$|bip)/ },
   light: { domain: "light", id: /(indicator|indicador|_led|voyant|display|anzeige|pantalla)/ },
   // The light of a ceiling fan: any other light of the fan's device (not its indicator).
@@ -251,8 +260,8 @@ export const CA_ROLES = {
   // full bucket of a dehumidifier.
   water_level: {
     domain: "sensor",
-    keys: ["fill"],
-    id: /(water_level|tank_level|water_tank|water_remain|niveau_(d_)?eau|niveau_reservoir|reservoir|wasserstand|nivel_de_agua|depth|fill|cartridge|cartouche)/,
+    keys: ["fill", "tank_level"],
+    id: /(_tank$|water_level|tank_level|water_tank|water_remain|niveau_(d_)?eau|niveau_reservoir|reservoir|wasserstand|nivel_de_agua|depth|fill|cartridge|cartouche)/,
     avoid: /(full|plein|voll)/,
   },
   // Any light of a humidifier or a diffuser (the VOCOlinc ambient light), toggled from its options.
@@ -310,7 +319,7 @@ export const CA_ROLES = {
   air_outdoor_temp: {
     domain: "sensor",
     keys: ["outdoor_air_temperature", "outside_air_temperature", "fresh_air_temperature"],
-    id: /(outdoor_air|outside_air|fresh_air|air_neuf|air_exterieur|aussenluft|exterior_air|aria_esterna|buitenlucht|intake_air)/,
+    id: /(outdoor_air|outside_air|fresh_air(?!_appliance)|air_neuf|air_exterieur|aussenluft|exterior_air|aria_esterna|buitenlucht|intake_air)/,
   },
   air_supply_temp: {
     domain: "sensor",
@@ -446,7 +455,8 @@ export function caDeviceName(hass, id) {
 // thermostat, a radiator, a radiator valve) is not, and is left to ha-heating-card.
 // A fan entity is an air purifier when its name says so or its device measures particles or has a filter.
 // The domain of the entities of a kind of device.
-export const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : kind === "humidifier" ? ["humidifier", "switch"] : "fan");
+export const caDomain = (kind) =>
+  kind === "aircon" ? "climate" : kind === "heatpump" ? ["climate", "select"] : kind === "humidifier" ? ["humidifier", "switch"] : kind === "purifier" ? ["fan", "switch"] : "fan";
 
 // A climate entity is a heat pump (air to water) when its device has a hot water tank, when its device says so, or
 // when it comes from an integration that only handles heat pumps (NIBE myUplink, Panasonic Aquarea Smart Cloud,
@@ -454,7 +464,7 @@ export const caDomain = (kind) => (kind === "aircon" ? "climate" : kind === "hea
 // boilers: their heat pumps are told apart by their hot water tank or their name.
 export const CA_HP_PLATFORMS = ["myuplink", "aquarea", "hitachi_yutaki"];
 export const CA_HP_NAME =
-  /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|arotherm|geotherm|nibe)/i;
+  /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|\bm-?\s?thermal\b|arotherm|geotherm|nibe)/i;
 
 export const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
 
@@ -483,12 +493,42 @@ export const caVentEfficiency = (eff, t) => {
 
 // A ventilation unit (heat recovery or extract): a fan entity named like one or from a ventilation integration.
 export const CA_VENT_NAME =
-  /(ventilation|\bvmc\b|mvhr|\bhrv\b|\berv\b|heat.?recovery|comfoair|comfoconnect|double.?flux|simple.?flux|l[üu]ftungs|\bkwl\b|\bwtw\b|ventilaci[oó]n|ventilazione|recuperat|rekuperat|\baldes\b|zehnder|\bbrink\b|vallox|\bduco\b|renson|helty|dantherm|maico|komfovent|\bprana\b|healthbox|endura|flow.?it|airios|\bitho\b|orcon)/i;
+  /(ventilation|fresh.?air.?(appliance|system|unit|ventilat)|\bvmc\b|mvhr|\bhrv\b|\berv\b|heat.?recovery|comfoair|comfoconnect|double.?flux|simple.?flux|l[üu]ftungs|\bkwl\b|\bwtw\b|ventilaci[oó]n|ventilazione|recuperat|rekuperat|\baldes\b|zehnder|\bbrink\b|vallox|\bduco\b|renson|helty|dantherm|maico|komfovent|\bprana\b|healthbox|endura|flow.?it|airios|\bitho\b|orcon)/i;
 export const CA_VENT_PLATFORMS = ["comfoconnect", "vallox", "duco", "renson", "prana", "flow_it", "dantherm", "maico", "helty_flow", "healthbox", "komfovent", "itho"];
 
 // The Rituals Perfume Genie: an essential oil diffuser exposed as a `switch` (no humidifier entity), with its perfume
 // amount, room size, cartridge fill and battery as separate entities. The humidifier card adopts its switch.
 export const CA_RITUALS_NAME = /rituals|perfume.?genie/i;
+
+// The speed of a device whose fan speed is a select (Midea): its rank among the speeds, as a percentage (Lowest 20 %…
+// High 80 %, a top one 100 %), half speed for Auto, none when off or unknown.
+export function caSelectSpeed(st) {
+  if (!st || caUnavailable(st)) return null;
+  const speeds = (st.attributes.options || []).filter((o) => !/^(off|auto|automatic|smart)$/i.test(String(o)));
+  const v = String(st.state);
+  if (/^(auto|automatic|smart)$/i.test(v)) return 50;
+  const i = speeds.indexOf(v);
+  return i < 0 ? null : Math.round(((i + 1) / speeds.length) * 100);
+}
+
+// Midea's integrations: the core one (Home Assistant 2026.8), Midea AC LAN, Midea Smart AC (msmart-ng), Midea Air
+// Appliances LAN and Midea Auto Cloud. Their devices also come under the brands Midea sells (Comfee', Inventor…), so
+// a device is Midea's by its integration or its manufacturer.
+export const CA_MIDEA_PLATFORMS = ["midea", "midea_ac_lan", "midea_ac", "midea_dehumidifier_lan", "midea_auto_cloud"];
+export const caIsMidea = (hass, id, dev) => CA_MIDEA_PLATFORMS.includes(hass.entities?.[id]?.platform) || /midea/i.test(dev?.manufacturer || "");
+
+// A Midea air purifier (device type FC) has no fan entity: it is switched on and off by its « Power » switch, its mode
+// and speed are selects. The purifier card adopts that switch, the way the humidifier card adopts a Rituals diffuser's.
+// Its power switch (translation key or entity id), on a Midea device named as a purifier or measuring particles, with
+// no fan, humidifier or climate entity of its own.
+export function caMideaPurifierSwitch(hass, id, dev) {
+  if (!dev || !caIsMidea(hass, id, dev)) return false;
+  if (hass.entities?.[id]?.translation_key !== "power" && !/_power$/.test(id)) return false;
+  const list = caDeviceEntities(hass, caDeviceOf(hass, id));
+  if (list.some((e) => /^(fan|humidifier|climate)\./.test(e.entity_id))) return false;
+  const names = [dev.model, dev.name, dev.name_by_user].filter(Boolean).join(" ");
+  return CA_PURIFIER_NAME.test(names) || Boolean(caFindRole(hass, list, "pm25"));
+}
 
 // Refrigeration appliances (fridge, freezer, wine cooler) are exposed as climate entities by some integrations
 // (e.g. Liebherr), and can cool, but are not air conditioners: their setpoint range sits well below comfort
@@ -541,7 +581,8 @@ export function caKindOf(hass, id) {
       if (hass.entities?.[id]?.platform === "rituals_perfume_genie") return "humidifier";
       const dev = hass.devices?.[caDeviceOf(hass, id)];
       const names = [id, st.attributes.friendly_name, dev?.name, dev?.name_by_user, dev?.model].filter(Boolean).join(" ");
-      return CA_RITUALS_NAME.test(names) ? "humidifier" : null;
+      if (CA_RITUALS_NAME.test(names)) return "humidifier";
+      return caMideaPurifierSwitch(hass, id, dev) ? "purifier" : null;
     }
     if (domain !== "fan") return null;
     const dev = hass.devices?.[caDeviceOf(hass, id)];

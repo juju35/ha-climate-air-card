@@ -54,3 +54,27 @@ await shoot({
   shots: pair("mini"),
   setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "humidifier.study_humidifier", illustration: "switchbot_humidifier" } }),
 });
+
+// Midea: the tower dehumidifier (its tank level, its fan speed as a select) and the Cube.
+// Captures: humidifier-midea-card, humidifier-midea-mini, humidifier-cube-card (and their -dark twins).
+const md = (lang, changes) => mockHass(lang, changes, { midea: true });
+await shoot({
+  prefix: "humidifier-midea",
+  tag: "climate-air-humidifier-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "humidifier.bedroom_dehumidifier" } }),
+});
+
+await shoot({
+  prefix: "humidifier-midea",
+  tag: "climate-air-humidifier-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "humidifier.bedroom_dehumidifier" } }),
+});
+
+await shoot({
+  prefix: "humidifier-cube",
+  tag: "climate-air-humidifier-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "humidifier.bedroom_dehumidifier", illustration: "dehumidifier_cube" } }),
+});

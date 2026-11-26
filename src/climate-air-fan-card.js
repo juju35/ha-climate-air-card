@@ -101,6 +101,27 @@ const CA_CEILING_FAN_ART =
   '<circle class="led" cx="50" cy="31" r="1"/>' +
   "</svg>";
 
+// A tower fan (Midea's and others'): a tall column on a round foot, the air out of its front slot where the cross-flow
+// drum turns (its bars scroll faster with the speed), the breeze on either side; the column swings while oscillating.
+const CA_TOWER_FAN_ART =
+  '<svg viewBox="0 0 80 94" aria-hidden="true"><defs>' +
+  '<linearGradient id="ca-fp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd5dc"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#c3cad2"/></linearGradient>' +
+  '<radialGradient id="ca-ff" cx=".5" cy=".5" r=".5"><stop offset="0" class="c-stop" stop-opacity=".5"/><stop offset="1" class="c-stop" stop-opacity="0"/></radialGradient>' +
+  '<clipPath id="ca-ts"><rect x="35" y="21" width="10" height="55" rx="3"/></clipPath></defs>' +
+  '<ellipse class="floor" cx="40" cy="90" rx="22" ry="3.5" fill="url(#ca-ff)"/>' +
+  '<path d="M25 87.5A15 4 0 0 0 55 87.5V85H25Z" fill="#c3cad2"/>' +
+  '<ellipse cx="40" cy="85" rx="15" ry="4" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width="1"/>' +
+  '<g class="head">' +
+  '<g class="wind"><path d="M27 28q-4 4 0 8"/><path d="M24 44q-4 4 0 8"/><path d="M27 60q-4 4 0 8"/>' +
+  '<path d="M53 28q4 4 0 8"/><path d="M56 44q4 4 0 8"/><path d="M53 60q4 4 0 8"/></g>' +
+  '<rect x="30" y="7" width="20" height="78" rx="9" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width="1.2"/>' +
+  '<rect x="33.5" y="10.5" width="13" height="7" rx="3" fill="#3a434e"/><circle class="led" cx="40" cy="14" r="1.4"/>' +
+  '<rect x="35" y="21" width="10" height="55" rx="3" fill="#3a434e"/>' +
+  `<g clip-path="url(#ca-ts)"><g class="drum" fill="#8b96a3">${Array.from({ length: 21 }, (_, i) => `<rect x="35.5" y="${18 + i * 3}" width="9" height="1.3" rx=".6"/>`).join("")}</g></g>` +
+  '<path d="M37.5 21V76M40 21V76M42.5 21V76" stroke="#c3cad2" stroke-width=".55" opacity=".8"/>' +
+  '<rect x="35" y="21" width="10" height="55" rx="3" fill="none" stroke="#aab3bd" stroke-width=".8"/>' +
+  "</g></svg>";
+
 // A ceiling fan says so in its name or model, or comes from a ceiling fan maker (Hunter, Big Ass Fans, Lucci Air,
 // Minka, Casablanca, Fanimation, Westinghouse, Bond / Olibra, Modern Forms); anything else is the standing fan.
 const CA_CEILING_FAN_RE =
@@ -113,10 +134,21 @@ const CA_CIRCULATOR_RE = /(circulator|zirkulator|circolatore|circulateur|circula
 // both words.
 const CA_STANDING_CIRCULATOR_RE = /(switch\s?bot|wonderlabs).*standing fan|standing fan.*(switch\s?bot|wonderlabs)|standing circulator|circulator.*(floor|pole|stand)/i;
 
+// A tower fan says so: tower, colonne, Turm / Säule, torre, toren, kolumna…
+const CA_TOWER_FAN_RE = /(tower|colonne|turmventilator|s[äa]ulenventilator|\btorre\b|torenventilator|kolumnow|wie[żz]ow|sloupov)/i;
+
 CA_ART.fan = {
-  variants: ["fan", "ceiling", "circulator", "circulator_standing"],
+  variants: ["fan", "ceiling", "circulator", "circulator_standing", "tower_fan"],
   guess: (text) =>
-    CA_CEILING_FAN_RE.test(text) ? "ceiling" : CA_STANDING_CIRCULATOR_RE.test(text) ? "circulator_standing" : CA_CIRCULATOR_RE.test(text) ? "circulator" : "fan",
+    CA_CEILING_FAN_RE.test(text)
+      ? "ceiling"
+      : CA_STANDING_CIRCULATOR_RE.test(text)
+        ? "circulator_standing"
+        : CA_CIRCULATOR_RE.test(text)
+          ? "circulator"
+          : CA_TOWER_FAN_RE.test(text)
+            ? "tower_fan"
+            : "fan",
   render: (variant, s) => ({
     svg:
       variant === "ceiling"
@@ -125,9 +157,11 @@ CA_ART.fan = {
           ? CA_CIRCULATOR_ART
           : variant === "circulator_standing"
             ? CA_STANDING_CIRCULATOR_ART
-            : CA_FAN_ART,
+            : variant === "tower_fan"
+              ? CA_TOWER_FAN_ART
+              : CA_FAN_ART,
     cls: [
-      variant === "ceiling" ? "ceiling" : "",
+      variant === "ceiling" ? "ceiling" : variant === "tower_fan" ? "tower" : "",
       s.running && s.osc ? "osc" : "",
       s.running && s.natural ? "natural" : "",
       s.running && s.reverse ? "reverse" : "",
@@ -142,6 +176,10 @@ CA_ART.fan = {
     .k-fan.ceiling.lit .lamp { fill: #fff3bf; }
     .k-fan.ceiling.lit .glow { opacity: 1; }
     .k-fan.running.reverse .blades { animation-direction: reverse; }
+    .k-fan.tower .drum { transform-box: view-box; }
+    .k-fan.tower .head { transform-origin: 40px 46px; }
+    .k-fan.running.tower .drum { animation: ca-drum calc(var(--ca-spin, 1s) / 2) linear infinite; }
+    @keyframes ca-drum { from { transform: translateY(0); } to { transform: translateY(3px); } }
     .k-fan .blades { stroke: #7fb2dd; stroke-width: .5; transform-box: view-box; transform-origin: 40px 32px; }
     .k-fan .head { transform-box: view-box; transform-origin: 40px 32px; }
     .k-fan .wind { fill: none; stroke: var(--ca-color); stroke-width: 1.6; stroke-linecap: round; }
@@ -233,7 +271,7 @@ class ClimateAirFanCard extends CaCard {
     const toggles = this._toggles([
       f & CA_FAN_OSCILLATE ? this._toggle(null, this._t("oscillation"), "mdi:arrow-oscillating", { action: "oscillate", on: !!a.oscillating }) : "",
       this._toggle(ent.anion, this._t("anion"), "mdi:creation-outline"),
-      this._toggle(ent.child_lock, this._t("child_lock"), this._val(ent.child_lock) === "on" ? "mdi:lock" : "mdi:lock-open-variant-outline"),
+      this._toggle(ent.child_lock, this._t("child_lock"), this._isOn(ent.child_lock) ? "mdi:lock" : "mdi:lock-open-variant-outline"),
       this._toggle(ent.buzzer, this._t("buzzer"), this._val(ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(ent.light, this._t("light"), "mdi:lightbulb-outline"),
       this._toggle(ent.fan_light, this._t("fan_light"), "mdi:ceiling-fan-light"),

@@ -214,3 +214,19 @@ await animate({
   tag: "climate-air-overview-card",
   setup: (_s, lang) => ({ hass: mockHass(lang), config: {} }),
 });
+
+// Midea: the purifier driven by its power switch, the tower dehumidifier, the Cube, the tower fan and the Breezeless,
+// console, box window and Duo air conditioners.
+const md = (lang) => mockHass(lang, {}, { midea: true });
+for (const [file, tag, config] of [
+  ["purifier-midea", "climate-air-purifier-card", { entity: "switch.office_purifier_power" }],
+  ["humidifier-midea", "climate-air-humidifier-card", { entity: "humidifier.bedroom_dehumidifier" }],
+  ["humidifier-cube", "climate-air-humidifier-card", { entity: "humidifier.bedroom_dehumidifier", illustration: "dehumidifier_cube" }],
+  ["fan-tower", "climate-air-fan-card", { entity: "fan.office_tower_fan" }],
+  ["aircon-breezeless", "climate-air-aircon-card", { entity: "climate.bedroom_breezeless" }],
+  ["aircon-console", "climate-air-aircon-card", { entity: "climate.bedroom_breezeless", illustration: "console" }],
+  ["aircon-window-box", "climate-air-aircon-card", { entity: "climate.bedroom_breezeless", illustration: "window_box" }],
+  ["aircon-duo", "climate-air-aircon-card", { entity: "climate.bedroom_breezeless", illustration: "portable_duo" }],
+]) {
+  await animate({ file, tag, setup: (_s, lang) => ({ hass: md(lang), config }) });
+}

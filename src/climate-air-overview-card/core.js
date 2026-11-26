@@ -215,7 +215,8 @@ export class ClimateAirOverviewCard extends CaElement {
       }
     } else {
       item.on = st.state === "on";
-      const pct = item.on ? Number(a.percentage ?? 0) : 0;
+      // A fan speed given as a select (Midea) when the entity has no percentage.
+      const pct = item.on ? Number(a.percentage ?? caSelectSpeed(roleSt("fan_speed")) ?? 0) : 0;
       const preset = item.on && a.preset_mode ? fmtAttr("preset_mode", a.preset_mode) : "";
       if (kind === "ventilation") {
         // A ventilation unit: its level (preset or speed) and the heat its exchanger recovers.

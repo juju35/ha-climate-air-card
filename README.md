@@ -85,12 +85,12 @@ On narrow cards (6 columns of a Sections view), the status pill moves under the 
 
 ### Air purifier
 
-`custom:climate-air-purifier-card` — An air purifier (`fan` entity) and the sensors of its device.
+`custom:climate-air-purifier-card` — An air purifier (`fan` entity, or the power `switch` of a Midea purifier, which has no fan entity) and the sensors of its device.
 
 - The PM2.5 density (or the air quality index) in large, with its level: *Good air*, *Moderate air*, *Poor air*, *Very poor air*; the card takes the colour of the air quality, also from an air quality level given as a word (SwitchBot: excellent, good, moderate, unhealthy)
-- Animated illustration while it runs: the fan turns (faster with the speed), clean air rises and dust is drawn into the intake; the display ring and the floor light take the air quality colour. Six shapes: a tower (a tall box whose display shows the PM2.5), a round purifier, a square box, a Dyson-style bladeless loop, the SwitchBot Air Purifier (a squat rounded column) and the SwitchBot Air Purifier Table (a wooden side table on the purifier, its light strip in the air quality colour), picked from the device model or set with `illustration`
+- Animated illustration while it runs: the fan turns (faster with the speed), clean air rises and dust is drawn into the intake; the display ring and the floor light take the air quality colour. Six shapes: a tower (a tall box whose display shows the PM2.5), a round purifier, a square box, a Dyson-style bladeless loop, the SwitchBot Air Purifier (a squat rounded column) and the SwitchBot Air Purifier Table (a wooden side table on the purifier, its light strip in the air quality colour), picked from the device model or set with `illustration` (a Midea purifier is drawn as the square box)
 - Filter life bar (with its hours of use on hover) and a *Replace the filter* alert at 10 % or less; the hours of use alone when the device only counts those (SwitchBot)
-- Presets as segmented buttons (Auto, Sleep, Favorite…), or the device's mode select when it has no presets (HomeKit purifiers); speed slider; favorite level in the Favorite preset
+- Presets as segmented buttons (Auto, Sleep, Favorite…), or the device's mode select when it has no presets (HomeKit purifiers); speed slider, or the speeds as segmented buttons when the device gives them as a select (Midea's *Lowest*, *Low*, *Medium*, *High*, *Auto*) while it runs; favorite level in the Favorite preset
 - Temperature, humidity, PM10 and, when the device reports them, VOC and NO₂ chips (Dyson); child lock, sound and indicator light toggles
 
 ### Fan
@@ -100,6 +100,7 @@ On narrow cards (6 columns of a Sections view), the status pill moves under the 
 - The speed in large, with the preset; speed slider and presets (natural wind, straight wind…)
 - Animated illustration while it runs: the blades turn faster with the speed, the head swings while oscillating, and the breeze comes in gusts in a natural wind preset
 - **Circulator fan**: a fan named like one (*circulator*, *circulateur*, *Zirkulator*, SwitchBot Circulator Fan / Battery Circulator Fan, Vornado) gets a compact round head with a deep ring grille on a short stand, set with `illustration: circulator`; SwitchBot's Standing Circulator Fan gets a smaller head on a tall pole (`illustration: circulator_standing`)
+- **Tower fan**: a fan named like one (*tower*, *colonne*, *Turmventilator*, *torre*…) gets a tall column on a round foot, the cross-flow drum scrolling in its front slot with the speed and the column swinging while oscillating (`illustration: tower_fan`)
 - Oscillation, ionizer, child lock, sound and indicator light toggles; oscillation angle, timer and display brightness; turn left / turn right buttons
 - Temperature and humidity chips when the fan measures them
 - **Ceiling fan**: a fan named like one (*ceiling*, *plafond*, *Decken*, *techo*…) or from a ceiling fan maker (Bond, Big Ass Fans, Modern Forms, Hunter, Lucci Air, Minka, Casablanca, Fanimation, Westinghouse) hangs from the ceiling of the header's room, set with `illustration: ceiling` (`fan` forces the standing fan). Its four blades turn with the speed and the breeze falls into the room; reversed (winter), the blades turn the other way and the air rises. Its own light (a `light` of the same device) glows under it, with a **Light** toggle and a **Reverse** toggle when the fan supports the direction; the mini card gets a round light button, even with the fan off
@@ -112,6 +113,14 @@ On narrow cards (6 columns of a Sections view), the status pill moves under the 
 |---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-card-dark.png"><img alt="SwitchBot Circulator Fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-mini-dark.png"><img alt="SwitchBot Circulator Fan mini card" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-mini.png" width="400"></picture> |
 
+| Tower fan (Midea) | Tower fan mini |
+|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-tower-card-dark.png"><img alt="Tower fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-tower-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-tower-mini-dark.png"><img alt="Tower fan mini card" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-tower-mini.png" width="400"></picture> |
+
+| Midea air purifier (power switch, speeds as a select) | Midea air purifier mini |
+|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-midea-card-dark.png"><img alt="Midea air purifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-midea-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-midea-mini-dark.png"><img alt="Midea air purifier mini card" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-midea-mini.png" width="400"></picture> |
+
 | SwitchBot Standing Circulator Fan | SwitchBot Air Purifier |
 |---|---|
 | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-standing-card-dark.png"><img alt="SwitchBot Standing Circulator Fan" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-standing-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-switchbot-plain-card-dark.png"><img alt="SwitchBot Air Purifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-switchbot-plain-card.png" width="400"></picture> |
@@ -123,8 +132,16 @@ On narrow cards (6 columns of a Sections view), the status pill moves under the 
 - The room temperature in large and the target next to it; modes as segmented buttons (only the selected one keeps its label when there are many); − / + buttons for the target, sent once the taps stop and kept on screen until the device reports it. In *Heat/Cool* or *Auto* with a low / high range (`target_temp_low` / `target_temp_high`), both ends show with their own − / + (*Heat to*, *Cool to*); the mini card shows the range and leaves its buttons to the full card
 - A *Target humidity* slider when the entity supports it (`climate.set_humidity`, within `min_humidity` / `max_humidity`)
 - Fan mode, swing mode, horizontal swing mode (when the entity supports it, `climate.set_swing_horizontal_mode`) and preset; the device's other switches (eco, display, self clean, sound…) as option toggles
-- Animated illustration while it runs: the air flows out in the mode colour, with snowflakes when cooling, shimmer when heating and droplets when drying; the flap swings with the vertical swing and the airflow sways with the horizontal one; the status light breathes while the compressor runs. Four shapes: a wall split unit, a portable unit with its exhaust hose, a window split (indoor unit, outdoor unit hung outside the window, whose fan turns with the compressor) and a portasplit (Midea PortaSplit: an indoor console beside its outdoor condenser, joined by a looping hose), picked from the device model or set with `illustration`
+- Animated illustration while it runs: the air flows out in the mode colour, with snowflakes when cooling, shimmer when heating and droplets when drying; the flap swings with the vertical swing and the airflow sways with the horizontal one; the status light breathes while the compressor runs. Eight shapes: a wall split unit, a portable unit with its exhaust hose, a window split (indoor unit, outdoor unit hung outside the window, whose fan turns with the compressor — Midea U), a portasplit (Midea PortaSplit: an indoor console beside its outdoor condenser, joined by a looping hose), `breezeless` (Midea Breezeless: a wall unit whose front is a panel of micro-holes), `console` (a floor console blowing from its top louvre), `window_box` (a box window unit set in its window under the lowered sash — Midea EasyCool) and `portable_duo` (Midea Duo: a portable unit with one wide hose-in-hose), picked from the device model (Midea's MAW… window and MAP… portable model numbers) and name or set with `illustration`
 - Outdoor temperature, humidity and power draw chips; a *Clean the filter* alert from the device's dust sensor
+
+| Midea Breezeless | Midea Breezeless mini |
+|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-breezeless-card-dark.png"><img alt="Midea Breezeless air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-breezeless-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-breezeless-mini-dark.png"><img alt="Midea Breezeless mini card" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-breezeless-mini.png" width="400"></picture> |
+
+| Floor console | Box window unit | Duo portable |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-console-card-dark.png"><img alt="Floor console air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-console-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-box-card-dark.png"><img alt="Box window air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-box-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-duo-card-dark.png"><img alt="Duo portable air conditioner" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-duo-card.png" width="400"></picture> |
 
 ### Heat pump
 
@@ -163,8 +180,13 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 - A Rituals Perfume Genie (its diffuser is a `switch`, with no `humidifier` entity): *Diffusing* status, a *Room size* segmented control (m²), the cartridge fill as a bar with a *Cartridge empty* alert when no cartridge is inserted, and the fragrance, battery and Wi-Fi as chips
 - What it does in the status pill: *Humidifying*, *Drying*, *Diffusing*, *Idle*; *Water tank empty* (humidifier) or *Bucket full* (dehumidifier) as a red alert, on the card and the Overview tile
 - A *Mood light* section when the device's light can change brightness or colour (the VOCOlinc mood light), usable while the device itself is off: on / off, *Brightness* slider and colour swatches (a warm white when it supports colour temperature); the illustration follows its colour and brightness
+- The fan speed as segmented buttons when the device gives it as a select (Midea's *Lowest*… *High*, *Auto*)
 - The water left in the tank (or the bucket) as a bar (a level given as a word — SwitchBot's *empty*, *low*, *medium*, *high* — shows that word, *low* turning the water red and *empty* raising the alert), the filter of an evaporative humidifier, temperature chip; the device's light (the VOCOlinc ambient light), child lock, sound and other switches as option toggles
-- Large animated illustration: mist rises while it humidifies, the water in the tank waves and turns red once nearly empty, dry air leaves a dehumidifier while drops fall into its bucket. Ten shapes, picked from the device or set with `illustration`: `column` (ultrasonic), `tank` (clear tank on its base, Xiaomi / Deerma style), `evaporative` (fan and wick), `vocolinc` (VOCOlinc MistFlow, its light ring lit in the colour of its light), `diffuser` (VOCOlinc FlowerBud essential oil diffuser, its frosted cone lit in the colour of its mood light), `rituals` and `rituals_black` (Rituals Perfume Genie, in brass or black), `switchbot_humidifier` (SwitchBot Humidifier: a small cylinder, its clear tank under a domed lid), `switchbot_evaporative` (SwitchBot Evaporative Humidifier: a rounded tower, its fan behind a round grille, its tank window low on the front) and `dehumidifier`
+- Large animated illustration: mist rises while it humidifies, the water in the tank waves and turns red once nearly empty, dry air leaves a dehumidifier while drops fall into its bucket. Twelve shapes, picked from the device or set with `illustration`: `column` (ultrasonic), `tank` (clear tank on its base, Xiaomi / Deerma style), `evaporative` (fan and wick), `vocolinc` (VOCOlinc MistFlow, its light ring lit in the colour of its light), `diffuser` (VOCOlinc FlowerBud essential oil diffuser, its frosted cone lit in the colour of its mood light), `rituals` and `rituals_black` (Rituals Perfume Genie, in brass or black), `switchbot_humidifier` (SwitchBot Humidifier: a small cylinder, its clear tank under a domed lid), `switchbot_evaporative` (SwitchBot Evaporative Humidifier: a rounded tower, its fan behind a round grille, its tank window low on the front), `dehumidifier`, `dehumidifier_midea` (Midea's tower dehumidifier: a white body under its dark top panel, the bucket below with its float ring and side window, on casters) and `dehumidifier_cube` (Midea Cube: the compact cube on its extendable bucket)
+
+| Midea dehumidifier | Midea dehumidifier mini | Midea Cube |
+|---|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-midea-card-dark.png"><img alt="Midea dehumidifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-midea-card.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-midea-mini-dark.png"><img alt="Midea dehumidifier mini card" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-midea-mini.png" width="400"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-cube-card-dark.png"><img alt="Midea Cube dehumidifier" src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-cube-card.png" width="400"></picture> |
 
 | Humidifier | VOCOlinc MistFlow | Essential oil diffuser | Dehumidifier |
 |---|---|---|---|
@@ -217,14 +239,14 @@ The source side changes with `source` (and its `ground_type` / `water_type` vari
 
 ## Supported integrations
 
-The cards work with **any integration** that provides air purifiers and fans as `fan` entities air conditioners and heat pumps as `climate` entities, and humidifiers, dehumidifiers and diffusers as `humidifier` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson, Daikin Onecta, Panasonic Aquarea, MELCloud, Overkiz, ViCare, myUplink…), plus the Rituals Perfume Genie whose diffuser is a `switch`. Some get a specific treatment:
+The cards work with **any integration** that provides air purifiers and fans as `fan` entities air conditioners and heat pumps as `climate` entities, and humidifiers, dehumidifiers and diffusers as `humidifier` entities (Xiaomi Home, Xiaomi Miio, HomeKit Device, Matter, Midea, Dyson, Daikin Onecta, Panasonic Aquarea, MELCloud, Overkiz, ViCare, myUplink…), plus the Rituals Perfume Genie whose diffuser is a `switch` and the Midea air purifiers driven by their power `switch`. Some get a specific treatment:
 
 | Integration | What the cards add |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/xiaomi_home.png" alt="" width="16"> [Xiaomi Home](https://github.com/XiaoMi/ha_xiaomi_home) (Marketplace) | Purifiers, fans and humidifiers (Smartmi, Deerma…): the illustration from the model, the filter life, the water level and the child lock, indicator light and sound of the device |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/xiaomi_miio.png" alt="" width="16"> [Xiaomi Miio](https://www.home-assistant.io/integrations/xiaomi_miio/) (built in) | The same devices through the local protocol: presets, favorite level, filter life, water level and dry mode of the humidifiers |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/matter.png" alt="" width="16"> [Matter](https://www.home-assistant.io/integrations/matter/) (built in) | Purifiers, fans, air conditioners and heat pumps from their standard entities, with the filter condition when the device reports it |
-| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/midea_ac_lan.png" alt="" width="16"> [Midea AC LAN](https://github.com/wuwentao/midea_ac_lan) (Marketplace) | Air conditioners and dehumidifiers: the dehumidifier illustration, the *Bucket full* alert and the bucket level |
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/midea_ac_lan.png" alt="" width="16"> [Midea](https://www.home-assistant.io/integrations/midea/) (built in, Home Assistant 2026.8), [Midea AC LAN](https://github.com/wuwentao/midea_ac_lan), [Midea Smart AC](https://github.com/mill1000/midea-ac-py), [Midea Air Appliances (LAN)](https://github.com/nbogojevic/homeassistant-midea-air-appliances-lan) and [Midea Auto Cloud](https://github.com/sususweet/midea_auto_cloud) (Marketplace) | Every Midea appliance of these cards, with the Midea logo and its own illustration: **air conditioners** (wall split, Breezeless, floor console, PortaSplit, U-shaped and box window units, portable and Duo — the options, *Full dust* filter alert and filter reset), **dehumidifiers** (tower or Cube: the tank level, the *Tank full* alert, the fan speed), **humidifiers** (evaporative), **air purifiers** (no fan entity: the card adopts their power switch, with their mode and fan speed selects, PM2.5, TVOC, filter life and child lock — a `lock` with Midea AC LAN), **fans** (standing, tower, integrated ceiling fan), **fresh air appliances** on the ventilation card and **heat pumps** (M-Thermal, Heat Pump Wi-Fi Controller) on the heat pump card |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/homekit.png" alt="" width="16"> [HomeKit Device](https://www.home-assistant.io/integrations/homekit_controller/) (built in) | The mode select as presets when the purifier has none; an air quality index on the HomeKit 1–5 scale |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/dyson_local.png" alt="" width="16"> [Dyson](https://github.com/libdyson-wg/ha-dyson) (Marketplace) | VOC and NO₂ chips, the HEPA filter life, and a bladeless loop illustration |
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/images/daikin_onecta.png" alt="" width="16"> [Daikin Onecta](https://github.com/jwillemsen/daikin_onecta) (Marketplace) | Altherma heat pumps: the heat pump card, with the hot water tank (`water_heater`) of the same device |
@@ -289,7 +311,7 @@ The purifier, fan and air conditioner cards, and their mini cards, share these o
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `show_subtitle` | ❌ | `true` | Show the subtitle under the title |
 | `icon` | ❌ | Illustration | Replaces the illustration with an icon |
-| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box`, `dyson` (bladeless loop), `switchbot` or `switchbot_table`; fan: `fan` (standing fan), `ceiling` (ceiling fan), `circulator` or `circulator_standing` (a circulator on a pole); humidifier: see [Humidifier](#humidifier); air conditioner: `split`, `portable`, `window` or `portasplit`. `auto` picks one from the device model and name; `false` (*No illustration* in the visual editor) keeps the classic header (see [Illustrated header](#illustrated-header)) |
+| `illustration` | ❌ | `auto` | Purifier: `tower`, `cylinder`, `box`, `dyson` (bladeless loop), `switchbot` or `switchbot_table`; fan: `fan` (standing fan), `ceiling` (ceiling fan), `circulator` or `circulator_standing` (a circulator on a pole); humidifier: see [Humidifier](#humidifier); air conditioner: `split`, `portable`, `window`, `portasplit`, `breezeless`, `console`, `window_box` or `portable_duo`; fan: also `tower_fan`. `auto` picks one from the device model and name; `false` (*No illustration* in the visual editor) keeps the classic header (see [Illustrated header](#illustrated-header)) |
 | `illustration_theme` | ❌ | `auto` | The header's picture by day or by night: `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme), `day` or `night`. Both the full and the mini card |
 | `brand` | ❌ | Auto | YAML only: the logo on the header icon, guessed from the device's manufacturer, else its integration; a logo name (`xiaomi_home`, `xiaomi_miio`, `dyson_local`, `daikin_onecta`, `midea_ac_lan`, `homekit`, `vocolinc`, `rituals`, `matter`, `melcloud`, `vicare`, `myuplink`, `panasonic`, `cozytouch`, `hitachi_yutaki`, `esphome`, `bond`, `baf`, `modern_forms`) picks one, `none` removes it |
 | `show_controls` | ❌ | `true` | Show the controls (presets, speed, modes, options) |
@@ -343,7 +365,7 @@ devices:
 | `show_title` | ❌ | `true` | Show the title in the header (e.g. `false` under a section heading of your own) |
 | `icon` | ❌ | `mdi:air-filter` | Header icon |
 | `illustration_theme` | ❌ | `auto` | The header's room by day or by night: `auto` (follows the Home Assistant theme: night with a dark theme, day with a light theme), `day` or `night` |
-| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`, `humidifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable`, `window` or `portasplit`; humidifier `column`, `tank`, `evaporative`, `vocolinc`, `diffuser` or `dehumidifier`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
+| `illustrations` | ❌ | Auto | Tile illustrations, by kind of device (`aircon`, `purifier`, `humidifier`) and by entity ID, the device's own winning: purifier `tower`, `cylinder`, `box` or `dyson`; air conditioner `split`, `portable`, `window`, `portasplit`, `breezeless`, `console`, `window_box` or `portable_duo`; humidifier `column`, `tank`, `evaporative`, `vocolinc`, `diffuser`, `dehumidifier`, `dehumidifier_midea` or `dehumidifier_cube`. Unset or `auto`: guessed from the device model and name. The unfolded card uses the same one. In the visual editor's **Device types** and **Devices** sections |
 | `icons` | ❌ | — | An icon instead of the illustration, by kind of device (`heatpump`, `aircon`, `purifier`, `humidifier`, `fan`) or by entity ID; it moves with the device state (turning fan, mode icon of an air conditioner). In the visual editor's **Device types** and **Devices** sections |
 | `group_by` | ❌ | `type` | `type` (heat pumps, air conditioners, air purifiers, humidity, fans), `area` or `none`. With `area`, the heading shows the area's icon and name, and each tile is labelled by its kind of device (Air purifier, Air conditioner…) instead of repeating the room — a `name` set in `devices` still wins |
 | `columns` | ❌ | `2` | Number of tile columns (1 on narrow cards unless set) |
@@ -436,7 +458,7 @@ entities:                            # monitoring roles (YAML only)
 ```yaml
 type: custom:climate-air-humidifier-card
 entity: humidifier.bedroom_humidifier
-illustration: vocolinc   # column, tank, evaporative, vocolinc, diffuser, rituals, rituals_black, switchbot_humidifier, switchbot_evaporative, dehumidifier or auto
+illustration: vocolinc   # column, tank, evaporative, vocolinc, diffuser, rituals, rituals_black, switchbot_humidifier, switchbot_evaporative, dehumidifier, dehumidifier_midea, dehumidifier_cube or auto
 ```
 
 ### Ventilation
@@ -563,6 +585,12 @@ The SwitchBot Air Purifier (without a table): its fan turns under the round outl
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-switchbot-plain.gif" alt="SwitchBot Air Purifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-switchbot-plain-dark.gif" alt="SwitchBot Air Purifier animation, dark theme" width="400"> |
 
+A Midea air purifier, switched by its power switch: its fan turns as fast as its speed select says, clean air rising out of its slatted top.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-midea.gif" alt="Midea air purifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/purifier-midea-dark.gif" alt="Midea air purifier animation, dark theme" width="400"> |
+
 The fan spins its blades, the head slowly oscillates from side to side, and gusts of air stream out in front of it.
 
 | Light | Dark |
@@ -580,6 +608,12 @@ The SwitchBot Standing Circulator Fan: the same head, smaller, on its telescopic
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-standing.gif" alt="standing circulator fan animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-circulator-standing-dark.gif" alt="standing circulator fan animation, dark theme" width="400"> |
+
+The tower fan scrolls its cross-flow drum in the front slot and swings its column while oscillating.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-tower.gif" alt="tower fan animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/fan-tower-dark.gif" alt="tower fan animation, dark theme" width="400"> |
 
 The ceiling fan turns its blades with the speed, its light glowing under it, and the breeze falls into the room.
 
@@ -616,6 +650,26 @@ With the `portasplit` illustration, the outdoor condenser's fan spins while the 
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portasplit.gif" alt="portasplit air conditioner animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-portasplit-dark.gif" alt="portasplit air conditioner animation, dark theme" width="400"> |
+
+The Midea Breezeless lets the air seep out under its micro-hole panel, its flap swinging.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-breezeless.gif" alt="Midea Breezeless animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-breezeless-dark.gif" alt="Midea Breezeless animation, dark theme" width="400"> |
+
+The floor console blows from its top louvre, the box window unit from the louvres under its sash, and the Duo portable out of its top while its hose-in-hose carries the heat out.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-console.gif" alt="floor console animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-console-dark.gif" alt="floor console animation, dark theme" width="400"> |
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-box.gif" alt="box window unit animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-window-box-dark.gif" alt="box window unit animation, dark theme" width="400"> |
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-duo.gif" alt="Duo portable animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/aircon-duo-dark.gif" alt="Duo portable animation, dark theme" width="400"> |
 
 The heat pump spins its outdoor fan while the water flows in the pipes and warm air rises above the unit.
 
@@ -676,6 +730,16 @@ The SwitchBot Evaporative Humidifier turns its fan behind the round grille, mist
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-switchbot-evaporative.gif" alt="SwitchBot Evaporative Humidifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-switchbot-evaporative-dark.gif" alt="SwitchBot Evaporative Humidifier animation, dark theme" width="400"> |
+
+Midea's tower dehumidifier sends the dry air out of its dark top panel while the water rises in its side window; the Cube does the same from its top grille, above its extendable bucket.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-midea.gif" alt="Midea dehumidifier animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-midea-dark.gif" alt="Midea dehumidifier animation, dark theme" width="400"> |
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-cube.gif" alt="Midea Cube animation" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-climate-air-card/main/screenshots/humidifier-cube-dark.gif" alt="Midea Cube animation, dark theme" width="400"> |
 
 The VOCOlinc MistFlow sends mist out of its top, its light ring in the colour of its light.
 

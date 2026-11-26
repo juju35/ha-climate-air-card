@@ -9,6 +9,7 @@
 import { caEsc } from "./i18n-helpers.js";
 import { caDeviceOf } from "./device-discovery.js";
 import { CA_ART } from "./illustrations.js";
+import { caIsDehumidifier } from "./humidifiers.js";
 
 // The brand logos, by slug (images/badge/<slug>.png). The build lists the slugs here (`slug: true`) and writes each
 // logo to its own file next to the bundle, ha-climate-air-card.brand.<slug>.js (scripts/build.mjs): the first card
@@ -121,9 +122,18 @@ export function caIsNight(hass, config) {
 // banner crops the picture to it, so the device stands on the floor strip and fills the room's height. Its effects
 // (air, mist, breeze) still draw outside it.
 export const CA_BANNER_BOX = {
-  aircon: { split: [2.4, 13.4, 75.2, 32.2], portable: [1.5, 2.5, 61.1, 87.1], window: [1, 3.6, 71.6, 84.8], portasplit: [3.4, 18.1, 73.2, 71.2] },
+  aircon: {
+    split: [2.4, 13.4, 75.2, 32.2],
+    portable: [1.5, 2.5, 61.1, 87.1],
+    window: [1, 3.6, 71.6, 84.8],
+    portasplit: [3.4, 18.1, 73.2, 71.2],
+    breezeless: [2.4, 12.4, 75.2, 33.2],
+    console: [8.4, 36.4, 63.2, 52],
+    window_box: [0, 3.2, 80, 63.2],
+    portable_duo: [0.5, 0, 67, 89.6],
+  },
   purifier: { tower: [17.9, 6.4, 44.2, 82.2], cylinder: [20.4, 7.9, 39.2, 82.3], box: [11.4, 16.4, 57.2, 72.2], dyson: [23.9, 1.3, 32.2, 87.3] },
-  fan: { fan: [13.2, 5.2, 53.6, 86.5], ceiling: [2, 0, 96, 51] },
+  fan: { fan: [13.2, 5.2, 53.6, 86.5], ceiling: [2, 0, 96, 51], tower_fan: [24.5, 6.4, 31, 83.1] },
   humidifier: {
     column: [23.4, 21.4, 33.2, 67.2],
     tank: [7.4, 11.5, 65.2, 75.1],
@@ -133,6 +143,8 @@ export const CA_BANNER_BOX = {
     rituals: [10.8, 17.8, 58.5, 68.6],
     rituals_black: [10.8, 17.8, 58.5, 68.6],
     dehumidifier: [15.4, 9.4, 49.2, 79.2],
+    dehumidifier_midea: [15.4, 11.4, 49.2, 78.4],
+    dehumidifier_cube: [12.4, 12.4, 55.2, 76.1],
   },
   heatpump: { air: [0, 5.4, 116.7, 83.2] },
   ventilation: { mvhr: [4, 2, 72, 74], extract: [12, 4, 56, 70] },
@@ -146,7 +158,7 @@ export function caBannerPlace(kind, variant, slot) {
   const vb = boxes[variant] || Object.values(boxes)[0] || [0, 0, 80, 94];
   // A ceiling fan hangs from the ceiling (y 0): drawn like a wall unit, high in the room, its light under it.
   const hang = kind === "fan" && variant === "ceiling";
-  const wall = (kind === "aircon" && (variant || "split") === "split") || hang;
+  const wall = (kind === "aircon" && ["split", "breezeless"].includes(variant || "split")) || hang;
   const [maxW, maxH, cx] = slot
     ? [hang ? slot.maxW + 6 : slot.maxW, hang ? 30 : wall ? slot.wallH : slot.maxH, slot.cx]
     : hang
@@ -217,7 +229,7 @@ export function caBannerFx(kind, variant, p, dustX = 92) {
     const hy = top + (32 - 5.2) * p.k;
     fx = [-12, 0, 12].map((dy, i) => `<path class="bz b${i}" d="M${caF(p.x - 2)} ${caF(hy + dy)} q-10 -5 -20 0 t-20 0"/>`).join("");
   } else if (kind === "humidifier") {
-    if (variant === "dehumidifier") {
+    if (caIsDehumidifier(variant)) {
       fx = `<g class="clean dry">${[-6, 0, 6].map((dx, i) => `<path class="cl l${i}" d="M${caF(cx + dx)} ${caF(top - 1)} q-3 -3 0 -6"/>`).join("")}</g>`;
     } else {
       fx = [[0, 4, 6], [-7, 8, 4], [7, 9, 5], [-1, 14, 3.5]]
