@@ -195,6 +195,41 @@ const SWITCHBOT_DEVICES = [
   ]],
 ];
 
+// Midea devices (core Midea integration), added by mockHass(lang, changes, { midea: true }) only: an air purifier driven
+// by its power switch (no fan entity: its mode, detection mode and fan speed are selects), a tower dehumidifier (its
+// tank level in %, a full-tank sensor, its fan speed a select), a tower fan and a Breezeless wall air conditioner.
+const MIDEA_DEVICES = [
+  ["dev_md_p", "office", { en: "Office purifier", fr: "Purificateur bureau" }, [
+    ["switch.office_purifier_power", { en: "Power", fr: "Alimentation" }, "on", {}],
+    ["sensor.office_purifier_pm25", { en: "PM2.5", fr: "PM2.5" }, 14, { device_class: "pm25", unit_of_measurement: "µg/m³" }],
+    ["sensor.office_purifier_tvoc", { en: "TVOC", fr: "COVT" }, 0.12, { device_class: "volatile_organic_compounds_parts", unit_of_measurement: "ppm" }],
+    ["sensor.office_purifier_filter1_life", { en: "Filter 1 life level", fr: "Durée de vie du filtre 1" }, 72, { unit_of_measurement: "%" }],
+    ["select.office_purifier_mode", { en: "Mode", fr: "Mode" }, "auto", { options: ["auto", "manual", "sleep"] }],
+    ["select.office_purifier_detect_mode", { en: "Detect mode", fr: "Mode de détection" }, "pm25", { options: ["off", "pm25", "methanal"] }],
+    ["select.office_purifier_fan_speed", { en: "Fan speed", fr: "Vitesse du ventilateur" }, "Medium", { options: ["Lowest", "Low", "Medium", "High", "Auto"] }],
+    ["switch.office_purifier_child_lock", { en: "Child lock", fr: "Sécurité enfant" }, "off", {}],
+  ]],
+  ["dev_md_d", "bedroom", { en: "Bedroom dehumidifier", fr: "Déshumidificateur chambre" }, [
+    ["humidifier.bedroom_dehumidifier", null, "on", {
+      device_class: "dehumidifier", humidity: 50, current_humidity: 63, min_humidity: 35, max_humidity: 85,
+      available_modes: ["Set", "Auto", "Continuous", "Clothes drying"], mode: "Auto", action: "drying", supported_features: 1 }],
+    ["sensor.bedroom_dehumidifier_tank_level", { en: "Tank level", fr: "Niveau du réservoir" }, 40, { unit_of_measurement: "%" }],
+    ["binary_sensor.bedroom_dehumidifier_tank_full", { en: "Tank full", fr: "Réservoir plein" }, "off", { device_class: "problem" }],
+    ["select.bedroom_dehumidifier_fan_speed", { en: "Fan speed", fr: "Vitesse du ventilateur" }, "High", { options: ["Lowest", "Low", "Medium", "High", "Auto"] }],
+    ["switch.bedroom_dehumidifier_child_lock", { en: "Child lock", fr: "Sécurité enfant" }, "off", {}],
+  ]],
+  ["dev_md_f", "office", { en: "Office tower fan", fr: "Ventilateur colonne bureau" }, [
+    ["fan.office_tower_fan", null, "on", { preset_modes: ["normal", "natural", "sleep"], preset_mode: "normal", percentage: 66, percentage_step: 33.333, oscillating: true, supported_features: 59 }],
+  ]],
+  ["dev_md_ac", "bedroom", { en: "Bedroom Breezeless", fr: "Breezeless chambre" }, [
+    ["climate.bedroom_breezeless", null, "cool", {
+      hvac_modes: ["off", "auto", "cool", "dry", "heat", "fan_only"], min_temp: 16, max_temp: 30, target_temp_step: 0.5,
+      fan_modes: ["silent", "low", "medium", "high", "full", "auto"], fan_mode: "auto", swing_modes: ["off", "vertical", "horizontal", "both"], swing_mode: "vertical",
+      current_temperature: 27, temperature: 23, hvac_action: "cooling", supported_features: 425 }],
+    ["sensor.bedroom_breezeless_outdoor_temperature", { en: "Outdoor temperature", fr: "Température extérieure" }, 31, { device_class: "temperature", unit_of_measurement: "°C" }],
+  ]],
+];
+
 // What Home Assistant itself translates: the climate modes, and the climate fan, swing and preset values it knows.
 // Integration-specific values (Xiaomi Home presets, Midea's silent / full fan modes, HomeKit modes) are left raw,
 // as Home Assistant does: the cards translate them.
@@ -233,14 +268,18 @@ const BRANDS = {
   dev_sb_h: ["switchbot", "switchbot", "Evaporative Humidifier"],
   dev_sb_p2: ["switchbot_cloud", "SwitchBot", "Air Purifier PM2.5"],
   dev_sb_f2: ["switchbot_cloud", "SwitchBot", "Standing Fan"],
+  dev_md_p: ["midea", "Midea", "Air Purifier"],
+  dev_md_d: ["midea", "Midea", "Dehumidifier"],
+  dev_md_f: ["midea", "Midea", "Fan"],
+  dev_md_ac: ["midea", "Midea", "Air Conditioner"],
 };
 
-export const mockHass = (lang = "en", changes = {}, { switchbot = false } = {}) => {
+export const mockHass = (lang = "en", changes = {}, { switchbot = false, midea = false } = {}) => {
   const states = {};
   const entities = {};
   const devices = {};
   const areas = Object.fromEntries(Object.entries(AREAS).map(([area_id, n]) => [area_id, { area_id, name: n[lang], icon: n.icon || null }]));
-  for (const [dev, area_id, names, items] of switchbot ? [...DEVICES, ...SWITCHBOT_DEVICES] : DEVICES) {
+  for (const [dev, area_id, names, items] of [...DEVICES, ...(switchbot ? SWITCHBOT_DEVICES : []), ...(midea ? MIDEA_DEVICES : [])]) {
     const [platform = "mock", manufacturer, model] = BRANDS[dev] || [];
     devices[dev] = { id: dev, name: names[lang], name_by_user: null, area_id, ...(manufacturer ? { manufacturer } : {}), ...(model ? { model } : {}) };
     for (const [entity_id, n, state, attributes] of items) {

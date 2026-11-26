@@ -155,6 +155,42 @@ const CA_HUM_ARTS = {
     '<rect x="20" y="58" width="40" height="26" rx="4" fill="#ffffff" fill-opacity=".15" stroke="#b6bfc9" stroke-width="1"/>' +
     '<g class="drip"><path d="M40 60q-1.6 2.6 0 4t0-4Z"/><path d="M36 60q-1.6 2.6 0 4t0-4Z"/></g>' +
     '<rect x="34" y="55.5" width="12" height="3" rx="1.5" fill="#9aa5b1"/>',
+  // Midea's tower dehumidifier (MDDF…, MAD…C1…): a white body with rounded corners under its dark top panel (the dry
+  // air out of it), the handle recessed in its side, the bucket below with its round float ring and the water seen
+  // through the narrow window on its side, on four casters.
+  dehumidifier_midea: (s) =>
+    '<ellipse class="floor" cx="40" cy="90" rx="28" ry="3.5" fill="url(#ca-uf)"/>' +
+    `<g class="dry">${[31, 40, 49].map((x) => `<path d="M${x} 9q-2.5-3 0-6t0-6"/>`).join("")}</g>` +
+    '<rect x="16" y="12" width="48" height="74" rx="7" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<path d="M16 21V19Q16 12 23 12H57Q64 12 64 19V21Z" fill="#3a434e"/>' +
+    '<path d="M22 16H58" stroke="#5d6874" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<rect x="17.6" y="24" width="4" height="7" rx="2" fill="#dfe4ea" stroke="#c3cad2" stroke-width=".7"/>' +
+    caHumDisplay(32, 30, 20, s.display) +
+    '<circle class="led" cx="42" cy="44" r="1.3"/>' +
+    '<path d="M16.6 56H63.4" stroke="#c3cad2" stroke-width="1.1"/>' +
+    caHumWater("ca-uw", 18.3, 60, 3.2, 22, 1.6, s.level) +
+    '<rect x="18.3" y="60" width="3.2" height="22" rx="1.6" fill="#ffffff" fill-opacity=".2" stroke="#b6bfc9" stroke-width=".7"/>' +
+    '<g class="drip"><path d="M19.9 57.5q-1.2 2 0 3t0-3Z"/></g>' +
+    '<circle class="knob" cx="45" cy="71" r="5.6" stroke-width="2"/>' +
+    '<circle cx="45" cy="71" r="4" fill="#eef1f4"/>' +
+    '<circle cx="22" cy="87.5" r="2.3" fill="#3a434e"/><circle cx="58" cy="87.5" r="2.3" fill="#3a434e"/>',
+  // Midea Cube: a compact cube (controls, display and the dry air out of its top grille) on its bucket, which pulls
+  // out to hold more water (the seam of its extension), the water seen through its window.
+  dehumidifier_cube: (s) =>
+    '<ellipse class="floor" cx="40" cy="90" rx="28" ry="3.5" fill="url(#ca-uf)"/>' +
+    `<g class="dry">${[31, 40, 49].map((x) => `<path d="M${x} 12q-2.5-3 0-6t0-6"/>`).join("")}</g>` +
+    '<rect x="15" y="44" width="50" height="44" rx="5" fill="#e3e8ee" stroke="#b6bfc9" stroke-width="1.1"/>' +
+    '<path d="M15.6 64H64.4" stroke="#b6bfc9" stroke-width="1"/><path d="M15.6 66H64.4" stroke="#d5dbe2" stroke-width=".8"/>' +
+    caHumWater("ca-uw", 21, 69, 38, 15, 3, s.level) +
+    '<rect x="21" y="69" width="38" height="15" rx="3" fill="#ffffff" fill-opacity=".15" stroke="#b6bfc9" stroke-width="1"/>' +
+    '<rect x="31" y="48" width="18" height="3" rx="1.5" fill="#b6bfc9"/>' +
+    '<g class="drip"><path d="M40 53q-1.6 2.6 0 4t0-4Z"/><path d="M44 53q-1.6 2.6 0 4t0-4Z"/></g>' +
+    '<rect x="13" y="13" width="54" height="32" rx="6" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="18" y="15.5" width="44" height="6" rx="2.5" fill="#3a434e"/>' +
+    `<path d="${Array.from({ length: 13 }, (_, i) => `M${20.5 + i * 3.2} 16.3v4.4`).join("")}" stroke="#6b7682" stroke-width=".9"/>` +
+    caHumDisplay(30, 27, 20, s.display) +
+    '<circle class="led" cx="21" cy="31.5" r="1.4"/><circle class="led" cx="59" cy="31.5" r="1.4"/>' +
+    '<path d="M19 39.5H61" stroke="#d5dbe2" stroke-width="1.2" stroke-linecap="round"/>',
   // SwitchBot Humidifier: a small white cylinder, its clear tank above a solid base, the mist nozzle in the middle of
   // the domed lid and a light line round the foot.
   switchbot_humidifier: (s) =>
@@ -191,15 +227,17 @@ const CA_HUM_ARTS = {
 };
 
 // `model`: the device model, which tells the SwitchBot humidifiers apart whatever their owner named them.
+// Midea: the Cube dehumidifiers (MAD…S1Q…, MAD…PS1Q… with a pump) and the humidifiers (evaporative, with a wet pad).
 const caHumidifierVariant = (text, model = "") => {
   const t = String(text || "");
-  if (/dehumid|d[ée]shumid|entfeucht|deshumid|deumid|ontvocht|osusz|dehumidifier/i.test(t)) return "dehumidifier";
+  if (/dehumid|d[ée]shumid|entfeucht|deshumid|deumid|ontvocht|osusz|dehumidifier|\bmad\d|\bmddf/i.test(t))
+    return /\bcube\b|\bmad\d+p?s1q/i.test(t) ? "dehumidifier_cube" : /midea|\bmddf|\bmad\d/i.test(t) ? "dehumidifier_midea" : "dehumidifier";
   if (/rituals|perfume.?genie/i.test(t)) return /black|noir|graphit|anthracit|\bdark\b/i.test(t) ? "rituals_black" : "rituals";
   if (/flower.?bud|diffus|aroma|essential|huile|vocolinc.*(fb|vf|ad)/i.test(t)) return "diffuser";
   if (/vocolinc|mistflow|vh1/i.test(t)) return "vocolinc";
   // SwitchBot: the Evaporative Humidifier (« Humidifier2 » in the Cloud API) or the ultrasonic Humidifier (WoHumi).
   if (/switch\s?bot|wonderlabs|wohumi/i.test(t)) return /evapor|humidifier\s?2/i.test(model || t) ? "switchbot_evaporative" : "switchbot_humidifier";
-  if (/evapor|wick|cjxjsq|smartmi|zhimi|levoit.*(oasis|ev)|venta|stadler/i.test(t)) return "evaporative";
+  if (/evapor|wick|cjxjsq|midea|wet.?pad|smartmi|zhimi|levoit.*(oasis|ev)|venta|stadler/i.test(t)) return "evaporative";
   if (/deerma|jsq|tank|r[ée]servoir|mjjsq|dem-/i.test(t)) return "tank";
   return "column";
 };
@@ -212,7 +250,7 @@ const CA_LIGHT_COLORS = ["255,64,64", "255,140,0", "255,214,0", "64,220,96", "0,
 const caLightLevel = (st) => (st?.state === "on" && st.attributes.brightness != null ? Math.max(0.25, Number(st.attributes.brightness) / 255) : 1);
 
 CA_ART.humidifier = {
-  variants: ["column", "tank", "evaporative", "vocolinc", "diffuser", "rituals", "rituals_black", "dehumidifier", "switchbot_humidifier", "switchbot_evaporative"],
+  variants: ["column", "tank", "evaporative", "vocolinc", "diffuser", "rituals", "rituals_black", "dehumidifier", "switchbot_humidifier", "switchbot_evaporative", "dehumidifier_cube", "dehumidifier_midea"],
   guess: caHumidifierVariant,
   render: (variant, s) => ({
     svg: `<svg viewBox="0 0 80 94" aria-hidden="true"><defs>${CA_HUM_DEFS}</defs>${(CA_HUM_ARTS[variant] || CA_HUM_ARTS.column)(s)}</svg>`,
@@ -275,7 +313,7 @@ class ClimateAirHumidifierCard extends CaCard {
 
   _roles() {
     return [
-      "humidity", "temperature", "water_level", "tank_empty", "bucket_full", "filter", "filter_alert", "filter_reset",
+      "humidity", "temperature", "water_level", "tank_empty", "bucket_full", "filter", "filter_alert", "filter_reset", "fan_speed",
       "lamp", "spray", "child_lock", "buzzer", "room_size", "perfume", "battery", "charging", "wifi", "cartridge",
     ];
   }
@@ -393,7 +431,7 @@ class ClimateAirHumidifierCard extends CaCard {
       sp && !caUnavailable(sp) && this._num(r.ent.spray) != null
         ? this._rangeHtml("number", r.ent.spray, m.diffuser ? "mdi:scent" : "mdi:spray", this._t(m.diffuser ? "intensity" : "spray"), Number(sp.attributes.min ?? 1), Number(sp.attributes.max ?? 5), Number(sp.attributes.step ?? 1), this._num(r.ent.spray))
         : "";
-    return this._section("", modes + target + spray) + roomSize + light + this._options(toggles + this._switchToggles(r) + reset);
+    return this._section("", modes + target + spray) + this._speedSegments(r.ent.fan_speed) + roomSize + light + this._options(toggles + this._switchToggles(r) + reset);
   }
 
   // A light whose brightness or colour can change (the VOCOlinc mood light) gets its own section, usable while the

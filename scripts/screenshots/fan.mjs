@@ -60,3 +60,20 @@ await shoot({
   shots: pair("card"),
   setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.hall_fan" } }),
 });
+
+// Midea: a tower fan, oscillating.
+// Captures: fan-tower-card, fan-tower-mini (and their -dark twins).
+const md = (lang, changes) => mockHass(lang, changes, { midea: true });
+await shoot({
+  prefix: "fan-tower",
+  tag: "climate-air-fan-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "fan.office_tower_fan" } }),
+});
+
+await shoot({
+  prefix: "fan-tower",
+  tag: "climate-air-fan-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "fan.office_tower_fan" } }),
+});

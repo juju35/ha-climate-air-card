@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.22.0 - 2026-11-26
+
+### Features
+- Midea: every appliance of these cards from the core **Midea** integration (Home Assistant 2026.8), **Midea AC LAN**, **Midea Smart AC**, **Midea Air Appliances (LAN)** and **Midea Auto Cloud**, recognised by its integration or its manufacturer, with the Midea logo.
+- Midea air purifiers, which have no fan entity: the purifier card (and the overview) adopts their power switch; their mode select (not the detection mode), PM2.5, TVOC and filter life are found on the device.
+- A fan speed given as a select (Midea's *Lowest*… *High*, *Auto*) is shown as segmented buttons on the purifier and humidifier cards, and sets the illustration's speed.
+- The tank level of a Midea dehumidifier (`tank_level`, or an entity id ending in `_tank`) fills its bucket.
+- New illustrations, picked from the device model and name or set with `illustration`: air conditioners `breezeless` (Midea Breezeless: its micro-hole front), `console` (floor console), `window_box` (box window unit in its window — Midea EasyCool, MAW… models) and `portable_duo` (Midea Duo, its hose-in-hose); dehumidifiers `dehumidifier_midea` (Midea's tower dehumidifier: dark top panel, float ring, side window, casters) and `dehumidifier_cube` (Midea Cube, MAD…S1Q… models); fans `tower_fan` (tower fan). Midea's U-shaped window units (MAW…V…) keep the window split, MAP… portables the portable, Midea purifiers the square box and Midea humidifiers the evaporative tower. Editor labels in the 22 languages.
+- Midea fresh air appliances are ventilation units, M-Thermal controllers heat pumps.
+
 ## 2.21.0 - 2026-11-26
 
 ### Features

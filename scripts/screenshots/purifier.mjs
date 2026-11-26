@@ -47,3 +47,20 @@ await shoot({
   shots: pair("card"),
   setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.hall_purifier" } }),
 });
+
+// Midea (core integration): an air purifier driven by its power switch, its fan speed and mode as selects.
+// Captures: purifier-midea-card, purifier-midea-mini (and their -dark twins).
+const md = (lang, changes) => mockHass(lang, changes, { midea: true });
+await shoot({
+  prefix: "purifier-midea",
+  tag: "climate-air-purifier-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "switch.office_purifier_power" } }),
+});
+
+await shoot({
+  prefix: "purifier-midea",
+  tag: "climate-air-purifier-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: md(lang), config: { entity: "switch.office_purifier_power" } }),
+});
