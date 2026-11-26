@@ -176,7 +176,7 @@ const CA_HUM_ARTS = {
     '<rect x="13" y="14" width="54" height="74" rx="13" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.2"/>' +
     '<rect x="19" y="16.5" width="42" height="7" rx="3.5" fill="#3a434e"/>' +
     `<path d="${Array.from({ length: 9 }, (_, i) => `M${22.5 + i * 4.4} 17.8v4.4`).join("")}" stroke="#8b96a3" stroke-width="1"/>` +
-    '<circle cx="40" cy="47" r="10.5" fill="#3a434e" stroke="#c3cad2" stroke-width=".8"/>' +
+    '<circle cx="40" cy="48" r="10.5" fill="#3a434e" stroke="#c3cad2" stroke-width=".8"/>' +
     `<g class="rotor">${[0, 120, 240]
       .map((a) => `<path transform="rotate(${a} 40 48)" d="M40 48C38.9 44 40 40 43.8 39.3C44.8 43 43.1 46.4 40 48Z"/>`)
       .join("")}</g>` +
@@ -190,14 +190,15 @@ const CA_HUM_ARTS = {
   rituals_black: () => caRitualsArt("black"),
 };
 
-const caHumidifierVariant = (text) => {
+// `model`: the device model, which tells the SwitchBot humidifiers apart whatever their owner named them.
+const caHumidifierVariant = (text, model = "") => {
   const t = String(text || "");
   if (/dehumid|d[ée]shumid|entfeucht|deshumid|deumid|ontvocht|osusz|dehumidifier/i.test(t)) return "dehumidifier";
   if (/rituals|perfume.?genie/i.test(t)) return /black|noir|graphit|anthracit|\bdark\b/i.test(t) ? "rituals_black" : "rituals";
   if (/flower.?bud|diffus|aroma|essential|huile|vocolinc.*(fb|vf|ad)/i.test(t)) return "diffuser";
   if (/vocolinc|mistflow|vh1/i.test(t)) return "vocolinc";
   // SwitchBot: the Evaporative Humidifier (« Humidifier2 » in the Cloud API) or the ultrasonic Humidifier (WoHumi).
-  if (/switch\s?bot|wonderlabs|wohumi/i.test(t)) return /evapor|humidifier\s?2/i.test(t) ? "switchbot_evaporative" : "switchbot_humidifier";
+  if (/switch\s?bot|wonderlabs|wohumi/i.test(t)) return /evapor|humidifier\s?2/i.test(model || t) ? "switchbot_evaporative" : "switchbot_humidifier";
   if (/evapor|wick|cjxjsq|smartmi|zhimi|levoit.*(oasis|ev)|venta|stadler/i.test(t)) return "evaporative";
   if (/deerma|jsq|tank|r[ée]servoir|mjjsq|dem-/i.test(t)) return "tank";
   return "column";

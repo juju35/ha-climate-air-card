@@ -450,6 +450,20 @@ test("switchbot: illustrations picked from the model, air quality as a word, fil
   assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_humidifier");
   h.devices.dev_sb_h.model = "Humidifier2";
   assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_evaporative");
+  // The model decides, not the name its owner gave: a purifier named « Table… » is no Table.
+  h.devices.dev_sb_p.name_by_user = "Table purifier";
+  assert.equal(lib.caVariant(h, "purifier", "fan.study_purifier"), "switchbot");
+  h.devices.dev_sb_h.name_by_user = "Evaporator corner";
+  h.devices.dev_sb_h.model = "WoHumi";
+  assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_humidifier");
+  h.devices.dev_sb_h.model = "Evaporative Humidifier";
+  h.devices.dev_sb_h.name_by_user = null;
+  // The overview tile takes the colour of an air quality level given as a word.
+  const ov = makeHass("en", { "sensor.study_purifier_pm2_5": { state: "unavailable" }, "sensor.study_purifier_air_quality_level": { state: "unhealthy" } }, { switchbot: true });
+  const tiles = part(mount(lib, "climate-air-overview-card", { zoom: false }, ov), ".body").innerHTML;
+  const tile = tiles.slice(tiles.indexOf('data-id="fan.study_purifier"'));
+  assert.ok(tile.length < tiles.length, "the SwitchBot purifier has its tile");
+  assert.match(tile.slice(0, 1500), /Poor air/);
   // The air quality level as a word colours the purifier when it gives no PM2.5; its filter usage in hours is shown.
   assert.equal(lib.caAirQuality(null, null, "moderate").key, "moderate");
   assert.equal(lib.caAirQuality(null, null, "excellent").key, "good");

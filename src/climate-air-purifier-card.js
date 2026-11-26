@@ -121,9 +121,10 @@ const caPurifierArt = (variant, display = "") =>
 // The shape that looks most like the device: the bladeless loop for a Dyson (Pure Cool, Hot+Cool, Humidify+Cool…),
 // square for a Smartmi box (P1, P2…), round for a cylinder (Xiaomi 4, 4 Lite / Compact / Pro, Elite, Smartmi E1…),
 // a tower otherwise.
-const caPurifierVariant = (text) => {
+// `model`: the device model, which tells the SwitchBot Table from a purifier its owner named « Table… ».
+const caPurifierVariant = (text, model = "") => {
   const s = String(text).toLowerCase();
-  if (/switch\s?bot|wonderlabs/.test(s)) return /\btable\b/.test(s) ? "switchbot_table" : "switchbot";
+  if (/switch\s?bot|wonderlabs/.test(s)) return /\btable\b/i.test(model || s) ? "switchbot_table" : "switchbot";
   if (/dyson|pure (cool|hot)|hot\s*\+?\s*cool|cool me|humidify|big\s*\+?\s*quiet|\b(tp|hp|ph|bp)\d|\bam(0[67]|11)\b/.test(s)) return "dyson";
   if (/smartmi.*\bp\d\b|\bp[12]\b|airp\.(mp|p\d)/.test(s)) return "box";
   if (/\b4\b|4 lite|4 compact|4 pro|elite|compact|\be1\b|cylind|round/.test(s)) return "cylinder";
