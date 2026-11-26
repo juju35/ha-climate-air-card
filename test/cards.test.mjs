@@ -1934,3 +1934,37 @@ test("midea: every kind of appliance is recognised and every model gets its illu
   assert.match(art, /class="drum"/);
   assert.match(art, /clip-path="url\(#ca-ts-u\)"/);
 });
+
+test("midea: no false matches outside Midea, speeds only while running, a child lock exposed as a lock", () => {
+  // « M-Thermal » is a heat pump; a « Room thermal » climate is not.
+  for (const n of ["Midea M-Thermal", "M Thermal Arctic", "mthermal"]) assert.match(n, lib.CA_HP_NAME, n);
+  for (const n of ["Room thermal comfort", "Custom thermal unit"]) assert.doesNotMatch(n, lib.CA_HP_NAME, n);
+  // The fresh air temperature of another brand's unit is still found; a Midea fresh air appliance's sensors are not taken for it.
+  const h = makeHass("en", {}, { midea: true });
+  const add = (id, attributes = {}) => {
+    h.states[id] = { entity_id: id, state: "12", attributes };
+    h.entities[id] = { entity_id: id, device_id: "dev_vent_x", platform: "mock" };
+    return h.entities[id];
+  };
+  const fresh = [add("sensor.vmc_fresh_air", { device_class: "temperature" })];
+  assert.equal(lib.caFindRole(h, fresh, "air_outdoor_temp"), "sensor.vmc_fresh_air");
+  const midea = [add("sensor.fresh_air_appliance_current_temperature", { device_class: "temperature" })];
+  assert.equal(lib.caFindRole(h, midea, "air_outdoor_temp"), undefined);
+  // A Xiaomi-style « fan level » select is no speed select.
+  assert.equal(lib.caFindRole(h, [add("select.deerma_humidifier_fan_level")], "fan_speed"), undefined);
+  // Off, the speed segments go with the device.
+  const off = makeHass("en", { "switch.office_purifier_power": { state: "off" }, "humidifier.bedroom_dehumidifier": { state: "off" } }, { midea: true });
+  assert.doesNotMatch(html(mount(lib, "climate-air-purifier-card", { entity: "switch.office_purifier_power" }, off)), /data-action="fspeed"/);
+  assert.doesNotMatch(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.bedroom_dehumidifier" }, off)), /data-action="fspeed"/);
+  // Midea AC LAN's child lock is a lock: found, shown on when locked, and locked / unlocked from its toggle.
+  const lk = makeHass("en", {}, { midea: true });
+  delete lk.states["switch.office_purifier_child_lock"];
+  delete lk.entities["switch.office_purifier_child_lock"];
+  lk.states["lock.office_purifier_child_lock"] = { entity_id: "lock.office_purifier_child_lock", state: "locked", attributes: { friendly_name: "Child lock" } };
+  lk.entities["lock.office_purifier_child_lock"] = { entity_id: "lock.office_purifier_child_lock", device_id: "dev_md_p", platform: "midea_ac_lan" };
+  assert.equal(lib.caRoleOf(lk, "switch.office_purifier_power", "child_lock"), "lock.office_purifier_child_lock");
+  const card = mount(lib, "climate-air-purifier-card", { entity: "switch.office_purifier_power" }, lk);
+  assert.match(html(card), /class="toggle on" data-toggle="lock\.office_purifier_child_lock"/);
+  card._onClick({ composedPath: () => [{ dataset: { toggle: "lock.office_purifier_child_lock" } }] });
+  assert.deepEqual(JSON.parse(JSON.stringify(lk.calls.at(-1))), ["lock", "unlock", { entity_id: "lock.office_purifier_child_lock" }]);
+});

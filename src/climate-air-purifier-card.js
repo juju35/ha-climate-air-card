@@ -252,12 +252,13 @@ class ClimateAirPurifierCard extends CaCard {
       const ms = this._st(r.ent.mode);
       modes = this._segments("mode", ms.attributes.options, ms.state, (o) => this._fmtState(r.ent.mode, o), CA_PRESET_ICON);
     }
-    const speed = f & CA_FAN_SET_SPEED && m.running ? this._speedSlider(r.id) : this._speedSegments(r.ent.fan_speed);
+    // The speed while it runs: a slider, or the segments of a speed select (Midea).
+    const speed = !m.running ? "" : f & CA_FAN_SET_SPEED ? this._speedSlider(r.id) : this._speedSegments(r.ent.fan_speed);
     // The favorite level only applies in the favorite preset (or when the purifier has no presets).
     const favPreset = !(a.preset_modes || []).length || /fav|manual/i.test(a.preset_mode || "");
     const favorite = r.ent.favorite && favPreset ? this._numberControl(r.ent.favorite, this._t("favorite"), "mdi:heart-outline") : "";
     const toggles = this._toggles([
-      this._toggle(r.ent.child_lock, this._t("child_lock"), this._val(r.ent.child_lock) === "on" ? "mdi:lock" : "mdi:lock-open-variant-outline"),
+      this._toggle(r.ent.child_lock, this._t("child_lock"), this._isOn(r.ent.child_lock) ? "mdi:lock" : "mdi:lock-open-variant-outline"),
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(r.ent.light, this._t("light"), "mdi:lightbulb-outline"),
     ]);

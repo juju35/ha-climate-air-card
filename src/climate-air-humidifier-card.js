@@ -421,7 +421,7 @@ class ClimateAirHumidifierCard extends CaCard {
     const light = this._lightSection(r.ent.lamp);
     const toggles = this._toggles([
       light ? "" : this._toggle(r.ent.lamp, this._t("light"), "mdi:lightbulb-outline"),
-      this._toggle(r.ent.child_lock, this._t("child_lock"), this._val(r.ent.child_lock) === "on" ? "mdi:lock" : "mdi:lock-open-variant-outline"),
+      this._toggle(r.ent.child_lock, this._t("child_lock"), this._isOn(r.ent.child_lock) ? "mdi:lock" : "mdi:lock-open-variant-outline"),
       this._toggle(r.ent.buzzer, this._t("buzzer"), this._val(r.ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
     ]);
     const reset = this._toggles([this._filterResetButton(m.filterState, r.ent.filter_reset)]);
@@ -431,7 +431,7 @@ class ClimateAirHumidifierCard extends CaCard {
       sp && !caUnavailable(sp) && this._num(r.ent.spray) != null
         ? this._rangeHtml("number", r.ent.spray, m.diffuser ? "mdi:scent" : "mdi:spray", this._t(m.diffuser ? "intensity" : "spray"), Number(sp.attributes.min ?? 1), Number(sp.attributes.max ?? 5), Number(sp.attributes.step ?? 1), this._num(r.ent.spray))
         : "";
-    return this._section("", modes + target + spray) + this._speedSegments(r.ent.fan_speed) + roomSize + light + this._options(toggles + this._switchToggles(r) + reset);
+    return this._section("", modes + target + spray) + (m.running ? this._speedSegments(r.ent.fan_speed) : "") + roomSize + light + this._options(toggles + this._switchToggles(r) + reset);
   }
 
   // A light whose brightness or colour can change (the VOCOlinc mood light) gets its own section, usable while the

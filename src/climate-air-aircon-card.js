@@ -193,7 +193,7 @@ const caAirconArt = (variant, display) =>
 const caAirconVariant = (text) => {
   const s = String(text).toLowerCase();
   if (/porta.?split/.test(s)) return "portasplit";
-  if (/breeze.?less|breezleless/.test(s)) return "breezeless";
+  if (/breeze.?less/.test(s)) return "breezeless";
   if (/\bconsole\b|floor.?(standing|console|unit|mounted)|allège|allege|truhe|consola|pavimento/.test(s)) return "console";
   if (/\bduo\b|hose.?in.?hose|dual.?hose|double.?(hose|gaine|tuyau)/.test(s)) return "portable_duo";
   if (/u.?shaped|saddle|\bmidea u\b|\bmaw\d+v/.test(s)) return "window";

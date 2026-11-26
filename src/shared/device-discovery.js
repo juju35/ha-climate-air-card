@@ -218,8 +218,9 @@ export const CA_ROLES = {
     avoid: /(detect|screen|display|oscillation|swing|silent|fresh_air|aux_heat|water_level|tilting)_mode$/,
   },
   // A fan speed given as a select (Midea purifiers, humidifiers and dehumidifiers: Lowest, Low, Medium, High, Auto).
-  fan_speed: { domain: "select", keys: ["fan_speed"], id: /(fan_speed|wind_speed|fan_level|vitesse_ventil|lufterstufe|velocidad_del_ventilador)$/ },
-  child_lock: { domain: "switch", keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
+  fan_speed: { domain: "select", keys: ["fan_speed"], id: /(fan_speed|wind_speed)$/ },
+  // A switch, or a lock (Midea AC LAN's child lock), locked when on.
+  child_lock: { domain: ["switch", "lock"], keys: ["child_lock"], id: /(child_lock|physical_control|securite_enfant|verrouillage)/ },
   buzzer: { domain: "switch", keys: ["buzzer", "alarm"], id: /(buzzer|alarm|sound|_son_|_son$|bip)/ },
   light: { domain: "light", id: /(indicator|indicador|_led|voyant|display|anzeige|pantalla)/ },
   // The light of a ceiling fan: any other light of the fan's device (not its indicator).
@@ -318,7 +319,7 @@ export const CA_ROLES = {
   air_outdoor_temp: {
     domain: "sensor",
     keys: ["outdoor_air_temperature", "outside_air_temperature", "fresh_air_temperature"],
-    id: /(outdoor_air|outside_air|fresh_air_temp|air_neuf|air_exterieur|aussenluft|exterior_air|aria_esterna|buitenlucht|intake_air)/,
+    id: /(outdoor_air|outside_air|fresh_air(?!_appliance)|air_neuf|air_exterieur|aussenluft|exterior_air|aria_esterna|buitenlucht|intake_air)/,
   },
   air_supply_temp: {
     domain: "sensor",
@@ -463,7 +464,7 @@ export const caDomain = (kind) =>
 // boilers: their heat pumps are told apart by their hot water tank or their name.
 export const CA_HP_PLATFORMS = ["myuplink", "aquarea", "hitachi_yutaki"];
 export const CA_HP_NAME =
-  /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|m.?thermal|arotherm|geotherm|nibe)/i;
+  /(heat.?pump|pompe.?[aà].?chaleur|air.?(to|[aà]|-).?(water|eau)|w[aä]rmepumpe|bomba de calor|pompa di calore|warmtepomp|altherma|aquarea|ecodan|yutaki|alfea|t\.?one|aquaair|vitocal|\bm-?\s?thermal\b|arotherm|geotherm|nibe)/i;
 
 export const CA_PURIFIER_NAME = /purif|air_?cleaner|air_?filter|epurateur/i;
 

@@ -684,9 +684,15 @@ export class CaCard extends CaElement {
   _toggle(id, label, icon, opts = {}) {
     if (!opts.action && (!id || !this._st(id))) return "";
     const ok = opts.action ? true : this._avail(id);
-    const on = opts.on ?? this._val(id) === "on";
+    const on = opts.on ?? this._isOn(id);
     const data = opts.action ? `data-action="${opts.action}"` : `data-toggle="${caEsc(id)}"`;
     return `<button class="toggle${on ? " on" : ""}" ${data}${ok ? "" : " disabled"} aria-pressed="${on}"><ha-icon icon="${icon}"></ha-icon>${caEsc(label)}</button>`;
+  }
+
+  // A switch on, or a lock locked (a child lock exposed as a `lock`).
+  _isOn(id) {
+    const v = this._val(id);
+    return v === "on" || v === "locked";
   }
 
   _toggles(items) {
@@ -715,7 +721,9 @@ export class CaCard extends CaElement {
       return;
     }
     if (d.toggle) {
-      this._call(d.toggle.split(".")[0], "toggle", { entity_id: d.toggle });
+      // A lock has no toggle service: locked → unlock, else lock.
+      if (d.toggle.startsWith("lock.")) this._call("lock", this._val(d.toggle) === "locked" ? "unlock" : "lock", { entity_id: d.toggle });
+      else this._call(d.toggle.split(".")[0], "toggle", { entity_id: d.toggle });
       return;
     }
     if (d.press) {

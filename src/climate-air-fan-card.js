@@ -271,7 +271,7 @@ class ClimateAirFanCard extends CaCard {
     const toggles = this._toggles([
       f & CA_FAN_OSCILLATE ? this._toggle(null, this._t("oscillation"), "mdi:arrow-oscillating", { action: "oscillate", on: !!a.oscillating }) : "",
       this._toggle(ent.anion, this._t("anion"), "mdi:creation-outline"),
-      this._toggle(ent.child_lock, this._t("child_lock"), this._val(ent.child_lock) === "on" ? "mdi:lock" : "mdi:lock-open-variant-outline"),
+      this._toggle(ent.child_lock, this._t("child_lock"), this._isOn(ent.child_lock) ? "mdi:lock" : "mdi:lock-open-variant-outline"),
       this._toggle(ent.buzzer, this._t("buzzer"), this._val(ent.buzzer) === "on" ? "mdi:volume-high" : "mdi:volume-off"),
       this._toggle(ent.light, this._t("light"), "mdi:lightbulb-outline"),
       this._toggle(ent.fan_light, this._t("fan_light"), "mdi:ceiling-fan-light"),
