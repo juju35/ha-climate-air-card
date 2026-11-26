@@ -38,6 +38,18 @@ await animate({
 });
 
 await animate({
+  file: "fan-circulator-standing",
+  tag: "climate-air-fan-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang, {}, { switchbot: true }), config: { entity: "fan.hall_fan" } }),
+});
+
+await animate({
+  file: "purifier-switchbot-plain",
+  tag: "climate-air-purifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang, {}, { switchbot: true }), config: { entity: "fan.hall_purifier" } }),
+});
+
+await animate({
   file: "purifier-switchbot-table",
   tag: "climate-air-purifier-card",
   setup: (_s, lang) => ({ hass: mockHass(lang, {}, { switchbot: true }), config: { entity: "fan.study_purifier" } }),

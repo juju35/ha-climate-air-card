@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "SwitchBot-luftrenare",
     ill_switchbot_table: "SwitchBot-luftrenarbord",
     ill_circulator: "Cirkulationsfläkt",
+    ill_circulator_standing: "Stående cirkulationsfläkt",
     ill_switchbot_humidifier: "SwitchBot-luftfuktare",
     ill_switchbot_evaporative: "SwitchBot-avdunstningsluftfuktare",
     ed_show_controls: "Reglage",

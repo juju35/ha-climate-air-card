@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.21.0 - 2026-11-26
+
+### Features
+- SwitchBot Standing Circulator Fan (« Standing Fan » for its integrations): a new `circulator_standing` illustration — the circulator head, smaller, on a tall telescopic pole, in the visual editor in every language.
+- Preset icons for SwitchBot's presets: *pet* (paw), *baby* and the speed levels *level_1* to *level_3*.
+- Every SwitchBot model of the Bluetooth and Cloud integrations is now covered and tested: the Air Purifier and Air Purifier Table (PM2.5 / VOC, US / JP), the Circulator Fan, Circulator Fan Pro, Battery Circulator Fan and Battery Circulator Fan 2 Pro, the Humidifier and the Evaporative Humidifier (Auto-refill too).
+
 ## 2.20.0 - 2026-11-26
 
 ### Features

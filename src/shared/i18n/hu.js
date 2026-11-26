@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "SwitchBot légtisztító",
     ill_switchbot_table: "SwitchBot légtisztító asztal",
     ill_circulator: "Keringető ventilátor",
+    ill_circulator_standing: "Állványos keringető ventilátor",
     ill_switchbot_humidifier: "SwitchBot párásító",
     ill_switchbot_evaporative: "SwitchBot elpárologtató párásító",
     ed_show_controls: "Vezérlők",

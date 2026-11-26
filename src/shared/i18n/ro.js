@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "Purificator SwitchBot",
     ill_switchbot_table: "Purificator-măsuță SwitchBot",
     ill_circulator: "Ventilator de circulație",
+    ill_circulator_standing: "Ventilator de circulație cu picior",
     ill_switchbot_humidifier: "Umidificator SwitchBot",
     ill_switchbot_evaporative: "Umidificator prin evaporare SwitchBot",
     ed_show_controls: "Comenzi",

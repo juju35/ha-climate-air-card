@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "Пречиствател SwitchBot",
     ill_switchbot_table: "Пречиствател-масичка SwitchBot",
     ill_circulator: "Циркулационен вентилатор",
+    ill_circulator_standing: "Стоящ циркулационен вентилатор",
     ill_switchbot_humidifier: "Овлажнител SwitchBot",
     ill_switchbot_evaporative: "Изпарителен овлажнител SwitchBot",
     ed_show_controls: "Управление",

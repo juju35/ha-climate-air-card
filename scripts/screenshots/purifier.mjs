@@ -38,3 +38,12 @@ await shoot({
   shots: pair("mini"),
   setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.study_purifier", illustration: "switchbot" } }),
 });
+
+// SwitchBot Air Purifier PM2.5 (Cloud, the one without a table), picked from its model.
+// Captures: purifier-switchbot-plain-card (and its -dark twin).
+await shoot({
+  prefix: "purifier-switchbot-plain",
+  tag: "climate-air-purifier-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.hall_purifier" } }),
+});

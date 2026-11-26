@@ -51,6 +51,11 @@ export const CA_PRESET_ICON = (p) => {
   if (/turbo|boost|max/.test(s)) return "mdi:fan-plus";
   if (/natur/.test(s)) return "mdi:leaf";
   if (/straight|direct|standard|normal/.test(s)) return "mdi:weather-windy";
+  // SwitchBot's purifier and fan presets: pet, baby, and the three speed levels.
+  if (/pet|animal|tier/.test(s)) return "mdi:paw";
+  if (/baby|b[ée]b[ée]/.test(s)) return "mdi:baby-face-outline";
+  const level = s.match(/^level_?([123])$/);
+  if (level) return `mdi:fan-speed-${level[1]}`;
   return null;
 };
 

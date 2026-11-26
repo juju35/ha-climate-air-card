@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "SwitchBot prečišćivač",
     ill_switchbot_table: "SwitchBot prečišćivač-stočić",
     ill_circulator: "Cirkulacioni ventilator",
+    ill_circulator_standing: "Stojeći cirkulacioni ventilator",
     ill_switchbot_humidifier: "SwitchBot ovlaživač",
     ill_switchbot_evaporative: "SwitchBot isparivački ovlaživač",
     ed_show_controls: "Kontrole",

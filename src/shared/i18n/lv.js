@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "SwitchBot gaisa attīrītājs",
     ill_switchbot_table: "SwitchBot gaisa attīrītājs-galdiņš",
     ill_circulator: "Cirkulācijas ventilators",
+    ill_circulator_standing: "Statīva cirkulācijas ventilators",
     ill_switchbot_humidifier: "SwitchBot mitrinātājs",
     ill_switchbot_evaporative: "SwitchBot iztvaikošanas mitrinātājs",
     ed_show_controls: "Vadīklas",

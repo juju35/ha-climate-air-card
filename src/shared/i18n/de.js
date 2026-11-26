@@ -168,6 +168,7 @@ export default {
     ill_switchbot: "SwitchBot Luftreiniger",
     ill_switchbot_table: "SwitchBot Luftreiniger-Tisch",
     ill_circulator: "Zirkulationsventilator",
+    ill_circulator_standing: "Stand-Zirkulationsventilator",
     ill_switchbot_humidifier: "SwitchBot Luftbefeuchter",
     ill_switchbot_evaporative: "SwitchBot Verdunstungs-Luftbefeuchter",
     ed_show_controls: "Steuerung",
