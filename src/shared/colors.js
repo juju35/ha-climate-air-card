@@ -34,7 +34,10 @@ export function caAirQuality(pm25, aqi, level) {
   else if (aqi != null) {
     if (aqi <= 5) i = aqi <= 2 ? 0 : aqi === 3 ? 1 : aqi === 4 ? 2 : 3;
     else i = aqi <= 50 ? 0 : aqi <= 100 ? 1 : aqi <= 150 ? 2 : 3;
-  } else if (level != null) i = CA_AQ_LEVELS[String(level).toLowerCase()] ?? null;
+  } else if (level != null) {
+    const word = String(level).toLowerCase();
+    if (Object.hasOwn(CA_AQ_LEVELS, word)) i = CA_AQ_LEVELS[word];
+  }
   return i == null ? null : CA_AQ[i];
 }
 

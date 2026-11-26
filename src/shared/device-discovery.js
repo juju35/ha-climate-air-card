@@ -196,7 +196,13 @@ export const CA_ROLES = {
     prefer: /(hepa|combined|life_?level|life_?percent|pourcent)/,
     avoid: /(carbon|charbon|used|utilis|hours|heures)/,
   },
-  filter_hours: { domain: "sensor", keys: ["filter_hours_used", "filter_use", "filter_usage"], id: /filt(er|re).*(used|usage|hours|heures|utilis)/ },
+  // Hours of use only: a sensor in hours or of the duration class (a filter « usage » in % is not one).
+  filter_hours: {
+    domain: "sensor",
+    keys: ["filter_hours_used", "filter_use", "filter_usage"],
+    id: /filt(er|re).*(used|usage|hours|heures|utilis)/,
+    only: (st) => st?.attributes?.unit_of_measurement === "h" || st?.attributes?.device_class === "duration",
+  },
   voc: {
     domain: "sensor",
     id: /(volatile_organic|_vocs?\b|\bcov\b|composes_organiques|fluchtige_organische|compuestos_organicos)/,
@@ -397,7 +403,8 @@ export function caMemo(hass, key, compute, deps) {
 export function caFindRole(hass, list, role) {
   const m = CA_ROLES[role];
   const domains = [].concat(m.domain);
-  const inDomain = list.filter((e) => domains.includes(e.entity_id.split(".")[0]));
+  // `only`: a condition every candidate must meet, whatever matched it (its unit, say).
+  const inDomain = list.filter((e) => domains.includes(e.entity_id.split(".")[0]) && (!m.only || m.only(hass.states[e.entity_id])));
   // Among candidates of equal rank, a preferred one wins (Dyson's HEPA/combined filter over its carbon filter),
   // and an avoided one is taken only as a last resort (its filter life in hours, not the percentage).
   const pick = (cands) => {

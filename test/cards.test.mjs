@@ -465,6 +465,17 @@ test("switchbot: illustrations picked from the model, air quality as a word, fil
   assert.match(hum, /v-switchbot_evaporative/);
   const empty = makeHass("en", { "sensor.study_humidifier_water_level": { state: "empty" } }, { switchbot: true });
   assert.match(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.study_humidifier" }, empty)), /Tank empty|tank_empty|Water tank empty/i);
+  // « low » turns the water red; a word of Object.prototype is no level; a filter « usage » in % is no hours count.
+  const low = makeHass("en", { "sensor.study_humidifier_water_level": { state: "low" } }, { switchbot: true });
+  assert.match(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.study_humidifier" }, low)), /k-humidifier[^"]* low"/);
+  assert.equal(lib.caAirQuality(null, null, "constructor"), null);
+  const pct = makeHass("en", { "sensor.study_purifier_filter_usage": { device_class: null, unit_of_measurement: "%" } }, { switchbot: true });
+  assert.equal(lib.caRoleOf(pct, "fan.study_purifier", "filter_hours"), undefined);
+  // A fan named for the air circulation is still a standing fan.
+  h.devices.dev_sb_f.model = "Air circulation fan";
+  h.devices.dev_sb_f.manufacturer = "Acme";
+  assert.equal(lib.caVariant(h, "fan", "fan.study_fan"), "fan");
+  h.devices.dev_sb_f.manufacturer = "switchbot";
   // The SwitchBot logo on the header icon.
   assert.equal(lib.caBrand(h, "fan.study_fan", {}), "switchbot");
 });

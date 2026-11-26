@@ -90,7 +90,8 @@ const CA_CEILING_FAN_RE =
   /(ceiling|plafond|plafonnier|decken|techo|soffitto|plafon|sufit|teto|tavan|потол|стел|stropn|griesti|οροφ|\bhunter\b|big ?ass|haiku|\bbaf\b|lucci|\bminka|casablanca|fanimation|westinghouse|\bbond\b|olibra|modern ?forms)/i;
 
 // A circulator says so in its name or model (SwitchBot Circulator Fan, Battery Circulator Fan, Vornado…).
-const CA_CIRCULATOR_RE = /(circulat|zirkulat|circolat|vornado)/i;
+// The device, not « circulation »: circulator, Zirkulator, circolatore, circulateur, circulador.
+const CA_CIRCULATOR_RE = /(circulator|zirkulator|circolatore|circulateur|circulador|vornado)/i;
 
 CA_ART.fan = {
   variants: ["fan", "ceiling", "circulator"],
