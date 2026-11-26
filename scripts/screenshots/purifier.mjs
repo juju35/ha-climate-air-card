@@ -4,6 +4,8 @@ import { pair, shoot } from "./harness.mjs";
 import { mockHass } from "./mock.mjs";
 
 const entity = "fan.living_room_purifier_air_purifier";
+const sb = (lang, changes) => mockHass(lang, changes, { switchbot: true });
+
 
 await shoot({
   prefix: "purifier",
@@ -19,4 +21,20 @@ await shoot({
   // The four illustrations: the tower (mini), a round purifier, a square box and a Dyson-style bladeless loop.
   shots: [...pair("mini"), ...pair("round", { illustration: "cylinder" }), ...pair("box", { illustration: "box" }), ...pair("dyson", { illustration: "dyson" })],
   setup: (s, lang) => ({ hass: mockHass(lang), config: { entity, ...(s.illustration ? { illustration: s.illustration } : {}) } }),
+});
+
+// SwitchBot: the Air Purifier Table (picked from its model) and the Air Purifier (mini card).
+// Captures: purifier-switchbot-card, purifier-switchbot-mini (and their -dark twins).
+await shoot({
+  prefix: "purifier-switchbot",
+  tag: "climate-air-purifier-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.study_purifier" } }),
+});
+
+await shoot({
+  prefix: "purifier-switchbot",
+  tag: "climate-air-purifier-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.study_purifier", illustration: "switchbot" } }),
 });

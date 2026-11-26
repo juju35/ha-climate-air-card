@@ -527,7 +527,10 @@ export class CaCard extends CaElement {
     let level = caFilterLevel(pct, this._config.filter_warning);
     if (!level && this._val(ent.filter_alert) === "on") level = "dirty";
     const entity = level === "dirty" ? ent.filter_alert : ent.filter || ent.filter_alert;
-    return { pct, level, hours: this._num(ent.filter_hours), entity, known: pct != null || this._avail(ent.filter_alert) };
+    const hours = this._num(ent.filter_hours);
+    // Its hours of use alone (SwitchBot's « Filter usage ») still tell the filter is followed.
+    const sensor = this._avail(ent.filter_alert);
+    return { pct, level, hours, sensor, entity: entity || (hours != null ? ent.filter_hours : undefined), known: pct != null || sensor || hours != null };
   }
 
   _filterText(f) {
@@ -551,8 +554,10 @@ export class CaCard extends CaElement {
     const title = caEsc(`${this._t("filter")}${this._t("colon")}${this._filterText(f)}${hours}`);
     const more = f.entity ? ` data-more-info="${caEsc(f.entity)}" role="button" tabindex="0"` : "";
     if (f.pct != null) return `<div class="filter${cls}" title="${title}"${more}>${caBar(f.pct, `${Math.round(f.pct)} %`, "mdi:air-filter")}</div>`;
-    // No life figure: the state alone ("Filter OK"), left to the alert chip once dirty.
+    // No life figure: the state alone ("Filter OK"), left to the alert chip once dirty; only its hours of use: those.
     if (f.level && this._config.show_alerts) return "";
+    if (!f.level && f.hours != null && !f.sensor)
+      return `<div class="filter" title="${title}"${more}>${caLine("mdi:air-filter", `${this._t("filter")}${this._t("colon")}${this._t("hours", { n: caFmtNum(this._intlLang(), f.hours, 0) })}`)}</div>`;
     return `<div class="filter${cls}" title="${title}"${more}>${caLine("mdi:air-filter", this._filterText(f))}</div>`;
   }
 

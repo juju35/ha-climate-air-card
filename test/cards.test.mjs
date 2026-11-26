@@ -438,6 +438,62 @@ test("dehumidifier and diffuser: illustration, status and label from device_clas
   for (const n of ["Humidifier", "Dehumidifier", "Essential oil diffuser"]) assert.ok(names.includes(n), n);
 });
 
+test("switchbot: illustrations picked from the model, air quality as a word, filter hours, tank level as a word", () => {
+  const h = makeHass("en", {}, { switchbot: true });
+  // The Air Purifier Table, the Circulator Fan and the Evaporative Humidifier, from their model and manufacturer.
+  assert.equal(lib.caVariant(h, "purifier", "fan.study_purifier"), "switchbot_table");
+  assert.equal(lib.caVariant(h, "fan", "fan.study_fan"), "circulator");
+  assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_evaporative");
+  h.devices.dev_sb_p.model = "Air Purifier VOC";
+  h.devices.dev_sb_h.model = "WoHumi";
+  assert.equal(lib.caVariant(h, "purifier", "fan.study_purifier"), "switchbot");
+  assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_humidifier");
+  h.devices.dev_sb_h.model = "Humidifier2";
+  assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_evaporative");
+  // The model decides, not the name its owner gave: a purifier named « Table… » is no Table.
+  h.devices.dev_sb_p.name_by_user = "Table purifier";
+  assert.equal(lib.caVariant(h, "purifier", "fan.study_purifier"), "switchbot");
+  h.devices.dev_sb_h.name_by_user = "Evaporator corner";
+  h.devices.dev_sb_h.model = "WoHumi";
+  assert.equal(lib.caVariant(h, "humidifier", "humidifier.study_humidifier"), "switchbot_humidifier");
+  h.devices.dev_sb_h.model = "Evaporative Humidifier";
+  h.devices.dev_sb_h.name_by_user = null;
+  // The overview tile takes the colour of an air quality level given as a word.
+  const ov = makeHass("en", { "sensor.study_purifier_pm2_5": { state: "unavailable" }, "sensor.study_purifier_air_quality_level": { state: "unhealthy" } }, { switchbot: true });
+  const tiles = part(mount(lib, "climate-air-overview-card", { zoom: false }, ov), ".body").innerHTML;
+  const tile = tiles.slice(tiles.indexOf('data-id="fan.study_purifier"'));
+  assert.ok(tile.length < tiles.length, "the SwitchBot purifier has its tile");
+  assert.match(tile.slice(0, 1500), /Poor air/);
+  // The air quality level as a word colours the purifier when it gives no PM2.5; its filter usage in hours is shown.
+  assert.equal(lib.caAirQuality(null, null, "moderate").key, "moderate");
+  assert.equal(lib.caAirQuality(null, null, "excellent").key, "good");
+  assert.equal(lib.caAirQuality(null, null, "unknown"), null);
+  const p = makeHass("en", { "sensor.study_purifier_pm2_5": { state: "unavailable" }, "sensor.study_purifier_air_quality_level": { state: "moderate" } }, { switchbot: true });
+  const out = html(mount(lib, "climate-air-purifier-card", { entity: "fan.study_purifier" }, p));
+  assert.match(out, /Moderate air/);
+  assert.match(out, /Filter: 620 h/);
+  assert.match(out, /fill="#c9a27a"/); // the wooden table top
+  // The tank level given as a word: its word, the bar at a rough fill, and « empty » stops the humidifier.
+  const hum = html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.study_humidifier" }, h));
+  assert.match(hum, /Water tank Medium/);
+  assert.match(hum, /v-switchbot_evaporative/);
+  const empty = makeHass("en", { "sensor.study_humidifier_water_level": { state: "empty" } }, { switchbot: true });
+  assert.match(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.study_humidifier" }, empty)), /Tank empty|tank_empty|Water tank empty/i);
+  // « low » turns the water red; a word of Object.prototype is no level; a filter « usage » in % is no hours count.
+  const low = makeHass("en", { "sensor.study_humidifier_water_level": { state: "low" } }, { switchbot: true });
+  assert.match(html(mount(lib, "climate-air-humidifier-card", { entity: "humidifier.study_humidifier" }, low)), /k-humidifier[^"]* low"/);
+  assert.equal(lib.caAirQuality(null, null, "constructor"), null);
+  const pct = makeHass("en", { "sensor.study_purifier_filter_usage": { device_class: null, unit_of_measurement: "%" } }, { switchbot: true });
+  assert.equal(lib.caRoleOf(pct, "fan.study_purifier", "filter_hours"), undefined);
+  // A fan named for the air circulation is still a standing fan.
+  h.devices.dev_sb_f.model = "Air circulation fan";
+  h.devices.dev_sb_f.manufacturer = "Acme";
+  assert.equal(lib.caVariant(h, "fan", "fan.study_fan"), "fan");
+  h.devices.dev_sb_f.manufacturer = "switchbot";
+  // The SwitchBot logo on the header icon.
+  assert.equal(lib.caBrand(h, "fan.study_fan", {}), "switchbot");
+});
+
 test("rituals: a localised (German) Perfume Genie is recognised from its platform, translation keys and manufacturer", () => {
   // A Rituals Perfume Genie on a German install: the entity ids are translated and the device name carries neither
   // "Rituals" nor "Perfume Genie", so the roles must be found by their registry translation_key and the illustration

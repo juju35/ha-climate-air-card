@@ -162,6 +162,31 @@ const DEVICES = [
   ]],
 ];
 
+// SwitchBot devices, added by mockHass(lang, changes, { switchbot: true }) only, so that the other captures and the unit
+// tests keep their home: an Air Purifier Table (Bluetooth, PM2.5, an air quality level as a word, the filter usage in
+// hours), a Circulator Fan (Bluetooth, oscillating) and an Evaporative Humidifier (Bluetooth, its tank level as a word).
+const SWITCHBOT_DEVICES = [
+  ["dev_sb_p", "office", { en: "Study purifier", fr: "Purificateur bureau" }, [
+    ["fan.study_purifier", null, "on", { preset_modes: ["level_1", "level_2", "level_3", "auto", "sleep", "pet"], preset_mode: "auto", percentage: 66, percentage_step: 33.333, supported_features: 57 }],
+    ["sensor.study_purifier_pm2_5", { en: "PM2.5", fr: "PM2.5" }, 9, { device_class: "pm25", unit_of_measurement: "µg/m³" }],
+    ["sensor.study_purifier_air_quality_level", { en: "Air quality level", fr: "Niveau de qualité de l'air" }, "good", { device_class: "enum", options: ["excellent", "good", "moderate", "unhealthy"] }],
+    ["sensor.study_purifier_filter_usage", { en: "Filter usage", fr: "Utilisation du filtre" }, 620, { device_class: "duration", unit_of_measurement: "h" }],
+    ["switch.study_purifier_child_lock", { en: "Child lock", fr: "Sécurité enfant" }, "off", {}],
+    ["switch.study_purifier_wireless_charging", { en: "Wireless charging", fr: "Recharge sans fil" }, "on", {}],
+  ]],
+  ["dev_sb_f", "office", { en: "Study fan", fr: "Ventilateur bureau" }, [
+    ["fan.study_fan", null, "on", { preset_modes: ["normal", "natural", "sleep", "baby"], preset_mode: "normal", percentage: 60, percentage_step: 1, oscillating: true, supported_features: 59 }],
+  ]],
+  ["dev_sb_h", "office", { en: "Study humidifier", fr: "Humidificateur bureau" }, [
+    ["humidifier.study_humidifier", null, "on", {
+      device_class: "humidifier", humidity: 55, current_humidity: 41, min_humidity: 1, max_humidity: 99,
+      available_modes: ["high", "medium", "low", "quiet", "target_humidity", "sleep", "auto", "drying_filter"], mode: "auto", action: "humidifying", supported_features: 1 }],
+    ["sensor.study_humidifier_water_level", { en: "Water level", fr: "Niveau d'eau" }, "medium", { device_class: "enum", options: ["empty", "low", "medium", "high"] }],
+    ["sensor.study_humidifier_temperature", { en: "Temperature", fr: "Température" }, 21, { device_class: "temperature", unit_of_measurement: "°C" }],
+    ["switch.study_humidifier_child_lock", { en: "Child lock", fr: "Sécurité enfant" }, "off", {}],
+  ]],
+];
+
 // What Home Assistant itself translates: the climate modes, and the climate fan, swing and preset values it knows.
 // Integration-specific values (Xiaomi Home presets, Midea's silent / full fan modes, HomeKit modes) are left raw,
 // as Home Assistant does: the cards translate them.
@@ -195,16 +220,19 @@ const BRANDS = {
   dev_hp: ["daikin_onecta"],
   dev_vmc: ["comfoconnect", "Zehnder"],
   dev_cf: ["bond", "Olibra"],
+  dev_sb_p: ["switchbot", "switchbot", "Air Purifier Table US"],
+  dev_sb_f: ["switchbot", "switchbot", "Circulator Fan"],
+  dev_sb_h: ["switchbot", "switchbot", "Evaporative Humidifier"],
 };
 
-export const mockHass = (lang = "en", changes = {}) => {
+export const mockHass = (lang = "en", changes = {}, { switchbot = false } = {}) => {
   const states = {};
   const entities = {};
   const devices = {};
   const areas = Object.fromEntries(Object.entries(AREAS).map(([area_id, n]) => [area_id, { area_id, name: n[lang], icon: n.icon || null }]));
-  for (const [dev, area_id, names, items] of DEVICES) {
-    const [platform = "mock", manufacturer] = BRANDS[dev] || [];
-    devices[dev] = { id: dev, name: names[lang], name_by_user: null, area_id, ...(manufacturer ? { manufacturer } : {}) };
+  for (const [dev, area_id, names, items] of switchbot ? [...DEVICES, ...SWITCHBOT_DEVICES] : DEVICES) {
+    const [platform = "mock", manufacturer, model] = BRANDS[dev] || [];
+    devices[dev] = { id: dev, name: names[lang], name_by_user: null, area_id, ...(manufacturer ? { manufacturer } : {}), ...(model ? { model } : {}) };
     for (const [entity_id, n, state, attributes] of items) {
       const friendly_name = n ? `${names[lang]} ${n[lang]}` : names[lang];
       const { state: s = state, ...attrs } = changes[entity_id] || {};

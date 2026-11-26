@@ -225,7 +225,8 @@ export class ClimateAirOverviewCard extends CaElement {
       } else if (kind === "purifier") {
         const pm25 = caNum(roleSt("pm25"));
         const aqi = caNum(roleSt("aqi"));
-        const aq = caAirQuality(pm25, aqi);
+        const level = roleSt("aq_level");
+        const aq = caAirQuality(pm25, aqi, level && !caUnavailable(level) ? level.state : null);
         const quality = pm25 != null ? `PM2.5 ${caFmtNum(this._intlLang(), pm25, 0)}` : aqi != null ? `AQI ${caFmtNum(this._intlLang(), aqi, 0)}` : "";
         item.text = item.on ? [quality || this._t("st_purifying"), aq ? this._t(`aq_${aq.key}`) : ""].filter(Boolean).join(" · ") : [this._t("st_off"), quality].filter(Boolean).join(" · ");
         item.color = item.on ? aq?.color || CA_FAN_COLOR : CA_IDLE;

@@ -93,8 +93,9 @@ export const CA_BRAND_MAKERS = [
   [/big ?ass/i, "baf"],
   [/olibra|\bbond\b/i, "bond"],
   [/modern ?forms/i, "modern_forms"],
+  [/switch\s?bot|wonderlabs/i, "switchbot"],
 ];
-export const CA_BRAND_PLATFORMS = { homekit_controller: "homekit", aquarea: "panasonic", overkiz: "cozytouch", rituals_perfume_genie: "rituals" };
+export const CA_BRAND_PLATFORMS = { homekit_controller: "homekit", aquarea: "panasonic", overkiz: "cozytouch", rituals_perfume_genie: "rituals", switchbot_cloud: "switchbot" };
 export function caBrand(hass, id, config) {
   if (config.brand) return config.brand === "none" ? "" : String(config.brand);
   const maker = hass.devices?.[caDeviceOf(hass, id)]?.manufacturer || "";

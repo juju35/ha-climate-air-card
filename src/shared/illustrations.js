@@ -15,12 +15,13 @@ export function caVariantText(hass, id) {
   return [dev?.model, dev?.manufacturer, dev?.name, dev?.name_by_user, id, a.friendly_name, a.device_class].filter(Boolean).join(" ");
 }
 
-// The variant of `kind` to draw for `id`: the one asked for (`illustration`), or the one guessed from the device.
+// The variant of `kind` to draw for `id`: the one asked for (`illustration`), or the one guessed from the device — from
+// all it is called (`text`), and from its model alone (`model`) where a word of the device name could mislead.
 export function caVariant(hass, kind, id, illustration) {
   const art = CA_ART[kind];
   if (!art?.variants) return undefined;
   if (illustration && illustration !== "auto" && art.variants.includes(illustration)) return illustration;
-  return art.guess(caVariantText(hass, id));
+  return art.guess(caVariantText(hass, id), hass.devices?.[caDeviceOf(hass, id)]?.model || "");
 }
 
 // The illustration in its frame: animated while `s.running`. `uid` makes the SVG ids unique when several

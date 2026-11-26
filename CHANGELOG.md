@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.19.0 - 2026-11-26
+
+### Features
+- **SwitchBot** (SwitchBot Bluetooth and SwitchBot Cloud): the Air Purifier and Air Purifier Table, the Circulator Fan and the Humidifier / Evaporative Humidifier get their own illustrations, picked from the device model, and the SwitchBot logo on the header icon.
+- New illustrations: `switchbot` and `switchbot_table` (purifier), `circulator` (fan, also guessed from a name with *circulator* or Vornado), `switchbot_humidifier` and `switchbot_evaporative` (humidifier), in the visual editor in every language.
+- Air purifier: an air quality level given as a word (SwitchBot's `aqi_quality_level`: excellent, good, moderate, unhealthy) colours the card, the tile and the illustration when the device gives no PM2.5 or index.
+- Filter: a device that only counts its filter's hours of use (SwitchBot's *Filter usage*) shows them as the filter line, on the purifier and air conditioner cards. Only a sensor in hours (or of the duration class) counts as hours of use.
+- Humidifier: a tank level given as a word (SwitchBot's *empty*, *low*, *medium*, *high*) shows that word with the bar at its rough fill; *low* turns the water red, *empty* raises the *Water tank empty* alert.
+
 ## 2.18.0 - 2026-11-24
 
 ### Features
