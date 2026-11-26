@@ -26,13 +26,15 @@ export const CA_AQ = [
   { key: "unhealthy", color: "#fb8c00" },
   { key: "bad", color: "var(--error-color, #db4437)" },
 ];
-export function caAirQuality(pm25, aqi) {
+// An air quality level given as a word (SwitchBot's `aqi_quality_level` enum: excellent, good, moderate, unhealthy).
+export const CA_AQ_LEVELS = { excellent: 0, good: 0, moderate: 1, unhealthy: 2, very_unhealthy: 3, hazardous: 3, poor: 2, bad: 3 };
+export function caAirQuality(pm25, aqi, level) {
   let i = null;
   if (pm25 != null) i = pm25 <= 12 ? 0 : pm25 <= 35 ? 1 : pm25 <= 55 ? 2 : 3;
   else if (aqi != null) {
     if (aqi <= 5) i = aqi <= 2 ? 0 : aqi === 3 ? 1 : aqi === 4 ? 2 : 3;
     else i = aqi <= 50 ? 0 : aqi <= 100 ? 1 : aqi <= 150 ? 2 : 3;
-  }
+  } else if (level != null) i = CA_AQ_LEVELS[String(level).toLowerCase()] ?? null;
   return i == null ? null : CA_AQ[i];
 }
 

@@ -13,13 +13,17 @@ export const CA_DIFFUSERS = ["diffuser", "rituals", "rituals_black"];
 export const caIsDiffuser = (v) => CA_DIFFUSERS.includes(v);
 // A tank at 10 % or less shows its water red.
 export const CA_HUM_LOW = 10;
+// A tank level given as a word → its fill in %.
+export const CA_HUM_LEVELS = { empty: 0, low: 25, medium: 60, high: 100 };
 
 export function caHumidifierState(st, roleSt, variant) {
   const a = st.attributes;
   const on = st.state === "on";
   const dehum = a.device_class === "dehumidifier" || variant === "dehumidifier";
   const diffuser = caIsDiffuser(variant);
-  const level = caNum(roleSt("water_level"));
+  const levelSt = roleSt("water_level");
+  // SwitchBot's evaporative humidifier gives its tank as a word (empty, low, medium, high).
+  const level = caNum(levelSt) ?? CA_HUM_LEVELS[String(levelSt?.state ?? "").toLowerCase()] ?? null;
   // A diffuser's cartridge is empty when its « cartridge » sensor reads off (not inserted) or its fill drops to 0.
   const empty = !dehum && (roleSt("tank_empty")?.state === "on" || roleSt("cartridge")?.state === "off" || (level != null && level <= 0));
   const full = dehum && (roleSt("bucket_full")?.state === "on" || (level != null && level >= 100));

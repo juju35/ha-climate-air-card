@@ -4,6 +4,8 @@ import { pair, shoot } from "./harness.mjs";
 import { mockHass } from "./mock.mjs";
 
 const entity = "fan.bedroom_fan_fan";
+const sb = (lang, changes) => mockHass(lang, changes, { switchbot: true });
+
 
 await shoot({
   prefix: "fan",
@@ -32,4 +34,20 @@ await shoot({
   tag: "climate-air-fan-mini-card",
   shots: pair("mini"),
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.ceiling_fan" } }),
+});
+
+// The SwitchBot Circulator Fan (over Bluetooth): the circulator, picked from its model, oscillating.
+// Captures: fan-circulator-card, fan-circulator-mini (and their -dark twins).
+await shoot({
+  prefix: "fan-circulator",
+  tag: "climate-air-fan-card",
+  shots: pair("card"),
+  setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.study_fan" } }),
+});
+
+await shoot({
+  prefix: "fan-circulator",
+  tag: "climate-air-fan-mini-card",
+  shots: pair("mini"),
+  setup: (_s, lang) => ({ hass: sb(lang), config: { entity: "fan.study_fan" } }),
 });

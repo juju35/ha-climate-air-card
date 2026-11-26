@@ -71,6 +71,40 @@ const CA_PURIFIER_ARTS = {
     `<text class="pmv" x="40" y="69.4" text-anchor="middle">${caEsc(display)}</text>` +
     '<circle class="ring" cx="40" cy="74.4" r="1.2"/>' +
     '<g class="jet"><path d="M40 50V28"/><path d="M35.5 50V33"/><path d="M44.5 50V33"/></g>',
+  // SwitchBot Air Purifier: a squat white column with generously rounded corners, the fan under a dark round outlet on
+  // top, a round display with its air quality ring high on the front and a fine fabric-like perforation below, on a
+  // light grey foot.
+  switchbot: (display) =>
+    '<rect x="15" y="15" width="50" height="73" rx="15" fill="url(#ca-pb)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    `<ellipse cx="40" cy="15.5" rx="19" ry="4" fill="url(#ca-pt)" stroke="#c3cad2" stroke-width=".8"/>${caRotor(15.5, 16)}` +
+    '<circle cx="40" cy="32" r="7.6" fill="#1d2632" stroke="#c3cad2" stroke-width=".8"/>' +
+    `<text class="pmv" x="40" y="31.4" text-anchor="middle">${caEsc(display)}</text>` +
+    '<circle class="ring" cx="40" cy="32" r="9.8"/>' +
+    `<g fill="#c9d0d8">${caDots((dot) => {
+      for (let row = 0; row < 12; row++) {
+        const y = 48 + row * 2.8;
+        for (let x = 21 + (row % 2) * 1.4; x <= 59.5; x += 2.8) dot(x, y, 0.55);
+      }
+    })}</g>` +
+    '<rect x="17" y="83" width="46" height="5" rx="2.5" fill="#d5dbe2"/>',
+  // SwitchBot Air Purifier Table: a round side table — a warm wooden top with its wireless charging pad, the light strip
+  // under its rim glowing in the air quality colour — on the purifier's perforated cylinder.
+  switchbot_table: (display) =>
+    '<path d="M23 30V84A17 4.2 0 0 0 57 84V30Z" fill="url(#ca-pc)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    `<g fill="#aeb7c2">${caDots((dot) => {
+      for (let y = 40; y <= 80; y += 3.4) {
+        for (let a = -75; a <= 75; a += 15) {
+          const t = (a * Math.PI) / 180;
+          dot(40 + 15.6 * Math.sin(t), y + 1.4 * (1 - Math.cos(t)), 0.25 + 0.7 * Math.cos(t));
+        }
+      }
+    })}</g>` +
+    '<rect x="33" y="39" width="14" height="5.4" rx="1.6" fill="#1d2632"/>' +
+    `<text class="pmv" x="40" y="41.9" text-anchor="middle">${caEsc(display)}</text>` +
+    '<ellipse class="ring" cx="40" cy="28.6" rx="27" ry="4.6"/>' +
+    '<path d="M8 21V24.5A32 6 0 0 0 72 24.5V21Z" fill="#9c7650"/>' +
+    '<ellipse cx="40" cy="21" rx="32" ry="6" fill="#c9a27a" stroke="#9c7650" stroke-width=".8"/>' +
+    '<ellipse cx="40" cy="21" rx="7" ry="1.6" fill="none" stroke="#f1e2cf" stroke-width=".8" opacity=".9"/>',
   // A square box: air out of the slatted top, in through the vertical slots of the lower front, a display ring above.
   box: () =>
     '<rect x="12" y="17" width="56" height="71" rx="7" fill="url(#ca-pb)" stroke="#c3cad2" stroke-width="1.2"/>' +
@@ -89,6 +123,7 @@ const caPurifierArt = (variant, display = "") =>
 // a tower otherwise.
 const caPurifierVariant = (text) => {
   const s = String(text).toLowerCase();
+  if (/switch\s?bot|wonderlabs/.test(s)) return /\btable\b/.test(s) ? "switchbot_table" : "switchbot";
   if (/dyson|pure (cool|hot)|hot\s*\+?\s*cool|cool me|humidify|big\s*\+?\s*quiet|\b(tp|hp|ph|bp)\d|\bam(0[67]|11)\b/.test(s)) return "dyson";
   if (/smartmi.*\bp\d\b|\bp[12]\b|airp\.(mp|p\d)/.test(s)) return "box";
   if (/\b4\b|4 lite|4 compact|4 pro|elite|compact|\be1\b|cylind|round/.test(s)) return "cylinder";
@@ -96,7 +131,7 @@ const caPurifierVariant = (text) => {
 };
 
 CA_ART.purifier = {
-  variants: ["tower", "cylinder", "box", "dyson"],
+  variants: ["tower", "cylinder", "box", "dyson", "switchbot", "switchbot_table"],
   guess: caPurifierVariant,
   render: (variant, s) => ({ svg: caPurifierArt(variant, s.running ? s.display : ""), style: `--ca-spin:${caSpin(s.pct)}s;--ca-aq:${s.aqColor || CA_FAN_COLOR}` }),
   styles: `
@@ -142,7 +177,7 @@ class ClimateAirPurifierCard extends CaCard {
   }
 
   _roles() {
-    return ["pm25", "pm10", "voc", "no2", "aqi", "temperature", "humidity", "filter", "filter_hours", "filter_alert", "filter_reset", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
+    return ["pm25", "pm10", "voc", "no2", "aqi", "aq_level", "temperature", "humidity", "filter", "filter_hours", "filter_alert", "filter_reset", "status", "mode", "favorite", "child_lock", "buzzer", "light"];
   }
 
   _model(r) {
@@ -152,7 +187,7 @@ class ClimateAirPurifierCard extends CaCard {
     const on = st.state === "on";
     const pm25 = this._num(ent.pm25);
     const aqi = this._num(ent.aqi);
-    const aq = caAirQuality(pm25, aqi);
+    const aq = caAirQuality(pm25, aqi, this._avail(ent.aq_level) ? this._val(ent.aq_level) : null);
     const pct = on ? Number(st.attributes.percentage ?? 0) : 0;
     const filterState = this._filterState(ent);
     const filter = filterState.pct;
@@ -193,6 +228,9 @@ class ClimateAirPurifierCard extends CaCard {
       big = `<div class="big"><span class="val">${caFmtNum(this._intlLang(), m.pm25, 0)}<small> µg/m³</small></span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
     } else if (m.aqi != null) {
       big = `<div class="big"><span class="val">${caFmtNum(this._intlLang(), m.aqi, 0)}<small> AQI</small></span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
+    } else if (m.aq) {
+      // Only a level as a word (SwitchBot): the air quality, its colour, under the status.
+      big = `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span><span class="lbl aq">${caEsc(this._aqText(m))}</span></div>`;
     } else {
       big = `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>`;
     }
@@ -245,7 +283,7 @@ class ClimateAirPurifierCard extends CaCard {
     if (m.pm25 != null || m.aqi != null) {
       const v = m.pm25 != null ? `PM2.5 ${caFmtNum(this._intlLang(), m.pm25, 0)} µg/m³` : `AQI ${caFmtNum(this._intlLang(), m.aqi, 0)}`;
       lines.push(`<div class="line aqline"><ha-icon icon="mdi:blur"></ha-icon><span><b>${caEsc(v)}</b>${m.aq ? ` · ${caEsc(this._aqText(m))}` : ""}</span></div>`);
-    }
+    } else if (m.aq) lines.push(`<div class="line aqline"><ha-icon icon="mdi:blur"></ha-icon><span><b>${caEsc(this._aqText(m))}</b></span></div>`);
     if (m.running) lines.push(caBar(m.pct, `${Math.round(m.pct)} %`, "mdi:fan"));
     if (m.running && m.sub) lines.push(caLine(CA_PRESET_ICON(m.preset) || "mdi:tune-variant", m.sub));
     lines.push(this._filterLine(m.filterState));

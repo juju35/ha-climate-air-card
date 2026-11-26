@@ -32,6 +32,24 @@ await animate({
 
 // The ceiling fan turning, its light on: the blades spin and the breeze falls into the room.
 await animate({
+  file: "fan-circulator",
+  tag: "climate-air-fan-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang, {}, { switchbot: true }), config: { entity: "fan.study_fan" } }),
+});
+
+await animate({
+  file: "purifier-switchbot-table",
+  tag: "climate-air-purifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang, {}, { switchbot: true }), config: { entity: "fan.study_purifier" } }),
+});
+
+await animate({
+  file: "humidifier-switchbot-evaporative",
+  tag: "climate-air-humidifier-card",
+  setup: (_s, lang) => ({ hass: mockHass(lang, {}, { switchbot: true }), config: { entity: "humidifier.study_humidifier" } }),
+});
+
+await animate({
   file: "fan-ceiling",
   tag: "climate-air-fan-card",
   setup: (_s, lang) => ({ hass: mockHass(lang), config: { entity: "fan.ceiling_fan" } }),

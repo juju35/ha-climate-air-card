@@ -31,6 +31,36 @@ const CA_FAN_ART =
   '<circle cx="40" cy="32" r="5.5" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1"/><circle class="led" cx="40" cy="32" r="1.8"/>' +
   "</g></svg>";
 
+// A circulator fan (SwitchBot Circulator Fan, Battery Circulator Fan…): a compact round head with a deep grille of
+// concentric rings, held by a yoke on a short stem and a round base. The blades turn behind the grille with the speed,
+// the head swings while oscillating and the breeze pulses, like the standing fan (same centre, same classes).
+const CA_CIRCULATOR_RINGS = [8, 13, 18, 23].map((r) => `<circle cx="40" cy="32" r="${r}"/>`).join("");
+const CA_CIRCULATOR_ART =
+  '<svg viewBox="0 0 80 94" aria-hidden="true"><defs>' +
+  '<linearGradient id="ca-fp" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd5dc"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#c3cad2"/></linearGradient>' +
+  '<linearGradient id="ca-fb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e3f2fd"/><stop offset="1" stop-color="#90c4ee"/></linearGradient>' +
+  '<radialGradient id="ca-ff" cx=".5" cy=".5" r=".5"><stop offset="0" class="c-stop" stop-opacity=".5"/><stop offset="1" class="c-stop" stop-opacity="0"/></radialGradient></defs>' +
+  '<ellipse class="floor" cx="40" cy="90" rx="24" ry="3.5" fill="url(#ca-ff)"/>' +
+  '<path d="M22 87.5A18 4.5 0 0 0 58 87.5V84.5H22Z" fill="#c3cad2"/>' +
+  '<ellipse cx="40" cy="84.5" rx="18" ry="4.5" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width="1"/>' +
+  '<rect x="37" y="62" width="6" height="23" rx="2.5" fill="url(#ca-fp)" stroke="#aab3bd" stroke-width=".8"/>' +
+  '<circle class="led" cx="40" cy="80" r="1.3"/>' +
+  '<g class="head">' +
+  '<g class="wind"><path d="M7 22q-4 4 0 8"/><path d="M4 32q-4 4 0 8" /><path d="M7 42q-4 4 0 8"/>' +
+  '<path d="M73 22q4 4 0 8"/><path d="M76 32q4 4 0 8"/><path d="M73 42q4 4 0 8"/></g>' +
+  '<path d="M12 32A28 28 0 0 0 68 32" fill="none" stroke="url(#ca-fp)" stroke-width="4" stroke-linecap="round"/>' +
+  '<path d="M12 32A28 28 0 0 0 68 32" fill="none" stroke="#aab3bd" stroke-width=".7"/>' +
+  '<rect x="36" y="58" width="8" height="6" rx="2" fill="#c3cad2"/>' +
+  '<circle cx="40" cy="32" r="25" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1.6"/>' +
+  '<circle cx="40" cy="32" r="23.5" fill="#e3e8ee"/>' +
+  '<g class="blades" fill="url(#ca-fb)">' +
+  [0, 72, 144, 216, 288].map((a) => `<path transform="rotate(${a} 40 32)" d="M40 32C42.5 24 48 17 54 19.5C57 24.5 50 30.5 40 32Z"/>`).join("") +
+  "</g>" +
+  `<g fill="none" stroke="#9aa5b1" stroke-opacity=".75" stroke-width=".7">${CA_CIRCULATOR_RINGS}</g>` +
+  '<circle cx="40" cy="32" r="25" fill="none" stroke="#aab3bd" stroke-width="2.2"/>' +
+  '<circle cx="40" cy="32" r="4.6" fill="#f4f6f8" stroke="#aab3bd" stroke-width="1"/>' +
+  "</g></svg>";
+
 // A ceiling fan seen from the room: its canopy and downrod, four wooden blades in perspective that turn with the speed
 // (the other way when reversed), and its light under the motor, glowing while it is on.
 const CA_CEILING_FAN_ART =
@@ -59,11 +89,14 @@ const CA_CEILING_FAN_ART =
 const CA_CEILING_FAN_RE =
   /(ceiling|plafond|plafonnier|decken|techo|soffitto|plafon|sufit|teto|tavan|потол|стел|stropn|griesti|οροφ|\bhunter\b|big ?ass|haiku|\bbaf\b|lucci|\bminka|casablanca|fanimation|westinghouse|\bbond\b|olibra|modern ?forms)/i;
 
+// A circulator says so in its name or model (SwitchBot Circulator Fan, Battery Circulator Fan, Vornado…).
+const CA_CIRCULATOR_RE = /(circulat|zirkulat|circolat|vornado)/i;
+
 CA_ART.fan = {
-  variants: ["fan", "ceiling"],
-  guess: (text) => (CA_CEILING_FAN_RE.test(text) ? "ceiling" : "fan"),
+  variants: ["fan", "ceiling", "circulator"],
+  guess: (text) => (CA_CEILING_FAN_RE.test(text) ? "ceiling" : CA_CIRCULATOR_RE.test(text) ? "circulator" : "fan"),
   render: (variant, s) => ({
-    svg: variant === "ceiling" ? CA_CEILING_FAN_ART : CA_FAN_ART,
+    svg: variant === "ceiling" ? CA_CEILING_FAN_ART : variant === "circulator" ? CA_CIRCULATOR_ART : CA_FAN_ART,
     cls: [
       variant === "ceiling" ? "ceiling" : "",
       s.running && s.osc ? "osc" : "",

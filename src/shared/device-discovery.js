@@ -185,6 +185,8 @@ export const CA_ROLES = {
   pm25: { domain: "sensor", test: caDc("pm25") },
   pm10: { domain: "sensor", test: caDc("pm10") },
   aqi: { domain: "sensor", test: caDc("aqi") },
+  // An air quality level as a word (SwitchBot's purifiers: excellent, good, moderate, unhealthy).
+  aq_level: { domain: "sensor", keys: ["aqi_quality_level"], id: /(air_quality_level|aqi_level|aqi_quality)/ },
   // Filter life as a percentage. Dyson splits it into a HEPA and a carbon filter (and a combined one on older
   // units): prefer the HEPA or combined figure, and never the carbon one or a life expressed in hours.
   filter: {
@@ -194,7 +196,7 @@ export const CA_ROLES = {
     prefer: /(hepa|combined|life_?level|life_?percent|pourcent)/,
     avoid: /(carbon|charbon|used|utilis|hours|heures)/,
   },
-  filter_hours: { domain: "sensor", keys: ["filter_hours_used", "filter_use"], id: /filt(er|re).*(used|hours|heures|utilis)/ },
+  filter_hours: { domain: "sensor", keys: ["filter_hours_used", "filter_use", "filter_usage"], id: /filt(er|re).*(used|usage|hours|heures|utilis)/ },
   voc: {
     domain: "sensor",
     id: /(volatile_organic|_vocs?\b|\bcov\b|composes_organiques|fluchtige_organische|compuestos_organicos)/,
@@ -543,7 +545,7 @@ export function caKindOf(hass, id) {
     if (list.some((e) => e.entity_id.startsWith("humidifier.") || e.entity_id.startsWith("climate."))) return null;
     if (CA_VENT_PLATFORMS.includes(hass.entities?.[id]?.platform) || CA_VENT_NAME.test(names)) return "ventilation";
     if (CA_PURIFIER_NAME.test(names)) return "purifier";
-    if (caFindRole(hass, list, "pm25") || caFindRole(hass, list, "aqi") || caFindRole(hass, list, "filter")) return "purifier";
+    if (caFindRole(hass, list, "pm25") || caFindRole(hass, list, "aqi") || caFindRole(hass, list, "aq_level") || caFindRole(hass, list, "filter")) return "purifier";
     return "fan";
   });
 }

@@ -155,6 +155,37 @@ const CA_HUM_ARTS = {
     '<rect x="20" y="58" width="40" height="26" rx="4" fill="#ffffff" fill-opacity=".15" stroke="#b6bfc9" stroke-width="1"/>' +
     '<g class="drip"><path d="M40 60q-1.6 2.6 0 4t0-4Z"/><path d="M36 60q-1.6 2.6 0 4t0-4Z"/></g>' +
     '<rect x="34" y="55.5" width="12" height="3" rx="1.5" fill="#9aa5b1"/>',
+  // SwitchBot Humidifier: a small white cylinder, its clear tank above a solid base, the mist nozzle in the middle of
+  // the domed lid and a light line round the foot.
+  switchbot_humidifier: (s) =>
+    '<ellipse class="floor" cx="40" cy="90" rx="24" ry="3.5" fill="url(#ca-uf)"/>' +
+    caHumMist([37, 40, 43], 18) +
+    '<path d="M22 66V84Q22 88 26 88H54Q58 88 58 84V66Z" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    caHumWater("ca-uw", 23, 30, 34, 36, 6, s.level) +
+    '<rect x="23" y="30" width="34" height="36" rx="6" fill="#ffffff" fill-opacity=".18" stroke="#b6bfc9" stroke-width="1.1"/>' +
+    '<path d="M27 35v26" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>' +
+    '<path d="M24 31Q24 21 40 20Q56 21 56 31Z" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.1"/>' +
+    '<ellipse cx="40" cy="21.5" rx="4.4" ry="1.4" fill="#3a434e"/>' +
+    caHumDisplay(32, 71, 16, s.display) +
+    '<circle class="led" cx="40" cy="83.5" r="1.3"/>',
+  // SwitchBot Evaporative Humidifier: a white tower with rounded corners, the air out of the slotted top, a round
+  // display, the fan turning behind its round front grille and the clear water tank window low on the front.
+  switchbot_evaporative: (s) =>
+    '<ellipse class="floor" cx="40" cy="90" rx="30" ry="3.5" fill="url(#ca-uf)"/>' +
+    caHumMist([30, 40, 50], 12) +
+    '<rect x="13" y="14" width="54" height="74" rx="13" fill="url(#ca-ub)" stroke="#c3cad2" stroke-width="1.2"/>' +
+    '<rect x="19" y="16.5" width="42" height="7" rx="3.5" fill="#3a434e"/>' +
+    `<path d="${Array.from({ length: 9 }, (_, i) => `M${22.5 + i * 4.4} 17.8v4.4`).join("")}" stroke="#8b96a3" stroke-width="1"/>` +
+    '<circle cx="40" cy="47" r="10.5" fill="#3a434e" stroke="#c3cad2" stroke-width=".8"/>' +
+    `<g class="rotor">${[0, 120, 240]
+      .map((a) => `<path transform="rotate(${a} 40 48)" d="M40 48C38.9 44 40 40 43.8 39.3C44.8 43 43.1 46.4 40 48Z"/>`)
+      .join("")}</g>` +
+    '<circle cx="40" cy="48" r="2.4" fill="#d5dbe2"/>' +
+    caHumDisplay(31, 28, 18, s.display) +
+    caHumWater("ca-uw", 19, 63, 42, 20, 6, s.level) +
+    '<rect x="19" y="63" width="42" height="20" rx="6" fill="#ffffff" fill-opacity=".18" stroke="#b6bfc9" stroke-width="1"/>' +
+    '<path d="M23 67v12" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>' +
+    '<circle class="led" cx="58" cy="32.5" r="1.3"/>',
   rituals: () => caRitualsArt("brass"),
   rituals_black: () => caRitualsArt("black"),
 };
@@ -165,6 +196,8 @@ const caHumidifierVariant = (text) => {
   if (/rituals|perfume.?genie/i.test(t)) return /black|noir|graphit|anthracit|\bdark\b/i.test(t) ? "rituals_black" : "rituals";
   if (/flower.?bud|diffus|aroma|essential|huile|vocolinc.*(fb|vf|ad)/i.test(t)) return "diffuser";
   if (/vocolinc|mistflow|vh1/i.test(t)) return "vocolinc";
+  // SwitchBot: the Evaporative Humidifier (« Humidifier2 » in the Cloud API) or the ultrasonic Humidifier (WoHumi).
+  if (/switch\s?bot|wonderlabs|wohumi/i.test(t)) return /evapor|humidifier\s?2/i.test(t) ? "switchbot_evaporative" : "switchbot_humidifier";
   if (/evapor|wick|cjxjsq|smartmi|zhimi|levoit.*(oasis|ev)|venta|stadler/i.test(t)) return "evaporative";
   if (/deerma|jsq|tank|r[ée]servoir|mjjsq|dem-/i.test(t)) return "tank";
   return "column";
@@ -178,7 +211,7 @@ const CA_LIGHT_COLORS = ["255,64,64", "255,140,0", "255,214,0", "64,220,96", "0,
 const caLightLevel = (st) => (st?.state === "on" && st.attributes.brightness != null ? Math.max(0.25, Number(st.attributes.brightness) / 255) : 1);
 
 CA_ART.humidifier = {
-  variants: ["column", "tank", "evaporative", "vocolinc", "diffuser", "rituals", "rituals_black", "dehumidifier"],
+  variants: ["column", "tank", "evaporative", "vocolinc", "diffuser", "rituals", "rituals_black", "dehumidifier", "switchbot_humidifier", "switchbot_evaporative"],
   guess: caHumidifierVariant,
   render: (variant, s) => ({
     svg: `<svg viewBox="0 0 80 94" aria-hidden="true"><defs>${CA_HUM_DEFS}</defs>${(CA_HUM_ARTS[variant] || CA_HUM_ARTS.column)(s)}</svg>`,
@@ -291,6 +324,8 @@ class ClimateAirHumidifierCard extends CaCard {
       active: hs.active,
       low: hs.low,
       level: hs.level,
+      // A tank level given as a word (SwitchBot): shown as Home Assistant words it, the bar at its rough fill.
+      levelText: hs.level != null && this._num(ent.water_level) == null && this._avail(ent.water_level) ? this._fmtState(ent.water_level) : null,
       dehum: hs.dehum,
       diffuser,
       glow: caLightGlow(this._st(ent.lamp)),
@@ -325,7 +360,7 @@ class ClimateAirHumidifierCard extends CaCard {
     if (m.level == null) return "";
     const label = this._t(m.dehum ? "bucket" : m.diffuser ? "cartridge" : "tank_level");
     const icon = m.dehum ? "mdi:bucket-outline" : m.diffuser ? "mdi:bottle-tonic-outline" : "mdi:cup-water";
-    return caBar(m.level, `${label} ${this._pct(m.level)}`, icon);
+    return caBar(m.level, `${label} ${m.levelText ?? this._pct(m.level)}`, icon);
   }
 
   _controls(m) {
