@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Raven {n}",
     target: "Cilj",
+    device_temp: "Naprava",
     target_low: "Ogrevanje na",
     target_high: "Hlajenje na",
     target_humidity: "Ciljna vlažnost",
@@ -234,6 +235,9 @@ export default {
     ed_circulation_threshold_helper: "Moč, nad katero deluje obtočna črpalka ogrevanja (talno ogrevanje, radiatorji); pod pragom delovanja ostane toplotna črpalka izklopljena",
     ed_outdoor_temp: "Zunanja temperatura",
     ed_outdoor_temp_helper: "Senzor ali vremenska entiteta za zunanji čip",
+    ed_temperature_entity: "Senzor sobne temperature",
+    ed_temperature_entity_helper: "Prikazan kot sobna temperatura namesto temperature naprave; ta se vrne, ko senzor ni na voljo",
+    ed_show_device_temperature: "Temperatura naprave pod temperaturo senzorja",
   },
   CA_VALUES: {
     auto: "Samodejno", automatic: "Samodejno", manual: "Ročno", smart: "Pametno", sleep: "Spanje", night: "Noč", favorite: "Priljubljeno",

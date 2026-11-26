@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Ниво {n}",
     target: "Цел",
+    device_temp: "Уред",
     target_low: "Отопление до",
     target_high: "Охлаждане до",
     target_humidity: "Желана влажност",
@@ -234,6 +235,9 @@ export default {
     ed_circulation_threshold_helper: "Мощност, над която работи циркулационната помпа на отоплението (подово отопление, радиатори); под прага на работа термопомпата остава изключена",
     ed_outdoor_temp: "Външна температура",
     ed_outdoor_temp_helper: "Сензор или метеорологичен обект за външния чип",
+    ed_temperature_entity: "Сензор за стайна температура",
+    ed_temperature_entity_helper: "Показва се като стайна температура вместо тази на уреда; тя се връща, когато сензорът е недостъпен",
+    ed_show_device_temperature: "Температура на уреда под тази на сензора",
   },
   CA_VALUES: {
     auto: "Авто", automatic: "Автоматично", manual: "Ръчно", smart: "Интелигентно", sleep: "Сън", night: "Нощ", favorite: "Любимо",

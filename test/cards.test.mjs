@@ -1761,3 +1761,32 @@ test("ventilation: levels made of switches (cumulative or exclusive) set and sho
   sw("switch.bath_fan_1", "on");
   assert.match(html(mount(lib, "climate-air-ventilation-mini-card", config, h)), /Level 1/);
 });
+
+test("air conditioner: temperature_entity shows a room sensor first, the unit's own under it, and falls back to the unit (#121)", () => {
+  const withSensor = (state) => {
+    const h = makeHass();
+    h.states["sensor.living_room_probe"] = { entity_id: "sensor.living_room_probe", state, attributes: { unit_of_measurement: "°C", device_class: "temperature" } };
+    return h;
+  };
+  const cfg = { entity: "climate.air_conditioner", temperature_entity: "sensor.living_room_probe" };
+  const out = html(mount(lib, "climate-air-aircon-card", cfg, withSensor("23.8")));
+  assert.match(out, /<span class="val">23\.8<small> °C/);
+  assert.match(out, /<div class="tsec"><ha-icon icon="mdi:thermostat"><\/ha-icon><span>Unit 25\.5 °C<\/span><\/div>/);
+  // Without the unit's line, and back to the unit when the sensor is unavailable.
+  assert.doesNotMatch(html(mount(lib, "climate-air-aircon-card", { ...cfg, show_device_temperature: false }, withSensor("23.8"))), /class="tsec"/);
+  const down = html(mount(lib, "climate-air-aircon-card", cfg, withSensor("unavailable")));
+  assert.match(down, /<span class="val">25\.5<small> °C/);
+  assert.doesNotMatch(down, /class="tsec"/);
+  // The mini card's line takes the sensor too.
+  assert.match(html(mount(lib, "climate-air-aircon-mini-card", cfg, withSensor("23.8"))), /<b>23\.8 °C<\/b>/);
+});
+
+test("overview: a device's temperature_entity replaces the unit's own temperature on its tile (#121)", () => {
+  const h = makeHass();
+  h.states["climate.air_conditioner"] = { ...h.states["climate.air_conditioner"], state: "off" };
+  h.states["sensor.living_room_probe"] = { entity_id: "sensor.living_room_probe", state: "23.8", attributes: { unit_of_measurement: "°C" } };
+  const plain = overview({ zoom: false }, h).body;
+  assert.match(plain, /Off · 25\.5 °C/);
+  const { body } = overview({ zoom: false, devices: [{ entity: "climate.air_conditioner", temperature_entity: "sensor.living_room_probe" }] }, h);
+  assert.match(body, /Off · 23\.8 °C/);
+});

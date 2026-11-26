@@ -30,7 +30,7 @@ export const caSwitchInfo = (id) => CA_SWITCHES.find(([re]) => re.test(id.split(
 
 export class CaClimateCard extends CaCard {
   _extraIds(r) {
-    return this._switches(r);
+    return [...this._switches(r), ...(this._config.temperature_entity ? [this._config.temperature_entity] : [])];
   }
 
   _unit() {
@@ -120,7 +120,13 @@ export class CaClimateCard extends CaCard {
     const cur = m.cur != null ? `<span class="val">${caFmtNum(this._intlLang(), m.cur)}<small> ${caEsc(this._unit())}</small></span>` : "";
     const target = this._showTarget(m) ? `<span class="arrow">→ ${caEsc(this._targetText(m))}</span>` : "";
     if (!cur) return `<div class="big"><span class="state-big">${caEsc(m.statusText)}</span></div>${this._heroLine(m)}`;
-    return `<div class="big">${cur}${target}</div>${this._heroLine(m)}`;
+    return `<div class="big">${cur}${target}</div>${this._devTempLine(m)}${this._heroLine(m)}`;
+  }
+
+  // The unit's own temperature, under the room sensor's (temperature_entity).
+  _devTempLine(m) {
+    if (m.devCur == null) return "";
+    return `<div class="tsec"><ha-icon icon="mdi:thermostat"></ha-icon><span>${caEsc(this._t("device_temp"))} ${caEsc(this._temp(m.devCur))}</span></div>`;
   }
 
   _controls(m) {
@@ -231,13 +237,19 @@ export class CaClimateCard extends CaCard {
     const a = st.attributes;
     const mode = st.state;
     const range = this._range(st);
+    // temperature_entity: a room sensor (better placed than the unit's own probe) shown as the room temperature; the
+    // unit's own reading goes under it (show_device_temperature), and comes back as the room temperature whenever the
+    // sensor is unavailable.
+    const own = a.current_temperature != null ? Number(a.current_temperature) : this._num(ent.indoor_temp);
+    const ext = this._config.temperature_entity ? this._num(this._config.temperature_entity) : null;
     return {
       ent,
       st,
       a,
       mode,
       on: mode !== "off",
-      cur: a.current_temperature != null ? Number(a.current_temperature) : this._num(ent.indoor_temp),
+      cur: ext ?? own,
+      devCur: ext != null && own != null && this._config.show_device_temperature !== false ? own : null,
       range,
       target: range ? null : this._target(st),
     };
@@ -265,6 +277,9 @@ export class CaClimateCard extends CaCard {
   }
 
   static styles = `
+    .tsec { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--secondary-text-color); min-width: 0; }
+    .tsec ha-icon { --mdc-icon-size: 14px; flex: none; }
+    .tsec span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .stepper { display: flex; align-items: center; justify-content: center; gap: 18px; }
     /* A low / high range: two steppers side by side, one under the other when they do not fit. */
     .steppers { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 20px; }

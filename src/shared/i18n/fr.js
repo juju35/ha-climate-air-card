@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Consigne",
+    device_temp: "Appareil",
     target_low: "Chauffer à",
     target_high: "Refroidir à",
     target_humidity: "Humidité cible",
@@ -234,6 +235,9 @@ export default {
     ed_circulation_threshold_helper: "Puissance au-dessus de laquelle la pompe de circulation du chauffage tourne (plancher, radiateurs) ; sous le seuil de marche, la pompe à chaleur elle-même reste arrêtée",
     ed_outdoor_temp: "Température extérieure",
     ed_outdoor_temp_helper: "Un capteur ou une entité météo pour la puce extérieure",
+    ed_temperature_entity: "Sonde de température de la pièce",
+    ed_temperature_entity_helper: "Affichée comme température de la pièce à la place de celle de l'appareil ; celle de l'appareil revient si la sonde est indisponible",
+    ed_show_device_temperature: "Température de l'appareil sous celle de la sonde",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatique", manual: "Manuel", smart: "Intelligent", sleep: "Nuit", night: "Nuit", favorite: "Favori",

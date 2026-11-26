@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Úroveň {n}",
     target: "Cieľ",
+    device_temp: "Zariadenie",
     target_low: "Kúrenie na",
     target_high: "Chladenie na",
     target_humidity: "Cieľová vlhkosť",
@@ -234,6 +235,9 @@ export default {
     ed_circulation_threshold_helper: "Výkon, nad ktorým beží obehové čerpadlo kúrenia (podlahové kúrenie, radiátory); pod prahom chodu zostáva samotné tepelné čerpadlo vypnuté",
     ed_outdoor_temp: "Vonkajšia teplota",
     ed_outdoor_temp_helper: "Senzor alebo entita počasia pre vonkajší čip",
+    ed_temperature_entity: "Snímač teploty v miestnosti",
+    ed_temperature_entity_helper: "Zobrazí sa ako teplota v miestnosti namiesto teploty zariadenia; tá sa vráti, keď snímač nie je dostupný",
+    ed_show_device_temperature: "Teplota zariadenia pod teplotou snímača",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatický", manual: "Manuálny", smart: "Inteligentný", sleep: "Spánok", night: "Noc", favorite: "Obľúbený",

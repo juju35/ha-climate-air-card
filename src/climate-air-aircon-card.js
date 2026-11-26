@@ -196,7 +196,7 @@ class ClimateAirAirconCard extends CaClimateCard {
 
   _model(r) {
     const c = this._config;
-    const { ent, a, mode, on, cur, range, target } = this._climate(r);
+    const { ent, a, mode, on, cur, devCur, range, target } = this._climate(r);
     const freq = this._num(ent.compressor);
     // The compressor (or what the climate entity says it does) tells whether it is actually cooling or heating.
     const action = a.hvac_action;
@@ -219,6 +219,7 @@ class ClimateAirAirconCard extends CaClimateCard {
       sub: preset,
       fanMode,
       cur,
+      devCur,
       target,
       range,
       chips,
