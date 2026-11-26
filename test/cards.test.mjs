@@ -534,6 +534,11 @@ test("switchbot: every model of the Bluetooth and Cloud integrations gets its il
   assert.equal(lib.caKindOf(plain, "fan.hall_purifier"), "purifier");
   assert.equal(lib.caVariant(plain, "purifier", "fan.hall_purifier"), "switchbot");
   assert.equal(lib.caVariant(plain, "fan", "fan.hall_fan"), "circulator_standing");
+  // SwitchBot's presets get their icons.
+  assert.equal(lib.CA_PRESET_ICON("pet"), "mdi:paw");
+  assert.equal(lib.CA_PRESET_ICON("baby"), "mdi:baby-face-outline");
+  assert.equal(lib.CA_PRESET_ICON("level_2"), "mdi:fan-speed-2");
+  assert.equal(lib.CA_PRESET_ICON("level_4"), null);
   // The standing circulator turns about the same centre as the other fans.
   const art = lib.caPicture("fan", "circulator_standing", { running: true, pct: 50 }, "u");
   assert.match(art, /class="head"[\s\S]*class="blades"/);
