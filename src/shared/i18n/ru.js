@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Уровень {n}",
     target: "Цель",
+    device_temp: "Устройство",
     target_low: "Нагрев до",
     target_high: "Охлаждение до",
     target_humidity: "Целевая влажность",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Мощность, выше которой работает циркуляционный насос отопления (тёплый пол, радиаторы); ниже порога работы сам тепловой насос остаётся выключенным",
     ed_outdoor_temp: "Наружная температура",
     ed_outdoor_temp_helper: "Датчик или объект погоды для наружного чипа",
+    ed_temperature_entity: "Датчик температуры в комнате",
+    ed_temperature_entity_helper: "Показывается как температура в комнате вместо температуры устройства; она возвращается, если датчик недоступен",
+    ed_show_device_temperature: "Температура устройства под температурой датчика",
   },
   CA_VALUES: {
     auto: "Авто", automatic: "Автоматически", manual: "Вручную", smart: "Умный", sleep: "Сон", night: "Ночь", favorite: "Избранное",

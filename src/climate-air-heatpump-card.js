@@ -323,6 +323,7 @@ class ClimateAirHeatpumpCard extends CaClimateCard {
       // for a metered pump (its entity's state is a raw power reading).
       sub: climate ? preset : metered ? "" : hp.on ? this._fmtState(r.id) : "",
       cur: base.cur,
+      devCur: base.devCur,
       target: hp.on ? base.target : null,
       range: hp.on ? base.range : null,
       tank: hp.tank,

@@ -113,6 +113,11 @@ export class ClimateAirOverviewCard extends CaElement {
       if (s) used.push(s);
       return s;
     };
+    // devices: [{ entity, temperature_entity }]: a room sensor shown instead of the unit's own temperature (the unit's
+    // own reading when the sensor is unavailable).
+    const extSt = o.temperature_entity ? h.states[o.temperature_entity] : null;
+    if (extSt) used.push(extSt);
+    const extTemp = caNum(extSt);
     const item = {
       id,
       kind,
@@ -145,7 +150,7 @@ export class ClimateAirOverviewCard extends CaElement {
       const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       const climate = id.startsWith("climate.");
       const metered = !climate && !id.startsWith("select.");
-      const cur = climate ? (a.current_temperature != null ? Number(a.current_temperature) : null) : caNum(roleSt("indoor_temp"));
+      const cur = extTemp ?? (climate ? (a.current_temperature != null ? Number(a.current_temperature) : null) : caNum(roleSt("indoor_temp")));
       item.on = hp.on;
       // A metered pump's state is a raw power reading, so it only shows its status, not its "target".
       const target = !hp.on || metered ? "" : climate ? (a.temperature != null ? temp(Number(a.temperature)) : "") : caValueLabel(lang, st.state, h.formatEntityState?.(st));
@@ -179,7 +184,7 @@ export class ClimateAirOverviewCard extends CaElement {
     } else if (kind === "aircon") {
       item.on = st.state !== "off";
       const mode = st.state;
-      const cur = a.current_temperature != null ? Number(a.current_temperature) : null;
+      const cur = extTemp ?? (a.current_temperature != null ? Number(a.current_temperature) : null);
       const unit = h.config?.unit_system?.temperature || "°C";
       const temp = (v) => `${caFmtNum(this._intlLang(), v)} ${unit}`;
       if (item.on) {

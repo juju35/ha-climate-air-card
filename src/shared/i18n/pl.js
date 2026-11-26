@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Poziom {n}",
     target: "Cel",
+    device_temp: "Urządzenie",
     target_low: "Grzanie do",
     target_high: "Chłodzenie do",
     target_humidity: "Wilgotność docelowa",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Moc, powyżej której pracuje pompa obiegowa ogrzewania (podłogówka, grzejniki); poniżej progu pracy sama pompa ciepła pozostaje wyłączona",
     ed_outdoor_temp: "Temperatura zewnętrzna",
     ed_outdoor_temp_helper: "Czujnik lub encja pogodowa dla chipu zewnętrznego",
+    ed_temperature_entity: "Czujnik temperatury w pomieszczeniu",
+    ed_temperature_entity_helper: "Pokazywany jako temperatura pomieszczenia zamiast temperatury urządzenia; ta wraca, gdy czujnik jest niedostępny",
+    ed_show_device_temperature: "Temperatura urządzenia pod temperaturą czujnika",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatyczny", manual: "Ręczny", smart: "Inteligentny", sleep: "Sen", night: "Noc", favorite: "Ulubiony",

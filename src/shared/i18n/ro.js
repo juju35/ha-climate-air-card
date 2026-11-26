@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Nivel {n}",
     target: "Țintă",
+    device_temp: "Aparat",
     target_low: "Încălzire la",
     target_high: "Răcire la",
     target_humidity: "Umiditate țintă",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Puterea peste care funcționează pompa de circulație a încălzirii (pardoseală, calorifere); sub pragul de funcționare pompa de căldură rămâne oprită",
     ed_outdoor_temp: "Temperatură exterioară",
     ed_outdoor_temp_helper: "Un senzor sau o entitate meteo pentru cipul exterior",
+    ed_temperature_entity: "Senzor de temperatură al camerei",
+    ed_temperature_entity_helper: "Afișat ca temperatură a camerei în locul celei a aparatului; cea a aparatului revine când senzorul nu este disponibil",
+    ed_show_device_temperature: "Temperatura aparatului sub cea a senzorului",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automat", manual: "Manual", smart: "Inteligent", sleep: "Somn", night: "Noapte", favorite: "Favorit",

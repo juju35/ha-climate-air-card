@@ -93,6 +93,7 @@ export default {
     hours: "{n} u",
     level: "Niveau {n}",
     target: "Doel",
+    device_temp: "Apparaat",
     target_low: "Verwarmen tot",
     target_high: "Koelen tot",
     target_humidity: "Doelvochtigheid",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Vermogen waarboven de circulatiepomp van de verwarming draait (vloerverwarming, radiatoren); onder de draaidrempel blijft de warmtepomp zelf uit",
     ed_outdoor_temp: "Buitentemperatuur",
     ed_outdoor_temp_helper: "Een sensor of weer-entiteit voor de buitenchip",
+    ed_temperature_entity: "Kamertemperatuursensor",
+    ed_temperature_entity_helper: "Getoond als kamertemperatuur in plaats van die van het apparaat; die van het apparaat keert terug als de sensor niet beschikbaar is",
+    ed_show_device_temperature: "Apparaattemperatuur onder die van de sensor",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatisch", manual: "Handmatig", smart: "Slim", sleep: "Slaap", night: "Nacht", favorite: "Favoriet",

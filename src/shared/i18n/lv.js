@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Līmenis {n}",
     target: "Mērķis",
+    device_temp: "Ierīce",
     target_low: "Sildīt līdz",
     target_high: "Dzesēt līdz",
     target_humidity: "Mērķa mitrums",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Jauda, virs kuras darbojas apkures cirkulācijas sūknis (grīdas apkure, radiatori); zem darbības sliekšņa siltumsūknis paliek izslēgts",
     ed_outdoor_temp: "Āra temperatūra",
     ed_outdoor_temp_helper: "Sensors vai laikapstākļu entītija āra čipam",
+    ed_temperature_entity: "Telpas temperatūras sensors",
+    ed_temperature_entity_helper: "Rāda kā telpas temperatūru ierīces temperatūras vietā; ierīces temperatūra atgriežas, ja sensors nav pieejams",
+    ed_show_device_temperature: "Ierīces temperatūra zem sensora temperatūras",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automātiski", manual: "Manuāli", smart: "Viedais", sleep: "Miegs", night: "Nakts", favorite: "Iecienītais",

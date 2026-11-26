@@ -1,11 +1,16 @@
 # Changelog
 
-## 2.20.0 - 2026-11-26
+## 2.21.0 - 2026-11-26
 
 ### Features
 - SwitchBot Standing Circulator Fan (« Standing Fan » for its integrations): a new `circulator_standing` illustration — the circulator head, smaller, on a tall telescopic pole, in the visual editor in every language.
 - Preset icons for SwitchBot's presets: *pet* (paw), *baby* and the speed levels *level_1* to *level_3*.
 - Every SwitchBot model of the Bluetooth and Cloud integrations is now covered and tested: the Air Purifier and Air Purifier Table (PM2.5 / VOC, US / JP), the Circulator Fan, Circulator Fan Pro, Battery Circulator Fan and Battery Circulator Fan 2 Pro, the Humidifier and the Evaporative Humidifier (Auto-refill too).
+
+## 2.20.0 - 2026-11-26
+
+### Features
+- `temperature_entity` option on the air conditioner and heat pump cards (also in the visual editor): a room temperature sensor, better placed than the unit's own probe, is shown as the room temperature on the full and mini cards; the unit's own temperature goes under it (*Unit 22.4 °C*, `show_device_temperature: false` hides it) and comes back as the room temperature whenever the sensor is unavailable. The controls stay those of the climate entity. On the Overview card, `devices: [{ entity, temperature_entity }]` does the same on a tile. Closes #121.
 
 ## 2.19.0 - 2026-11-26
 

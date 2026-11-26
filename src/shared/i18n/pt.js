@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Nível {n}",
     target: "Alvo",
+    device_temp: "Aparelho",
     target_low: "Aquecer a",
     target_high: "Arrefecer a",
     target_humidity: "Humidade alvo",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Potência acima da qual funciona a bomba de circulação do aquecimento (piso radiante, radiadores); abaixo do limiar de funcionamento a bomba de calor fica desligada",
     ed_outdoor_temp: "Temperatura exterior",
     ed_outdoor_temp_helper: "Um sensor ou entidade meteorológica para o chip exterior",
+    ed_temperature_entity: "Sensor de temperatura da divisão",
+    ed_temperature_entity_helper: "Mostrado como temperatura da divisão em vez da do aparelho; a do aparelho volta quando o sensor está indisponível",
+    ed_show_device_temperature: "Temperatura do aparelho sob a do sensor",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automático", manual: "Manual", smart: "Inteligente", sleep: "Dormir", night: "Noite", favorite: "Favorito",

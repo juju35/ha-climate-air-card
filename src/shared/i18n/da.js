@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Niveau {n}",
     target: "Mål",
+    device_temp: "Enhed",
     target_low: "Varm til",
     target_high: "Køl til",
     target_humidity: "Ønsket luftfugtighed",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Effekt, over hvilken varmens cirkulationspumpe kører (gulvvarme, radiatorer); under drifttærsklen forbliver varmepumpen selv slukket",
     ed_outdoor_temp: "Udetemperatur",
     ed_outdoor_temp_helper: "En sensor eller vejr-entitet til udendørschippen",
+    ed_temperature_entity: "Rumtemperaturføler",
+    ed_temperature_entity_helper: "Vises som rumtemperatur i stedet for enhedens egen; enhedens vender tilbage, når føleren ikke er tilgængelig",
+    ed_show_device_temperature: "Enhedens temperatur under følerens",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatisk", manual: "Manuel", smart: "Smart", sleep: "Søvn", night: "Nat", favorite: "Favorit",

@@ -93,6 +93,7 @@ export default {
     hours: "{n} h",
     level: "Nivå {n}",
     target: "Mål",
+    device_temp: "Enhet",
     target_low: "Värm till",
     target_high: "Kyl till",
     target_humidity: "Önskad luftfuktighet",
@@ -235,6 +236,9 @@ export default {
     ed_circulation_threshold_helper: "Effekt över vilken värmens cirkulationspump går (golvvärme, radiatorer); under drifttröskeln förblir värmepumpen själv avstängd",
     ed_outdoor_temp: "Utomhustemperatur",
     ed_outdoor_temp_helper: "En sensor eller väderentitet för utomhuschippet",
+    ed_temperature_entity: "Rumstemperaturgivare",
+    ed_temperature_entity_helper: "Visas som rumstemperatur i stället för enhetens egen; enhetens kommer tillbaka när givaren inte är tillgänglig",
+    ed_show_device_temperature: "Enhetens temperatur under givarens",
   },
   CA_VALUES: {
     auto: "Auto", automatic: "Automatisk", manual: "Manuell", smart: "Smart", sleep: "Sömn", night: "Natt", favorite: "Favorit",

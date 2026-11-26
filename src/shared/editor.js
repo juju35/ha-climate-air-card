@@ -9,6 +9,9 @@ import { CA_HP_GROUND_TYPES, CA_HP_SOURCES, CA_HP_WATER_TYPES, caHeatPumpZones }
 import { CA_FILTER_REPLACE, CA_FILTER_WARNING } from "./mini-cards.js";
 import { CA_ART } from "./illustrations.js";
 
+// The cards whose room temperature can come from a sensor of its own (temperature_entity).
+export const CA_ROOM_SENSOR_KINDS = ["aircon", "heatpump"];
+
 export class CaCardEditor extends HTMLElement {
   static kind = "fan";
   static mini = false;
@@ -36,12 +39,13 @@ export class CaCardEditor extends HTMLElement {
       ...(CA_ART[this.constructor.kind] ? { illustration: "auto", illustration_theme: "auto" } : {}),
       // Heat pump: the defaults caCleanConfig drops, so the YAML only carries a source once it differs from air.
       ...(this.constructor.kind === "heatpump" ? { source: "air", ground_type: "collector", water_type: "well" } : {}),
+      ...(CA_ROOM_SENSOR_KINDS.includes(this.constructor.kind) ? { show_device_temperature: true } : {}),
       ...(this.constructor.mini ? { zoom: true } : {}),
     };
   }
 
   _helpers() {
-    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "circulation_threshold", "power_threshold", "compressor_threshold", "outdoor_temp"];
+    return ["entity", "name", "icon", "illustration", "zoom", "language", "entities", "source", "circulation_threshold", "power_threshold", "compressor_threshold", "outdoor_temp", "temperature_entity"];
   }
 
   _schema() {
@@ -88,6 +92,13 @@ export class CaCardEditor extends HTMLElement {
       ...(CA_NO_FILTER.includes(kind)
         ? []
         : [{ name: "filter_warning", selector: { number: { min: CA_FILTER_REPLACE, max: 50, step: 1, mode: "box", unit_of_measurement: "%" } } }]),
+      // Air conditioner and heat pump: a room sensor shown instead of the unit's own temperature.
+      ...(CA_ROOM_SENSOR_KINDS.includes(kind)
+        ? [
+            { name: "temperature_entity", selector: { entity: { domain: "sensor", device_class: "temperature" } } },
+            ...(this._config?.temperature_entity ? [{ name: "show_device_temperature", selector: { boolean: {} } }] : []),
+          ]
+        : []),
       // A heat pump: its source side (the illustration), the metered running threshold and the outdoor sensor.
       ...this._heatpumpOptions(kind),
       // A multi-zone heat pump: let the user hide a room setpoint it finds among its zones (a test number, or a
